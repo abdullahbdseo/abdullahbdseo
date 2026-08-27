@@ -28,7 +28,8 @@ import {
   User, 
   GraduationCap, 
   Mail,
-  Calendar
+  Calendar,
+  Award
 } from 'lucide-react';
 import { triggerBookingModal } from '@/components/BookingModal';
 
@@ -264,6 +265,14 @@ export default function Navbar() {
               )}
             </div>
 
+            {/* Pricing Direct Link */}
+            <Link 
+              href="/#pricing" 
+              className="px-3 py-2 rounded-lg hover:text-sage transition-colors text-ink font-medium text-sm"
+            >
+              Pricing
+            </Link>
+
             {/* Work Mega Menu */}
             <div 
               className="relative" 
@@ -396,8 +405,17 @@ export default function Navbar() {
                       <GraduationCap className="w-4 h-4" />
                     </div>
                     <div>
-                      <strong className="block text-sm text-ink group-hover:text-sage">Experience & Education</strong>
-                      <span className="text-xs text-muted">Career timeline & B.Sc. CSE degree</span>
+                      <strong className="block text-sm text-ink group-hover:text-sage">Experience &amp; Education</strong>
+                      <span className="text-xs text-muted">Career timeline &amp; B.Sc. CSE degree</span>
+                    </div>
+                  </Link>
+                  <Link href="/#certifications" className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-cardSubtle transition-colors group">
+                    <div className="p-2 rounded-lg bg-sage/10 text-sage group-hover:bg-sage group-hover:text-white transition-colors">
+                      <Award className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <strong className="block text-sm text-ink group-hover:text-sage">Verified Certifications</strong>
+                      <span className="text-xs text-muted">Google, Semrush, HubSpot &amp; Upwork badges</span>
                     </div>
                   </Link>
                   <Link href="/#contact" className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-cardSubtle transition-colors group">
@@ -572,6 +590,24 @@ export default function Navbar() {
             className="p-3 font-semibold text-ink border-b border-border/40 hover:text-sage transition-colors block"
           >
             Blog
+          </Link>
+
+          {/* Mobile Pricing Link */}
+          <Link 
+            href="/#pricing" 
+            onClick={() => setMobileOpen(false)}
+            className="p-3 font-semibold text-ink border-b border-border/40 hover:text-sage transition-colors block"
+          >
+            Pricing &amp; Packages
+          </Link>
+
+          {/* Mobile Certifications Link */}
+          <Link 
+            href="/#certifications" 
+            onClick={() => setMobileOpen(false)}
+            className="p-3 font-semibold text-ink border-b border-border/40 hover:text-sage transition-colors block"
+          >
+            Verified Certifications
           </Link>
 
           <Link 

@@ -6,6 +6,8 @@ import About from '@/components/About';
 import Services from '@/components/Services';
 import Experience from '@/components/Experience';
 import Projects from '@/components/Projects';
+import Certifications from '@/components/Certifications';
+import Pricing from '@/components/Pricing';
 import ToolsGrid from '@/components/ToolsGrid';
 import Contact from '@/components/Contact';
 import BlogSection from '@/components/BlogSection';
@@ -23,7 +25,9 @@ export default function Home() {
         <Hero />
         <MetricsBar />
         <About />
+        <Certifications />
         <Services />
+        <Pricing />
         <Experience />
         <Projects />
         <ToolsGrid />

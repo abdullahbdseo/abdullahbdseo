@@ -34,7 +34,10 @@ import {
   Clock,
   Globe,
   Mail as MailIcon,
-  MessageSquare
+  MessageSquare,
+  Award,
+  CreditCard,
+  ShieldCheck
 } from 'lucide-react';
 import { 
   loadPortfolioData, 
@@ -45,14 +48,21 @@ import {
   setAdminPasscode,
   PortfolioStoreData 
 } from '@/lib/portfolioStorage';
-import { ServiceItem, ProjectItem, BlogPostItem, adminPasscode as defaultPasscode } from '@/data/portfolioData';
+import { 
+  ServiceItem, 
+  ProjectItem, 
+  BlogPostItem, 
+  CertificationItem, 
+  PricingPackageItem, 
+  adminPasscode as defaultPasscode 
+} from '@/data/portfolioData';
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [passcode, setPasscode] = useState('');
   const [showPasscode, setShowPasscode] = useState(false);
   const [authError, setAuthError] = useState('');
-  const [activeTab, setActiveTab] = useState<'overview' | 'personal' | 'services' | 'projects' | 'blog' | 'bookings' | 'security' | 'export'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'personal' | 'services' | 'projects' | 'blog' | 'bookings' | 'certifications' | 'pricing' | 'security' | 'export'>('overview');
   const [bookings, setBookings] = useState<any[]>([]);
 
   // Portfolio dynamic state
@@ -82,6 +92,27 @@ export default function AdminPage() {
   const [passwordError, setPasswordError] = useState('');
   const [passwordSuccess, setPasswordSuccess] = useState('');
   const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
+
+  // New Certification Form State
+  const [isCreatingCert, setIsCreatingCert] = useState(false);
+  const [newCertTitle, setNewCertTitle] = useState('');
+  const [newCertIssuer, setNewCertIssuer] = useState('');
+  const [newCertDate, setNewCertDate] = useState('Verified');
+  const [newCertCredId, setNewCertCredId] = useState('');
+  const [newCertUrl, setNewCertUrl] = useState('');
+  const [newCertBadgeType, setNewCertBadgeType] = useState<CertificationItem['badgeType']>('google');
+  const [newCertDesc, setNewCertDesc] = useState('');
+
+  // New Pricing Package Form State
+  const [isCreatingPkg, setIsCreatingPkg] = useState(false);
+  const [newPkgName, setNewPkgName] = useState('');
+  const [newPkgTagline, setNewPkgTagline] = useState('');
+  const [newPkgPrice, setNewPkgPrice] = useState('$499');
+  const [newPkgBilling, setNewPkgBilling] = useState('/month');
+  const [newPkgPopular, setNewPkgPopular] = useState(false);
+  const [newPkgFeatures, setNewPkgFeatures] = useState('');
+  const [newPkgCtaText, setNewPkgCtaText] = useState('Get Started');
+  const [newPkgCtaAction, setNewPkgCtaAction] = useState<'book' | 'contact'>('book');
 
   const handleImageFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, callback: (url: string) => void) => {
     const file = e.target.files?.[0];
@@ -330,6 +361,96 @@ export default function AdminPage() {
     showToast('✓ Article published live! It is now visible on your homepage and /blog page.');
   };
 
+  const handleCreateCertification = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!data) return;
+    if (!newCertTitle.trim()) {
+      showToast('Please enter a certification title.');
+      return;
+    }
+
+    const newCert: CertificationItem = {
+      id: 'cert-' + Date.now(),
+      title: newCertTitle.trim(),
+      issuer: newCertIssuer.trim() || 'Verified Issuer',
+      issueDate: newCertDate.trim() || 'Verified',
+      credentialId: newCertCredId.trim() || undefined,
+      credentialUrl: newCertUrl.trim() || undefined,
+      badgeType: newCertBadgeType,
+      description: newCertDesc.trim() || 'Verified technical competency.',
+      featured: true
+    };
+
+    const updatedCerts = [newCert, ...(data.certifications || [])];
+    const updatedData: PortfolioStoreData = { ...data, certifications: updatedCerts };
+    setData(updatedData);
+    savePortfolioData(updatedData);
+
+    setNewCertTitle('');
+    setNewCertIssuer('');
+    setNewCertCredId('');
+    setNewCertUrl('');
+    setNewCertDesc('');
+    setIsCreatingCert(false);
+    showToast('✓ New certification added successfully!');
+  };
+
+  const handleDeleteCertification = (id: string) => {
+    if (!data) return;
+    const updatedCerts = (data.certifications || []).filter(c => c.id !== id);
+    const updatedData: PortfolioStoreData = { ...data, certifications: updatedCerts };
+    setData(updatedData);
+    savePortfolioData(updatedData);
+    showToast('✓ Certification deleted');
+  };
+
+  const handleCreatePricingPackage = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!data) return;
+    if (!newPkgName.trim() || !newPkgPrice.trim()) {
+      showToast('Please enter package name and price.');
+      return;
+    }
+
+    const featureList = newPkgFeatures
+      .split('\n')
+      .map(f => f.trim())
+      .filter(Boolean);
+
+    const newPkg: PricingPackageItem = {
+      id: 'pkg-' + Date.now(),
+      name: newPkgName.trim(),
+      tagline: newPkgTagline.trim() || 'Targeted organic growth plan.',
+      price: newPkgPrice.trim(),
+      billingPeriod: newPkgBilling.trim() || '/month',
+      popular: newPkgPopular,
+      features: featureList.length > 0 ? featureList : ['Dedicated search growth strategy', 'Monthly performance reporting'],
+      ctaText: newPkgCtaText.trim() || 'Get Started',
+      ctaAction: newPkgCtaAction
+    };
+
+    const updatedPkgs = [...(data.pricingPackages || []), newPkg];
+    const updatedData: PortfolioStoreData = { ...data, pricingPackages: updatedPkgs };
+    setData(updatedData);
+    savePortfolioData(updatedData);
+
+    setNewPkgName('');
+    setNewPkgTagline('');
+    setNewPkgPrice('$499');
+    setNewPkgFeatures('');
+    setIsCreatingPkg(false);
+    showToast('✓ New pricing package added successfully!');
+  };
+
+  const handleDeletePricingPackage = (id: string) => {
+    if (!data) return;
+    const updatedPkgs = (data.pricingPackages || []).filter(p => p.id !== id);
+    const updatedData: PortfolioStoreData = { ...data, pricingPackages: updatedPkgs };
+    setData(updatedData);
+    savePortfolioData(updatedData);
+    showToast('✓ Pricing package deleted');
+  };
+
   // ─── LOGIN SCREEN ───
   if (!isAuthenticated) {
     return (
@@ -425,6 +546,8 @@ export default function AdminPage() {
               { id: 'overview', label: 'Dashboard Overview', icon: LayoutDashboard },
               { id: 'personal', label: 'Profile & Contact', icon: User },
               { id: 'services', label: 'Services (What I Do)', icon: Briefcase },
+              { id: 'pricing', label: 'Pricing & Packages', icon: CreditCard },
+              { id: 'certifications', label: 'Certifications', icon: Award },
               { id: 'projects', label: 'Recent Projects', icon: FolderGit2 },
               { id: 'blog', label: 'Blog & Insights', icon: BookOpen },
               { id: 'bookings', label: 'Strategy Bookings', icon: Calendar },
@@ -545,11 +668,23 @@ export default function AdminPage() {
               </div>
 
               {/* Stats Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 <div className="bg-card border border-border p-5 rounded-2xl shadow-xs">
                   <span className="text-xs text-muted font-medium block mb-1">Total Services</span>
                   <div className="text-2xl font-bold font-display text-ink">{data.services.length} Active</div>
                   <button onClick={() => setActiveTab('services')} className="text-xs text-sage font-semibold mt-3 hover:underline">Manage Services →</button>
+                </div>
+
+                <div className="bg-card border border-border p-5 rounded-2xl shadow-xs">
+                  <span className="text-xs text-muted font-medium block mb-1">Pricing Packages</span>
+                  <div className="text-2xl font-bold font-display text-ink">{(data.pricingPackages || []).length} Tiers</div>
+                  <button onClick={() => setActiveTab('pricing')} className="text-xs text-sage font-semibold mt-3 hover:underline">Manage Pricing →</button>
+                </div>
+
+                <div className="bg-card border border-border p-5 rounded-2xl shadow-xs">
+                  <span className="text-xs text-muted font-medium block mb-1">Verified Certifications</span>
+                  <div className="text-2xl font-bold font-display text-ink">{(data.certifications || []).length} Badges</div>
+                  <button onClick={() => setActiveTab('certifications')} className="text-xs text-sage font-semibold mt-3 hover:underline">Manage Certs →</button>
                 </div>
 
                 <div className="bg-card border border-border p-5 rounded-2xl shadow-xs">
@@ -1435,6 +1570,536 @@ export default function AdminPage() {
                           setData({ ...data, blogPosts: updated });
                         }}
                         className="w-full px-3 py-2 rounded-xl bg-cardSubtle border border-border text-xs sm:text-sm text-ink outline-none focus:border-sage resize-none"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ──────────────────────────────────
+               TAB: PRICING & PACKAGES
+          ────────────────────────────────── */}
+          {activeTab === 'pricing' && (
+            <div className="space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-xl font-bold font-display text-ink mb-1">Service Packages &amp; Pricing Plans</h2>
+                  <p className="text-xs text-muted">
+                    Create, edit, and organize pricing tiers showcased on your website. Changes apply instantly and push to GitHub.
+                  </p>
+                </div>
+
+                <button
+                  onClick={() => setIsCreatingPkg(!isCreatingPkg)}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-sage text-white text-xs font-bold hover:opacity-90 transition-all shadow-xs cursor-pointer"
+                >
+                  <Plus className="w-4 h-4" /> {isCreatingPkg ? 'Cancel' : 'Add New Package'}
+                </button>
+              </div>
+
+              {/* Add New Package Form */}
+              {isCreatingPkg && (
+                <form onSubmit={handleCreatePricingPackage} className="bg-card border-2 border-sage/40 rounded-3xl p-6 sm:p-7 shadow-lg space-y-5 animate-in zoom-in-95 duration-150">
+                  <h3 className="font-bold text-sm text-ink uppercase tracking-wider border-b border-border pb-2 flex items-center gap-2">
+                    <Plus className="w-4 h-4 text-sage" /> Create New Pricing Tier
+                  </h3>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div className="sm:col-span-2">
+                      <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">Package Name *</label>
+                      <input
+                        type="text"
+                        required
+                        value={newPkgName}
+                        onChange={(e) => setNewPkgName(e.target.value)}
+                        placeholder="e.g. Technical SEO Sprint"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-sm text-ink outline-none focus:border-sage"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">Price (Display) *</label>
+                      <input
+                        type="text"
+                        required
+                        value={newPkgPrice}
+                        onChange={(e) => setNewPkgPrice(e.target.value)}
+                        placeholder="e.g. $499 or Custom"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-sm text-ink outline-none focus:border-sage"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">Billing Period</label>
+                      <select
+                        value={newPkgBilling}
+                        onChange={(e) => setNewPkgBilling(e.target.value)}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-xs sm:text-sm text-ink outline-none focus:border-sage"
+                      >
+                        <option value="/month">/month (Recurring)</option>
+                        <option value="one-time">one-time (Fixed project)</option>
+                        <option value="/quarter">/quarter</option>
+                        <option value="starting at">starting at</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">CTA Button Text</label>
+                      <input
+                        type="text"
+                        value={newPkgCtaText}
+                        onChange={(e) => setNewPkgCtaText(e.target.value)}
+                        placeholder="e.g. Book Strategy Call"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-xs sm:text-sm text-ink outline-none focus:border-sage"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">CTA Action</label>
+                      <select
+                        value={newPkgCtaAction}
+                        onChange={(e) => setNewPkgCtaAction(e.target.value as any)}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-xs sm:text-sm text-ink outline-none focus:border-sage"
+                      >
+                        <option value="book">Open Booking Modal (Recommended)</option>
+                        <option value="contact">Scroll to Contact Form</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">Tagline / Summary</label>
+                    <input
+                      type="text"
+                      value={newPkgTagline}
+                      onChange={(e) => setNewPkgTagline(e.target.value)}
+                      placeholder="e.g. Best for high-growth e-commerce brands needing Page 1 organic revenue."
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-sm text-ink outline-none focus:border-sage"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">
+                      Deliverables / Features (One feature per line) *
+                    </label>
+                    <textarea
+                      rows={4}
+                      required
+                      value={newPkgFeatures}
+                      onChange={(e) => setNewPkgFeatures(e.target.value)}
+                      placeholder="Core Web Vitals diagnostic&#10;Google AI Overviews (AEO) readiness&#10;Semantic Schema validation&#10;Bi-weekly 1-on-1 strategy call"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-xs sm:text-sm text-ink outline-none focus:border-sage resize-none"
+                    />
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      id="popularCheck"
+                      checked={newPkgPopular}
+                      onChange={(e) => setNewPkgPopular(e.target.checked)}
+                      className="w-4 h-4 rounded text-sage border-border cursor-pointer"
+                    />
+                    <label htmlFor="popularCheck" className="text-xs font-semibold text-ink cursor-pointer">
+                      Highlight as &quot;Most Popular / Recommended&quot; badge
+                    </label>
+                  </div>
+
+                  <div className="flex justify-end gap-3 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => setIsCreatingPkg(false)}
+                      className="px-4 py-2 rounded-xl border border-border text-xs font-semibold text-muted hover:text-ink cursor-pointer"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-5 py-2 rounded-xl bg-sage text-white text-xs font-bold hover:opacity-90 transition-opacity cursor-pointer shadow-xs"
+                    >
+                      Save &amp; Publish Package
+                    </button>
+                  </div>
+                </form>
+              )}
+
+              {/* Package List */}
+              <div className="space-y-4">
+                {(data.pricingPackages || []).map((pkg, index) => (
+                  <div key={pkg.id} className="bg-card border border-border rounded-2xl p-5 sm:p-6 shadow-xs space-y-4">
+                    <div className="flex items-start justify-between gap-4 border-b border-border pb-3">
+                      <div className="flex items-center gap-3">
+                        <span className="w-8 h-8 rounded-xl bg-sage-pal border border-sage/30 text-sage font-bold text-xs flex items-center justify-center">
+                          #{index + 1}
+                        </span>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <strong className="text-base text-ink font-bold">{pkg.name}</strong>
+                            {pkg.popular && (
+                              <span className="px-2 py-0.5 rounded-md bg-sage text-white text-[10px] font-bold">
+                                Most Popular
+                              </span>
+                            )}
+                          </div>
+                          <span className="text-xs text-muted font-mono">{pkg.price} {pkg.billingPeriod}</span>
+                        </div>
+                      </div>
+
+                      <button
+                        onClick={() => handleDeletePricingPackage(pkg.id)}
+                        className="p-2 rounded-lg text-muted hover:text-rose-500 hover:bg-rose-500/10 transition-colors cursor-pointer"
+                        title="Delete package"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <div>
+                        <label className="block text-[10px] font-bold uppercase text-muted mb-1">Package Name</label>
+                        <input
+                          type="text"
+                          value={pkg.name}
+                          onChange={(e) => {
+                            const updated = [...(data.pricingPackages || [])];
+                            updated[index].name = e.target.value;
+                            setData({ ...data, pricingPackages: updated });
+                          }}
+                          className="w-full px-3 py-1.5 rounded-xl bg-cardSubtle border border-border text-xs text-ink outline-none focus:border-sage"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[10px] font-bold uppercase text-muted mb-1">Price</label>
+                        <input
+                          type="text"
+                          value={pkg.price}
+                          onChange={(e) => {
+                            const updated = [...(data.pricingPackages || [])];
+                            updated[index].price = e.target.value;
+                            setData({ ...data, pricingPackages: updated });
+                          }}
+                          className="w-full px-3 py-1.5 rounded-xl bg-cardSubtle border border-border text-xs text-ink outline-none focus:border-sage"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[10px] font-bold uppercase text-muted mb-1">Billing Period</label>
+                        <input
+                          type="text"
+                          value={pkg.billingPeriod}
+                          onChange={(e) => {
+                            const updated = [...(data.pricingPackages || [])];
+                            updated[index].billingPeriod = e.target.value;
+                            setData({ ...data, pricingPackages: updated });
+                          }}
+                          className="w-full px-3 py-1.5 rounded-xl bg-cardSubtle border border-border text-xs text-ink outline-none focus:border-sage"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase text-muted mb-1">Tagline</label>
+                      <input
+                        type="text"
+                        value={pkg.tagline}
+                        onChange={(e) => {
+                          const updated = [...(data.pricingPackages || [])];
+                          updated[index].tagline = e.target.value;
+                          setData({ ...data, pricingPackages: updated });
+                        }}
+                        className="w-full px-3 py-1.5 rounded-xl bg-cardSubtle border border-border text-xs text-ink outline-none focus:border-sage"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase text-muted mb-1">
+                        Features (One per line)
+                      </label>
+                      <textarea
+                        rows={3}
+                        value={(pkg.features || []).join('\n')}
+                        onChange={(e) => {
+                          const updated = [...(data.pricingPackages || [])];
+                          updated[index].features = e.target.value.split('\n').filter(Boolean);
+                          setData({ ...data, pricingPackages: updated });
+                        }}
+                        className="w-full px-3 py-2 rounded-xl bg-cardSubtle border border-border text-xs text-ink outline-none focus:border-sage resize-none"
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between pt-1 text-xs">
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={pkg.popular}
+                          onChange={(e) => {
+                            const updated = [...(data.pricingPackages || [])];
+                            updated[index].popular = e.target.checked;
+                            setData({ ...data, pricingPackages: updated });
+                          }}
+                          className="w-3.5 h-3.5 rounded text-sage cursor-pointer"
+                        />
+                        <span className="font-semibold text-ink">Most Popular Badge</span>
+                      </label>
+
+                      <div className="flex items-center gap-2">
+                        <span className="text-muted text-[11px]">CTA:</span>
+                        <input
+                          type="text"
+                          value={pkg.ctaText}
+                          onChange={(e) => {
+                            const updated = [...(data.pricingPackages || [])];
+                            updated[index].ctaText = e.target.value;
+                            setData({ ...data, pricingPackages: updated });
+                          }}
+                          className="px-2 py-1 rounded-lg bg-cardSubtle border border-border text-xs text-ink outline-none w-36"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ──────────────────────────────────
+               TAB: CERTIFICATIONS
+          ────────────────────────────────── */}
+          {activeTab === 'certifications' && (
+            <div className="space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-xl font-bold font-display text-ink mb-1">Industry Accreditations &amp; Certifications</h2>
+                  <p className="text-xs text-muted">
+                    Showcase official credentials from Google, Semrush, HubSpot, Upwork, and Meta.
+                  </p>
+                </div>
+
+                <button
+                  onClick={() => setIsCreatingCert(!isCreatingCert)}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-sage text-white text-xs font-bold hover:opacity-90 transition-all shadow-xs cursor-pointer"
+                >
+                  <Plus className="w-4 h-4" /> {isCreatingCert ? 'Cancel' : 'Add Certification'}
+                </button>
+              </div>
+
+              {/* Add New Certification Form */}
+              {isCreatingCert && (
+                <form onSubmit={handleCreateCertification} className="bg-card border-2 border-sage/40 rounded-3xl p-6 sm:p-7 shadow-lg space-y-5 animate-in zoom-in-95 duration-150">
+                  <h3 className="font-bold text-sm text-ink uppercase tracking-wider border-b border-border pb-2 flex items-center gap-2">
+                    <Plus className="w-4 h-4 text-sage" /> Add New Industry Accreditation
+                  </h3>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">Certificate Title *</label>
+                      <input
+                        type="text"
+                        required
+                        value={newCertTitle}
+                        onChange={(e) => setNewCertTitle(e.target.value)}
+                        placeholder="e.g. Google Analytics 4 Certification"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-sm text-ink outline-none focus:border-sage"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">Issuing Organization *</label>
+                      <input
+                        type="text"
+                        required
+                        value={newCertIssuer}
+                        onChange={(e) => setNewCertIssuer(e.target.value)}
+                        placeholder="e.g. Google Skillshop, Semrush, HubSpot"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-sm text-ink outline-none focus:border-sage"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">Badge Brand / Category</label>
+                      <select
+                        value={newCertBadgeType}
+                        onChange={(e) => setNewCertBadgeType(e.target.value as any)}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-xs sm:text-sm text-ink outline-none focus:border-sage"
+                      >
+                        <option value="google">Google</option>
+                        <option value="semrush">Semrush</option>
+                        <option value="hubspot">HubSpot</option>
+                        <option value="upwork">Upwork</option>
+                        <option value="meta">Meta</option>
+                        <option value="general">General / Accredited</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">Issue Date / Status</label>
+                      <input
+                        type="text"
+                        value={newCertDate}
+                        onChange={(e) => setNewCertDate(e.target.value)}
+                        placeholder="e.g. Verified or 2024"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-xs sm:text-sm text-ink outline-none focus:border-sage"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">Credential ID (Optional)</label>
+                      <input
+                        type="text"
+                        value={newCertCredId}
+                        onChange={(e) => setNewCertCredId(e.target.value)}
+                        placeholder="e.g. GA4-9921"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-xs sm:text-sm text-ink outline-none focus:border-sage font-mono"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">Verification URL (Optional)</label>
+                    <input
+                      type="url"
+                      value={newCertUrl}
+                      onChange={(e) => setNewCertUrl(e.target.value)}
+                      placeholder="https://skillshop.credential.net/..."
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-sm text-ink outline-none focus:border-sage font-mono"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">Description / Skills Mastered *</label>
+                    <textarea
+                      rows={2}
+                      required
+                      value={newCertDesc}
+                      onChange={(e) => setNewCertDesc(e.target.value)}
+                      placeholder="Summary of skills, e.g. Crawl budget analysis, JavaScript SEO, and GA4 event modeling..."
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-xs sm:text-sm text-ink outline-none focus:border-sage resize-none"
+                    />
+                  </div>
+
+                  <div className="flex justify-end gap-3 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => setIsCreatingCert(false)}
+                      className="px-4 py-2 rounded-xl border border-border text-xs font-semibold text-muted hover:text-ink cursor-pointer"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-5 py-2 rounded-xl bg-sage text-white text-xs font-bold hover:opacity-90 transition-opacity cursor-pointer shadow-xs"
+                    >
+                      Save &amp; Publish Certification
+                    </button>
+                  </div>
+                </form>
+              )}
+
+              {/* Certifications List */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {(data.certifications || []).map((cert, index) => (
+                  <div key={cert.id} className="bg-card border border-border rounded-2xl p-5 shadow-xs space-y-3">
+                    <div className="flex items-start justify-between gap-3 border-b border-border pb-2.5">
+                      <div>
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-sage block mb-0.5">
+                          {cert.issuer}
+                        </span>
+                        <strong className="text-sm font-bold text-ink block leading-snug">{cert.title}</strong>
+                      </div>
+
+                      <button
+                        onClick={() => handleDeleteCertification(cert.id)}
+                        className="p-2 rounded-lg text-muted hover:text-rose-500 hover:bg-rose-500/10 transition-colors cursor-pointer shrink-0"
+                        title="Delete certification"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <label className="block text-[10px] font-bold uppercase text-muted mb-0.5">Title</label>
+                        <input
+                          type="text"
+                          value={cert.title}
+                          onChange={(e) => {
+                            const updated = [...(data.certifications || [])];
+                            updated[index].title = e.target.value;
+                            setData({ ...data, certifications: updated });
+                          }}
+                          className="w-full px-2.5 py-1.5 rounded-lg bg-cardSubtle border border-border text-xs text-ink outline-none"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[10px] font-bold uppercase text-muted mb-0.5">Issuer</label>
+                        <input
+                          type="text"
+                          value={cert.issuer}
+                          onChange={(e) => {
+                            const updated = [...(data.certifications || [])];
+                            updated[index].issuer = e.target.value;
+                            setData({ ...data, certifications: updated });
+                          }}
+                          className="w-full px-2.5 py-1.5 rounded-lg bg-cardSubtle border border-border text-xs text-ink outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <label className="block text-[10px] font-bold uppercase text-muted mb-0.5">Badge Type</label>
+                        <select
+                          value={cert.badgeType}
+                          onChange={(e) => {
+                            const updated = [...(data.certifications || [])];
+                            updated[index].badgeType = e.target.value as any;
+                            setData({ ...data, certifications: updated });
+                          }}
+                          className="w-full px-2.5 py-1.5 rounded-lg bg-cardSubtle border border-border text-xs text-ink outline-none"
+                        >
+                          <option value="google">Google</option>
+                          <option value="semrush">Semrush</option>
+                          <option value="hubspot">HubSpot</option>
+                          <option value="upwork">Upwork</option>
+                          <option value="meta">Meta</option>
+                          <option value="general">General</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-[10px] font-bold uppercase text-muted mb-0.5">Credential ID</label>
+                        <input
+                          type="text"
+                          value={cert.credentialId || ''}
+                          onChange={(e) => {
+                            const updated = [...(data.certifications || [])];
+                            updated[index].credentialId = e.target.value;
+                            setData({ ...data, certifications: updated });
+                          }}
+                          className="w-full px-2.5 py-1.5 rounded-lg bg-cardSubtle border border-border text-xs text-ink outline-none font-mono"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase text-muted mb-0.5">Description</label>
+                      <textarea
+                        rows={2}
+                        value={cert.description}
+                        onChange={(e) => {
+                          const updated = [...(data.certifications || [])];
+                          updated[index].description = e.target.value;
+                          setData({ ...data, certifications: updated });
+                        }}
+                        className="w-full px-2.5 py-1.5 rounded-lg bg-cardSubtle border border-border text-xs text-ink outline-none resize-none"
                       />
                     </div>
                   </div>

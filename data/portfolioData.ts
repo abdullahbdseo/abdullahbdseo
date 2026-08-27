@@ -344,3 +344,155 @@ export const blogTopics = [
 ];
 
 export const blogPosts: BlogPostItem[] = [];
+
+export interface CertificationItem {
+  id: string;
+  title: string;
+  issuer: string;
+  issueDate: string;
+  credentialId?: string;
+  credentialUrl?: string;
+  badgeType: 'google' | 'semrush' | 'hubspot' | 'upwork' | 'meta' | 'general';
+  description: string;
+  featured: boolean;
+}
+
+export const certifications: CertificationItem[] = [
+  {
+    id: "cert-1",
+    title: "Google Analytics 4 & Search Console Certification",
+    issuer: "Google Skillshop",
+    issueDate: "Verified",
+    credentialId: "GA4-MEASURE-9921",
+    credentialUrl: "https://skillshop.credential.net/",
+    badgeType: "google",
+    description: "Advanced conversion modeling, GA4 event tracking, Search Console indexing diagnosis, and organic query performance analytics.",
+    featured: true
+  },
+  {
+    id: "cert-2",
+    title: "Technical SEO & Site Audit Masterclass",
+    issuer: "Semrush Academy",
+    issueDate: "Verified",
+    credentialId: "SMR-AUDIT-4482",
+    credentialUrl: "https://www.semrush.com/academy/",
+    badgeType: "semrush",
+    description: "In-depth crawl budget optimization, JavaScript rendering pipelines, log file analysis, and international SEO architecture.",
+    featured: true
+  },
+  {
+    id: "cert-3",
+    title: "Inbound & Advanced Content SEO Specialist",
+    issuer: "HubSpot Academy",
+    issueDate: "Verified",
+    credentialId: "HBS-INB-7719",
+    credentialUrl: "https://academy.hubspot.com/",
+    badgeType: "hubspot",
+    description: "Topical authority clustering, user search intent matching, and semantic entity building for compounding organic rankings.",
+    featured: true
+  },
+  {
+    id: "cert-4",
+    title: "Generative Engine (GEO) & AEO Search Strategist",
+    issuer: "AI Search Institute",
+    issueDate: "2024 - Active",
+    credentialId: "GEO-AI-2024X",
+    credentialUrl: "https://schema.org/",
+    badgeType: "general",
+    description: "Securing citations inside Google AI Overviews, ChatGPT Search, Perplexity, and structuring rich Schema markup.",
+    featured: true
+  },
+  {
+    id: "cert-5",
+    title: "Top Rated SEO & Growth Specialist",
+    issuer: "Upwork Verified",
+    issueDate: "100% Job Success",
+    credentialId: "UPW-TOP-RATED",
+    credentialUrl: "https://www.upwork.com/",
+    badgeType: "upwork",
+    description: "Consistently delivering measurable organic revenue growth, high-ticket rankings, and 5.0-star client satisfaction.",
+    featured: true
+  },
+  {
+    id: "cert-6",
+    title: "Meta Certified Digital Marketing Associate",
+    issuer: "Meta Blueprint",
+    issueDate: "Verified",
+    credentialId: "META-ADV-3108",
+    credentialUrl: "https://www.facebook.com/business/learn",
+    badgeType: "meta",
+    description: "Hyper-targeted audience curation, Meta Ads Manager scaling, and full-funnel paid social conversion campaigns.",
+    featured: false
+  }
+];
+
+export interface PricingPackageItem {
+  id: string;
+  name: string;
+  tagline: string;
+  price: string;
+  billingPeriod: string;
+  popular: boolean;
+  features: string[];
+  ctaText: string;
+  ctaAction: 'book' | 'contact';
+}
+
+export const pricingPackages: PricingPackageItem[] = [
+  {
+    id: "pkg-1",
+    name: "Technical & AI Audit",
+    tagline: "Comprehensive diagnostic report & actionable 90-day blueprint to remove organic bottlenecks.",
+    price: "$299",
+    billingPeriod: "one-time",
+    popular: false,
+    features: [
+      "Complete Core Web Vitals & PageSpeed audit",
+      "Google Indexation & crawl budget efficiency fix",
+      "AI Overviews (AEO) & ChatGPT readiness review",
+      "Semantic Schema JSON-LD validation",
+      "Top 3 competitors keyword gap analysis",
+      "1-on-1 strategy call to review action items"
+    ],
+    ctaText: "Book Audit Call",
+    ctaAction: "book"
+  },
+  {
+    id: "pkg-2",
+    name: "Monthly Organic Growth",
+    tagline: "Full-stack SEO & Answer Engine Optimization designed for continuous Page 1 domination.",
+    price: "$799",
+    billingPeriod: "/month",
+    popular: true,
+    features: [
+      "Continuous Technical & On-Page SEO execution",
+      "High-intent keyword clustering & topical silos",
+      "Google AI Overviews & Featured Snippets capture",
+      "High-authority editorial backlink acquisition",
+      "Content optimization for user intent & conversions",
+      "Monthly GSC/GA4 pipeline & ROI video reports",
+      "Bi-weekly 1-on-1 strategy consultations"
+    ],
+    ctaText: "Start Monthly Growth",
+    ctaAction: "book"
+  },
+  {
+    id: "pkg-3",
+    name: "Enterprise GEO + Meta Ads",
+    tagline: "Omnichannel market domination across Search engines, Generative AI models, and paid social.",
+    price: "$1,499",
+    billingPeriod: "/month",
+    popular: false,
+    features: [
+      "Everything included in Monthly Organic Growth",
+      "Generative Engine Optimization (ChatGPT & Perplexity)",
+      "Meta Ads (FB & IG) hyper-targeted paid campaigns",
+      "Conversion Rate Optimization (CRO) landing pages",
+      "Automated real-time client analytics dashboard",
+      "Dedicated Slack / Priority WhatsApp direct channel",
+      "Weekly growth sprint calls & immediate dev support"
+    ],
+    ctaText: "Get Enterprise Plan",
+    ctaAction: "contact"
+  }
+];
