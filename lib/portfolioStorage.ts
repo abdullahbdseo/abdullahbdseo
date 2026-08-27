@@ -11,8 +11,10 @@ import {
   adminPasscode as defaultPasscode,
   certifications as defaultCertifications,
   pricingPackages as defaultPricingPackages,
+  clientGuarantees as defaultClientGuarantees,
   CertificationItem,
-  PricingPackageItem
+  PricingPackageItem,
+  ClientGuaranteeItem
 } from '@/data/portfolioData';
 
 const STORAGE_KEY = 'portfolio_admin_data_v1';
@@ -29,6 +31,7 @@ export interface PortfolioStoreData {
   blogPosts: typeof defaultBlogPosts;
   certifications: CertificationItem[];
   pricingPackages: PricingPackageItem[];
+  clientGuarantees: ClientGuaranteeItem[];
 }
 
 export function getAdminPasscode(): string {
@@ -54,6 +57,7 @@ export function getDefaultPortfolioData(): PortfolioStoreData {
     blogPosts: [...defaultBlogPosts],
     certifications: [...defaultCertifications],
     pricingPackages: [...defaultPricingPackages],
+    clientGuarantees: [...defaultClientGuarantees],
   };
 }
 
@@ -84,6 +88,7 @@ export function loadPortfolioData(): PortfolioStoreData {
       blogPosts: parsed.blogPosts || defaultBlogPosts,
       certifications: parsed.certifications || defaultCertifications,
       pricingPackages: parsed.pricingPackages || defaultPricingPackages,
+      clientGuarantees: parsed.clientGuarantees || defaultClientGuarantees,
     };
   } catch (err) {
     console.error('Failed to load portfolio admin data:', err);
@@ -154,5 +159,7 @@ export const blogPosts = ${JSON.stringify(data.blogPosts, null, 2)};
 export const certifications = ${JSON.stringify(data.certifications || defaultCertifications, null, 2)};
 
 export const pricingPackages = ${JSON.stringify(data.pricingPackages || defaultPricingPackages, null, 2)};
+
+export const clientGuarantees = ${JSON.stringify(data.clientGuarantees || defaultClientGuarantees, null, 2)};
 `;
 }

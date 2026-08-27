@@ -8,6 +8,8 @@ import Experience from '@/components/Experience';
 import Projects from '@/components/Projects';
 import Certifications from '@/components/Certifications';
 import Pricing from '@/components/Pricing';
+import ClientGuarantees from '@/components/ClientGuarantees';
+import TrustedMarquee from '@/components/TrustedMarquee';
 import ToolsGrid from '@/components/ToolsGrid';
 import Contact from '@/components/Contact';
 import BlogSection from '@/components/BlogSection';
@@ -24,10 +26,12 @@ export default function Home() {
       <main>
         <Hero />
         <MetricsBar />
+        <TrustedMarquee />
         <About />
         <Certifications />
         <Services />
         <Pricing />
+        <ClientGuarantees />
         <Experience />
         <Projects />
         <ToolsGrid />

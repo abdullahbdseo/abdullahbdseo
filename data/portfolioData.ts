@@ -496,3 +496,63 @@ export const pricingPackages: PricingPackageItem[] = [
     ctaAction: "contact"
   }
 ];
+
+export interface ClientGuaranteeItem {
+  id: string;
+  title: string;
+  tag: string;
+  iconName: 'shield' | 'lock' | 'trending' | 'zap' | 'message' | 'cpu';
+  desc: string;
+  badgeColor: string;
+}
+
+export const clientGuarantees: ClientGuaranteeItem[] = [
+  {
+    id: "g-1",
+    title: "100% White-Hat & Penalty Free",
+    tag: "Algorithmic Safety",
+    iconName: "shield",
+    desc: "Strictly compliant with Google Search Essentials & Spam Policies. No risky PBNs, automated spam, or artificial shortcuts that jeopardize your domain.",
+    badgeColor: "emerald"
+  },
+  {
+    id: "g-2",
+    title: "Strict Mutual NDA & Data Privacy",
+    tag: "Confidentiality",
+    iconName: "lock",
+    desc: "Your proprietary traffic data, keywords, conversion rates, and client lists remain 100% secure and confidential under a legally enforceable agreement.",
+    badgeColor: "blue"
+  },
+  {
+    id: "g-3",
+    title: "Transparent Live ROI Dashboards",
+    tag: "Zero Guesswork",
+    iconName: "trending",
+    desc: "24/7 access to Looker Studio dashboards directly synced with Google Search Console & GA4. Monitor impressions, rankings, and lead velocity in real time.",
+    badgeColor: "sage"
+  },
+  {
+    id: "g-4",
+    title: "Zero Long-Term Lock-in Contracts",
+    tag: "Flexible Terms",
+    iconName: "zap",
+    desc: "Month-to-month partnership with clear milestones. We earn your business every 30 days through tangible search wins and measurable revenue growth.",
+    badgeColor: "amber"
+  },
+  {
+    id: "g-5",
+    title: "Direct Slack & WhatsApp Access",
+    tag: "Direct Support",
+    iconName: "message",
+    desc: "No bureaucratic middleman account managers. Direct 1-on-1 access to Abdullah for sprint check-ins, rapid consultations, and developer alignment.",
+    badgeColor: "indigo"
+  },
+  {
+    id: "g-6",
+    title: "B.Sc. in CSE Engineering Rigor",
+    tag: "Technical Standard",
+    iconName: "cpu",
+    desc: "Combining computer science expertise with SEO to diagnose JavaScript hydration snags, build nested JSON-LD schema entity graphs, and pass Core Web Vitals.",
+    badgeColor: "purple"
+  }
+];
