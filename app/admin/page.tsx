@@ -50,6 +50,7 @@ export default function AdminPage() {
   const [data, setData] = useState<PortfolioStoreData | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [copiedCode, setCopiedCode] = useState(false);
+  const [isPushingGit, setIsPushingGit] = useState(false);
 
   // New Blog Post Form State
   const [isCreatingPost, setIsCreatingPost] = useState(false);
@@ -127,11 +128,33 @@ export default function AdminPage() {
     sessionStorage.removeItem('portfolio_admin_auth');
   };
 
+  const handleManualGitPush = async () => {
+    setIsPushingGit(true);
+    showToast('🚀 Pushing all updates to GitHub repository...');
+    try {
+      const res = await fetch('/api/git-push', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: `Manual push from Admin Console - ${new Date().toLocaleTimeString()}` })
+      });
+      const result = await res.json();
+      if (result.success) {
+        showToast('✓ Successfully pushed to GitHub! Vercel is now deploying your live site.');
+      } else {
+        showToast(`Push status: ${result.message || result.error || 'Done'}`);
+      }
+    } catch {
+      showToast('Error communicating with server for Git push.');
+    } finally {
+      setIsPushingGit(false);
+    }
+  };
+
   const handleSave = () => {
     if (!data) return;
     const success = savePortfolioData(data);
     if (success) {
-      showToast('All changes saved successfully to your live website!');
+      showToast('✓ Changes saved! Pushing automatically to GitHub (abdullahbdseo)...');
     } else {
       showToast('Error saving changes.');
     }
@@ -361,12 +384,28 @@ export default function AdminPage() {
             </span>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* GitHub Auto-Sync Indicator */}
+            <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 text-xs font-semibold">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              GitHub Auto-Sync Active
+            </div>
+
+            <button
+              onClick={handleManualGitPush}
+              disabled={isPushingGit}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-border bg-card text-ink text-xs font-semibold hover:border-emerald-500/40 hover:text-emerald-600 transition-all shadow-xs cursor-pointer active:scale-95 disabled:opacity-50"
+              title="Push all files and changes directly to GitHub"
+            >
+              <Upload className={`w-3.5 h-3.5 ${isPushingGit ? 'animate-bounce' : ''}`} />
+              <span className="hidden sm:inline">{isPushingGit ? 'Pushing...' : 'Push to GitHub'}</span>
+            </button>
+
             <button
               onClick={handleSave}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-sage text-white text-xs font-semibold hover:opacity-90 transition-all shadow-xs cursor-pointer active:scale-95"
+              className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-sage text-white text-xs font-semibold hover:opacity-90 transition-all shadow-xs cursor-pointer active:scale-95"
             >
-              <Save className="w-4 h-4" /> Save Live Changes
+              <Save className="w-4 h-4" /> Save & Push Live
             </button>
           </div>
         </header>
@@ -1254,10 +1293,45 @@ export default function AdminPage() {
           {activeTab === 'export' && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-xl font-bold font-display text-ink mb-1">Export & Code Synchronization</h2>
+                <h2 className="text-xl font-bold font-display text-ink mb-1">Export & GitHub Synchronization</h2>
                 <p className="text-xs text-muted">
-                  Keep your git repository and hosting server updated permanently with one click.
+                  Keep your GitHub repository and live website updated permanently with automatic git sync.
                 </p>
+              </div>
+
+              {/* GitHub Auto-Sync Status Card */}
+              <div className="p-6 rounded-2xl bg-card border border-emerald-500/30 shadow-xs space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="flex items-start sm:items-center gap-3.5">
+                    <div className="w-11 h-11 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center shrink-0">
+                      <Upload className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <strong className="text-base text-ink font-display">GitHub Auto-Sync & Vercel Live</strong>
+                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-emerald-500/15 text-emerald-600 border border-emerald-500/25">
+                          Active & Connected
+                        </span>
+                      </div>
+                      <p className="text-xs text-muted mt-1">
+                        Repository: <a href="https://github.com/abdullahbdseo/abdullahbdseo" target="_blank" rel="noreferrer" className="text-sage font-medium hover:underline font-mono">abdullahbdseo/abdullahbdseo</a> · Branch: <span className="font-mono text-ink font-semibold">main</span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={handleManualGitPush}
+                    disabled={isPushingGit}
+                    className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 active:scale-95 shrink-0"
+                  >
+                    <Upload className={`w-4 h-4 ${isPushingGit ? 'animate-bounce' : ''}`} />
+                    {isPushingGit ? 'Pushing to GitHub...' : '🚀 Push to GitHub Now'}
+                  </button>
+                </div>
+
+                <div className="pt-3 border-t border-border text-xs text-muted leading-relaxed">
+                  💡 <strong className="text-ink">অটোমেটিক গিটহাব পুশ চালু আছে:</strong> আপনি এই এডমিন প্যানেল থেকে যেকোনো তথ্য পরিবর্তন করে <strong>&ldquo;Save &amp; Push Live&rdquo;</strong> বাটন চাপলে বা নতুন কোনো ব্লগ আর্টিকেল পাবলিশ করলে, তা স্বয়ংক্রিয়ভাবে গিটহাবে পুশ হয়ে যাবে এবং Vercel আপনার লাইভ ওয়েবসাইটটি সাথে সাথে আপডেট করে ফেলবে!
+                </div>
               </div>
 
               {/* Action Buttons */}

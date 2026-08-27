@@ -1,6 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const { exec } = require('child_process');
 
 const PORT = 3000;
 const OUT_DIR = path.join(__dirname, '..', 'out');
@@ -22,6 +23,32 @@ const MIME_TYPES = {
   '.woff': 'font/woff',
   '.ttf': 'font/ttf',
 };
+
+// Automatic Git Commit & Push helper
+function runGitAutoPush(customMessage) {
+  const commitMsg = customMessage || `Content update via Admin Console - ${new Date().toISOString()}`;
+  const gitPath = 'C:\\Users\\infob\\MinGit\\cmd';
+  const env = { ...process.env, Path: `${gitPath};${process.env.Path}` };
+  const projectDir = path.join(__dirname, '..');
+
+  const cmd = `git add . && git commit -m "${commitMsg.replace(/"/g, '\\"')}" && git push origin main`;
+  console.log('[Auto-Git] Triggering automatic Git push to GitHub...');
+
+  return new Promise((resolve) => {
+    exec(cmd, { cwd: projectDir, env }, (err, stdout, stderr) => {
+      if (err) {
+        if ((stdout && stdout.includes('nothing to commit')) || (stderr && stderr.includes('nothing to commit'))) {
+          console.log('[Auto-Git] Repository already up to date.');
+          return resolve({ success: true, message: 'Already up to date (nothing new to commit)' });
+        }
+        console.error('[Auto-Git Error]:', err.message, stderr);
+        return resolve({ success: false, error: stderr || err.message });
+      }
+      console.log('[Auto-Git Success]:', stdout.trim());
+      resolve({ success: true, message: 'Successfully pushed to GitHub!', stdout: stdout.trim() });
+    });
+  });
+}
 
 const server = http.createServer((req, res) => {
   let reqPath = decodeURIComponent(req.url.split('?')[0]);
@@ -103,8 +130,18 @@ export const blogPosts: BlogPostItem[] = ${JSON.stringify(payload.blogPosts, nul
 `;
 
         fs.writeFileSync(dataFilePath, tsContent, 'utf-8');
+
+        // Automatically trigger Git commit & push to GitHub
+        runGitAutoPush(`Update portfolio content via Admin Console - ${new Date().toLocaleDateString()}`)
+          .then((gitResult) => {
+            console.log('[Auto-Git Result]:', gitResult.message || gitResult.error);
+          });
+
         res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ success: true, message: 'Saved to data/portfolioData.ts' }));
+        res.end(JSON.stringify({ 
+          success: true, 
+          message: 'Saved locally and pushing automatically to GitHub!' 
+        }));
       } catch (err) {
         res.writeHead(500, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ success: false, error: err.message }));
@@ -147,9 +184,38 @@ export const blogPosts: BlogPostItem[] = ${JSON.stringify(payload.blogPosts, nul
         fs.writeFileSync(path.join(publicDir, finalFileName), buffer);
         fs.writeFileSync(path.join(outDir, finalFileName), buffer);
 
+        // Auto push uploaded image to GitHub
+        runGitAutoPush(`Add uploaded image ${finalFileName}`)
+          .then((gitResult) => {
+            console.log('[Auto-Git Image Push]:', gitResult.message || gitResult.error);
+          });
+
         const relativeUrl = `/blog/images/${finalFileName}`;
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ success: true, url: relativeUrl }));
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: false, error: err.message }));
+      }
+    });
+    return;
+  }
+
+  // Handle POST /api/git-push (Manual sync trigger from Admin)
+  if (req.method === 'POST' && reqPath === '/api/git-push') {
+    let body = '';
+    req.on('data', chunk => body += chunk);
+    req.on('end', async () => {
+      try {
+        let msg = 'Manual push from Admin Console';
+        try {
+          const parsed = JSON.parse(body || '{}');
+          if (parsed.message) msg = parsed.message;
+        } catch {}
+
+        const result = await runGitAutoPush(msg);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(result));
       } catch (err) {
         res.writeHead(500, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ success: false, error: err.message }));
