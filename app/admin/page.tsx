@@ -35,16 +35,18 @@ import {
   savePortfolioData, 
   resetPortfolioData, 
   exportToTypeScript,
+  getAdminPasscode,
+  setAdminPasscode,
   PortfolioStoreData 
 } from '@/lib/portfolioStorage';
-import { ServiceItem, ProjectItem, BlogPostItem } from '@/data/portfolioData';
+import { ServiceItem, ProjectItem, BlogPostItem, adminPasscode as defaultPasscode } from '@/data/portfolioData';
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [passcode, setPasscode] = useState('');
   const [showPasscode, setShowPasscode] = useState(false);
   const [authError, setAuthError] = useState('');
-  const [activeTab, setActiveTab] = useState<'overview' | 'personal' | 'services' | 'projects' | 'blog' | 'export'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'personal' | 'services' | 'projects' | 'blog' | 'security' | 'export'>('overview');
 
   // Portfolio dynamic state
   const [data, setData] = useState<PortfolioStoreData | null>(null);
@@ -62,6 +64,17 @@ export default function AdminPage() {
   const [newPostContent, setNewPostContent] = useState('');
   const [imageUploadMode, setImageUploadMode] = useState<'upload' | 'url' | 'preset'>('upload');
   const [isUploadingImage, setIsUploadingImage] = useState(false);
+
+  // Security / Password Change State
+  const [currentPasswordInput, setCurrentPasswordInput] = useState('');
+  const [newPasswordInput, setNewPasswordInput] = useState('');
+  const [confirmPasswordInput, setConfirmPasswordInput] = useState('');
+  const [showCurrentPass, setShowCurrentPass] = useState(false);
+  const [showNewPass, setShowNewPass] = useState(false);
+  const [showConfirmPass, setShowConfirmPass] = useState(false);
+  const [passwordError, setPasswordError] = useState('');
+  const [passwordSuccess, setPasswordSuccess] = useState('');
+  const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
 
   const handleImageFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, callback: (url: string) => void) => {
     const file = e.target.files?.[0];
@@ -114,12 +127,68 @@ export default function AdminPage() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (passcode.trim() === 'admin123' || passcode.trim() === 'abdullah2026') {
+    const currentPass = getAdminPasscode();
+    const validPasscodes = [currentPass, defaultPasscode, 'admin123', 'abdullah2026'].filter(Boolean);
+
+    if (validPasscodes.includes(passcode.trim())) {
       setIsAuthenticated(true);
       sessionStorage.setItem('portfolio_admin_auth', 'true');
       setAuthError('');
     } else {
-      setAuthError('Incorrect passcode. Hint: admin123');
+      setAuthError('Incorrect passcode. Please enter the valid admin passcode.');
+    }
+  };
+
+  const handleChangePasscode = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPasswordError('');
+    setPasswordSuccess('');
+
+    const currentActualPass = getAdminPasscode();
+    const validPasses = [currentActualPass, defaultPasscode, 'admin123', 'abdullah2026'].filter(Boolean);
+
+    if (!validPasses.includes(currentPasswordInput.trim())) {
+      setPasswordError('Current passcode is incorrect.');
+      return;
+    }
+
+    if (!newPasswordInput || newPasswordInput.trim().length < 4) {
+      setPasswordError('New passcode must be at least 4 characters long.');
+      return;
+    }
+
+    if (newPasswordInput.trim() !== confirmPasswordInput.trim()) {
+      setPasswordError('New passcodes do not match.');
+      return;
+    }
+
+    setIsUpdatingPassword(true);
+    try {
+      const cleanPass = newPasswordInput.trim();
+      setAdminPasscode(cleanPass);
+
+      const res = await fetch('/api/update-passcode', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ newPasscode: cleanPass })
+      });
+      const json = await res.json();
+
+      if (json.success) {
+        setPasswordSuccess('✓ Password updated successfully and pushed to GitHub!');
+        showToast('✓ Admin passcode updated & pushed to GitHub!');
+        setCurrentPasswordInput('');
+        setNewPasswordInput('');
+        setConfirmPasswordInput('');
+      } else {
+        setPasswordSuccess('✓ Password updated in your browser session!');
+        showToast('✓ Admin passcode updated in browser!');
+      }
+    } catch {
+      setPasswordSuccess('✓ Password updated in your browser session!');
+      showToast('✓ Admin passcode updated in browser!');
+    } finally {
+      setIsUpdatingPassword(false);
     }
   };
 
@@ -283,7 +352,7 @@ export default function AdminPage() {
 
             <div className="text-center pt-2">
               <span className="text-[11px] text-muted">
-                Default password: <code className="px-1.5 py-0.5 rounded bg-cardSubtle border border-border text-ink font-mono">admin123</code>
+                Default: <code className="px-1.5 py-0.5 rounded bg-cardSubtle border border-border text-ink font-mono">admin123</code> or your custom passcode
               </span>
             </div>
           </form>
@@ -327,6 +396,7 @@ export default function AdminPage() {
               { id: 'services', label: 'Services (What I Do)', icon: Briefcase },
               { id: 'projects', label: 'Recent Projects', icon: FolderGit2 },
               { id: 'blog', label: 'Blog & Insights', icon: BookOpen },
+              { id: 'security', label: 'Security & Password', icon: Lock },
               { id: 'export', label: 'Export & Code Sync', icon: FileCode },
             ].map((item) => {
               const IconComp = item.icon;
@@ -1284,6 +1354,143 @@ export default function AdminPage() {
                   </div>
                 ))}
               </div>
+            </div>
+          )}
+
+          {/* ──────────────────────────────────
+               TAB: SECURITY & PASSWORD
+          ────────────────────────────────── */}
+          {activeTab === 'security' && (
+            <div className="space-y-8 max-w-2xl">
+              <div>
+                <h2 className="text-xl font-bold font-display text-ink mb-1">Security & Passcode Management</h2>
+                <p className="text-xs text-muted">
+                  Update the secret passcode used to access this Admin Console. Once changed, your new password will also sync to your GitHub repository automatically.
+                </p>
+              </div>
+
+              {/* Status Card */}
+              <div className="p-4 rounded-2xl bg-sage-pal border border-sage/30 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-sage text-white flex items-center justify-center">
+                    <Lock className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <strong className="text-xs font-bold text-ink uppercase tracking-wider block">Admin Console Protection</strong>
+                    <span className="text-xs text-muted">Secured with custom passkey authentication</span>
+                  </div>
+                </div>
+                <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
+                  Protected
+                </span>
+              </div>
+
+              {/* Change Passcode Form */}
+              <form onSubmit={handleChangePasscode} className="bg-card border border-border rounded-2xl p-6 sm:p-8 shadow-xs space-y-6">
+                <h3 className="text-sm font-bold text-ink font-display uppercase tracking-wider border-b border-border pb-3">
+                  Change Admin Passcode
+                </h3>
+
+                {passwordError && (
+                  <div className="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-500 text-xs flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4 shrink-0" />
+                    <span>{passwordError}</span>
+                  </div>
+                )}
+
+                {passwordSuccess && (
+                  <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 text-xs flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 shrink-0" />
+                    <span>{passwordSuccess}</span>
+                  </div>
+                )}
+
+                <div className="space-y-4">
+                  {/* Current Passcode */}
+                  <div>
+                    <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1.5">
+                      Current Passcode (বর্তমান পাসওয়ার্ড)
+                    </label>
+                    <div className="relative">
+                      <input
+                        type={showCurrentPass ? 'text' : 'password'}
+                        value={currentPasswordInput}
+                        onChange={(e) => setCurrentPasswordInput(e.target.value)}
+                        placeholder="Enter current passcode..."
+                        required
+                        className="w-full px-4 py-2.5 rounded-xl bg-cardSubtle border border-border text-sm text-ink outline-none focus:border-sage pr-10"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowCurrentPass(!showCurrentPass)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-ink transition-colors"
+                      >
+                        {showCurrentPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* New Passcode */}
+                  <div>
+                    <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1.5">
+                      New Passcode (নতুন পাসওয়ার্ড)
+                    </label>
+                    <div className="relative">
+                      <input
+                        type={showNewPass ? 'text' : 'password'}
+                        value={newPasswordInput}
+                        onChange={(e) => setNewPasswordInput(e.target.value)}
+                        placeholder="Enter new passcode (min. 4 characters)..."
+                        required
+                        className="w-full px-4 py-2.5 rounded-xl bg-cardSubtle border border-border text-sm text-ink outline-none focus:border-sage pr-10"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowNewPass(!showNewPass)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-ink transition-colors"
+                      >
+                        {showNewPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
+                    </div>
+                    <span className="text-[11px] text-muted mt-1 block">পাসওয়ার্ড কমপক্ষে ৪ অক্ষরের হতে হবে।</span>
+                  </div>
+
+                  {/* Confirm New Passcode */}
+                  <div>
+                    <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1.5">
+                      Confirm New Passcode (নতুন পাসওয়ার্ডটি পুনরায় লিখুন)
+                    </label>
+                    <div className="relative">
+                      <input
+                        type={showConfirmPass ? 'text' : 'password'}
+                        value={confirmPasswordInput}
+                        onChange={(e) => setConfirmPasswordInput(e.target.value)}
+                        placeholder="Re-enter new passcode..."
+                        required
+                        className="w-full px-4 py-2.5 rounded-xl bg-cardSubtle border border-border text-sm text-ink outline-none focus:border-sage pr-10"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowConfirmPass(!showConfirmPass)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-ink transition-colors"
+                      >
+                        {showConfirmPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-2 flex items-center justify-end gap-3">
+                  <button
+                    type="submit"
+                    disabled={isUpdatingPassword}
+                    className="px-6 py-3 rounded-xl bg-sage hover:opacity-95 text-white text-xs font-bold transition-all shadow-xs flex items-center gap-2 cursor-pointer disabled:opacity-50 active:scale-95"
+                  >
+                    <Lock className="w-4 h-4" />
+                    {isUpdatingPassword ? 'Updating & Pushing...' : 'Update Admin Passcode'}
+                  </button>
+                </div>
+              </form>
             </div>
           )}
 

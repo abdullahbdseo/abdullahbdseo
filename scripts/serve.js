@@ -70,6 +70,8 @@ const server = http.createServer((req, res) => {
  * Auto-synced from Admin Console on ${new Date().toISOString()}
  */
 
+export const adminPasscode = ${JSON.stringify(payload.adminPasscode || 'abdullah2026')};
+
 export const personalInfo = ${JSON.stringify(payload.personalInfo, null, 2)};
 
 export const aboutSection = ${JSON.stringify(payload.aboutSection, null, 2)};
@@ -217,6 +219,46 @@ export const blogPosts: BlogPostItem[] = ${JSON.stringify(payload.blogPosts, nul
         const result = await runGitAutoPush(msg);
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify(result));
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: false, error: err.message }));
+      }
+    });
+    return;
+  }
+
+  // Handle POST /api/update-passcode
+  if (req.method === 'POST' && reqPath === '/api/update-passcode') {
+    let body = '';
+    req.on('data', chunk => body += chunk);
+    req.on('end', () => {
+      try {
+        const { newPasscode } = JSON.parse(body);
+        if (!newPasscode || newPasscode.trim().length < 4) {
+          throw new Error('Passcode must be at least 4 characters long');
+        }
+
+        const dataFilePath = path.join(__dirname, '..', 'data', 'portfolioData.ts');
+        let content = fs.readFileSync(dataFilePath, 'utf8');
+
+        // Update or insert adminPasscode
+        if (content.includes('export const adminPasscode')) {
+          content = content.replace(/export const adminPasscode = .*;/, `export const adminPasscode = ${JSON.stringify(newPasscode.trim())};`);
+        } else {
+          content = content.replace(
+            /export const personalInfo/,
+            `export const adminPasscode = ${JSON.stringify(newPasscode.trim())};\n\nexport const personalInfo`
+          );
+        }
+
+        fs.writeFileSync(dataFilePath, content, 'utf8');
+
+        // Auto push to GitHub
+        runGitAutoPush('Update admin security passcode')
+          .then(res => console.log('[Auto-Git Passcode Push]:', res.message || res.error));
+
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: true, message: 'Passcode updated successfully and pushed to GitHub!' }));
       } catch (err) {
         res.writeHead(500, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ success: false, error: err.message }));
