@@ -130,6 +130,20 @@ export const blogTopics = [
 ];
 
 export const blogPosts: BlogPostItem[] = ${JSON.stringify(payload.blogPosts, null, 2)};
+
+export const certifications = ${JSON.stringify(payload.certifications || [], null, 2)};
+
+export const pricingPackages = ${JSON.stringify(payload.pricingPackages || [], null, 2)};
+
+export const clientGuarantees = ${JSON.stringify(payload.clientGuarantees || [], null, 2)};
+
+export const metrics = ${JSON.stringify(payload.metrics || [], null, 2)};
+
+export const experienceItems = ${JSON.stringify(payload.experienceItems || [], null, 2)};
+
+export const educationItems = ${JSON.stringify(payload.educationItems || [], null, 2)};
+
+export const faqItems = ${JSON.stringify(payload.faqItems || [], null, 2)};
 `;
 
         fs.writeFileSync(dataFilePath, tsContent, 'utf-8');

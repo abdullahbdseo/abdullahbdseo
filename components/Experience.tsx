@@ -2,57 +2,28 @@
 
 import React from 'react';
 import { Briefcase, GraduationCap, Wrench, Milestone } from 'lucide-react';
-
-const WORK_ITEMS = [
-  {
-    date: '2025 – Present',
-    role: 'Officer – Digital Marketing Team',
-    org: 'HATIL · Dhaka, Bangladesh',
-    desc: "Supporting organizational operations, coordinating tasks across departments, and contributing to HATIL's digital presence and technical processes.",
-  },
-  {
-    date: 'Jan 2025 – Mid 2025',
-    role: 'Lead Web Strategist',
-    org: 'Final Touch · Dhaka, Bangladesh',
-    desc: 'Led web projects for national and international clients — managing domains, hosting, server setups and web architecture. Overseeing SEO standards before every deployment.',
-  },
-  {
-    date: '2024 – 2025',
-    role: 'Assistant IT Officer',
-    org: 'Bangla City PLC · Dhaka, Bangladesh',
-    desc: 'Provided IT support, troubleshot systems, managed networks and user accounts, enforced security protocols, and coordinated IT procurement and vendor relations.',
-  },
-];
-
-const EDU_ITEMS = [
-  {
-    date: '2019 – 2023',
-    role: 'B.Sc. in Computer Science & Engineering',
-    org: 'Northern University of Business & Technology, Khulna',
-    desc: 'CGPA: 3.094 / 4.00 — Studied algorithms, networking, databases, and software engineering, providing the technical backbone for all my digital work.',
-  },
-  {
-    date: '2016 – 2018',
-    role: 'H.S.C – Science',
-    org: 'Kaligonj Government College, Satkhira',
-    desc: 'GPA: 4.50 / 5.00 · Board: Jessore',
-  },
-];
+import { usePortfolio } from '@/lib/usePortfolio';
+import { 
+  experienceItems as defaultWorkItems, 
+  educationItems as defaultEduItems 
+} from '@/data/portfolioData';
 
 const TOOLS = [
   'Google Search Console',
   'Ahrefs',
   'SEMrush',
   'Screaming Frog',
-  'Google Analytics 4',
-  'WordPress',
-  'Schema.org',
   'ChatGPT / Gemini',
   'Perplexity',
   'PageSpeed Insights',
 ];
 
 export default function Experience() {
+  const { experienceItems, educationItems } = usePortfolio();
+
+  const workList = experienceItems && experienceItems.length > 0 ? experienceItems : defaultWorkItems;
+  const eduList = educationItems && educationItems.length > 0 ? educationItems : defaultEduItems;
+
   return (
     <section id="experience" className="py-20 bg-surface">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -77,8 +48,8 @@ export default function Experience() {
             </div>
 
             <div className="relative pl-6 space-y-8 border-l-2 border-border/80">
-              {WORK_ITEMS.map((item, idx) => (
-                <div key={idx} className="relative group">
+              {workList.map((item, idx) => (
+                <div key={item.id || idx} className="relative group">
                   {/* Timeline Dot */}
                   <div className="absolute -left-[31px] top-1.5 w-3.5 h-3.5 rounded-full bg-card border-2 border-sage group-hover:bg-sage transition-colors" />
 
@@ -107,8 +78,8 @@ export default function Experience() {
               </div>
 
               <div className="relative pl-6 space-y-8 border-l-2 border-border/80">
-                {EDU_ITEMS.map((item, idx) => (
-                  <div key={idx} className="relative group">
+                {eduList.map((item, idx) => (
+                  <div key={item.id || idx} className="relative group">
                     <div className="absolute -left-[31px] top-1.5 w-3.5 h-3.5 rounded-full bg-card border-2 border-sage group-hover:bg-sage transition-colors" />
 
                     <span className="text-xs font-bold text-sage uppercase tracking-wider block mb-1">

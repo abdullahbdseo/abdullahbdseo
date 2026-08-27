@@ -11,7 +11,7 @@ import {
   Sparkles,
   Code2
 } from 'lucide-react';
-import { personalInfo, aboutSection, skills } from '@/data/portfolioData';
+import { usePortfolio } from '@/lib/usePortfolio';
 
 function renderPillarIcon(icon: string) {
   switch (icon) {
@@ -27,6 +27,7 @@ function renderPillarIcon(icon: string) {
 }
 
 export default function About() {
+  const { personalInfo, aboutSection, skills } = usePortfolio();
   const [animateBars, setAnimateBars] = useState(false);
   const skillsRef = useRef<HTMLDivElement>(null);
 

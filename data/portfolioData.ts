@@ -556,3 +556,110 @@ export const clientGuarantees: ClientGuaranteeItem[] = [
     badgeColor: "purple"
   }
 ];
+
+export interface MetricItemData {
+  id: string;
+  prefix?: string;
+  value: number;
+  suffix: string;
+  label: string;
+}
+
+export const metrics: MetricItemData[] = [
+  { id: 'm-1', prefix: '+', value: 230, suffix: '%', label: 'Organic Traffic Growth' },
+  { id: 'm-2', prefix: '', value: 120, suffix: '+', label: 'Keywords Ranked Top 10' },
+  { id: 'm-3', prefix: '+', value: 80, suffix: '%', label: 'Conversions Increase' },
+  { id: 'm-4', prefix: '', value: 98, suffix: '%', label: 'Client Satisfaction' }
+];
+
+export interface ExperienceItemData {
+  id: string;
+  date: string;
+  role: string;
+  org: string;
+  desc: string;
+}
+
+export const experienceItems: ExperienceItemData[] = [
+  {
+    id: 'exp-1',
+    date: '2025 – Present',
+    role: 'Officer – Digital Marketing Team',
+    org: 'HATIL · Dhaka, Bangladesh',
+    desc: "Supporting organizational operations, coordinating tasks across departments, and contributing to HATIL's digital presence and technical processes."
+  },
+  {
+    id: 'exp-2',
+    date: 'Jan 2025 – Mid 2025',
+    role: 'Lead Web Strategist',
+    org: 'Final Touch · Dhaka, Bangladesh',
+    desc: 'Led web projects for national and international clients — managing domains, hosting, server setups and web architecture. Overseeing SEO standards before every deployment.'
+  },
+  {
+    id: 'exp-3',
+    date: '2024 – 2025',
+    role: 'Assistant IT Officer',
+    org: 'Bangla City PLC · Dhaka, Bangladesh',
+    desc: 'Provided IT support, troubleshot systems, managed networks and user accounts, enforced security protocols, and coordinated IT procurement and vendor relations.'
+  }
+];
+
+export interface EducationItemData {
+  id: string;
+  date: string;
+  role: string;
+  org: string;
+  desc: string;
+}
+
+export const educationItems: EducationItemData[] = [
+  {
+    id: 'edu-1',
+    date: '2019 – 2023',
+    role: 'B.Sc. in Computer Science & Engineering',
+    org: 'Northern University of Business & Technology, Khulna',
+    desc: 'CGPA: 3.094 / 4.00 — Studied algorithms, networking, databases, and software engineering, providing the technical backbone for all my digital work.'
+  },
+  {
+    id: 'edu-2',
+    date: '2016 – 2018',
+    role: 'H.S.C – Science',
+    org: 'Kaligonj Government College, Satkhira',
+    desc: 'GPA: 4.50 / 5.00 · Board: Jessore'
+  }
+];
+
+export interface FaqItemData {
+  id: string;
+  q: string;
+  a: string;
+}
+
+export const faqItems: FaqItemData[] = [
+  {
+    id: 'faq-1',
+    q: 'What does Abdullah do?',
+    a: 'Abdullah is a Bangladesh-based SEO, AEO & GEO specialist and Meta Ads consultant, currently working as Officer of Digital Marketing at HATIL. He helps businesses rank on Google, get featured in AI-generated answers (ChatGPT, Gemini, Perplexity), and grow through paid social.'
+  },
+  {
+    id: 'faq-2',
+    q: "What's the difference between SEO, AEO, and GEO?",
+    a: 'SEO (Search Engine Optimization) targets traditional Google rankings. AEO (Answer Engine Optimization) targets featured snippets, People Also Ask boxes, and voice search results. GEO (Generative Engine Optimization) targets being cited as a source inside AI-generated answers from tools like ChatGPT and Gemini.'
+  },
+  {
+    id: 'faq-3',
+    q: 'Are the results shown on this site real?',
+    a: 'Yes — every number in the case studies is pulled directly from Google Search Console, GA4, or Meta Ads Manager dashboards. No estimates, no projections, no fabricated testimonials.'
+  },
+  {
+    id: 'faq-4',
+    q: 'Is Abdullah available for new projects?',
+    a: 'Yes — currently open to freelance SEO, AEO/GEO, and Meta Ads projects alongside full-time work. The fastest way to start is the 15-min strategy call or WhatsApp.'
+  },
+  {
+    id: 'faq-5',
+    q: 'Can I get a free SEO audit?',
+    a: 'Yes — the Free SEO Audit tool on this site is completely free, instant, and requires no account. Enter your website URL and get an instant report on Core Web Vitals, speed, and technical SEO issues.'
+  }
+];
+

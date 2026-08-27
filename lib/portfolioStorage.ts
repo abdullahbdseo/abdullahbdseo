@@ -12,9 +12,17 @@ import {
   certifications as defaultCertifications,
   pricingPackages as defaultPricingPackages,
   clientGuarantees as defaultClientGuarantees,
+  metrics as defaultMetrics,
+  experienceItems as defaultExperienceItems,
+  educationItems as defaultEducationItems,
+  faqItems as defaultFaqItems,
   CertificationItem,
   PricingPackageItem,
-  ClientGuaranteeItem
+  ClientGuaranteeItem,
+  MetricItemData,
+  ExperienceItemData,
+  EducationItemData,
+  FaqItemData
 } from '@/data/portfolioData';
 
 const STORAGE_KEY = 'portfolio_admin_data_v1';
@@ -32,6 +40,10 @@ export interface PortfolioStoreData {
   certifications: CertificationItem[];
   pricingPackages: PricingPackageItem[];
   clientGuarantees: ClientGuaranteeItem[];
+  metrics: MetricItemData[];
+  experienceItems: ExperienceItemData[];
+  educationItems: EducationItemData[];
+  faqItems: FaqItemData[];
 }
 
 export function getAdminPasscode(): string {
@@ -58,6 +70,10 @@ export function getDefaultPortfolioData(): PortfolioStoreData {
     certifications: [...defaultCertifications],
     pricingPackages: [...defaultPricingPackages],
     clientGuarantees: [...defaultClientGuarantees],
+    metrics: [...defaultMetrics],
+    experienceItems: [...defaultExperienceItems],
+    educationItems: [...defaultEducationItems],
+    faqItems: [...defaultFaqItems],
   };
 }
 
@@ -89,6 +105,10 @@ export function loadPortfolioData(): PortfolioStoreData {
       certifications: parsed.certifications || defaultCertifications,
       pricingPackages: parsed.pricingPackages || defaultPricingPackages,
       clientGuarantees: parsed.clientGuarantees || defaultClientGuarantees,
+      metrics: parsed.metrics || defaultMetrics,
+      experienceItems: parsed.experienceItems || defaultExperienceItems,
+      educationItems: parsed.educationItems || defaultEducationItems,
+      faqItems: parsed.faqItems || defaultFaqItems,
     };
   } catch (err) {
     console.error('Failed to load portfolio admin data:', err);
@@ -161,5 +181,13 @@ export const certifications = ${JSON.stringify(data.certifications || defaultCer
 export const pricingPackages = ${JSON.stringify(data.pricingPackages || defaultPricingPackages, null, 2)};
 
 export const clientGuarantees = ${JSON.stringify(data.clientGuarantees || defaultClientGuarantees, null, 2)};
+
+export const metrics = ${JSON.stringify(data.metrics || defaultMetrics, null, 2)};
+
+export const experienceItems = ${JSON.stringify(data.experienceItems || defaultExperienceItems, null, 2)};
+
+export const educationItems = ${JSON.stringify(data.educationItems || defaultEducationItems, null, 2)};
+
+export const faqItems = ${JSON.stringify(data.faqItems || defaultFaqItems, null, 2)};
 `;
 }

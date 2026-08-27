@@ -37,7 +37,11 @@ import {
   MessageSquare,
   Award,
   CreditCard,
-  ShieldCheck
+  ShieldCheck,
+  TrendingUp,
+  HelpCircle,
+  Milestone,
+  GraduationCap
 } from 'lucide-react';
 import { 
   loadPortfolioData, 
@@ -54,6 +58,11 @@ import {
   BlogPostItem, 
   CertificationItem, 
   PricingPackageItem, 
+  ClientGuaranteeItem,
+  MetricItemData,
+  ExperienceItemData,
+  EducationItemData,
+  FaqItemData,
   adminPasscode as defaultPasscode 
 } from '@/data/portfolioData';
 
@@ -62,7 +71,7 @@ export default function AdminPage() {
   const [passcode, setPasscode] = useState('');
   const [showPasscode, setShowPasscode] = useState(false);
   const [authError, setAuthError] = useState('');
-  const [activeTab, setActiveTab] = useState<'overview' | 'personal' | 'services' | 'projects' | 'blog' | 'bookings' | 'certifications' | 'pricing' | 'security' | 'export'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'personal' | 'metrics' | 'services' | 'pricing' | 'certifications' | 'guarantees' | 'experience' | 'projects' | 'blog' | 'faqs' | 'bookings' | 'security' | 'export'>('overview');
   const [bookings, setBookings] = useState<any[]>([]);
 
   // Portfolio dynamic state
@@ -113,6 +122,33 @@ export default function AdminPage() {
   const [newPkgFeatures, setNewPkgFeatures] = useState('');
   const [newPkgCtaText, setNewPkgCtaText] = useState('Get Started');
   const [newPkgCtaAction, setNewPkgCtaAction] = useState<'book' | 'contact'>('book');
+
+  // New FAQ Form State
+  const [isCreatingFaq, setIsCreatingFaq] = useState(false);
+  const [newFaqQ, setNewFaqQ] = useState('');
+  const [newFaqA, setNewFaqA] = useState('');
+
+  // New Experience Form State
+  const [isCreatingExp, setIsCreatingExp] = useState(false);
+  const [newExpRole, setNewExpRole] = useState('');
+  const [newExpOrg, setNewExpOrg] = useState('');
+  const [newExpDate, setNewExpDate] = useState('2025 – Present');
+  const [newExpDesc, setNewExpDesc] = useState('');
+
+  // New Education Form State
+  const [isCreatingEdu, setIsCreatingEdu] = useState(false);
+  const [newEduRole, setNewEduRole] = useState('');
+  const [newEduOrg, setNewEduOrg] = useState('');
+  const [newEduDate, setNewEduDate] = useState('2024');
+  const [newEduDesc, setNewEduDesc] = useState('');
+
+  // New Guarantee Form State
+  const [isCreatingGuar, setIsCreatingGuar] = useState(false);
+  const [newGuarTitle, setNewGuarTitle] = useState('');
+  const [newGuarTag, setNewGuarTag] = useState('Safety & Trust');
+  const [newGuarDesc, setNewGuarDesc] = useState('');
+  const [newGuarColor, setNewGuarColor] = useState('sage');
+  const [newGuarIcon, setNewGuarIcon] = useState<ClientGuaranteeItem['iconName']>('shield');
 
   const handleImageFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, callback: (url: string) => void) => {
     const file = e.target.files?.[0];
@@ -451,6 +487,135 @@ export default function AdminPage() {
     showToast('✓ Pricing package deleted');
   };
 
+  const handleCreateFaq = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!data || !newFaqQ.trim() || !newFaqA.trim()) {
+      showToast('Please enter both question and answer.');
+      return;
+    }
+    const newFaq: FaqItemData = {
+      id: 'faq-' + Date.now(),
+      q: newFaqQ.trim(),
+      a: newFaqA.trim()
+    };
+    const updated = [...(data.faqItems || []), newFaq];
+    const updatedData: PortfolioStoreData = { ...data, faqItems: updated };
+    setData(updatedData);
+    savePortfolioData(updatedData);
+    setNewFaqQ('');
+    setNewFaqA('');
+    setIsCreatingFaq(false);
+    showToast('✓ FAQ added successfully!');
+  };
+
+  const handleDeleteFaq = (id: string) => {
+    if (!data) return;
+    const updated = (data.faqItems || []).filter(f => f.id !== id);
+    const updatedData: PortfolioStoreData = { ...data, faqItems: updated };
+    setData(updatedData);
+    savePortfolioData(updatedData);
+    showToast('✓ FAQ deleted');
+  };
+
+  const handleCreateExp = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!data || !newExpRole.trim() || !newExpOrg.trim()) {
+      showToast('Please enter role and organization.');
+      return;
+    }
+    const newExp: ExperienceItemData = {
+      id: 'exp-' + Date.now(),
+      role: newExpRole.trim(),
+      org: newExpOrg.trim(),
+      date: newExpDate.trim() || '2025 – Present',
+      desc: newExpDesc.trim() || 'Key responsibilities and achievements.'
+    };
+    const updated = [...(data.experienceItems || []), newExp];
+    const updatedData: PortfolioStoreData = { ...data, experienceItems: updated };
+    setData(updatedData);
+    savePortfolioData(updatedData);
+    setNewExpRole('');
+    setNewExpOrg('');
+    setNewExpDesc('');
+    setIsCreatingExp(false);
+    showToast('✓ Work experience added!');
+  };
+
+  const handleDeleteExp = (id: string) => {
+    if (!data) return;
+    const updated = (data.experienceItems || []).filter(x => x.id !== id);
+    const updatedData: PortfolioStoreData = { ...data, experienceItems: updated };
+    setData(updatedData);
+    savePortfolioData(updatedData);
+    showToast('✓ Experience item deleted');
+  };
+
+  const handleCreateEdu = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!data || !newEduRole.trim() || !newEduOrg.trim()) {
+      showToast('Please enter degree and institution.');
+      return;
+    }
+    const newEdu: EducationItemData = {
+      id: 'edu-' + Date.now(),
+      role: newEduRole.trim(),
+      org: newEduOrg.trim(),
+      date: newEduDate.trim() || '2024',
+      desc: newEduDesc.trim() || ''
+    };
+    const updated = [...(data.educationItems || []), newEdu];
+    const updatedData: PortfolioStoreData = { ...data, educationItems: updated };
+    setData(updatedData);
+    savePortfolioData(updatedData);
+    setNewEduRole('');
+    setNewEduOrg('');
+    setNewEduDesc('');
+    setIsCreatingEdu(false);
+    showToast('✓ Education entry added!');
+  };
+
+  const handleDeleteEdu = (id: string) => {
+    if (!data) return;
+    const updated = (data.educationItems || []).filter(x => x.id !== id);
+    const updatedData: PortfolioStoreData = { ...data, educationItems: updated };
+    setData(updatedData);
+    savePortfolioData(updatedData);
+    showToast('✓ Education entry deleted');
+  };
+
+  const handleCreateGuar = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!data || !newGuarTitle.trim()) {
+      showToast('Please enter guarantee title.');
+      return;
+    }
+    const newG: ClientGuaranteeItem = {
+      id: 'g-' + Date.now(),
+      title: newGuarTitle.trim(),
+      tag: newGuarTag.trim() || 'Client Trust',
+      iconName: newGuarIcon,
+      desc: newGuarDesc.trim() || 'Non-negotiable service standard.',
+      badgeColor: newGuarColor
+    };
+    const updated = [...(data.clientGuarantees || []), newG];
+    const updatedData: PortfolioStoreData = { ...data, clientGuarantees: updated };
+    setData(updatedData);
+    savePortfolioData(updatedData);
+    setNewGuarTitle('');
+    setNewGuarDesc('');
+    setIsCreatingGuar(false);
+    showToast('✓ Client commitment added!');
+  };
+
+  const handleDeleteGuar = (id: string) => {
+    if (!data) return;
+    const updated = (data.clientGuarantees || []).filter(g => g.id !== id);
+    const updatedData: PortfolioStoreData = { ...data, clientGuarantees: updated };
+    setData(updatedData);
+    savePortfolioData(updatedData);
+    showToast('✓ Commitment removed');
+  };
+
   // ─── LOGIN SCREEN ───
   if (!isAuthenticated) {
     return (
@@ -544,12 +709,16 @@ export default function AdminPage() {
           <nav className="space-y-1.5">
             {[
               { id: 'overview', label: 'Dashboard Overview', icon: LayoutDashboard },
-              { id: 'personal', label: 'Profile & Contact', icon: User },
+              { id: 'personal', label: 'Profile, Bio & Socials', icon: User },
+              { id: 'metrics', label: 'Live Metrics & Stats', icon: TrendingUp },
               { id: 'services', label: 'Services (What I Do)', icon: Briefcase },
               { id: 'pricing', label: 'Pricing & Packages', icon: CreditCard },
               { id: 'certifications', label: 'Certifications', icon: Award },
+              { id: 'guarantees', label: 'Client Guarantees', icon: ShieldCheck },
+              { id: 'experience', label: 'Work & Education', icon: Milestone },
               { id: 'projects', label: 'Recent Projects', icon: FolderGit2 },
               { id: 'blog', label: 'Blog & Insights', icon: BookOpen },
+              { id: 'faqs', label: 'Homepage FAQs', icon: HelpCircle },
               { id: 'bookings', label: 'Strategy Bookings', icon: Calendar },
               { id: 'security', label: 'Security & Password', icon: Lock },
               { id: 'export', label: 'Export & Code Sync', icon: FileCode },
@@ -682,6 +851,24 @@ export default function AdminPage() {
                 </div>
 
                 <div className="bg-card border border-border p-5 rounded-2xl shadow-xs">
+                  <span className="text-xs text-muted font-medium block mb-1">Client Guarantees</span>
+                  <div className="text-2xl font-bold font-display text-ink">{(data.clientGuarantees || []).length} Commitments</div>
+                  <button onClick={() => setActiveTab('guarantees')} className="text-xs text-sage font-semibold mt-3 hover:underline">Manage Guarantees →</button>
+                </div>
+
+                <div className="bg-card border border-border p-5 rounded-2xl shadow-xs">
+                  <span className="text-xs text-muted font-medium block mb-1">Work &amp; Education</span>
+                  <div className="text-2xl font-bold font-display text-ink">{(data.experienceItems || []).length + (data.educationItems || []).length} Milestones</div>
+                  <button onClick={() => setActiveTab('experience')} className="text-xs text-sage font-semibold mt-3 hover:underline">Manage Timeline →</button>
+                </div>
+
+                <div className="bg-card border border-border p-5 rounded-2xl shadow-xs">
+                  <span className="text-xs text-muted font-medium block mb-1">Homepage FAQs</span>
+                  <div className="text-2xl font-bold font-display text-ink">{(data.faqItems || []).length} Answers</div>
+                  <button onClick={() => setActiveTab('faqs')} className="text-xs text-sage font-semibold mt-3 hover:underline">Manage FAQs →</button>
+                </div>
+
+                <div className="bg-card border border-border p-5 rounded-2xl shadow-xs">
                   <span className="text-xs text-muted font-medium block mb-1">Verified Certifications</span>
                   <div className="text-2xl font-bold font-display text-ink">{(data.certifications || []).length} Badges</div>
                   <button onClick={() => setActiveTab('certifications')} className="text-xs text-sage font-semibold mt-3 hover:underline">Manage Certs →</button>
@@ -697,6 +884,12 @@ export default function AdminPage() {
                   <span className="text-xs text-muted font-medium block mb-1">Blog Articles</span>
                   <div className="text-2xl font-bold font-display text-ink">{data.blogPosts.length} Published</div>
                   <button onClick={() => setActiveTab('blog')} className="text-xs text-sage font-semibold mt-3 hover:underline">Write Article →</button>
+                </div>
+
+                <div className="bg-card border border-border p-5 rounded-2xl shadow-xs">
+                  <span className="text-xs text-muted font-medium block mb-1">Hero Metrics Bar</span>
+                  <div className="text-2xl font-bold font-display text-ink">{(data.metrics || []).length} Live Stats</div>
+                  <button onClick={() => setActiveTab('metrics')} className="text-xs text-sage font-semibold mt-3 hover:underline">Edit Metrics →</button>
                 </div>
 
                 <div className="bg-card border border-border p-5 rounded-2xl shadow-xs">
@@ -901,12 +1094,152 @@ export default function AdminPage() {
                   />
                 </div>
 
-                <div className="pt-2 flex justify-end">
+                {/* ─── ABOUT SECTION CONTROLS ─── */}
+                <div className="pt-6 border-t border-border space-y-4">
+                  <div>
+                    <h3 className="font-bold text-base text-ink mb-1">About Section Story &amp; Philosophy</h3>
+                    <p className="text-xs text-muted">Customize the main bio narrative and authority pillars shown in the About section.</p>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1.5">About Section Heading</label>
+                    <input
+                      type="text"
+                      value={data.aboutSection?.heading || ''}
+                      onChange={(e) => setData({
+                        ...data,
+                        aboutSection: { ...data.aboutSection, heading: e.target.value }
+                      })}
+                      className="w-full px-3.5 py-2 rounded-xl bg-cardSubtle border border-border text-xs sm:text-sm text-ink outline-none focus:border-sage"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1.5">Lead Sentence / Hook</label>
+                    <input
+                      type="text"
+                      value={data.aboutSection?.lead || ''}
+                      onChange={(e) => setData({
+                        ...data,
+                        aboutSection: { ...data.aboutSection, lead: e.target.value }
+                      })}
+                      className="w-full px-3.5 py-2 rounded-xl bg-cardSubtle border border-border text-xs sm:text-sm text-ink outline-none focus:border-sage"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1.5">Bio Paragraph 1 (AEO &amp; GEO Context)</label>
+                      <textarea
+                        rows={3}
+                        value={data.aboutSection?.p1 || ''}
+                        onChange={(e) => setData({
+                          ...data,
+                          aboutSection: { ...data.aboutSection, p1: e.target.value }
+                        })}
+                        className="w-full px-3.5 py-2 rounded-xl bg-cardSubtle border border-border text-xs sm:text-sm text-ink outline-none focus:border-sage resize-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1.5">Bio Paragraph 2 (Technical Rigor)</label>
+                      <textarea
+                        rows={3}
+                        value={data.aboutSection?.p2 || ''}
+                        onChange={(e) => setData({
+                          ...data,
+                          aboutSection: { ...data.aboutSection, p2: e.target.value }
+                        })}
+                        className="w-full px-3.5 py-2 rounded-xl bg-cardSubtle border border-border text-xs sm:text-sm text-ink outline-none focus:border-sage resize-none"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Authority Pillars */}
+                  <div className="pt-2">
+                    <label className="block text-xs font-bold text-ink uppercase tracking-wider mb-2">3 Core Authority Pillars</label>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      {(data.aboutSection?.pillars || []).map((pillar, pIdx) => (
+                        <div key={pIdx} className="p-3.5 rounded-xl bg-cardSubtle border border-border space-y-2">
+                          <span className="text-[10px] font-bold uppercase text-sage">Pillar #{pIdx + 1}</span>
+                          <input
+                            type="text"
+                            value={pillar.title}
+                            onChange={(e) => {
+                              const updatedPillars = [...(data.aboutSection?.pillars || [])];
+                              updatedPillars[pIdx] = { ...updatedPillars[pIdx], title: e.target.value };
+                              setData({
+                                ...data,
+                                aboutSection: { ...data.aboutSection, pillars: updatedPillars }
+                              });
+                            }}
+                            className="w-full px-2 py-1 rounded-lg bg-card border border-border text-xs font-bold text-ink outline-none"
+                          />
+                          <textarea
+                            rows={2}
+                            value={pillar.desc}
+                            onChange={(e) => {
+                              const updatedPillars = [...(data.aboutSection?.pillars || [])];
+                              updatedPillars[pIdx] = { ...updatedPillars[pIdx], desc: e.target.value };
+                              setData({
+                                ...data,
+                                aboutSection: { ...data.aboutSection, pillars: updatedPillars }
+                              });
+                            }}
+                            className="w-full px-2 py-1 rounded-lg bg-card border border-border text-xs text-muted outline-none resize-none"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* ─── SKILLS & PROFICIENCY ─── */}
+                <div className="pt-6 border-t border-border space-y-4">
+                  <div>
+                    <h3 className="font-bold text-base text-ink mb-1">Technical Skills &amp; Proficiency Percentages</h3>
+                    <p className="text-xs text-muted">Adjust skill names and proficiency percentage bars displayed in the About section.</p>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {(data.skills || []).map((skill, sIdx) => (
+                      <div key={sIdx} className="p-3.5 rounded-xl bg-cardSubtle border border-border space-y-2">
+                        <div className="flex items-center justify-between">
+                          <input
+                            type="text"
+                            value={skill.name}
+                            onChange={(e) => {
+                              const updatedSkills = [...(data.skills || [])];
+                              updatedSkills[sIdx] = { ...updatedSkills[sIdx], name: e.target.value };
+                              setData({ ...data, skills: updatedSkills });
+                            }}
+                            className="px-2 py-1 rounded-lg bg-card border border-border text-xs font-semibold text-ink outline-none flex-1 mr-2"
+                          />
+                          <span className="text-xs font-bold font-mono text-sage">{skill.pct}%</span>
+                        </div>
+                        <input
+                          type="range"
+                          min="50"
+                          max="100"
+                          value={skill.pct}
+                          onChange={(e) => {
+                            const updatedSkills = [...(data.skills || [])];
+                            updatedSkills[sIdx] = { ...updatedSkills[sIdx], pct: Number(e.target.value) };
+                            setData({ ...data, skills: updatedSkills });
+                          }}
+                          className="w-full accent-sage cursor-pointer"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="pt-4 flex justify-end border-t border-border">
                   <button
                     onClick={handleSave}
-                    className="px-6 py-2.5 rounded-xl bg-sage text-white text-xs font-semibold hover:opacity-90 transition-opacity cursor-pointer"
+                    className="px-6 py-2.5 rounded-xl bg-sage text-white text-xs font-bold hover:opacity-90 transition-opacity cursor-pointer shadow-xs"
                   >
-                    Save Profile
+                    Save All Profile &amp; Bio Changes
                   </button>
                 </div>
               </div>
@@ -2100,6 +2433,701 @@ export default function AdminPage() {
                           setData({ ...data, certifications: updated });
                         }}
                         className="w-full px-2.5 py-1.5 rounded-lg bg-cardSubtle border border-border text-xs text-ink outline-none resize-none"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ──────────────────────────────────
+               TAB: METRICS BAR
+          ────────────────────────────────── */}
+          {activeTab === 'metrics' && (
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-xl font-bold font-display text-ink mb-1">Hero Statistics &amp; Metrics Bar</h2>
+                <p className="text-xs text-muted">
+                  Live animated counters displayed right beneath your hero section on the homepage.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {(data.metrics || []).map((metric, index) => (
+                  <div key={metric.id || index} className="bg-card border border-border rounded-2xl p-5 shadow-xs space-y-3">
+                    <div className="flex items-center justify-between border-b border-border pb-2">
+                      <span className="text-xs font-bold text-sage uppercase tracking-wider">
+                        Counter #{index + 1}
+                      </span>
+                      <span className="text-lg font-bold font-mono text-ink">
+                        {metric.prefix}{metric.value}{metric.suffix}
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-2">
+                      <div>
+                        <label className="block text-[10px] font-bold uppercase text-muted mb-1">Prefix</label>
+                        <input
+                          type="text"
+                          value={metric.prefix || ''}
+                          onChange={(e) => {
+                            const updated = [...(data.metrics || [])];
+                            updated[index].prefix = e.target.value;
+                            setData({ ...data, metrics: updated });
+                          }}
+                          placeholder="e.g. +"
+                          className="w-full px-2.5 py-1.5 rounded-lg bg-cardSubtle border border-border text-xs text-ink outline-none"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[10px] font-bold uppercase text-muted mb-1">Number *</label>
+                        <input
+                          type="number"
+                          value={metric.value}
+                          onChange={(e) => {
+                            const updated = [...(data.metrics || [])];
+                            updated[index].value = Number(e.target.value) || 0;
+                            setData({ ...data, metrics: updated });
+                          }}
+                          className="w-full px-2.5 py-1.5 rounded-lg bg-cardSubtle border border-border text-xs text-ink outline-none font-bold"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[10px] font-bold uppercase text-muted mb-1">Suffix</label>
+                        <input
+                          type="text"
+                          value={metric.suffix || ''}
+                          onChange={(e) => {
+                            const updated = [...(data.metrics || [])];
+                            updated[index].suffix = e.target.value;
+                            setData({ ...data, metrics: updated });
+                          }}
+                          placeholder="e.g. % or +"
+                          className="w-full px-2.5 py-1.5 rounded-lg bg-cardSubtle border border-border text-xs text-ink outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase text-muted mb-1">Label / Metric Description *</label>
+                      <input
+                        type="text"
+                        value={metric.label}
+                        onChange={(e) => {
+                          const updated = [...(data.metrics || [])];
+                          updated[index].label = e.target.value;
+                          setData({ ...data, metrics: updated });
+                        }}
+                        className="w-full px-2.5 py-1.5 rounded-lg bg-cardSubtle border border-border text-xs text-ink outline-none"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ──────────────────────────────────
+               TAB: CLIENT GUARANTEES
+          ────────────────────────────────── */}
+          {activeTab === 'guarantees' && (
+            <div className="space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-xl font-bold font-display text-ink mb-1">Six Non-Negotiable Client Commitments</h2>
+                  <p className="text-xs text-muted">
+                    Risk-free client safety standards (White-Hat, Strict NDA, Live Dashboards, No Lock-In, etc.).
+                  </p>
+                </div>
+
+                <button
+                  onClick={() => setIsCreatingGuar(!isCreatingGuar)}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-sage text-white text-xs font-bold hover:opacity-90 transition-all shadow-xs cursor-pointer"
+                >
+                  <Plus className="w-4 h-4" /> {isCreatingGuar ? 'Cancel' : 'Add Commitment'}
+                </button>
+              </div>
+
+              {isCreatingGuar && (
+                <form onSubmit={handleCreateGuar} className="bg-card border-2 border-sage/40 rounded-3xl p-6 sm:p-7 shadow-lg space-y-5 animate-in zoom-in-95 duration-150">
+                  <h3 className="font-bold text-sm text-ink uppercase tracking-wider border-b border-border pb-2 flex items-center gap-2">
+                    <Plus className="w-4 h-4 text-sage" /> Add New Guarantee Commitment
+                  </h3>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">Title *</label>
+                      <input
+                        type="text"
+                        required
+                        value={newGuarTitle}
+                        onChange={(e) => setNewGuarTitle(e.target.value)}
+                        placeholder="e.g. 100% White-Hat &amp; Penalty Free"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-sm text-ink outline-none focus:border-sage"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">Badge Tag</label>
+                      <input
+                        type="text"
+                        value={newGuarTag}
+                        onChange={(e) => setNewGuarTag(e.target.value)}
+                        placeholder="e.g. Algorithmic Safety"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-sm text-ink outline-none focus:border-sage"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">Icon Style</label>
+                      <select
+                        value={newGuarIcon}
+                        onChange={(e) => setNewGuarIcon(e.target.value as any)}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-xs sm:text-sm text-ink outline-none focus:border-sage"
+                      >
+                        <option value="shield">Shield (Security)</option>
+                        <option value="lock">Lock (Privacy/NDA)</option>
+                        <option value="trending">Trending (Dashboards/ROI)</option>
+                        <option value="zap">Zap (Speed/Flexibility)</option>
+                        <option value="message">Message (Slack/WhatsApp)</option>
+                        <option value="cpu">CPU (CSE Engineering)</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">Color Theme</label>
+                      <select
+                        value={newGuarColor}
+                        onChange={(e) => setNewGuarColor(e.target.value)}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-xs sm:text-sm text-ink outline-none focus:border-sage"
+                      >
+                        <option value="emerald">Emerald (Green)</option>
+                        <option value="blue">Blue</option>
+                        <option value="sage">Sage</option>
+                        <option value="amber">Amber</option>
+                        <option value="indigo">Indigo</option>
+                        <option value="purple">Purple</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">Description *</label>
+                    <textarea
+                      rows={2}
+                      required
+                      value={newGuarDesc}
+                      onChange={(e) => setNewGuarDesc(e.target.value)}
+                      placeholder="Explain this commitment clearly..."
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-sm text-ink outline-none focus:border-sage resize-none"
+                    />
+                  </div>
+
+                  <div className="flex justify-end gap-2 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => setIsCreatingGuar(false)}
+                      className="px-4 py-2 rounded-xl border border-border text-xs font-semibold text-muted hover:bg-cardSubtle"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-5 py-2 rounded-xl bg-sage text-white text-xs font-bold hover:opacity-90 shadow-xs cursor-pointer"
+                    >
+                      Save Commitment
+                    </button>
+                  </div>
+                </form>
+              )}
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {(data.clientGuarantees || []).map((item, index) => (
+                  <div key={item.id} className="bg-card border border-border rounded-2xl p-5 shadow-xs space-y-3">
+                    <div className="flex items-start justify-between gap-3 border-b border-border pb-2.5">
+                      <div>
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-sage block mb-0.5">
+                          {item.tag}
+                        </span>
+                        <strong className="text-sm font-bold text-ink block leading-snug">{item.title}</strong>
+                      </div>
+
+                      <button
+                        onClick={() => handleDeleteGuar(item.id)}
+                        className="p-2 rounded-lg text-muted hover:text-rose-500 hover:bg-rose-500/10 transition-colors cursor-pointer shrink-0"
+                        title="Delete commitment"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <label className="block text-[10px] font-bold uppercase text-muted mb-0.5">Title</label>
+                        <input
+                          type="text"
+                          value={item.title}
+                          onChange={(e) => {
+                            const updated = [...(data.clientGuarantees || [])];
+                            updated[index].title = e.target.value;
+                            setData({ ...data, clientGuarantees: updated });
+                          }}
+                          className="w-full px-2.5 py-1.5 rounded-lg bg-cardSubtle border border-border text-xs text-ink outline-none"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[10px] font-bold uppercase text-muted mb-0.5">Tag</label>
+                        <input
+                          type="text"
+                          value={item.tag}
+                          onChange={(e) => {
+                            const updated = [...(data.clientGuarantees || [])];
+                            updated[index].tag = e.target.value;
+                            setData({ ...data, clientGuarantees: updated });
+                          }}
+                          className="w-full px-2.5 py-1.5 rounded-lg bg-cardSubtle border border-border text-xs text-ink outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase text-muted mb-0.5">Description</label>
+                      <textarea
+                        rows={2}
+                        value={item.desc}
+                        onChange={(e) => {
+                          const updated = [...(data.clientGuarantees || [])];
+                          updated[index].desc = e.target.value;
+                          setData({ ...data, clientGuarantees: updated });
+                        }}
+                        className="w-full px-2.5 py-1.5 rounded-lg bg-cardSubtle border border-border text-xs text-ink outline-none resize-none"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ──────────────────────────────────
+               TAB: WORK & EDUCATION
+          ────────────────────────────────── */}
+          {activeTab === 'experience' && (
+            <div className="space-y-8">
+              {/* Work Experience Section */}
+              <div className="space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-3">
+                  <div>
+                    <h2 className="text-xl font-bold font-display text-ink mb-0.5 flex items-center gap-2">
+                      <Briefcase className="w-5 h-5 text-sage" /> Work Experience
+                    </h2>
+                    <p className="text-xs text-muted">
+                      Your career timeline, company roles, and professional achievements.
+                    </p>
+                  </div>
+
+                  <button
+                    onClick={() => setIsCreatingExp(!isCreatingExp)}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-sage text-white text-xs font-bold hover:opacity-90 transition-all shadow-xs cursor-pointer"
+                  >
+                    <Plus className="w-4 h-4" /> {isCreatingExp ? 'Cancel' : 'Add Experience'}
+                  </button>
+                </div>
+
+                {isCreatingExp && (
+                  <form onSubmit={handleCreateExp} className="bg-card border-2 border-sage/40 rounded-3xl p-6 shadow-lg space-y-4 animate-in zoom-in-95 duration-150">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <div>
+                        <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">Role / Job Title *</label>
+                        <input
+                          type="text"
+                          required
+                          value={newExpRole}
+                          onChange={(e) => setNewExpRole(e.target.value)}
+                          placeholder="e.g. Lead Web Strategist"
+                          className="w-full px-3 py-2 rounded-xl bg-cardSubtle border border-border text-xs text-ink outline-none focus:border-sage"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">Company / Organization *</label>
+                        <input
+                          type="text"
+                          required
+                          value={newExpOrg}
+                          onChange={(e) => setNewExpOrg(e.target.value)}
+                          placeholder="e.g. Final Touch · Dhaka"
+                          className="w-full px-3 py-2 rounded-xl bg-cardSubtle border border-border text-xs text-ink outline-none focus:border-sage"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">Time Period</label>
+                        <input
+                          type="text"
+                          value={newExpDate}
+                          onChange={(e) => setNewExpDate(e.target.value)}
+                          placeholder="e.g. 2025 – Present"
+                          className="w-full px-3 py-2 rounded-xl bg-cardSubtle border border-border text-xs text-ink outline-none focus:border-sage"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">Responsibilities &amp; Scope *</label>
+                      <textarea
+                        rows={2}
+                        required
+                        value={newExpDesc}
+                        onChange={(e) => setNewExpDesc(e.target.value)}
+                        placeholder="Brief summary of duties and milestones..."
+                        className="w-full px-3 py-2 rounded-xl bg-cardSubtle border border-border text-xs text-ink outline-none focus:border-sage resize-none"
+                      />
+                    </div>
+
+                    <div className="flex justify-end gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setIsCreatingExp(false)}
+                        className="px-3.5 py-1.5 rounded-xl border border-border text-xs text-muted"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        className="px-4 py-1.5 rounded-xl bg-sage text-white text-xs font-bold hover:opacity-90 shadow-xs cursor-pointer"
+                      >
+                        Save Job
+                      </button>
+                    </div>
+                  </form>
+                )}
+
+                <div className="space-y-3">
+                  {(data.experienceItems || []).map((item, index) => (
+                    <div key={item.id} className="bg-card border border-border rounded-2xl p-5 shadow-xs space-y-3">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 flex-1">
+                          <input
+                            type="text"
+                            value={item.role}
+                            onChange={(e) => {
+                              const updated = [...(data.experienceItems || [])];
+                              updated[index].role = e.target.value;
+                              setData({ ...data, experienceItems: updated });
+                            }}
+                            className="px-2.5 py-1.5 rounded-lg bg-cardSubtle border border-border text-xs font-bold text-ink outline-none"
+                          />
+                          <input
+                            type="text"
+                            value={item.org}
+                            onChange={(e) => {
+                              const updated = [...(data.experienceItems || [])];
+                              updated[index].org = e.target.value;
+                              setData({ ...data, experienceItems: updated });
+                            }}
+                            className="px-2.5 py-1.5 rounded-lg bg-cardSubtle border border-border text-xs text-muted outline-none"
+                          />
+                          <input
+                            type="text"
+                            value={item.date}
+                            onChange={(e) => {
+                              const updated = [...(data.experienceItems || [])];
+                              updated[index].date = e.target.value;
+                              setData({ ...data, experienceItems: updated });
+                            }}
+                            className="px-2.5 py-1.5 rounded-lg bg-cardSubtle border border-border text-xs font-mono text-sage outline-none"
+                          />
+                        </div>
+
+                        <button
+                          onClick={() => handleDeleteExp(item.id)}
+                          className="p-1.5 rounded-lg text-muted hover:text-rose-500 hover:bg-rose-500/10 cursor-pointer shrink-0"
+                          title="Delete job"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+
+                      <textarea
+                        rows={2}
+                        value={item.desc}
+                        onChange={(e) => {
+                          const updated = [...(data.experienceItems || [])];
+                          updated[index].desc = e.target.value;
+                          setData({ ...data, experienceItems: updated });
+                        }}
+                        className="w-full px-2.5 py-1.5 rounded-lg bg-cardSubtle border border-border text-xs text-ink outline-none resize-none"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Education Section */}
+              <div className="space-y-4 pt-4 border-t border-border">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-3">
+                  <div>
+                    <h2 className="text-xl font-bold font-display text-ink mb-0.5 flex items-center gap-2">
+                      <GraduationCap className="w-5 h-5 text-sage" /> Academic Education
+                    </h2>
+                    <p className="text-xs text-muted">
+                      Degrees, academic institutions, and educational background.
+                    </p>
+                  </div>
+
+                  <button
+                    onClick={() => setIsCreatingEdu(!isCreatingEdu)}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-sage text-white text-xs font-bold hover:opacity-90 transition-all shadow-xs cursor-pointer"
+                  >
+                    <Plus className="w-4 h-4" /> {isCreatingEdu ? 'Cancel' : 'Add Degree'}
+                  </button>
+                </div>
+
+                {isCreatingEdu && (
+                  <form onSubmit={handleCreateEdu} className="bg-card border-2 border-sage/40 rounded-3xl p-6 shadow-lg space-y-4 animate-in zoom-in-95 duration-150">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <div>
+                        <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">Degree / Certificate *</label>
+                        <input
+                          type="text"
+                          required
+                          value={newEduRole}
+                          onChange={(e) => setNewEduRole(e.target.value)}
+                          placeholder="e.g. B.Sc. in CSE"
+                          className="w-full px-3 py-2 rounded-xl bg-cardSubtle border border-border text-xs text-ink outline-none focus:border-sage"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">Institution *</label>
+                        <input
+                          type="text"
+                          required
+                          value={newEduOrg}
+                          onChange={(e) => setNewEduOrg(e.target.value)}
+                          placeholder="e.g. Northern University, Khulna"
+                          className="w-full px-3 py-2 rounded-xl bg-cardSubtle border border-border text-xs text-ink outline-none focus:border-sage"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">Year / Period</label>
+                        <input
+                          type="text"
+                          value={newEduDate}
+                          onChange={(e) => setNewEduDate(e.target.value)}
+                          placeholder="e.g. 2019 – 2023"
+                          className="w-full px-3 py-2 rounded-xl bg-cardSubtle border border-border text-xs text-ink outline-none focus:border-sage"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">CGPA / Details</label>
+                      <textarea
+                        rows={2}
+                        value={newEduDesc}
+                        onChange={(e) => setNewEduDesc(e.target.value)}
+                        placeholder="e.g. CGPA: 3.094 / 4.00 · Software Engineering, Networking..."
+                        className="w-full px-3 py-2 rounded-xl bg-cardSubtle border border-border text-xs text-ink outline-none focus:border-sage resize-none"
+                      />
+                    </div>
+
+                    <div className="flex justify-end gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setIsCreatingEdu(false)}
+                        className="px-3.5 py-1.5 rounded-xl border border-border text-xs text-muted"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        className="px-4 py-1.5 rounded-xl bg-sage text-white text-xs font-bold hover:opacity-90 shadow-xs cursor-pointer"
+                      >
+                        Save Degree
+                      </button>
+                    </div>
+                  </form>
+                )}
+
+                <div className="space-y-3">
+                  {(data.educationItems || []).map((item, index) => (
+                    <div key={item.id} className="bg-card border border-border rounded-2xl p-5 shadow-xs space-y-3">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 flex-1">
+                          <input
+                            type="text"
+                            value={item.role}
+                            onChange={(e) => {
+                              const updated = [...(data.educationItems || [])];
+                              updated[index].role = e.target.value;
+                              setData({ ...data, educationItems: updated });
+                            }}
+                            className="px-2.5 py-1.5 rounded-lg bg-cardSubtle border border-border text-xs font-bold text-ink outline-none"
+                          />
+                          <input
+                            type="text"
+                            value={item.org}
+                            onChange={(e) => {
+                              const updated = [...(data.educationItems || [])];
+                              updated[index].org = e.target.value;
+                              setData({ ...data, educationItems: updated });
+                            }}
+                            className="px-2.5 py-1.5 rounded-lg bg-cardSubtle border border-border text-xs text-muted outline-none"
+                          />
+                          <input
+                            type="text"
+                            value={item.date}
+                            onChange={(e) => {
+                              const updated = [...(data.educationItems || [])];
+                              updated[index].date = e.target.value;
+                              setData({ ...data, educationItems: updated });
+                            }}
+                            className="px-2.5 py-1.5 rounded-lg bg-cardSubtle border border-border text-xs font-mono text-sage outline-none"
+                          />
+                        </div>
+
+                        <button
+                          onClick={() => handleDeleteEdu(item.id)}
+                          className="p-1.5 rounded-lg text-muted hover:text-rose-500 hover:bg-rose-500/10 cursor-pointer shrink-0"
+                          title="Delete degree"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+
+                      <textarea
+                        rows={2}
+                        value={item.desc}
+                        onChange={(e) => {
+                          const updated = [...(data.educationItems || [])];
+                          updated[index].desc = e.target.value;
+                          setData({ ...data, educationItems: updated });
+                        }}
+                        className="w-full px-2.5 py-1.5 rounded-lg bg-cardSubtle border border-border text-xs text-ink outline-none resize-none"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ──────────────────────────────────
+               TAB: HOMEPAGE FAQS
+          ────────────────────────────────── */}
+          {activeTab === 'faqs' && (
+            <div className="space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-xl font-bold font-display text-ink mb-1">Frequently Asked Questions</h2>
+                  <p className="text-xs text-muted">
+                    Manage the accordion questions and answers displayed in the FAQ section.
+                  </p>
+                </div>
+
+                <button
+                  onClick={() => setIsCreatingFaq(!isCreatingFaq)}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-sage text-white text-xs font-bold hover:opacity-90 transition-all shadow-xs cursor-pointer"
+                >
+                  <Plus className="w-4 h-4" /> {isCreatingFaq ? 'Cancel' : 'Add FAQ'}
+                </button>
+              </div>
+
+              {isCreatingFaq && (
+                <form onSubmit={handleCreateFaq} className="bg-card border-2 border-sage/40 rounded-3xl p-6 shadow-lg space-y-4 animate-in zoom-in-95 duration-150">
+                  <h3 className="font-bold text-sm text-ink uppercase tracking-wider border-b border-border pb-2 flex items-center gap-2">
+                    <Plus className="w-4 h-4 text-sage" /> Add New FAQ Item
+                  </h3>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">Question *</label>
+                    <input
+                      type="text"
+                      required
+                      value={newFaqQ}
+                      onChange={(e) => setNewFaqQ(e.target.value)}
+                      placeholder="e.g. Can you work with international US/UK clients?"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-sm text-ink outline-none focus:border-sage"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">Answer *</label>
+                    <textarea
+                      rows={3}
+                      required
+                      value={newFaqA}
+                      onChange={(e) => setNewFaqA(e.target.value)}
+                      placeholder="Provide a clear, direct answer..."
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-sm text-ink outline-none focus:border-sage resize-none"
+                    />
+                  </div>
+
+                  <div className="flex justify-end gap-2 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => setIsCreatingFaq(false)}
+                      className="px-4 py-2 rounded-xl border border-border text-xs font-semibold text-muted hover:bg-cardSubtle"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-5 py-2 rounded-xl bg-sage text-white text-xs font-bold hover:opacity-90 shadow-xs cursor-pointer"
+                    >
+                      Save FAQ
+                    </button>
+                  </div>
+                </form>
+              )}
+
+              <div className="space-y-4">
+                {(data.faqItems || []).map((faq, index) => (
+                  <div key={faq.id || index} className="bg-card border border-border rounded-2xl p-5 shadow-xs space-y-3">
+                    <div className="flex items-start justify-between gap-3 border-b border-border pb-2">
+                      <div className="flex items-center gap-2 text-xs font-bold text-sage font-mono">
+                        Q{index + 1}
+                      </div>
+
+                      <button
+                        onClick={() => handleDeleteFaq(faq.id)}
+                        className="p-1.5 rounded-lg text-muted hover:text-rose-500 hover:bg-rose-500/10 cursor-pointer shrink-0"
+                        title="Delete question"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase text-muted mb-1">Question</label>
+                      <input
+                        type="text"
+                        value={faq.q}
+                        onChange={(e) => {
+                          const updated = [...(data.faqItems || [])];
+                          updated[index].q = e.target.value;
+                          setData({ ...data, faqItems: updated });
+                        }}
+                        className="w-full px-3 py-1.5 rounded-xl bg-cardSubtle border border-border text-xs sm:text-sm font-semibold text-ink outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase text-muted mb-1">Answer</label>
+                      <textarea
+                        rows={3}
+                        value={faq.a}
+                        onChange={(e) => {
+                          const updated = [...(data.faqItems || [])];
+                          updated[index].a = e.target.value;
+                          setData({ ...data, faqItems: updated });
+                        }}
+                        className="w-full px-3 py-2 rounded-xl bg-cardSubtle border border-border text-xs sm:text-sm text-ink outline-none resize-none"
                       />
                     </div>
                   </div>

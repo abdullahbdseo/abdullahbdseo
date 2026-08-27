@@ -3,72 +3,14 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { HelpCircle, Plus, Minus } from 'lucide-react';
-
-interface FaqItem {
-  q: string;
-  a: React.ReactNode;
-}
-
-const FAQS: FaqItem[] = [
-  {
-    q: 'What does Abdullah do?',
-    a: (
-      <p>
-        Abdullah is a Bangladesh-based SEO, AEO & GEO specialist and Meta Ads consultant, currently working as Officer of Digital Marketing at HATIL. He helps businesses rank on Google, get featured in AI-generated answers (ChatGPT, Gemini, Perplexity), and grow through paid social.
-      </p>
-    ),
-  },
-  {
-    q: "What's the difference between SEO, AEO, and GEO?",
-    a: (
-      <p>
-        SEO (Search Engine Optimization) targets traditional Google rankings. AEO (Answer Engine Optimization) targets featured snippets, People Also Ask boxes, and voice search results. GEO (Generative Engine Optimization) targets being cited as a source inside AI-generated answers from tools like ChatGPT and Gemini.{' '}
-        <Link href="/#blog" className="text-sage font-semibold hover:underline">
-          Read full breakdown
-        </Link>.
-      </p>
-    ),
-  },
-  {
-    q: 'Are the results shown on this site real?',
-    a: (
-      <p>
-        Yes — every number in the{' '}
-        <Link href="/#cases" className="text-sage font-semibold hover:underline">
-          case studies
-        </Link>{' '}
-        is pulled directly from Google Search Console, GA4, or Meta Ads Manager dashboards. No estimates, no projections, no fabricated testimonials.
-      </p>
-    ),
-  },
-  {
-    q: 'Is Abdullah available for new projects?',
-    a: (
-      <p>
-        Yes — currently open to freelance SEO, AEO/GEO, and Meta Ads projects alongside full-time work. The fastest way to start is the{' '}
-        <Link href="/#contact" className="text-sage font-semibold hover:underline">
-          contact page
-        </Link>{' '}
-        or WhatsApp.
-      </p>
-    ),
-  },
-  {
-    q: 'Can I get a free SEO audit?',
-    a: (
-      <p>
-        Yes — the{' '}
-        <Link href="/free-audit" className="text-sage font-semibold hover:underline">
-          free audit tool
-        </Link>{' '}
-        checks Performance, Core Web Vitals, and SEO score for any website instantly, powered by Google PageSpeed Insights. No signup required.
-      </p>
-    ),
-  },
-];
+import { usePortfolio } from '@/lib/usePortfolio';
+import { faqItems as defaultFaqs } from '@/data/portfolioData';
 
 export default function FaqSection() {
+  const { faqItems } = usePortfolio();
   const [openIdx, setOpenIdx] = useState<number | null>(null);
+
+  const list = faqItems && faqItems.length > 0 ? faqItems : defaultFaqs;
 
   const toggle = (idx: number) => {
     setOpenIdx(openIdx === idx ? null : idx);
@@ -88,7 +30,7 @@ export default function FaqSection() {
         </div>
 
         <div className="space-y-4">
-          {FAQS.map((item, idx) => {
+          {list.map((item, idx) => {
             const isOpen = openIdx === idx;
             return (
               <div 
