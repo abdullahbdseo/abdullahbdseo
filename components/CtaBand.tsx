@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { ArrowRight, Handshake, MessageSquare, Layers } from 'lucide-react';
+import { ArrowRight, Handshake, MessageSquare, Layers, Mail } from 'lucide-react';
 import { personalInfo } from '@/data/portfolioData';
 
 export default function CtaBand() {
@@ -34,14 +34,23 @@ export default function CtaBand() {
             Start a Project <ArrowRight className="w-4 h-4" />
           </Link>
 
-          <a 
-            href={`https://wa.me/${personalInfo.phoneRaw}?text=${encodeURIComponent(`Hi ${personalInfo.name}! I'm interested in your services.`)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-white text-ink font-semibold text-sm hover:bg-gray-100 transition-all shadow-lg hover:scale-105"
-          >
-            <MessageSquare className="w-4 h-4 text-emerald-600" /> WhatsApp Me
-          </a>
+          {personalInfo.phoneRaw ? (
+            <a 
+              href={`https://wa.me/${personalInfo.phoneRaw}?text=${encodeURIComponent(`Hi ${personalInfo.name}! I'm interested in your services.`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-white text-ink font-semibold text-sm hover:bg-gray-100 transition-all shadow-lg hover:scale-105"
+            >
+              <MessageSquare className="w-4 h-4 text-emerald-600" /> WhatsApp Me
+            </a>
+          ) : (
+            <a 
+              href={`mailto:${personalInfo.email}`}
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-white text-ink font-semibold text-sm hover:bg-gray-100 transition-all shadow-lg hover:scale-105"
+            >
+              <Mail className="w-4 h-4 text-emerald-600" /> Email Me Directly
+            </a>
+          )}
 
           <Link 
             href="/#services"

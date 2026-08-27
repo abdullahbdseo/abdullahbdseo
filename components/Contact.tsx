@@ -7,7 +7,8 @@ import {
   MapPin, 
   Send, 
   CheckCircle2, 
-  Loader2 
+  Loader2,
+  Clock
 } from 'lucide-react';
 import { usePortfolio } from '@/lib/usePortfolio';
 
@@ -91,13 +92,13 @@ export default function Contact() {
 
               <div className="flex items-center gap-4 p-4 rounded-2xl bg-card border border-border">
                 <div className="w-11 h-11 rounded-xl bg-sage/10 text-sage flex items-center justify-center shrink-0">
-                  <Phone className="w-5 h-5" />
+                  <Clock className="w-5 h-5" />
                 </div>
                 <div>
-                  <span className="text-xs text-muted block font-medium">Phone / WhatsApp</span>
-                  <a href={`tel:${personalInfo.phoneRaw}`} className="text-sm font-semibold text-ink hover:text-sage transition-colors">
-                    {personalInfo.phone}
-                  </a>
+                  <span className="text-xs text-muted block font-medium">Response Time</span>
+                  <span className="text-sm font-semibold text-ink">
+                    Within 24 Hours
+                  </span>
                 </div>
               </div>
 

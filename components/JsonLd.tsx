@@ -38,7 +38,6 @@ export default function JsonLd() {
       addressCountry: 'BD',
     },
     email: 'abdullahbd.seo@gmail.com',
-    telephone: '+8801670769816',
     alumniOf: {
       '@type': 'CollegeOrUniversity',
       name: 'Northern University of Business & Technology, Khulna',

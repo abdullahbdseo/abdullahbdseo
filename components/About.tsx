@@ -120,10 +120,8 @@ export default function About() {
                 </a>
               </div>
               <div className="p-3.5 rounded-xl bg-card border border-border">
-                <small className="block text-[10px] uppercase tracking-wider text-muted font-semibold mb-0.5">Phone</small>
-                <a href={`tel:${personalInfo.phoneRaw}`} className="text-xs sm:text-sm font-semibold text-ink hover:text-sage truncate block">
-                  {personalInfo.phone}
-                </a>
+                <small className="block text-[10px] uppercase tracking-wider text-muted font-semibold mb-0.5">Response Time</small>
+                <span className="text-xs sm:text-sm font-semibold text-ink">Within 24 Hours</span>
               </div>
             </div>
 

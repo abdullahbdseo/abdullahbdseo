@@ -60,9 +60,8 @@ function generateCV() {
   doc.setFontSize(9.5);
   doc.setTextColor(...MUTED);
 
-  doc.text('Phone: +880 1670-769816', 15, 42);
-  doc.text('Email: abdullahbd.seo@gmail.com', 15, 48);
-  doc.text('Location: Dhaka, Bangladesh', 15, 54);
+  doc.text('Email: abdullahbd.seo@gmail.com', 15, 42);
+  doc.text('Location: Dhaka, Bangladesh', 15, 48);
 
   // Divider
   doc.setDrawColor(...LIGHT_LINE);
