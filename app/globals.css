@@ -1,0 +1,242 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Default Theme: Sage Minimalist */
+  --sage: #3D6B50;
+  --sage-dark: #2C523C;
+  --sage-pal: rgba(61, 107, 80, 0.10);
+  --blush: #C9A0AC;
+  --blush2: #A86B7E;
+  --blush-pal: rgba(201, 160, 172, 0.14);
+  
+  --ink: #1A1D1A;
+  --bg: #FAFAF8;
+  --card: #FFFFFF;
+  --card-subtle: #F4F6F4;
+  --border: #E5E8E5;
+  --muted: #606862;
+  --accent: var(--sage);
+
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.05);
+  --shadow-hover: 0 12px 32px rgba(61, 107, 80, 0.15);
+  --shadow-inset: inset 0 2px 4px rgba(0, 0, 0, 0.04);
+  --font-sans: 'DM Sans', sans-serif;
+  --font-display: 'DM Serif Display', serif;
+}
+
+[data-theme="dark"] {
+  --ink: #F0F4F1;
+  --bg: #0F1210;
+  --card: #181C19;
+  --card-subtle: #202622;
+  --border: #28302A;
+  --muted: #9BA39D;
+  --sage-pal: rgba(61, 107, 80, 0.22);
+  --blush-pal: rgba(201, 160, 172, 0.18);
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --shadow-hover: 0 12px 36px rgba(0, 0, 0, 0.6);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   1. SAGE MINIMAL (Default Forest Green & Rose Blush)
+   ═══════════════════════════════════════════════════════════ */
+[data-style="sage"] {
+  --sage: #3D6B50;
+  --sage-dark: #2C523C;
+  --sage-pal: rgba(61, 107, 80, 0.10);
+  --blush: #C9A0AC;
+  --blush2: #A86B7E;
+  --blush-pal: rgba(201, 160, 172, 0.14);
+}
+[data-style="sage"][data-theme="dark"] {
+  --sage: #528c6b;
+  --sage-dark: #3D6B50;
+  --sage-pal: rgba(82, 140, 107, 0.22);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   2. GLASSMORPHISM (Royal Indigo & Electric Cyan)
+   ═══════════════════════════════════════════════════════════ */
+[data-style="glass"] {
+  --bg: #EEF2FB;
+  --ink: #1B1F3B;
+  --card: rgba(255, 255, 255, 0.65);
+  --card-subtle: rgba(255, 255, 255, 0.45);
+  --border: rgba(94, 114, 235, 0.22);
+  --sage: #5E72EB;
+  --sage-dark: #4357C9;
+  --sage-pal: rgba(94, 114, 235, 0.15);
+  --blush: #00C2B2;
+  --blush2: #00A18E;
+  --blush-pal: rgba(0, 194, 178, 0.15);
+  --shadow-card: 0 8px 32px rgba(31, 38, 77, 0.10);
+  --shadow-hover: 0 16px 40px rgba(94, 114, 235, 0.25);
+}
+[data-style="glass"][data-theme="dark"] {
+  --bg: #0B0E22;
+  --ink: #EDEFFA;
+  --card: rgba(255, 255, 255, 0.07);
+  --card-subtle: rgba(255, 255, 255, 0.04);
+  --border: rgba(255, 255, 255, 0.12);
+  --sage: #8B9DFF;
+  --sage-dark: #6B7FFF;
+  --sage-pal: rgba(139, 157, 255, 0.20);
+  --blush: #3FE8D4;
+  --blush2: #2BC9B6;
+  --blush-pal: rgba(63, 232, 212, 0.20);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --shadow-hover: 0 16px 48px rgba(139, 157, 255, 0.35);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   3. NEUMORPHISM (Soft Slate Blue & Sunset Peach)
+   ═══════════════════════════════════════════════════════════ */
+[data-style="neumorphism"] {
+  --bg: #E4E9F2;
+  --ink: #2D3748;
+  --card: #E4E9F2;
+  --card-subtle: #D8DFE8;
+  --border: rgba(163, 177, 198, 0.35);
+  --sage: #5A78CE;
+  --sage-dark: #4561AF;
+  --sage-pal: rgba(90, 120, 206, 0.16);
+  --blush: #E0936F;
+  --blush2: #C97350;
+  --blush-pal: rgba(224, 147, 111, 0.16);
+  --shadow-card: 6px 6px 14px #C2C8D2, -6px -6px 14px #FFFFFF;
+  --shadow-hover: 10px 10px 20px #B4BCC8, -10px -10px 20px #FFFFFF;
+  --shadow-inset: inset 3px 3px 6px #C2C8D2, inset -3px -3px 6px #FFFFFF;
+}
+[data-style="neumorphism"][data-theme="dark"] {
+  --bg: #1B1E23;
+  --ink: #E2E8F0;
+  --card: #1B1E23;
+  --card-subtle: #24282F;
+  --border: rgba(255, 255, 255, 0.08);
+  --sage: #7B93DB;
+  --sage-dark: #5A71C4;
+  --sage-pal: rgba(123, 147, 219, 0.22);
+  --blush: #F0A585;
+  --blush2: #E0936F;
+  --blush-pal: rgba(240, 165, 133, 0.20);
+  --shadow-card: 6px 6px 16px #111316, -6px -6px 16px #252930;
+  --shadow-hover: 10px 10px 22px #0C0D10, -10px -10px 22px #2B3038;
+  --shadow-inset: inset 3px 3px 6px #111316, inset -3px -3px 6px #252930;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   4. CLAYMORPHISM (Warm Coral & Electric Violet)
+   ═══════════════════════════════════════════════════════════ */
+[data-style="claymorphism"] {
+  --bg: #FFF4EA;
+  --ink: #4A3728;
+  --card: #FFFFFF;
+  --card-subtle: #FFE8D6;
+  --border: rgba(255, 138, 101, 0.25);
+  --sage: #FF6B4A;
+  --sage-dark: #E65100;
+  --sage-pal: rgba(255, 107, 74, 0.16);
+  --blush: #7C5CFC;
+  --blush2: #5B3FD6;
+  --blush-pal: rgba(124, 92, 252, 0.16);
+  --shadow-card: 0 10px 24px rgba(74, 55, 40, 0.12), inset 0 2px 4px rgba(255, 255, 255, 0.8);
+  --shadow-hover: 0 16px 36px rgba(255, 107, 74, 0.25), inset 0 2px 4px rgba(255, 255, 255, 0.9);
+}
+[data-style="claymorphism"][data-theme="dark"] {
+  --bg: #1D1513;
+  --ink: #F9EBE7;
+  --card: #281D1A;
+  --card-subtle: #332521;
+  --border: rgba(255, 107, 74, 0.20);
+  --sage: #FF8A65;
+  --sage-dark: #FF6B4A;
+  --sage-pal: rgba(255, 138, 101, 0.22);
+  --blush: #9B82FD;
+  --blush2: #7C5CFC;
+  --blush-pal: rgba(155, 130, 253, 0.20);
+  --shadow-card: 0 10px 26px rgba(0, 0, 0, 0.45);
+  --shadow-hover: 0 16px 40px rgba(255, 138, 101, 0.35);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   5. SKEUOMORPHISM (Sapphire Cobalt & Crimson Rose)
+   ═══════════════════════════════════════════════════════════ */
+[data-style="skeuomorphism"] {
+  --bg: #E7EAF6;
+  --ink: #2B3354;
+  --card: #F3F5FC;
+  --card-subtle: #DCE0F1;
+  --border: rgba(71, 87, 199, 0.25);
+  --sage: #3648B8;
+  --sage-dark: #25338D;
+  --sage-pal: rgba(54, 72, 184, 0.15);
+  --blush: #D6708C;
+  --blush2: #B85470;
+  --blush-pal: rgba(214, 112, 140, 0.16);
+  --shadow-card: -4px -4px 10px rgba(255, 255, 255, 0.9), 6px 8px 18px rgba(71, 87, 199, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  --shadow-hover: -6px -6px 14px rgba(255, 255, 255, 0.95), 8px 12px 24px rgba(71, 87, 199, 0.22);
+}
+[data-style="skeuomorphism"][data-theme="dark"] {
+  --bg: #101426;
+  --ink: #EAEFFD;
+  --card: #181E38;
+  --card-subtle: #20274A;
+  --border: rgba(100, 120, 240, 0.20);
+  --sage: #6B7EF0;
+  --sage-dark: #4E62D8;
+  --sage-pal: rgba(107, 126, 240, 0.22);
+  --blush: #EA8DA6;
+  --blush2: #D6708C;
+  --blush-pal: rgba(234, 141, 166, 0.20);
+  --shadow-card: 0 8px 26px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --shadow-hover: 0 14px 36px rgba(107, 126, 240, 0.3);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--sage);
+}
+
+/* Progress bar */
+#scroll-progress {
+  transform-origin: 0% 50%;
+}
+
+/* Cursor blink */
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.cursor-blink {
+  animation: cursorBlink 0.8s step-end infinite;
+}
+
+/* Dot pattern background */
+.dot-pattern {
+  background-image: radial-gradient(rgba(96, 104, 98, 0.15) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
