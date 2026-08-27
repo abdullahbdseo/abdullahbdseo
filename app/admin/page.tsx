@@ -445,6 +445,13 @@ export default function AdminPage() {
                 >
                   <IconComp className="w-4 h-4 shrink-0" />
                   <span>{item.label}</span>
+                  {item.id === 'bookings' && bookings.length > 0 && (
+                    <span className={`ml-auto px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                      isActive ? 'bg-white text-sage' : 'bg-emerald-500 text-white shadow-xs animate-pulse'
+                    }`}>
+                      {bookings.length} New
+                    </span>
+                  )}
                 </button>
               );
             })}
@@ -565,6 +572,52 @@ export default function AdminPage() {
                   <Link href="/" target="_blank" className="text-xs text-sage font-semibold mt-3 hover:underline inline-block">Preview Site →</Link>
                 </div>
               </div>
+
+              {/* Strategy Bookings Notification Card */}
+              {bookings.length > 0 && (
+                <div className="bg-card border-2 border-emerald-500/40 rounded-2xl p-6 shadow-xs space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center shrink-0">
+                        <Calendar className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <h3 className="font-bold text-base text-ink">Incoming Strategy Call Bookings</h3>
+                          <span className="px-2 py-0.5 rounded-full bg-emerald-500 text-white text-[10px] font-bold">
+                            {bookings.length} New
+                          </span>
+                        </div>
+                        <p className="text-xs text-muted">
+                          Clients who scheduled a 15-minute consultation via your website.
+                        </p>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => setActiveTab('bookings')}
+                      className="px-4 py-2 rounded-xl bg-sage text-white text-xs font-bold hover:opacity-90 transition-opacity flex items-center justify-center gap-1.5 cursor-pointer shrink-0"
+                    >
+                      View All Bookings →
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                    {bookings.slice(0, 2).map((b: any) => (
+                      <div key={b.id} className="p-3.5 rounded-xl bg-cardSubtle border border-border text-xs space-y-1.5">
+                        <div className="flex items-center justify-between">
+                          <strong className="text-ink font-semibold">{b.name}</strong>
+                          <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 font-semibold">{b.platform}</span>
+                        </div>
+                        <div className="text-muted text-[11px] flex items-center justify-between">
+                          <span>📅 {b.date}</span>
+                          <span className="text-sage font-medium">⏰ {b.timeSlot.split(' (')[0]}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Quick Info Box */}
               <div className="bg-card border border-border rounded-2xl p-6 shadow-xs space-y-4">

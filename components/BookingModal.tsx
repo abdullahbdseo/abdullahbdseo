@@ -113,6 +113,29 @@ export default function BookingModal() {
         body: JSON.stringify(booking),
       }).catch(() => {});
 
+      // Send Instant Email Notification to your Gmail via FormSubmit
+      const notifyEmail = personalInfo.email || 'abdullahbd.seo@gmail.com';
+      fetch(`https://formsubmit.co/ajax/${notifyEmail}`, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          _subject: `🔔 New 15-Min Strategy Call Booked: ${booking.name}`,
+          _template: 'table',
+          _captcha: 'false',
+          'Client Name': booking.name,
+          'Client Email': booking.email,
+          'Website': booking.website,
+          'Scheduled Date': booking.date,
+          'Time Slot': booking.timeSlot,
+          'Platform': booking.platform,
+          'Client Goals / Notes': booking.notes || 'None provided',
+          _replyto: booking.email
+        }),
+      }).catch(() => {});
+
       setLastBooking(booking);
       setIsSuccess(true);
     } catch {

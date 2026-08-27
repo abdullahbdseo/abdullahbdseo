@@ -38,11 +38,20 @@ export default function Contact() {
     setLoading(true);
 
     try {
-      // Simulate/post to Formspree
-      const res = await fetch('https://formspree.io/f/mpwlpzny', {
+      const notifyEmail = personalInfo.email || 'abdullahbd.seo@gmail.com';
+      const res = await fetch(`https://formsubmit.co/ajax/${notifyEmail}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          _subject: `📩 New Project Inquiry from ${formData.fullname}`,
+          _template: 'table',
+          _captcha: 'false',
+          'Client Name': formData.fullname,
+          'Client Email': formData.email,
+          'Selected Service': formData.service || 'General Inquiry',
+          'Message': formData.message,
+          _replyto: formData.email
+        }),
       });
 
       if (res.ok) {
