@@ -127,15 +127,14 @@ export default function AdminPage() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    const currentPass = getAdminPasscode();
-    const validPasscodes = [currentPass, defaultPasscode, 'admin123', 'abdullah2026'].filter(Boolean);
+    const activePasscode = (getAdminPasscode() || defaultPasscode || '').trim();
 
-    if (validPasscodes.includes(passcode.trim())) {
+    if (passcode.trim() === activePasscode) {
       setIsAuthenticated(true);
       sessionStorage.setItem('portfolio_admin_auth', 'true');
       setAuthError('');
     } else {
-      setAuthError('Incorrect passcode. Please enter the valid admin passcode.');
+      setAuthError('Incorrect passcode. Access denied.');
     }
   };
 
@@ -144,10 +143,9 @@ export default function AdminPage() {
     setPasswordError('');
     setPasswordSuccess('');
 
-    const currentActualPass = getAdminPasscode();
-    const validPasses = [currentActualPass, defaultPasscode, 'admin123', 'abdullah2026'].filter(Boolean);
+    const activePasscode = (getAdminPasscode() || defaultPasscode || '').trim();
 
-    if (!validPasses.includes(currentPasswordInput.trim())) {
+    if (currentPasswordInput.trim() !== activePasscode) {
       setPasswordError('Current passcode is incorrect.');
       return;
     }
@@ -181,7 +179,7 @@ export default function AdminPage() {
         setNewPasswordInput('');
         setConfirmPasswordInput('');
       } else {
-        setPasswordSuccess('✓ Password updated in your browser session!');
+        setPasswordSuccess('✓ Password updated locally in your browser!');
         showToast('✓ Admin passcode updated in browser!');
       }
     } catch {
@@ -351,8 +349,8 @@ export default function AdminPage() {
             </button>
 
             <div className="text-center pt-2">
-              <span className="text-[11px] text-muted">
-                Default: <code className="px-1.5 py-0.5 rounded bg-cardSubtle border border-border text-ink font-mono">admin123</code> or your custom passcode
+              <span className="text-[11px] text-muted flex items-center justify-center gap-1.5">
+                <Lock className="w-3 h-3 text-sage" /> Protected with your active admin passcode
               </span>
             </div>
           </form>
