@@ -5,7 +5,7 @@
  * Auto-synced from Admin Console on 2026-08-27T10:25:25.108Z
  */
 
-export const adminPasscode = "abdullah2026";
+export const adminPasscode = "100200Aa";
 
 export const personalInfo = {
   "name": "Abdullah Saleh",
