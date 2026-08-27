@@ -8,9 +8,12 @@ import {
   Send, 
   CheckCircle2, 
   Loader2,
-  Clock
+  Clock,
+  Calendar,
+  Video
 } from 'lucide-react';
 import { usePortfolio } from '@/lib/usePortfolio';
+import { triggerBookingModal } from '@/components/BookingModal';
 
 export default function Contact() {
   const { personalInfo } = usePortfolio();
@@ -113,6 +116,29 @@ export default function Contact() {
                   </span>
                 </div>
               </div>
+            </div>
+
+            {/* Featured Strategy Call Booking Card */}
+            <div className="p-6 rounded-2xl bg-gradient-to-br from-sage/15 to-sage/5 border border-sage/40 shadow-xs space-y-3.5">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-xl bg-sage text-white flex items-center justify-center shadow-xs shrink-0">
+                  <Video className="w-4 h-4" />
+                </div>
+                <div>
+                  <strong className="text-sm font-bold text-ink block">Schedule a Video Consultation</strong>
+                  <span className="text-xs text-muted">Prefer to talk face-to-face over Google Meet / Zoom?</span>
+                </div>
+              </div>
+              <p className="text-xs text-muted leading-relaxed">
+                Skip the back-and-forth emails. Pick a 15-minute slot that fits your schedule for an instant discovery session.
+              </p>
+              <button
+                type="button"
+                onClick={triggerBookingModal}
+                className="w-full py-2.5 px-4 rounded-xl bg-sage text-white font-bold text-xs hover:opacity-95 transition-all flex items-center justify-center gap-2 shadow-xs cursor-pointer active:scale-98"
+              >
+                <Calendar className="w-4 h-4" /> Book 15-Min Strategy Call
+              </button>
             </div>
           </div>
 

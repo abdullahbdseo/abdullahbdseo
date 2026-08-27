@@ -28,7 +28,13 @@ import {
   Upload,
   Image as ImageIcon,
   Link2,
-  X
+  X,
+  Calendar,
+  Video,
+  Clock,
+  Globe,
+  Mail as MailIcon,
+  MessageSquare
 } from 'lucide-react';
 import { 
   loadPortfolioData, 
@@ -46,7 +52,8 @@ export default function AdminPage() {
   const [passcode, setPasscode] = useState('');
   const [showPasscode, setShowPasscode] = useState(false);
   const [authError, setAuthError] = useState('');
-  const [activeTab, setActiveTab] = useState<'overview' | 'personal' | 'services' | 'projects' | 'blog' | 'security' | 'export'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'personal' | 'services' | 'projects' | 'blog' | 'bookings' | 'security' | 'export'>('overview');
+  const [bookings, setBookings] = useState<any[]>([]);
 
   // Portfolio dynamic state
   const [data, setData] = useState<PortfolioStoreData | null>(null);
@@ -119,6 +126,32 @@ export default function AdminPage() {
     }
     setData(loadPortfolioData());
   }, []);
+
+  // Fetch client bookings
+  useEffect(() => {
+    try {
+      const local = JSON.parse(localStorage.getItem('portfolio_client_bookings') || '[]');
+      fetch('/api/bookings')
+        .then((res) => res.json())
+        .then((json) => {
+          if (json.success && Array.isArray(json.bookings) && json.bookings.length > 0) {
+            setBookings(json.bookings);
+          } else {
+            setBookings(local);
+          }
+        })
+        .catch(() => setBookings(local));
+    } catch {
+      // ignore
+    }
+  }, [activeTab]);
+
+  const handleDeleteBooking = (id: string) => {
+    const updated = bookings.filter((b) => b.id !== id);
+    setBookings(updated);
+    localStorage.setItem('portfolio_client_bookings', JSON.stringify(updated));
+    showToast('✓ Booking removed');
+  };
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -394,6 +427,7 @@ export default function AdminPage() {
               { id: 'services', label: 'Services (What I Do)', icon: Briefcase },
               { id: 'projects', label: 'Recent Projects', icon: FolderGit2 },
               { id: 'blog', label: 'Blog & Insights', icon: BookOpen },
+              { id: 'bookings', label: 'Strategy Bookings', icon: Calendar },
               { id: 'security', label: 'Security & Password', icon: Lock },
               { id: 'export', label: 'Export & Code Sync', icon: FileCode },
             ].map((item) => {
@@ -626,13 +660,14 @@ export default function AdminPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1.5">Phone (Display)</label>
+                    <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1.5">Calendly / Cal.com URL (Optional)</label>
                     <input
                       type="text"
-                      value={data.personalInfo.phone}
+                      placeholder="e.g. https://calendly.com/your-name/15min"
+                      value={data.personalInfo.bookingLink || ''}
                       onChange={(e) => setData({
                         ...data,
-                        personalInfo: { ...data.personalInfo, phone: e.target.value }
+                        personalInfo: { ...data.personalInfo, bookingLink: e.target.value }
                       })}
                       className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-sm text-ink outline-none focus:border-sage"
                     />
@@ -1352,6 +1387,134 @@ export default function AdminPage() {
                   </div>
                 ))}
               </div>
+            </div>
+          )}
+
+          {/* ──────────────────────────────────
+               TAB: CALL BOOKINGS
+          ────────────────────────────────── */}
+          {activeTab === 'bookings' && (
+            <div className="space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-xl font-bold font-display text-ink mb-1">
+                    Client Strategy Call Bookings
+                  </h2>
+                  <p className="text-xs text-muted">
+                    Manage 1-on-1 strategy sessions requested by prospective clients through the website.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <span className="px-3 py-1.5 rounded-xl bg-sage/10 text-sage text-xs font-bold border border-sage/20">
+                    {bookings.length} Total Bookings
+                  </span>
+                </div>
+              </div>
+
+              {bookings.length === 0 ? (
+                <div className="bg-card border border-border rounded-3xl p-12 text-center space-y-4">
+                  <div className="w-14 h-14 rounded-2xl bg-sage-pal border border-sage/30 text-sage flex items-center justify-center mx-auto">
+                    <Calendar className="w-7 h-7" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-base text-ink">No Strategy Calls Booked Yet</h3>
+                    <p className="text-xs text-muted max-w-sm mx-auto mt-1">
+                      When prospective clients book a 15-minute call via your website, their contact info, website, and scheduled slot will appear here.
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {bookings.map((booking: any) => (
+                    <div 
+                      key={booking.id}
+                      className="bg-card border border-border rounded-2xl p-5 shadow-xs hover:border-sage/50 transition-all space-y-4"
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <h3 className="font-bold text-base text-ink">{booking.name}</h3>
+                            <span className="px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-600 text-[10px] font-bold border border-emerald-500/20">
+                              {booking.platform || 'Google Meet'}
+                            </span>
+                          </div>
+                          <a 
+                            href={`mailto:${booking.email}`}
+                            className="text-xs text-sage font-medium hover:underline flex items-center gap-1 mt-0.5"
+                          >
+                            <MailIcon className="w-3 h-3" /> {booking.email}
+                          </a>
+                        </div>
+
+                        <button
+                          onClick={() => handleDeleteBooking(booking.id)}
+                          className="p-2 rounded-lg text-muted hover:text-rose-500 hover:bg-rose-500/10 transition-colors"
+                          title="Remove booking"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+
+                      {/* Scheduled Time */}
+                      <div className="p-3 rounded-xl bg-cardSubtle border border-border space-y-1 text-xs">
+                        <div className="flex items-center justify-between text-muted">
+                          <span className="flex items-center gap-1.5 font-semibold text-ink">
+                            <Calendar className="w-3.5 h-3.5 text-sage" /> {booking.date}
+                          </span>
+                          <span className="flex items-center gap-1.5 font-semibold text-sage">
+                            <Clock className="w-3.5 h-3.5" /> {booking.timeSlot}
+                          </span>
+                        </div>
+                        {booking.website && booking.website !== 'Not specified' && (
+                          <div className="pt-1.5 border-t border-border/60 flex items-center gap-1.5 text-muted">
+                            <Globe className="w-3.5 h-3.5 text-muted" />
+                            <a 
+                              href={booking.website.startsWith('http') ? booking.website : `https://${booking.website}`} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="text-ink hover:text-sage font-mono truncate hover:underline"
+                            >
+                              {booking.website}
+                            </a>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Client Note */}
+                      {booking.notes && (
+                        <div className="p-3 rounded-xl bg-sage-pal/50 border border-sage/20 text-xs">
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-muted block mb-1">
+                            Client Goals / Focus:
+                          </span>
+                          <p className="text-ink text-xs leading-relaxed italic">
+                            &quot;{booking.notes}&quot;
+                          </p>
+                        </div>
+                      )}
+
+                      {/* Actions */}
+                      <div className="flex items-center gap-2 pt-1">
+                        <a
+                          href={`mailto:${booking.email}?subject=Confirmation:%20SEO%20Strategy%20Call%20with%20Abdullah%20Saleh&body=Hi%20${encodeURIComponent(booking.name)},%0A%0AThank%20you%20for%20scheduling%20a%20strategy%20call%20for%20${encodeURIComponent(booking.date)}%20at%20${encodeURIComponent(booking.timeSlot)}.%0A%0ALooking%20forward%20to%20speaking%20with%20you!`}
+                          className="flex-1 py-2 px-3 rounded-xl bg-sage text-white text-xs font-bold hover:opacity-95 text-center flex items-center justify-center gap-1.5 transition-colors"
+                        >
+                          <MailIcon className="w-3.5 h-3.5" /> Email Client
+                        </a>
+
+                        <a
+                          href={booking.platform === 'Zoom' ? 'https://zoom.us/start' : 'https://meet.google.com/new'}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="py-2 px-3 rounded-xl bg-cardSubtle border border-border text-ink text-xs font-semibold hover:border-sage flex items-center gap-1.5 transition-colors"
+                        >
+                          <Video className="w-3.5 h-3.5 text-emerald-500" /> Start Meeting
+                        </a>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
 

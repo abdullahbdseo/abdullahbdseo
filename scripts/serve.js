@@ -267,6 +267,54 @@ export const blogPosts: BlogPostItem[] = ${JSON.stringify(payload.blogPosts, nul
     return;
   }
 
+  // Handle POST /api/book-call
+  if (req.method === 'POST' && reqPath === '/api/book-call') {
+    let body = '';
+    req.on('data', chunk => body += chunk);
+    req.on('end', () => {
+      try {
+        const booking = JSON.parse(body);
+        const bookingsFile = path.join(__dirname, '..', 'data', 'bookings.json');
+        let list = [];
+        if (fs.existsSync(bookingsFile)) {
+          try {
+            list = JSON.parse(fs.readFileSync(bookingsFile, 'utf8'));
+          } catch(e) { list = []; }
+        }
+        list.unshift(booking);
+        fs.writeFileSync(bookingsFile, JSON.stringify(list, null, 2), 'utf8');
+
+        // Auto push to GitHub so bookings are backed up in git
+        runGitAutoPush(`New Strategy Call Booking from ${booking.name || 'Client'}`)
+          .then(res => console.log('[Auto-Git Booking Push]:', res.message || res.error));
+
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: true, message: 'Booking saved successfully!' }));
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: false, error: err.message }));
+      }
+    });
+    return;
+  }
+
+  // Handle GET /api/bookings
+  if (req.method === 'GET' && reqPath === '/api/bookings') {
+    try {
+      const bookingsFile = path.join(__dirname, '..', 'data', 'bookings.json');
+      let list = [];
+      if (fs.existsSync(bookingsFile)) {
+        list = JSON.parse(fs.readFileSync(bookingsFile, 'utf8'));
+      }
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: true, bookings: list }));
+    } catch (err) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: false, bookings: [] }));
+    }
+    return;
+  }
+
   if (reqPath === '/') reqPath = '/index.html';
 
   let filePath = path.join(OUT_DIR, reqPath);

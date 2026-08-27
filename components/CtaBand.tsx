@@ -2,8 +2,9 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { ArrowRight, Handshake, MessageSquare, Layers, Mail } from 'lucide-react';
+import { ArrowRight, Handshake, MessageSquare, Layers, Mail, Calendar } from 'lucide-react';
 import { personalInfo } from '@/data/portfolioData';
+import { triggerBookingModal } from '@/components/BookingModal';
 
 export default function CtaBand() {
   return (
@@ -27,9 +28,16 @@ export default function CtaBand() {
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-4">
+          <button
+            onClick={triggerBookingModal}
+            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-sage text-white font-bold text-sm hover:bg-emerald-600 transition-all shadow-lg hover:scale-105 cursor-pointer"
+          >
+            <Calendar className="w-4 h-4" /> Book 15-Min Strategy Call
+          </button>
+
           <Link 
             href="/#contact"
-            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-sage text-white font-semibold text-sm hover:bg-emerald-600 transition-all shadow-lg hover:scale-105"
+            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-white text-ink font-semibold text-sm hover:bg-gray-100 transition-all shadow-lg hover:scale-105"
           >
             Start a Project <ArrowRight className="w-4 h-4" />
           </Link>

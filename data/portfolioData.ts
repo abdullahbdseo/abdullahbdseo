@@ -22,7 +22,8 @@ export const personalInfo = {
   "cvFile": "/assets/files/abdullah-saleh-cv.pdf",
   "cvDownloadName": "Abdullah-Saleh-CV.pdf",
   "heroTagline": "Google page 1. AI Overviews. ChatGPT answers. Instagram feeds.",
-  "heroBio": "I'm Abdullah Saleh, an SEO Growth Specialist helping brands win visibility everywhere customers actually look — search engines, AI answers, and social feeds."
+  "heroBio": "I'm Abdullah Saleh, an SEO Growth Specialist helping brands win visibility everywhere customers actually look — search engines, AI answers, and social feeds.",
+  "bookingLink": ""
 };
 
 export const aboutSection = {

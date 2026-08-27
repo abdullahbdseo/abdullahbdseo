@@ -27,8 +27,10 @@ import {
   LayoutGrid, 
   User, 
   GraduationCap, 
-  Mail
+  Mail,
+  Calendar
 } from 'lucide-react';
+import { triggerBookingModal } from '@/components/BookingModal';
 
 export default function Navbar() {
   const { theme, style, toggleTheme, setStyle, cycleStyle } = useTheme();
@@ -487,6 +489,14 @@ export default function Navbar() {
               )}
             </div>
 
+            {/* Book Strategy Call */}
+            <button
+              onClick={triggerBookingModal}
+              className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-sage-pal border border-sage/40 text-sage font-semibold text-xs hover:bg-sage hover:text-white transition-all shadow-xs cursor-pointer"
+            >
+              <Calendar className="w-3.5 h-3.5" /> Book Call
+            </button>
+
             {/* Let's Talk CTA */}
             <Link 
               href="/#contact" 
@@ -585,10 +595,20 @@ export default function Navbar() {
             </span>
           </button>
 
+          <button
+            onClick={() => {
+              setMobileOpen(false);
+              triggerBookingModal();
+            }}
+            className="mt-4 w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-ink text-surface font-bold text-sm shadow-sm cursor-pointer"
+          >
+            <Calendar className="w-4 h-4 text-sage" /> Book 15-Min Strategy Call
+          </button>
+
           <Link 
             href="/#contact" 
             onClick={() => setMobileOpen(false)}
-            className="mt-4 w-full text-center py-3 rounded-xl bg-sage text-white font-bold text-sm"
+            className="w-full text-center py-3 rounded-xl bg-sage text-white font-bold text-sm"
           >
             Let's Talk →
           </Link>

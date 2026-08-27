@@ -3,6 +3,7 @@ import { DM_Sans, DM_Serif_Display } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/context/ThemeContext';
 import JsonLd from '@/components/JsonLd';
+import BookingModal from '@/components/BookingModal';
 
 const dmSans = DM_Sans({
   subsets: ['latin'],
@@ -83,6 +84,7 @@ export default function RootLayout({
       <body className="antialiased">
         <ThemeProvider>
           {children}
+          <BookingModal />
         </ThemeProvider>
       </body>
     </html>

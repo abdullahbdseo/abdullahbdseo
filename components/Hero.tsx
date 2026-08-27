@@ -10,9 +10,11 @@ import {
   TrendingUp, 
   ArrowRight, 
   FileSearch, 
-  Download 
+  Download,
+  Calendar
 } from 'lucide-react';
 import { usePortfolio } from '@/lib/usePortfolio';
+import { triggerBookingModal } from '@/components/BookingModal';
 
 const TYPE_WORDS = ['Find', 'Discover', 'Choose', 'Remember'];
 
@@ -90,9 +92,16 @@ export default function Hero() {
 
             {/* Action Buttons */}
             <div className="flex flex-wrap items-center gap-3 mb-10">
+              <button
+                onClick={triggerBookingModal}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-sage text-white font-bold text-sm hover:opacity-95 transition-all shadow-md cursor-pointer hover:scale-[1.02]"
+              >
+                <Calendar className="w-4 h-4" /> Book 15-Min Call
+              </button>
+
               <Link 
                 href="/#contact"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-ink text-surface font-semibold text-sm hover:bg-sage transition-all shadow-sm"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-ink text-surface font-semibold text-sm hover:bg-sage transition-all shadow-sm"
               >
                 Start a Project <ArrowRight className="w-4 h-4" />
               </Link>
@@ -102,18 +111,12 @@ export default function Hero() {
               >
                 <FileSearch className="w-4 h-4" /> Free SEO Audit
               </Link>
-              <Link 
-                href="/#projects"
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-border text-ink font-medium text-sm hover:bg-cardSubtle transition-all"
-              >
-                Projects
-              </Link>
               <a 
                 href={personalInfo.cvFile} 
                 download={personalInfo.cvDownloadName}
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-border bg-card text-ink font-semibold text-sm hover:border-sage hover:text-sage transition-all shadow-xs"
+                className="inline-flex items-center gap-2 px-4 py-3 rounded-xl border border-border bg-card text-ink font-semibold text-sm hover:border-sage hover:text-sage transition-all shadow-xs"
               >
-                <Download className="w-4 h-4 text-sage" /> Download CV
+                <Download className="w-4 h-4 text-sage" /> CV
               </a>
             </div>
 
