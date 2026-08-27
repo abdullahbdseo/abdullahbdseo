@@ -37,7 +37,7 @@ export default function JsonLd() {
       addressLocality: 'Dhaka',
       addressCountry: 'BD',
     },
-    email: 'abdullahsaleh701@gmail.com',
+    email: 'abdullahbd.seo@gmail.com',
     telephone: '+8801670769816',
     alumniOf: {
       '@type': 'CollegeOrUniversity',

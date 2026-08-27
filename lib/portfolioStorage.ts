@@ -42,6 +42,9 @@ export function loadPortfolioData(): PortfolioStoreData {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return getDefaultPortfolioData();
     const parsed = JSON.parse(raw);
+    if (parsed.personalInfo && (parsed.personalInfo.email === 'abdullahsaleh701@gmail.com' || !parsed.personalInfo.email)) {
+      parsed.personalInfo.email = defaultPersonalInfo.email;
+    }
     return {
       personalInfo: { ...defaultPersonalInfo, ...(parsed.personalInfo || {}) },
       aboutSection: { ...defaultAboutSection, ...(parsed.aboutSection || {}) },

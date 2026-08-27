@@ -12,7 +12,7 @@ export const personalInfo = {
   "badge": "Search Architect & Growth Strategist",
   "phone": "+880 1670-769816",
   "phoneRaw": "8801670769816",
-  "email": "abdullahsaleh701@gmail.com",
+  "email": "abdullahbd.seo@gmail.com",
   "location": "Dhaka, Bangladesh",
   "degree": "B.Sc. in CSE",
   "status": "Available for Projects",
