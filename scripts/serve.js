@@ -27,15 +27,16 @@ const MIME_TYPES = {
 // Automatic Git Commit & Push helper
 function runGitAutoPush(customMessage) {
   const commitMsg = customMessage || `Content update via Admin Console - ${new Date().toISOString()}`;
-  const gitPath = 'C:\\Users\\infob\\MinGit\\cmd';
-  const env = { ...process.env, Path: `${gitPath};${process.env.Path}` };
+  const gitExe = fs.existsSync('C:\\Users\\infob\\MinGit\\cmd\\git.exe')
+    ? '"C:\\Users\\infob\\MinGit\\cmd\\git.exe"'
+    : 'git';
   const projectDir = path.join(__dirname, '..');
 
-  const cmd = `git add . && git commit -m "${commitMsg.replace(/"/g, '\\"')}" && git push origin main`;
+  const cmd = `${gitExe} add . && ${gitExe} commit -m "${commitMsg.replace(/"/g, '\\"')}" && ${gitExe} push origin main`;
   console.log('[Auto-Git] Triggering automatic Git push to GitHub...');
 
   return new Promise((resolve) => {
-    exec(cmd, { cwd: projectDir, env }, (err, stdout, stderr) => {
+    exec(cmd, { cwd: projectDir }, (err, stdout, stderr) => {
       if (err) {
         if ((stdout && stdout.includes('nothing to commit')) || (stderr && stderr.includes('nothing to commit'))) {
           console.log('[Auto-Git] Repository already up to date.');
