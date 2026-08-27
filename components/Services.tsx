@@ -43,6 +43,21 @@ function renderServiceIcon(type: string) {
   }
 }
 
+function getServiceSlug(id: string): string {
+  switch (id) {
+    case 'seo': return '/services/seo';
+    case 'aeo': return '/services/aeo';
+    case 'geo': return '/services/geo';
+    case 'technical': return '/services/technical-seo';
+    case 'meta': return '/services/meta-ads';
+    case 'security': return '/services/security-seo';
+    case 'it': return '/services/it-support';
+    case 'audit': return '/free-audit';
+    case 'migration': return '/services/strategy';
+    default: return '/services';
+  }
+}
+
 export default function Services() {
   const { services } = usePortfolio();
   const [currentPage, setCurrentPage] = useState(0);
@@ -93,7 +108,7 @@ export default function Services() {
 
             {/* All Services Gradient Button */}
             <Link 
-              href="/#contact"
+              href="/services"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-sage to-blush text-white font-semibold text-sm hover:opacity-90 transition-all shadow-md shadow-sage/20 hover:shadow-sage/30 hover:scale-[1.02]"
             >
               All Services <ArrowRight className="w-4 h-4" />
@@ -125,24 +140,35 @@ export default function Services() {
                     </div>
 
                     <h3 className="text-xl font-bold font-display text-ink mb-3 transition-colors duration-500">
-                      {svc.title}
+                      <Link href={getServiceSlug(svc.id)} className="hover:underline">
+                        {svc.title}
+                      </Link>
                     </h3>
 
-                    <p className="text-sm text-ink/80 leading-relaxed font-normal mb-8 transition-colors duration-500">
+                    <p className="text-sm text-ink/80 leading-relaxed font-normal mb-6 transition-colors duration-500">
                       {svc.desc}
                     </p>
+
+                    {/* Tags */}
+                    <div className="flex flex-wrap gap-2 pt-2">
+                      {svc.tags.map((tag, idx) => (
+                        <span 
+                          key={idx} 
+                          className="px-3 py-1.5 rounded-full text-xs font-semibold bg-card/80 text-sage border border-sage/30 shadow-2xs transition-colors duration-500"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
                   </div>
 
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-2 pt-4">
-                    {svc.tags.map((tag, idx) => (
-                      <span 
-                        key={idx} 
-                        className="px-3 py-1.5 rounded-full text-xs font-semibold bg-card/80 text-sage border border-sage/30 shadow-2xs transition-colors duration-500"
-                      >
-                        {tag}
-                      </span>
-                    ))}
+                  <div className="pt-5 mt-6 border-t border-sage/20 flex items-center justify-between">
+                    <Link 
+                      href={getServiceSlug(svc.id)}
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-sage hover:underline"
+                    >
+                      Explore Service Scope <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
                   </div>
                 </div>
               );
@@ -160,24 +186,35 @@ export default function Services() {
                   </div>
 
                   <h3 className="text-xl font-bold font-display text-ink mb-3 group-hover:text-sage transition-colors duration-300">
-                    {svc.title}
+                    <Link href={getServiceSlug(svc.id)} className="hover:underline">
+                      {svc.title}
+                    </Link>
                   </h3>
 
-                  <p className="text-sm text-muted leading-relaxed font-normal mb-8 transition-colors duration-300">
+                  <p className="text-sm text-muted leading-relaxed font-normal mb-6 transition-colors duration-300">
                     {svc.desc}
                   </p>
+
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-2 pt-2">
+                    {svc.tags.map((tag, idx) => (
+                      <span 
+                        key={idx} 
+                        className="px-3 py-1.5 rounded-full text-xs font-semibold bg-sage-pal text-sage border border-sage/20 shadow-2xs group-hover:border-sage/40 transition-colors duration-300"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
 
-                {/* Tags */}
-                <div className="flex flex-wrap gap-2 pt-4">
-                  {svc.tags.map((tag, idx) => (
-                    <span 
-                      key={idx} 
-                      className="px-3 py-1.5 rounded-full text-xs font-semibold bg-sage-pal text-sage border border-sage/20 shadow-2xs group-hover:border-sage/40 transition-colors duration-300"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+                <div className="pt-5 mt-6 border-t border-border/60 flex items-center justify-between">
+                  <Link 
+                    href={getServiceSlug(svc.id)}
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-sage hover:underline"
+                  >
+                    Explore Service Scope <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
                 </div>
               </div>
             );

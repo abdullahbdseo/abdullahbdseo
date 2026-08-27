@@ -161,40 +161,40 @@ export default function Navbar() {
                       <span className="text-[11px] font-bold uppercase tracking-wider text-muted">
                         Search & AI Visibility
                       </span>
-                      <Link href="/#services" className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-cardSubtle transition-colors group">
+                      <Link href="/services/seo" className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-cardSubtle transition-colors group">
                         <div className="p-2 rounded-lg bg-sage/10 text-sage group-hover:bg-sage group-hover:text-white transition-colors">
                           <Search className="w-4 h-4" />
                         </div>
                         <div>
                           <strong className="block text-sm text-ink group-hover:text-sage">SEO</strong>
-                          <span className="text-xs text-muted">Organic rankings & traffic growth</span>
+                          <span className="text-xs text-muted">Organic rankings &amp; traffic growth</span>
                         </div>
                       </Link>
-                      <Link href="/#services" className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-cardSubtle transition-colors group">
+                      <Link href="/services/aeo" className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-cardSubtle transition-colors group">
                         <div className="p-2 rounded-lg bg-sage/10 text-sage group-hover:bg-sage group-hover:text-white transition-colors">
                           <Mic className="w-4 h-4" />
                         </div>
                         <div>
                           <strong className="block text-sm text-ink group-hover:text-sage">Answer Engine Optimization</strong>
-                          <span className="text-xs text-muted">Win featured snippets & voice results</span>
+                          <span className="text-xs text-muted">Win featured snippets &amp; voice results</span>
                         </div>
                       </Link>
-                      <Link href="/#services" className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-cardSubtle transition-colors group">
+                      <Link href="/services/geo" className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-cardSubtle transition-colors group">
                         <div className="p-2 rounded-lg bg-sage/10 text-sage group-hover:bg-sage group-hover:text-white transition-colors">
                           <Bot className="w-4 h-4" />
                         </div>
                         <div>
                           <strong className="block text-sm text-ink group-hover:text-sage">Generative Engine Optimization</strong>
-                          <span className="text-xs text-muted">Get cited in AI Overviews & LLMs</span>
+                          <span className="text-xs text-muted">Get cited in AI Overviews &amp; LLMs</span>
                         </div>
                       </Link>
-                      <Link href="/#services" className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-cardSubtle transition-colors group">
+                      <Link href="/services/technical-seo" className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-cardSubtle transition-colors group">
                         <div className="p-2 rounded-lg bg-sage/10 text-sage group-hover:bg-sage group-hover:text-white transition-colors">
                           <Code className="w-4 h-4" />
                         </div>
                         <div>
                           <strong className="block text-sm text-ink group-hover:text-sage">Technical SEO</strong>
-                          <span className="text-xs text-muted">Crawlability, speed & Core Web Vitals</span>
+                          <span className="text-xs text-muted">Crawlability, speed &amp; Core Web Vitals</span>
                         </div>
                       </Link>
                     </div>
@@ -202,18 +202,18 @@ export default function Navbar() {
                     {/* Col 2 */}
                     <div className="col-span-4 space-y-3">
                       <span className="text-[11px] font-bold uppercase tracking-wider text-muted">
-                        Growth & Security
+                        Growth &amp; Security
                       </span>
-                      <Link href="/#services" className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-cardSubtle transition-colors group">
+                      <Link href="/services/meta-ads" className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-cardSubtle transition-colors group">
                         <div className="p-2 rounded-lg bg-blush2/10 text-blush2 group-hover:bg-blush2 group-hover:text-white transition-colors">
                           <TrendingUp className="w-4 h-4" />
                         </div>
                         <div>
                           <strong className="block text-sm text-ink group-hover:text-blush2">Meta Ads Management</strong>
-                          <span className="text-xs text-muted">Facebook & Instagram campaigns</span>
+                          <span className="text-xs text-muted">Facebook &amp; Instagram campaigns</span>
                         </div>
                       </Link>
-                      <Link href="/#services" className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-cardSubtle transition-colors group">
+                      <Link href="/services/security-seo" className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-cardSubtle transition-colors group">
                         <div className="p-2 rounded-lg bg-sage/10 text-sage group-hover:bg-sage group-hover:text-white transition-colors">
                           <ShieldCheck className="w-4 h-4" />
                         </div>
@@ -222,21 +222,21 @@ export default function Navbar() {
                           <span className="text-xs text-muted">Protect rankings from blacklists</span>
                         </div>
                       </Link>
-                      <Link href="/#services" className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-cardSubtle transition-colors group">
+                      <Link href="/services/it-support" className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-cardSubtle transition-colors group">
                         <div className="p-2 rounded-lg bg-sage/10 text-sage group-hover:bg-sage group-hover:text-white transition-colors">
                           <Server className="w-4 h-4" />
                         </div>
                         <div>
-                          <strong className="block text-sm text-ink group-hover:text-sage">IT Support & Systems</strong>
-                          <span className="text-xs text-muted">Network & system administration</span>
+                          <strong className="block text-sm text-ink group-hover:text-sage">IT Support &amp; Systems</strong>
+                          <span className="text-xs text-muted">Network &amp; system administration</span>
                         </div>
                       </Link>
-                      <Link href="/#services" className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-cardSubtle transition-colors group">
+                      <Link href="/services/strategy" className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-cardSubtle transition-colors group">
                         <div className="p-2 rounded-lg bg-sage/10 text-sage group-hover:bg-sage group-hover:text-white transition-colors">
                           <Route className="w-4 h-4" />
                         </div>
                         <div>
-                          <strong className="block text-sm text-ink group-hover:text-sage">Process & Strategy</strong>
+                          <strong className="block text-sm text-ink group-hover:text-sage">Process &amp; Strategy</strong>
                           <span className="text-xs text-muted">End-to-end client workflow</span>
                         </div>
                       </Link>
@@ -557,12 +557,15 @@ export default function Navbar() {
             </button>
             {mobileAccordion === 'services' && (
               <div className="pl-4 py-2 space-y-2 bg-cardSubtle/40 rounded-lg text-sm">
-                <Link href="/#services" onClick={() => setMobileOpen(false)} className="block py-1 text-ink">SEO Optimization</Link>
-                <Link href="/#services" onClick={() => setMobileOpen(false)} className="block py-1 text-ink">Answer Engine Optimization (AEO)</Link>
-                <Link href="/#services" onClick={() => setMobileOpen(false)} className="block py-1 text-ink">Generative Engine Optimization (GEO)</Link>
-                <Link href="/#services" onClick={() => setMobileOpen(false)} className="block py-1 text-ink">Technical SEO Audit</Link>
-                <Link href="/#services" onClick={() => setMobileOpen(false)} className="block py-1 text-ink">Meta Ads Management</Link>
-                <Link href="/#services" onClick={() => setMobileOpen(false)} className="block py-1 text-ink">Security-Aware SEO</Link>
+                <Link href="/services/seo" onClick={() => setMobileOpen(false)} className="block py-1 text-ink">Search Engine Optimization (SEO)</Link>
+                <Link href="/services/aeo" onClick={() => setMobileOpen(false)} className="block py-1 text-ink">Answer Engine Optimization (AEO)</Link>
+                <Link href="/services/geo" onClick={() => setMobileOpen(false)} className="block py-1 text-ink">Generative Engine Optimization (GEO)</Link>
+                <Link href="/services/technical-seo" onClick={() => setMobileOpen(false)} className="block py-1 text-ink">Technical SEO &amp; Performance</Link>
+                <Link href="/services/meta-ads" onClick={() => setMobileOpen(false)} className="block py-1 text-ink">Meta Ads Management</Link>
+                <Link href="/services/security-seo" onClick={() => setMobileOpen(false)} className="block py-1 text-ink">Security-Aware SEO</Link>
+                <Link href="/services/it-support" onClick={() => setMobileOpen(false)} className="block py-1 text-ink">IT Support &amp; Systems</Link>
+                <Link href="/services/strategy" onClick={() => setMobileOpen(false)} className="block py-1 text-ink">Process &amp; Strategy</Link>
+                <Link href="/services" onClick={() => setMobileOpen(false)} className="block py-1 text-sage font-bold">All Services Directory →</Link>
                 <Link href="/free-audit" onClick={() => setMobileOpen(false)} className="block py-1 text-sage font-bold">Free SEO Audit Tool →</Link>
               </div>
             )}
