@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePortfolio } from '@/lib/usePortfolio';
 
 export default function Footer() {
@@ -17,8 +18,14 @@ export default function Footer() {
           {/* Brand Info */}
           <div className="md:col-span-6 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-sage text-white font-bold flex items-center justify-center font-display text-lg tracking-wider">
-                {personalInfo.monogram}
+              <div className="w-10 h-10 rounded-xl bg-card border border-border/80 flex items-center justify-center p-1.5 shadow-xs overflow-hidden">
+                <Image
+                  src="/assets/images/favicon.png"
+                  alt="Abdullah Saleh Logo"
+                  width={36}
+                  height={36}
+                  className="w-full h-full object-contain"
+                />
               </div>
               <strong className="text-lg font-display text-ink">{personalInfo.name}</strong>
             </div>

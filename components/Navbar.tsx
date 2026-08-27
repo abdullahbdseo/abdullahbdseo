@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { personalInfo } from '@/data/portfolioData';
 import { useTheme, StyleTheme } from '@/context/ThemeContext';
 import { 
@@ -101,11 +102,18 @@ export default function Navbar() {
           
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-sage text-white font-bold flex items-center justify-center font-display text-lg tracking-wider shadow-sm group-hover:scale-105 transition-transform">
-              {personalInfo.monogram}
+            <div className="w-10 h-10 rounded-xl bg-card border border-border/80 flex items-center justify-center p-1.5 shadow-xs group-hover:scale-105 transition-transform overflow-hidden">
+              <Image
+                src="/assets/images/favicon.png"
+                alt="Abdullah Saleh Logo"
+                width={36}
+                height={36}
+                className="w-full h-full object-contain"
+                priority
+              />
             </div>
             <div className="flex flex-col">
-              <strong className="text-base text-ink font-semibold leading-tight font-display tracking-wide">
+              <strong className="text-base text-ink font-semibold leading-tight font-display tracking-wide group-hover:text-sage transition-colors">
                 {personalInfo.name}
               </strong>
               <span className="text-[11px] text-muted tracking-tight">
