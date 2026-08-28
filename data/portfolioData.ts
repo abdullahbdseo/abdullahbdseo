@@ -341,6 +341,9 @@ export interface BlogPostItem {
   tags?: string[];
   schemaType?: string;
   robotsDirective?: string;
+  keyTakeaways?: string[];
+  faqs?: { q: string; a: string }[];
+  imageAlt?: string;
 }
 
 export const blogTopics = [
@@ -362,17 +365,56 @@ export const blogPosts: BlogPostItem[] = [
     date: "Aug 24, 2026",
     readTime: "6 min read",
     desc: "A comprehensive strategic blueprint for dominating traditional Google search rankings, capturing Google AI Overview citations, and building generative authority inside ChatGPT and Perplexity.",
-    content: "Search is no longer just ten blue links. Modern organic growth requires a three-pillar strategy: Traditional SEO for high-converting query rankings, Answer Engine Optimization (AEO) for featured snippets and People Also Ask boxes, and Generative Engine Optimization (GEO) to ensure your brand is cited as a source by LLMs like ChatGPT, Gemini, and Claude.",
+    content: `Search engine marketing has undergone its biggest transformation in two decades. Traditional search engine optimization (SEO) is no longer the sole avenue to high-converting organic pipeline. 
+
+Today, ambitious brands must operate across three distinct yet synergistic pillars:
+
+### 1. Traditional SEO (Search Engine Optimization)
+Traditional SEO focuses on keyword rankings, page-one search engine results pages (SERPs), high-intent query capture, backlink equity, and conversion rate optimization (CRO). It remains the bedrock of direct transactional traffic.
+
+### 2. AEO (Answer Engine Optimization)
+Answer Engine Optimization focuses on formatting web content so conversational algorithms can extract direct answers into Google Featured Snippets, 'People Also Ask' accordions, and voice-assisted devices like Google Assistant and Siri. AEO prioritizes question-answering precision, concise definitions, and structured tabular comparisons.
+
+### 3. GEO (Generative Engine Optimization)
+Generative Engine Optimization is the discipline of ensuring your brand, founders, and proprietary frameworks are cited as authoritative sources by Large Language Models (LLMs) including OpenAI ChatGPT, Google Gemini, Claude, and Perplexity AI. GEO relies on entity authority, nested JSON-LD schema graphs, high-authority brand mentions across digital PR, and semantic data consistency.
+
+### The Three-Pillar Implementation Framework
+To dominate search across both algorithmic and generative engines in 2026:
+- Structure content with clear H2/H3 semantic hierarchies and 40-word concise answer paragraphs immediately under question headings.
+- Implement comprehensive JSON-LD Knowledge Graph schema (Person, WebSite, Service, ItemList, FAQPage).
+- Establish verified topical authority clusters around your core offerings.
+- Audit your entity presence across Wikipedia, Wikidata, LinkedIn, and credible industry publications.`,
     image: "/assets/images/projects/project-1.webp",
-    href: "/blog",
+    imageAlt: "SEO vs AEO vs GEO framework diagram comparing Google search with ChatGPT AI answers",
+    href: "/blog/seo-vs-aeo-vs-geo-framework",
     featured: true,
     slug: "seo-vs-aeo-vs-geo-framework",
     metaTitle: "SEO vs AEO vs GEO Strategy Guide | Abdullah Saleh",
     metaDescription: "Learn how to optimize your brand for Google search, AI Overviews, and ChatGPT answers with our 2026 SEO, AEO, and GEO framework.",
     focusKeyword: "AEO vs GEO",
-    canonicalUrl: "https://abdullahbdseo.vercel.app/blog",
+    canonicalUrl: "https://abdullahbdseo.vercel.app/blog/seo-vs-aeo-vs-geo-framework",
     schemaType: "TechArticle",
-    tags: ["SEO", "AEO", "GEO", "AI Search", "Google Algorithm"]
+    tags: ["SEO", "AEO", "GEO", "AI Search", "Google Algorithm", "ChatGPT"],
+    keyTakeaways: [
+      "Traditional SEO drives direct click-throughs; AEO wins Google snippet boxes; GEO secures citations inside AI LLMs.",
+      "Google AI Overviews prefer direct, 40-to-60 word definitive answers placed immediately beneath semantic H2 question headers.",
+      "Nested JSON-LD entity schema is mandatory for generative search engines to verify topical authority.",
+      "A blended three-pillar strategy delivers up to 340% higher brand recall across search and generative AI tools."
+    ],
+    faqs: [
+      {
+        q: "What is the primary difference between SEO and GEO?",
+        a: "SEO optimizes websites to rank in traditional search engine results (like Google's top 10 blue links), whereas GEO (Generative Engine Optimization) optimizes content to be selected and cited as a source by AI answer models like ChatGPT, Gemini, and Perplexity."
+      },
+      {
+        q: "How can my website appear in Google AI Overviews?",
+        a: "To appear in Google AI Overviews, structure your content with semantic H2/H3 headers, provide concise direct answers (40-60 words), implement valid JSON-LD schema, and maintain strong Core Web Vitals performance."
+      },
+      {
+        q: "Does GEO replace traditional Technical SEO?",
+        a: "No. GEO builds on top of Technical SEO. Clean crawlability, server-side pre-rendering, fast loading speeds, and verified schema remain prerequisites for AI bots (GPTBot, PerplexityBot) to index your content."
+      }
+    ]
   },
   {
     id: 2,
@@ -382,17 +424,45 @@ export const blogPosts: BlogPostItem[] = [
     date: "Aug 18, 2026",
     readTime: "8 min read",
     desc: "Step-by-step diagnostic roadmap to debug JavaScript rendering snags, optimize Core Web Vitals (LCP, INP, CLS), and construct automated Schema entity graphs.",
-    content: "Modern JavaScript single-page and server-side applications face unique crawling and hydration challenges. This guide breaks down crawl budget optimization, server-side pre-rendering, dynamic XML sitemaps, and Core Web Vitals debugging with Chrome DevTools.",
+    content: `Modern JavaScript single-page applications (SPAs) and React/Next.js architectures deliver fast user experiences, but they introduce unique challenges for search engine crawlers if hydration, server pre-rendering, and metadata are misconfigured.
+
+### 1. Server-Side Rendering (SSR) & Static Site Generation (SSG)
+Googlebot can execute JavaScript, but client-side rendering consumes significantly higher crawl budget and often delays indexation by days or weeks. For optimal organic performance, all public content pages should be statically generated (SSG) or rendered server-side (SSR) with complete HTML payloads delivered on initial byte response.
+
+### 2. Core Web Vitals Diagnostic Priorities
+- **Largest Contentful Paint (LCP < 2.5s):** Preload hero images, utilize modern WebP/AVIF compression formats, and configure font-display: swap.
+- **Interaction to Next Paint (INP < 200ms):** Break up long JavaScript execution tasks and defer non-critical third-party analytics scripts.
+- **Cumulative Layout Shift (CLS < 0.1):** Set explicit width and height dimensions on all images and video containers to eliminate layout shifts during hydration.
+
+### 3. Dynamic XML Sitemaps & Canonical Hygiene
+Maintain automated dynamic XML sitemaps that update automatically when new blog posts or service pages are published. Ensure every indexable page contains self-referential canonical tags to prevent duplicate content flags from query parameters.`,
     image: "/assets/images/projects/project-5.webp",
-    href: "/blog",
+    imageAlt: "Technical SEO audit dashboard showing Core Web Vitals and Next.js crawling score",
+    href: "/blog/technical-seo-audit-nextjs-checklist",
     featured: false,
     slug: "technical-seo-audit-nextjs-checklist",
     metaTitle: "Technical SEO Audit Checklist for Next.js & React (2026)",
     metaDescription: "Master technical SEO audits for Next.js and JavaScript web applications. Fix Core Web Vitals, hydration lag, and crawl budget snags.",
     focusKeyword: "technical seo audit",
-    canonicalUrl: "https://abdullahbdseo.vercel.app/blog",
+    canonicalUrl: "https://abdullahbdseo.vercel.app/blog/technical-seo-audit-nextjs-checklist",
     schemaType: "TechArticle",
-    tags: ["Technical SEO", "Core Web Vitals", "Next.js", "PageSpeed", "JavaScript SEO"]
+    tags: ["Technical SEO", "Core Web Vitals", "Next.js", "PageSpeed", "JavaScript SEO"],
+    keyTakeaways: [
+      "Server-side pre-rendering (SSG/SSR) ensures search crawlers receive complete HTML on first byte without JavaScript rendering delays.",
+      "Optimizing LCP under 2.5s and INP under 200ms directly protects search crawl budget and mobile ranking positions.",
+      "Automated XML sitemaps and self-referential canonicals eliminate duplicate content fragmentation.",
+      "Valid JSON-LD schema should be rendered server-side in the initial HTML head for immediate entity indexing."
+    ],
+    faqs: [
+      {
+        q: "Why is Technical SEO critical for React and Next.js websites?",
+        a: "JavaScript applications can suffer from rendering queues, hydration mismatches, and delayed indexation if HTML is not generated on the server. Technical SEO ensures search engines immediately parse and rank your content."
+      },
+      {
+        q: "What is the benchmark for good Core Web Vitals?",
+        a: "Google's recommended benchmarks are: Largest Contentful Paint (LCP) under 2.5 seconds, Interaction to Next Paint (INP) under 200 milliseconds, and Cumulative Layout Shift (CLS) under 0.1."
+      }
+    ]
   },
   {
     id: 3,
@@ -402,17 +472,44 @@ export const blogPosts: BlogPostItem[] = [
     date: "Aug 10, 2026",
     readTime: "5 min read",
     desc: "How to structure nested JSON-LD schema (Person, WebSite, Service, FAQPage) so search algorithms and AI knowledge graphs understand your topical authority.",
-    content: "Structured data is the primary translation layer between your web content and algorithmic knowledge bases. Learn how to connect your entities with sameAs links, author identifiers, and ItemList hierarchies to gain high-intent rich snippets.",
+    content: `Structured data is the primary translation bridge connecting your human-readable web content with algorithmic knowledge bases and neural search models.
+
+### Why Entity Graphs Matter More Than Meta Keywords
+Search engines have evolved from keyword matching systems to semantic entity graphs. Google's Knowledge Graph and AI search engines understand the relationships between people, organizations, skills, services, and locations.
+
+### Essential Schema Types for Growth:
+1. **Person Schema:** Explicitly defines the practitioner, job title, credentials, alumni institution, and sameAs links to verified external profiles (LinkedIn, GitHub, Twitter).
+2. **WebSite Schema:** Defines the canonical identity, publisher hierarchy, and site-wide search configuration.
+3. **Service & ItemList Schema:** Catalogs every specialized service offering, target audience, and geographic service region.
+4. **FAQPage Schema:** Converts question-and-answer pairs into expandable rich snippets directly in Google SERP results.
+5. **BreadcrumbList Schema:** Clarifies internal site navigation hierarchies for enhanced search snippet breadcrumbs.`,
     image: "/assets/images/projects/project-8.webp",
-    href: "/blog",
+    imageAlt: "JSON-LD semantic schema markup entity graph connecting Person, WebSite and Services",
+    href: "/blog/mastering-semantic-schema-markup-jsonld",
     featured: false,
     slug: "mastering-semantic-schema-markup-jsonld",
     metaTitle: "Semantic Schema Markup & JSON-LD Entity Guide for SEO & GEO",
     metaDescription: "Build nested JSON-LD schema graphs to boost your topical authority on Google and secure AI citations across generative search engines.",
     focusKeyword: "schema markup",
-    canonicalUrl: "https://abdullahbdseo.vercel.app/blog",
+    canonicalUrl: "https://abdullahbdseo.vercel.app/blog/mastering-semantic-schema-markup-jsonld",
     schemaType: "TechArticle",
-    tags: ["Schema Markup", "JSON-LD", "Knowledge Graph", "Entities", "AEO"]
+    tags: ["Schema Markup", "JSON-LD", "Knowledge Graph", "Entities", "AEO"],
+    keyTakeaways: [
+      "Semantic JSON-LD schema translates website content into structured machine-readable knowledge graph entities.",
+      "Adding sameAs profile links establishes author entity authority for Google E-E-A-T evaluations.",
+      "FAQPage schema enables instant expandable question-and-answer rich snippets in Google search results.",
+      "Valid nested structured data increases click-through rates (CTR) by an average of 28% to 40%."
+    ],
+    faqs: [
+      {
+        q: "What is JSON-LD and why is it preferred over Microdata?",
+        a: "JSON-LD (JavaScript Object Notation for Linked Data) is a clean script-based format recommended by Google because it separates structured metadata from visible HTML markup, making it easier to maintain and faster to parse."
+      },
+      {
+        q: "How does Schema markup help in AI and GEO?",
+        a: "AI models and LLMs use semantic schemas to verify facts, disambiguate brand entities, and confirm author expertise, directly increasing the likelihood of being cited in generative search answers."
+      }
+    ]
   }
 ];
 

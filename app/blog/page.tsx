@@ -190,8 +190,8 @@ export default function BlogPage() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
               
               {/* Big Featured Card (Left, Spans 7 Cols) */}
-              <div 
-                onClick={() => blogPosts[0] && setSelectedPost(blogPosts[0])}
+              <Link 
+                href={`/blog/${blogPosts[0]?.slug || 'seo-vs-aeo-vs-geo-framework'}`}
                 className="lg:col-span-7 rounded-3xl overflow-hidden bg-[#18231c] text-white p-7 sm:p-9 flex flex-col justify-between shadow-lg relative border border-sage/20 group cursor-pointer"
               >
                 <div>
@@ -236,14 +236,14 @@ export default function BlogPage() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </Link>
 
               {/* Stack of 2 Smaller Featured Cards (Right, Spans 5 Cols) */}
               <div className="lg:col-span-5 flex flex-col gap-6 justify-between">
                 {blogPosts.slice(1, 3).map((post) => (
-                  <div 
+                  <Link 
                     key={post.id}
-                    onClick={() => setSelectedPost(post)}
+                    href={`/blog/${post.slug || 'seo-vs-aeo-vs-geo-framework'}`}
                     className="rounded-3xl p-6 sm:p-7 bg-card border border-border/80 shadow-sm hover:shadow-cardHover transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between group cursor-pointer"
                   >
                     <div>
@@ -270,7 +270,7 @@ export default function BlogPage() {
                         Read Guide <ArrowRight className="w-3.5 h-3.5" />
                       </span>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
 
@@ -363,9 +363,9 @@ export default function BlogPage() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
               {filteredPosts.map((post) => (
-                <div 
+                <Link 
                   key={post.id}
-                  onClick={() => setSelectedPost(post)}
+                  href={`/blog/${post.slug || 'seo-vs-aeo-vs-geo-framework'}`}
                   className="rounded-3xl overflow-hidden bg-card border border-border/80 shadow-sm hover:shadow-cardHover transition-all duration-500 hover:-translate-y-1.5 flex flex-col justify-between group cursor-pointer"
                 >
                   <div>
@@ -411,7 +411,7 @@ export default function BlogPage() {
                       Read Article <ArrowRight className="w-4 h-4" />
                     </span>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           )}

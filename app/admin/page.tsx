@@ -156,6 +156,11 @@ export default function AdminPage() {
   const [newPostMetaDesc, setNewPostMetaDesc] = useState('');
   const [newPostSchemaType, setNewPostSchemaType] = useState('TechArticle');
   const [newPostTags, setNewPostTags] = useState('');
+  const [newPostKeyTakeaways, setNewPostKeyTakeaways] = useState('');
+  const [newPostImageAlt, setNewPostImageAlt] = useState('');
+  const [newPostFaqs, setNewPostFaqs] = useState<{ q: string; a: string }[]>([]);
+  const [newFaqQuestionInput, setNewFaqQuestionInput] = useState('');
+  const [newFaqAnswerInput, setNewFaqAnswerInput] = useState('');
   const [serpPreviewDevice, setSerpPreviewDevice] = useState<'desktop' | 'mobile'>('mobile');
   const [seoPreviewTab, setSeoPreviewTab] = useState<'google' | 'social'>('google');
   const [imageUploadMode, setImageUploadMode] = useState<'upload' | 'url' | 'preset'>('upload');
@@ -459,7 +464,8 @@ export default function AdminPage() {
       desc: newPostDesc.trim(),
       content: newPostContent.trim() || undefined,
       image: newPostImage.trim() || '/assets/images/projects/project-1.webp',
-      href: '/blog',
+      imageAlt: newPostImageAlt.trim() || newPostTitle.trim(),
+      href: `/blog/${cleanSlug}`,
       slug: cleanSlug,
       metaTitle: newPostMetaTitle.trim() || newPostTitle.trim(),
       metaDescription: newPostMetaDesc.trim() || newPostDesc.trim(),
@@ -467,7 +473,9 @@ export default function AdminPage() {
       canonicalUrl: `${data.seoSettings?.canonicalBase || 'https://abdullahbdseo.vercel.app'}/blog/${cleanSlug}`,
       schemaType: newPostSchemaType || 'TechArticle',
       tags: newPostTags ? newPostTags.split(',').map(t => t.trim()).filter(Boolean) : [newPostCategory],
-      robotsDirective: 'index, follow'
+      robotsDirective: 'index, follow',
+      keyTakeaways: newPostKeyTakeaways ? newPostKeyTakeaways.split('\n').map(s => s.trim()).filter(Boolean) : undefined,
+      faqs: newPostFaqs.length > 0 ? newPostFaqs : undefined,
     };
 
     const updatedPosts = [newArticle, ...data.blogPosts];
@@ -485,9 +493,12 @@ export default function AdminPage() {
     setNewPostMetaTitle('');
     setNewPostMetaDesc('');
     setNewPostTags('');
+    setNewPostKeyTakeaways('');
+    setNewPostImageAlt('');
+    setNewPostFaqs([]);
     setIsCreatingPost(false);
 
-    showToast('✓ Article with full SEO published live! Visible on homepage and /blog.');
+    showToast('✓ Article with 100% SEO, Key Takeaways & FAQ Schema published live!');
   };
 
   const handleCreateCertification = (e: React.FormEvent) => {
@@ -1620,6 +1631,162 @@ export default function AdminPage() {
                 </div>
               </div>
 
+              {/* 5. One-Click Google SEO Testing & Live Validation Tools */}
+              <div className="bg-card border border-border rounded-2xl p-6 sm:p-7 shadow-xs space-y-5">
+                <div className="border-b border-border pb-3 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-sage" />
+                    <h3 className="font-bold text-sm text-ink uppercase tracking-wider">
+                      5. One-Click Google Testing &amp; Diagnostic Tools
+                    </h3>
+                  </div>
+                  <span className="text-[11px] text-sage font-bold">100% Live Verified</span>
+                </div>
+
+                <p className="text-xs text-muted leading-relaxed">
+                  Click any tool below to test your live domain against Google&apos;s official diagnostic crawlers and schema validators:
+                </p>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                  
+                  {/* Google Rich Results Test */}
+                  <a
+                    href={`https://search.google.com/test/rich-results?url=${encodeURIComponent(data.seoSettings.canonicalBase || 'https://abdullahbdseo.vercel.app')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-4 rounded-xl bg-cardSubtle border border-border hover:border-sage transition-all flex flex-col justify-between group shadow-2xs"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-bold text-ink flex items-center gap-1.5">
+                          <Check className="w-3.5 h-3.5 text-emerald-600" /> Google Rich Results
+                        </span>
+                        <ExternalLink className="w-3.5 h-3.5 text-muted group-hover:text-sage" />
+                      </div>
+                      <p className="text-[11px] text-muted leading-relaxed">
+                        Verify Person, Article & FAQ rich snippet eligibility directly on Google.
+                      </p>
+                    </div>
+                    <span className="text-[11px] font-semibold text-sage mt-3 inline-block">
+                      Run Google Rich Test →
+                    </span>
+                  </a>
+
+                  {/* Google PageSpeed Insights */}
+                  <a
+                    href={`https://pagespeed.web.dev/analysis?url=${encodeURIComponent(data.seoSettings.canonicalBase || 'https://abdullahbdseo.vercel.app')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-4 rounded-xl bg-cardSubtle border border-border hover:border-sage transition-all flex flex-col justify-between group shadow-2xs"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-bold text-ink flex items-center gap-1.5">
+                          <Check className="w-3.5 h-3.5 text-emerald-600" /> Core Web Vitals
+                        </span>
+                        <ExternalLink className="w-3.5 h-3.5 text-muted group-hover:text-sage" />
+                      </div>
+                      <p className="text-[11px] text-muted leading-relaxed">
+                        Test mobile & desktop performance scores (LCP, INP, CLS) on Google PageSpeed.
+                      </p>
+                    </div>
+                    <span className="text-[11px] font-semibold text-sage mt-3 inline-block">
+                      Run PageSpeed Audit →
+                    </span>
+                  </a>
+
+                  {/* Schema.org Validator */}
+                  <a
+                    href={`https://validator.schema.org/#url=${encodeURIComponent(data.seoSettings.canonicalBase || 'https://abdullahbdseo.vercel.app')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-4 rounded-xl bg-cardSubtle border border-border hover:border-sage transition-all flex flex-col justify-between group shadow-2xs"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-bold text-ink flex items-center gap-1.5">
+                          <Check className="w-3.5 h-3.5 text-emerald-600" /> Schema.org Validator
+                        </span>
+                        <ExternalLink className="w-3.5 h-3.5 text-muted group-hover:text-sage" />
+                      </div>
+                      <p className="text-[11px] text-muted leading-relaxed">
+                        Validate JSON-LD graph structure without any schema syntax warnings.
+                      </p>
+                    </div>
+                    <span className="text-[11px] font-semibold text-sage mt-3 inline-block">
+                      Validate Schema JSON →
+                    </span>
+                  </a>
+
+                  {/* Live Dynamic XML Sitemap */}
+                  <a
+                    href="/sitemap.xml"
+                    target="_blank"
+                    className="p-4 rounded-xl bg-cardSubtle border border-border hover:border-sage transition-all flex flex-col justify-between group shadow-2xs"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-bold text-ink flex items-center gap-1.5">
+                          <Globe className="w-3.5 h-3.5 text-blue-500" /> Dynamic XML Sitemap
+                        </span>
+                        <ExternalLink className="w-3.5 h-3.5 text-muted group-hover:text-sage" />
+                      </div>
+                      <p className="text-[11px] text-muted leading-relaxed">
+                        View live XML sitemap generated for Googlebot and search crawlers.
+                      </p>
+                    </div>
+                    <span className="text-[11px] font-mono text-sage mt-3 inline-block">
+                      Open /sitemap.xml →
+                    </span>
+                  </a>
+
+                  {/* Live RSS 2.0 Feed */}
+                  <a
+                    href="/feed.xml"
+                    target="_blank"
+                    className="p-4 rounded-xl bg-cardSubtle border border-border hover:border-sage transition-all flex flex-col justify-between group shadow-2xs"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-bold text-ink flex items-center gap-1.5">
+                          <Sparkles className="w-3.5 h-3.5 text-amber-500" /> RSS 2.0 Article Feed
+                        </span>
+                        <ExternalLink className="w-3.5 h-3.5 text-muted group-hover:text-sage" />
+                      </div>
+                      <p className="text-[11px] text-muted leading-relaxed">
+                        Live RSS syndication feed for Google News and instant feed indexing.
+                      </p>
+                    </div>
+                    <span className="text-[11px] font-mono text-sage mt-3 inline-block">
+                      Open /feed.xml →
+                    </span>
+                  </a>
+
+                  {/* Live Robots.txt */}
+                  <a
+                    href="/robots.txt"
+                    target="_blank"
+                    className="p-4 rounded-xl bg-cardSubtle border border-border hover:border-sage transition-all flex flex-col justify-between group shadow-2xs"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-bold text-ink flex items-center gap-1.5">
+                          <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" /> Dynamic Robots.txt
+                        </span>
+                        <ExternalLink className="w-3.5 h-3.5 text-muted group-hover:text-sage" />
+                      </div>
+                      <p className="text-[11px] text-muted leading-relaxed">
+                        AI crawlers (GPTBot, PerplexityBot) & Googlebot crawler rules.
+                      </p>
+                    </div>
+                    <span className="text-[11px] font-mono text-sage mt-3 inline-block">
+                      Open /robots.txt →
+                    </span>
+                  </a>
+
+                </div>
+              </div>
+
             </div>
           )}
 
@@ -2440,9 +2607,108 @@ export default function AdminPage() {
                       rows={5}
                       value={newPostContent}
                       onChange={(e) => setNewPostContent(e.target.value)}
-                      placeholder="Write your complete article content here. Paragraphs and line breaks will be preserved when readers click 'Read Article'..."
-                      className="w-full px-4 py-2.5 rounded-xl bg-cardSubtle border border-border text-sm text-ink outline-none focus:border-sage resize-y"
+                      placeholder="Write your complete article content here. Paragraphs, H2/H3 subheadings, and line breaks will be preserved on the dedicated article page..."
+                      className="w-full px-4 py-2.5 rounded-xl bg-cardSubtle border border-border text-sm text-ink outline-none focus:border-sage resize-y font-sans"
                     />
+                  </div>
+
+                  {/* 2.5 Advanced 100% SEO Enhancements: Key Takeaways, Image Alt & FAQ Schema */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-cardSubtle/70 border border-border/80 rounded-2xl p-4 sm:p-5">
+                    <div>
+                      <div className="flex items-center justify-between mb-1">
+                        <label className="text-xs font-bold text-ink uppercase tracking-wider flex items-center gap-1">
+                          <Sparkles className="w-3.5 h-3.5 text-sage" /> Key Strategic Takeaways
+                        </label>
+                        <span className="text-[10px] text-muted">AI Overview & SGE Box</span>
+                      </div>
+                      <p className="text-[11px] text-muted mb-2">
+                        Enter 2 to 4 bullet points (one per line). Google AI search uses these for direct citations.
+                      </p>
+                      <textarea
+                        rows={3}
+                        value={newPostKeyTakeaways}
+                        onChange={(e) => setNewPostKeyTakeaways(e.target.value)}
+                        placeholder="• Traditional SEO drives direct transactional rankings&#10;• AEO captures snippet answer boxes&#10;• GEO secures citations inside LLMs"
+                        className="w-full px-3 py-2 rounded-xl bg-card border border-border text-xs text-ink outline-none focus:border-sage resize-none"
+                      />
+                    </div>
+
+                    <div>
+                      <div className="flex items-center justify-between mb-1">
+                        <label className="text-xs font-bold text-ink uppercase tracking-wider flex items-center gap-1">
+                          <ImageIcon className="w-3.5 h-3.5 text-sage" /> Image ALT Text
+                        </label>
+                        <span className="text-[10px] text-muted">Google Image SEO</span>
+                      </div>
+                      <p className="text-[11px] text-muted mb-2">
+                        Descriptive keyword-rich alt text for search engine crawlers and screen readers.
+                      </p>
+                      <input
+                        type="text"
+                        value={newPostImageAlt}
+                        onChange={(e) => setNewPostImageAlt(e.target.value)}
+                        placeholder="e.g. SEO vs AEO vs GEO framework diagram comparing Google with ChatGPT"
+                        className="w-full px-3 py-2 rounded-xl bg-card border border-border text-xs text-ink outline-none focus:border-sage"
+                      />
+
+                      {/* Instant FAQ Quick Adder */}
+                      <div className="mt-3 pt-3 border-t border-border/60">
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className="text-[11px] font-bold text-ink uppercase tracking-wider">
+                            Article FAQs (FAQPage Schema)
+                          </span>
+                          <span className="text-[10px] text-sage font-semibold">
+                            {newPostFaqs.length} FAQs Added
+                          </span>
+                        </div>
+                        <div className="space-y-1.5">
+                          <input
+                            type="text"
+                            value={newFaqQuestionInput}
+                            onChange={(e) => setNewFaqQuestionInput(e.target.value)}
+                            placeholder="Question: e.g. What is the difference between SEO and GEO?"
+                            className="w-full px-3 py-1.5 rounded-lg bg-card border border-border text-[11px] text-ink outline-none focus:border-sage"
+                          />
+                          <div className="flex gap-2">
+                            <input
+                              type="text"
+                              value={newFaqAnswerInput}
+                              onChange={(e) => setNewFaqAnswerInput(e.target.value)}
+                              placeholder="Answer: e.g. SEO optimizes for search engines while GEO optimizes for AI..."
+                              className="w-full px-3 py-1.5 rounded-lg bg-card border border-border text-[11px] text-ink outline-none focus:border-sage"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                if (!newFaqQuestionInput.trim() || !newFaqAnswerInput.trim()) return;
+                                setNewPostFaqs([...newPostFaqs, { q: newFaqQuestionInput.trim(), a: newFaqAnswerInput.trim() }]);
+                                setNewFaqQuestionInput('');
+                                setNewFaqAnswerInput('');
+                              }}
+                              className="px-3 py-1.5 bg-sage text-white text-[11px] font-bold rounded-lg shrink-0 hover:opacity-90 cursor-pointer shadow-2xs"
+                            >
+                              Add
+                            </button>
+                          </div>
+                        </div>
+                        {newPostFaqs.length > 0 && (
+                          <div className="mt-2 space-y-1 max-h-24 overflow-y-auto">
+                            {newPostFaqs.map((faq, i) => (
+                              <div key={i} className="flex items-center justify-between text-[10px] bg-card p-1.5 rounded border border-border">
+                                <span className="truncate font-semibold text-ink max-w-[200px]">{faq.q}</span>
+                                <button
+                                  type="button"
+                                  onClick={() => setNewPostFaqs(newPostFaqs.filter((_, idx) => idx !== i))}
+                                  className="text-rose-500 hover:text-rose-700 font-bold ml-2"
+                                >
+                                  ✕
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   </div>
 
                   {/* 3. REAL-TIME ON-PAGE SEO HEALTH ANALYZER */}
