@@ -20,8 +20,8 @@ const dmSerif = DM_Serif_Display({
 });
 
 export const metadata: Metadata = {
-  title: 'Abdullah Saleh | SEO Growth Specialist',
-  description: 'Abdullah Saleh is an SEO Growth Specialist helping businesses scale organic rankings, answer engine visibility, and generative AI search presence.',
+  title: 'Abdullah Saleh | SEO Growth Specialist & Search Architect',
+  description: 'Abdullah Saleh is an SEO Growth Specialist helping businesses scale organic rankings, answer engine visibility (AEO), and generative AI search presence (GEO).',
   keywords: [
     'Abdullah Saleh',
     'SEO Growth Specialist',
@@ -32,9 +32,20 @@ export const metadata: Metadata = {
     'Meta Ads',
   ],
   authors: [{ name: 'Abdullah Saleh' }],
-  metadataBase: new URL('https://ahsan-jannat.netlify.app'),
+  metadataBase: new URL('https://abdullahbdseo.vercel.app'),
   alternates: {
     canonical: '/',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
   icons: {
     icon: [
@@ -45,9 +56,9 @@ export const metadata: Metadata = {
     shortcut: '/favicon.ico',
   },
   openGraph: {
-    title: 'Abdullah Saleh | SEO Growth Specialist',
+    title: 'Abdullah Saleh | SEO Growth Specialist & Search Architect',
     description: 'Driving organic growth through Search, Answer & Generative Engine Optimization.',
-    url: 'https://ahsan-jannat.netlify.app/',
+    url: 'https://abdullahbdseo.vercel.app',
     siteName: 'Abdullah Saleh Portfolio',
     images: [
       {
@@ -62,7 +73,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Abdullah Saleh | SEO Growth Specialist',
+    title: 'Abdullah Saleh | SEO Growth Specialist & Search Architect',
     description: 'SEO Growth Specialist helping brands rank on Google, appear in AI answers, and grow with Meta Ads.',
     images: ['/assets/images/abdullah.jpg'],
   },

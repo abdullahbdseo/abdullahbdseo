@@ -117,6 +117,16 @@ export interface BlogPostItem {
   image: string;
   href: string;
   featured?: boolean;
+  slug?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  focusKeyword?: string;
+  canonicalUrl?: string;
+  ogImage?: string;
+  authorName?: string;
+  tags?: string[];
+  schemaType?: string;
+  robotsDirective?: string;
 }
 
 export const blogTopics = [
@@ -144,6 +154,70 @@ export const experienceItems = ${JSON.stringify(payload.experienceItems || [], n
 export const educationItems = ${JSON.stringify(payload.educationItems || [], null, 2)};
 
 export const faqItems = ${JSON.stringify(payload.faqItems || [], null, 2)};
+
+export interface SiteSeoSettings {
+  siteTitle: string;
+  titleSeparator: string;
+  siteDescription: string;
+  siteKeywords: string[];
+  canonicalBase: string;
+  ogImage: string;
+  twitterHandle: string;
+  robotsDirective: string;
+  googleSearchConsoleCode: string;
+  bingVerificationCode: string;
+  googleAnalyticsId: string;
+  googleTagManagerId: string;
+  indexNowKey: string;
+  authorName: string;
+  authorJobTitle: string;
+  authorBio: string;
+  socialProfiles: {
+    linkedin?: string;
+    twitter?: string;
+    github?: string;
+    facebook?: string;
+    instagram?: string;
+    upwork?: string;
+  };
+}
+
+export const seoSettings: SiteSeoSettings = ${JSON.stringify(payload.seoSettings || {
+  siteTitle: "Abdullah Saleh | SEO Growth Specialist & Search Architect",
+  titleSeparator: "·",
+  siteDescription: "Abdullah Saleh is an SEO Growth Specialist helping businesses scale organic rankings, answer engine visibility (AEO), and generative AI search presence (GEO).",
+  siteKeywords: [
+    "Abdullah Saleh",
+    "SEO Growth Specialist",
+    "Technical SEO Expert",
+    "AEO Specialist Bangladesh",
+    "GEO Expert",
+    "Answer Engine Optimization",
+    "Generative Engine Optimization",
+    "Core Web Vitals Optimization",
+    "Meta Ads Manager"
+  ],
+  canonicalBase: "https://abdullahbdseo.vercel.app",
+  ogImage: "/assets/images/abdullah.jpg",
+  twitterHandle: "@abdullahbdseo",
+  robotsDirective: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  googleSearchConsoleCode: "",
+  bingVerificationCode: "",
+  googleAnalyticsId: "G-XXXXXXXXXX",
+  googleTagManagerId: "",
+  indexNowKey: "cc02b558a0bd4a69ae052b226cbe50e5",
+  authorName: "Abdullah Saleh",
+  authorJobTitle: "SEO Growth Specialist & Search Architect",
+  authorBio: "B.Sc. in CSE graduate specializing in data-driven Technical SEO, Answer Engine Optimization (AEO), and Generative AI Search (GEO).",
+  socialProfiles: {
+    linkedin: "https://www.linkedin.com/in/abdullah-saleh",
+    twitter: "https://twitter.com/abdullahbdseo",
+    github: "https://github.com/abdullahbdseo",
+    facebook: "https://facebook.com/abdullahbdseo",
+    instagram: "https://instagram.com/abdullahbdseo",
+    upwork: "https://www.upwork.com"
+  }
+}, null, 2)};
 `;
 
         fs.writeFileSync(dataFilePath, tsContent, 'utf-8');

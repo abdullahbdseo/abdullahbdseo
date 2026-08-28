@@ -331,6 +331,16 @@ export interface BlogPostItem {
   image: string;
   href: string;
   featured?: boolean;
+  slug?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  focusKeyword?: string;
+  canonicalUrl?: string;
+  ogImage?: string;
+  authorName?: string;
+  tags?: string[];
+  schemaType?: string;
+  robotsDirective?: string;
 }
 
 export const blogTopics = [
@@ -343,7 +353,132 @@ export const blogTopics = [
   { name: 'AI Search', count: 2, filter: 'AI Search' },
 ];
 
-export const blogPosts: BlogPostItem[] = [];
+export const blogPosts: BlogPostItem[] = [
+  {
+    id: 1,
+    title: "SEO vs AEO vs GEO: How to Win Search Visibility Across Google, AI Overviews & ChatGPT",
+    category: "AEO & GEO",
+    topicGroup: "AEO & GEO",
+    date: "Aug 24, 2026",
+    readTime: "6 min read",
+    desc: "A comprehensive strategic blueprint for dominating traditional Google search rankings, capturing Google AI Overview citations, and building generative authority inside ChatGPT and Perplexity.",
+    content: "Search is no longer just ten blue links. Modern organic growth requires a three-pillar strategy: Traditional SEO for high-converting query rankings, Answer Engine Optimization (AEO) for featured snippets and People Also Ask boxes, and Generative Engine Optimization (GEO) to ensure your brand is cited as a source by LLMs like ChatGPT, Gemini, and Claude.",
+    image: "/assets/images/projects/project-1.webp",
+    href: "/blog",
+    featured: true,
+    slug: "seo-vs-aeo-vs-geo-framework",
+    metaTitle: "SEO vs AEO vs GEO Strategy Guide | Abdullah Saleh",
+    metaDescription: "Learn how to optimize your brand for Google search, AI Overviews, and ChatGPT answers with our 2026 SEO, AEO, and GEO framework.",
+    focusKeyword: "AEO vs GEO",
+    canonicalUrl: "https://abdullahbdseo.vercel.app/blog",
+    schemaType: "TechArticle",
+    tags: ["SEO", "AEO", "GEO", "AI Search", "Google Algorithm"]
+  },
+  {
+    id: 2,
+    title: "The 2026 Technical SEO Audit Checklist for Modern Web Frameworks (Next.js & React)",
+    category: "Technical SEO",
+    topicGroup: "Technical SEO",
+    date: "Aug 18, 2026",
+    readTime: "8 min read",
+    desc: "Step-by-step diagnostic roadmap to debug JavaScript rendering snags, optimize Core Web Vitals (LCP, INP, CLS), and construct automated Schema entity graphs.",
+    content: "Modern JavaScript single-page and server-side applications face unique crawling and hydration challenges. This guide breaks down crawl budget optimization, server-side pre-rendering, dynamic XML sitemaps, and Core Web Vitals debugging with Chrome DevTools.",
+    image: "/assets/images/projects/project-5.webp",
+    href: "/blog",
+    featured: false,
+    slug: "technical-seo-audit-nextjs-checklist",
+    metaTitle: "Technical SEO Audit Checklist for Next.js & React (2026)",
+    metaDescription: "Master technical SEO audits for Next.js and JavaScript web applications. Fix Core Web Vitals, hydration lag, and crawl budget snags.",
+    focusKeyword: "technical seo audit",
+    canonicalUrl: "https://abdullahbdseo.vercel.app/blog",
+    schemaType: "TechArticle",
+    tags: ["Technical SEO", "Core Web Vitals", "Next.js", "PageSpeed", "JavaScript SEO"]
+  },
+  {
+    id: 3,
+    title: "Mastering Semantic Schema Markup & Entity Graphs for Generative Search (GEO)",
+    category: "SEO",
+    topicGroup: "SEO",
+    date: "Aug 10, 2026",
+    readTime: "5 min read",
+    desc: "How to structure nested JSON-LD schema (Person, WebSite, Service, FAQPage) so search algorithms and AI knowledge graphs understand your topical authority.",
+    content: "Structured data is the primary translation layer between your web content and algorithmic knowledge bases. Learn how to connect your entities with sameAs links, author identifiers, and ItemList hierarchies to gain high-intent rich snippets.",
+    image: "/assets/images/projects/project-8.webp",
+    href: "/blog",
+    featured: false,
+    slug: "mastering-semantic-schema-markup-jsonld",
+    metaTitle: "Semantic Schema Markup & JSON-LD Entity Guide for SEO & GEO",
+    metaDescription: "Build nested JSON-LD schema graphs to boost your topical authority on Google and secure AI citations across generative search engines.",
+    focusKeyword: "schema markup",
+    canonicalUrl: "https://abdullahbdseo.vercel.app/blog",
+    schemaType: "TechArticle",
+    tags: ["Schema Markup", "JSON-LD", "Knowledge Graph", "Entities", "AEO"]
+  }
+];
+
+export interface SiteSeoSettings {
+  siteTitle: string;
+  titleSeparator: string;
+  siteDescription: string;
+  siteKeywords: string[];
+  canonicalBase: string;
+  ogImage: string;
+  twitterHandle: string;
+  robotsDirective: string;
+  googleSearchConsoleCode: string;
+  bingVerificationCode: string;
+  googleAnalyticsId: string;
+  googleTagManagerId: string;
+  indexNowKey: string;
+  authorName: string;
+  authorJobTitle: string;
+  authorBio: string;
+  socialProfiles: {
+    linkedin?: string;
+    twitter?: string;
+    github?: string;
+    facebook?: string;
+    instagram?: string;
+    upwork?: string;
+  };
+}
+
+export const seoSettings: SiteSeoSettings = {
+  siteTitle: "Abdullah Saleh | SEO Growth Specialist & Search Architect",
+  titleSeparator: "·",
+  siteDescription: "Abdullah Saleh is an SEO Growth Specialist helping businesses scale organic rankings, answer engine visibility (AEO), and generative AI search presence (GEO).",
+  siteKeywords: [
+    "Abdullah Saleh",
+    "SEO Growth Specialist",
+    "Technical SEO Expert",
+    "AEO Specialist Bangladesh",
+    "GEO Expert",
+    "Answer Engine Optimization",
+    "Generative Engine Optimization",
+    "Core Web Vitals Optimization",
+    "Meta Ads Manager"
+  ],
+  canonicalBase: "https://abdullahbdseo.vercel.app",
+  ogImage: "/assets/images/abdullah.jpg",
+  twitterHandle: "@abdullahbdseo",
+  robotsDirective: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  googleSearchConsoleCode: "",
+  bingVerificationCode: "",
+  googleAnalyticsId: "G-XXXXXXXXXX",
+  googleTagManagerId: "",
+  indexNowKey: "cc02b558a0bd4a69ae052b226cbe50e5",
+  authorName: "Abdullah Saleh",
+  authorJobTitle: "SEO Growth Specialist & Search Architect",
+  authorBio: "B.Sc. in CSE graduate specializing in data-driven Technical SEO, Answer Engine Optimization (AEO), and Generative AI Search (GEO).",
+  socialProfiles: {
+    linkedin: "https://www.linkedin.com/in/abdullah-saleh",
+    twitter: "https://twitter.com/abdullahbdseo",
+    github: "https://github.com/abdullahbdseo",
+    facebook: "https://facebook.com/abdullahbdseo",
+    instagram: "https://instagram.com/abdullahbdseo",
+    upwork: "https://www.upwork.com"
+  }
+};
 
 export interface CertificationItem {
   id: string;

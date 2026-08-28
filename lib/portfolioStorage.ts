@@ -16,6 +16,9 @@ import {
   experienceItems as defaultExperienceItems,
   educationItems as defaultEducationItems,
   faqItems as defaultFaqItems,
+  seoSettings as defaultSeoSettings,
+  SiteSeoSettings,
+  BlogPostItem,
   CertificationItem,
   PricingPackageItem,
   ClientGuaranteeItem,
@@ -36,7 +39,7 @@ export interface PortfolioStoreData {
   services: typeof defaultServices;
   projectCategories: typeof defaultProjectCategories;
   projects: typeof defaultProjects;
-  blogPosts: typeof defaultBlogPosts;
+  blogPosts: BlogPostItem[];
   certifications: CertificationItem[];
   pricingPackages: PricingPackageItem[];
   clientGuarantees: ClientGuaranteeItem[];
@@ -44,6 +47,7 @@ export interface PortfolioStoreData {
   experienceItems: ExperienceItemData[];
   educationItems: EducationItemData[];
   faqItems: FaqItemData[];
+  seoSettings: SiteSeoSettings;
 }
 
 export function getAdminPasscode(): string {
@@ -74,6 +78,7 @@ export function getDefaultPortfolioData(): PortfolioStoreData {
     experienceItems: [...defaultExperienceItems],
     educationItems: [...defaultEducationItems],
     faqItems: [...defaultFaqItems],
+    seoSettings: { ...defaultSeoSettings },
   };
 }
 
@@ -101,7 +106,7 @@ export function loadPortfolioData(): PortfolioStoreData {
       services: parsed.services || defaultServices,
       projectCategories: parsed.projectCategories || defaultProjectCategories,
       projects: parsed.projects || defaultProjects,
-      blogPosts: parsed.blogPosts || defaultBlogPosts,
+      blogPosts: (parsed.blogPosts && parsed.blogPosts.length > 0) ? parsed.blogPosts : defaultBlogPosts,
       certifications: parsed.certifications || defaultCertifications,
       pricingPackages: parsed.pricingPackages || defaultPricingPackages,
       clientGuarantees: parsed.clientGuarantees || defaultClientGuarantees,
@@ -109,6 +114,7 @@ export function loadPortfolioData(): PortfolioStoreData {
       experienceItems: parsed.experienceItems || defaultExperienceItems,
       educationItems: parsed.educationItems || defaultEducationItems,
       faqItems: parsed.faqItems || defaultFaqItems,
+      seoSettings: { ...defaultSeoSettings, ...(parsed.seoSettings || {}) },
     };
   } catch (err) {
     console.error('Failed to load portfolio admin data:', err);
@@ -189,5 +195,7 @@ export const experienceItems = ${JSON.stringify(data.experienceItems || defaultE
 export const educationItems = ${JSON.stringify(data.educationItems || defaultEducationItems, null, 2)};
 
 export const faqItems = ${JSON.stringify(data.faqItems || defaultFaqItems, null, 2)};
+
+export const seoSettings = ${JSON.stringify(data.seoSettings || defaultSeoSettings, null, 2)};
 `;
 }

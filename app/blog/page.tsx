@@ -47,7 +47,9 @@ export default function BlogPage() {
         !query || 
         post.title.toLowerCase().includes(query) ||
         post.desc.toLowerCase().includes(query) ||
-        post.category.toLowerCase().includes(query);
+        post.category.toLowerCase().includes(query) ||
+        (post.focusKeyword && post.focusKeyword.toLowerCase().includes(query)) ||
+        (post.tags && post.tags.some((t: string) => t.toLowerCase().includes(query)));
 
       return matchesCategory && matchesQuery;
     });

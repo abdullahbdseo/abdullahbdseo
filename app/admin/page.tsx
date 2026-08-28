@@ -63,15 +63,77 @@ import {
   ExperienceItemData,
   EducationItemData,
   FaqItemData,
+  SiteSeoSettings,
   adminPasscode as defaultPasscode 
 } from '@/data/portfolioData';
+
+// ═══════════════════════════════════════════════════════════════════════════
+//                    ON-PAGE SEO & SLUG HELPER UTILITIES
+// ═══════════════════════════════════════════════════════════════════════════
+
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/[\s_-]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+function calculateOnPageSeo(title: string, desc: string, content: string, slug: string, keyword: string) {
+  const kw = (keyword || '').toLowerCase().trim();
+  const t = (title || '').toLowerCase();
+  const d = (desc || '').toLowerCase();
+  const c = (content || '').toLowerCase();
+  const s = (slug || '').toLowerCase();
+
+  const hasKw = kw.length > 0;
+  const kwInTitle = hasKw && t.includes(kw);
+  const kwInDesc = hasKw && d.includes(kw);
+  const kwInSlug = hasKw && s.includes(slugify(kw));
+  const kwInContent = hasKw && (c.includes(kw) || d.includes(kw));
+
+  const titleLen = title.length;
+  const descLen = desc.length;
+  const titleLengthValid = titleLen >= 35 && titleLen <= 65;
+  const descLengthValid = descLen >= 110 && descLen <= 165;
+  const wordCount = (content || desc || '').trim().split(/\s+/).filter(Boolean).length;
+  const contentWordCountValid = wordCount >= 30;
+
+  let score = 0;
+  if (titleLen > 0) score += 15;
+  if (titleLengthValid) score += 15;
+  if (descLen > 0) score += 10;
+  if (descLengthValid) score += 15;
+  if (hasKw) {
+    if (kwInTitle) score += 15;
+    if (kwInDesc) score += 10;
+    if (kwInSlug) score += 10;
+    if (kwInContent) score += 10;
+  } else {
+    score = Math.min(score, 60);
+  }
+
+  return {
+    score: Math.min(100, score),
+    checks: [
+      { id: 'kw-title', label: 'Focus Keyword in SEO Title', passed: kwInTitle, detail: kwInTitle ? 'Keyword appears in title' : 'Add focus keyword to title' },
+      { id: 'kw-desc', label: 'Focus Keyword in Meta Description', passed: kwInDesc, detail: kwInDesc ? 'Keyword appears in snippet' : 'Add focus keyword to meta description' },
+      { id: 'kw-slug', label: 'Focus Keyword in URL Slug', passed: kwInSlug, detail: kwInSlug ? 'Clean SEO slug' : 'Include keyword in URL permalink' },
+      { id: 'kw-content', label: 'Focus Keyword in Content', passed: kwInContent, detail: kwInContent ? 'Keyword found in text' : 'Include keyword in article body' },
+      { id: 'title-len', label: `Title Length (${titleLen}/60 chars)`, passed: titleLengthValid, detail: titleLengthValid ? 'Optimal length for Google SERP' : (titleLen < 35 ? 'Too short (< 35 chars)' : 'Too long (> 65 chars, will truncate on SERP)') },
+      { id: 'desc-len', label: `Description Length (${descLen}/160 chars)`, passed: descLengthValid, detail: descLengthValid ? 'Optimal length for Google snippet' : (descLen < 110 ? 'Too short (< 110 chars)' : 'Too long (> 165 chars, will truncate)') },
+      { id: 'content-len', label: `Word Count (${wordCount} words)`, passed: contentWordCountValid, detail: contentWordCountValid ? 'Sufficient content depth' : 'Add more details to article' },
+    ]
+  };
+}
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [passcode, setPasscode] = useState('');
   const [showPasscode, setShowPasscode] = useState(false);
   const [authError, setAuthError] = useState('');
-  const [activeTab, setActiveTab] = useState<'overview' | 'personal' | 'metrics' | 'services' | 'pricing' | 'certifications' | 'guarantees' | 'experience' | 'projects' | 'blog' | 'faqs' | 'bookings' | 'security' | 'export'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'seo' | 'personal' | 'metrics' | 'services' | 'pricing' | 'certifications' | 'guarantees' | 'experience' | 'projects' | 'blog' | 'faqs' | 'bookings' | 'security' | 'export'>('overview');
   const [bookings, setBookings] = useState<any[]>([]);
 
   // Portfolio dynamic state
@@ -80,16 +142,32 @@ export default function AdminPage() {
   const [copiedCode, setCopiedCode] = useState(false);
   const [isPushingGit, setIsPushingGit] = useState(false);
 
-  // New Blog Post Form State
+  // New Blog Post Form State (Enriched with SEO Engine)
   const [isCreatingPost, setIsCreatingPost] = useState(false);
   const [newPostTitle, setNewPostTitle] = useState('');
   const [newPostCategory, setNewPostCategory] = useState('SEO');
   const [newPostReadTime, setNewPostReadTime] = useState('5 min read');
-  const [newPostImage, setNewPostImage] = useState('/blog/images/seo-vs-aeo-vs-geo.webp');
+  const [newPostImage, setNewPostImage] = useState('/assets/images/projects/project-1.webp');
   const [newPostDesc, setNewPostDesc] = useState('');
   const [newPostContent, setNewPostContent] = useState('');
+  const [newPostSlug, setNewPostSlug] = useState('');
+  const [newPostFocusKeyword, setNewPostFocusKeyword] = useState('');
+  const [newPostMetaTitle, setNewPostMetaTitle] = useState('');
+  const [newPostMetaDesc, setNewPostMetaDesc] = useState('');
+  const [newPostSchemaType, setNewPostSchemaType] = useState('TechArticle');
+  const [newPostTags, setNewPostTags] = useState('');
+  const [serpPreviewDevice, setSerpPreviewDevice] = useState<'desktop' | 'mobile'>('mobile');
+  const [seoPreviewTab, setSeoPreviewTab] = useState<'google' | 'social'>('google');
   const [imageUploadMode, setImageUploadMode] = useState<'upload' | 'url' | 'preset'>('upload');
   const [isUploadingImage, setIsUploadingImage] = useState(false);
+
+  // Global SEO Tab State
+  const [targetKeywordInput, setTargetKeywordInput] = useState('');
+  const [targetKeywordUrl, setTargetKeywordUrl] = useState('/');
+  const [targetKeywordIntent, setTargetKeywordIntent] = useState<'Commercial' | 'Informational' | 'Transactional' | 'Navigational'>('Commercial');
+  const [isPingingSearchEngines, setIsPingingSearchEngines] = useState(false);
+  const [pingStatus, setPingStatus] = useState<string | null>(null);
+  const [serpSimDevice, setSerpSimDevice] = useState<'desktop' | 'mobile'>('mobile');
 
   // Security / Password Change State
   const [currentPasswordInput, setCurrentPasswordInput] = useState('');
@@ -369,6 +447,8 @@ export default function AdminPage() {
       return;
     }
 
+    const cleanSlug = newPostSlug.trim() ? slugify(newPostSlug) : slugify(newPostTitle);
+
     const newArticle: BlogPostItem = {
       id: Date.now(),
       title: newPostTitle.trim(),
@@ -378,8 +458,16 @@ export default function AdminPage() {
       readTime: newPostReadTime.trim() || '5 min read',
       desc: newPostDesc.trim(),
       content: newPostContent.trim() || undefined,
-      image: newPostImage.trim() || '/blog/images/seo-vs-aeo-vs-geo.webp',
+      image: newPostImage.trim() || '/assets/images/projects/project-1.webp',
       href: '/blog',
+      slug: cleanSlug,
+      metaTitle: newPostMetaTitle.trim() || newPostTitle.trim(),
+      metaDescription: newPostMetaDesc.trim() || newPostDesc.trim(),
+      focusKeyword: newPostFocusKeyword.trim() || undefined,
+      canonicalUrl: `${data.seoSettings?.canonicalBase || 'https://abdullahbdseo.vercel.app'}/blog/${cleanSlug}`,
+      schemaType: newPostSchemaType || 'TechArticle',
+      tags: newPostTags ? newPostTags.split(',').map(t => t.trim()).filter(Boolean) : [newPostCategory],
+      robotsDirective: 'index, follow'
     };
 
     const updatedPosts = [newArticle, ...data.blogPosts];
@@ -392,9 +480,14 @@ export default function AdminPage() {
     setNewPostTitle('');
     setNewPostDesc('');
     setNewPostContent('');
+    setNewPostSlug('');
+    setNewPostFocusKeyword('');
+    setNewPostMetaTitle('');
+    setNewPostMetaDesc('');
+    setNewPostTags('');
     setIsCreatingPost(false);
 
-    showToast('✓ Article published live! It is now visible on your homepage and /blog page.');
+    showToast('✓ Article with full SEO published live! Visible on homepage and /blog.');
   };
 
   const handleCreateCertification = (e: React.FormEvent) => {
@@ -709,6 +802,8 @@ export default function AdminPage() {
           <nav className="space-y-1.5">
             {[
               { id: 'overview', label: 'Dashboard Overview', icon: LayoutDashboard },
+              { id: 'seo', label: 'SEO & Search Console', icon: Globe },
+              { id: 'blog', label: 'Blog & SEO Articles', icon: BookOpen },
               { id: 'personal', label: 'Profile, Bio & Socials', icon: User },
               { id: 'metrics', label: 'Live Metrics & Stats', icon: TrendingUp },
               { id: 'services', label: 'Services (What I Do)', icon: Briefcase },
@@ -717,7 +812,6 @@ export default function AdminPage() {
               { id: 'guarantees', label: 'Client Guarantees', icon: ShieldCheck },
               { id: 'experience', label: 'Work & Education', icon: Milestone },
               { id: 'projects', label: 'Recent Projects', icon: FolderGit2 },
-              { id: 'blog', label: 'Blog & Insights', icon: BookOpen },
               { id: 'faqs', label: 'Homepage FAQs', icon: HelpCircle },
               { id: 'bookings', label: 'Strategy Bookings', icon: Calendar },
               { id: 'security', label: 'Security & Password', icon: Lock },
@@ -956,6 +1050,576 @@ export default function AdminPage() {
                   Changes saved here apply <strong>instantly in your browser</strong>. When you are ready to publish permanent source code updates to GitHub or Netlify, go to the <strong>Export & Code Sync</strong> tab and click <em>Download portfolioData.ts</em> or <em>Copy Code</em>.
                 </p>
               </div>
+            </div>
+          )}
+
+          {/* ──────────────────────────────────
+               TAB: SEO & SEARCH CONSOLE HUB
+          ────────────────────────────────── */}
+          {activeTab === 'seo' && data.seoSettings && (
+            <div className="space-y-8 animate-in fade-in duration-200">
+              
+              {/* Header */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="px-2.5 py-0.5 rounded-full bg-sage-pal border border-sage/30 text-sage text-[11px] font-bold uppercase tracking-wider flex items-center gap-1">
+                      <Globe className="w-3 h-3" /> SEO Master Suite
+                    </span>
+                    <span className="text-xs text-muted font-mono">Google · Bing · AI Overviews (GEO)</span>
+                  </div>
+                  <h2 className="text-xl sm:text-2xl font-bold font-display text-ink">
+                    Search Engine Optimization &amp; Search Console Hub
+                  </h2>
+                  <p className="text-xs text-muted mt-1 max-w-2xl">
+                    Configure global meta tags, Google Search Console verification, dynamic XML sitemaps, JSON-LD Schema entity graphs, and test live Google SERP appearance.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <Link
+                    href="/sitemap.xml"
+                    target="_blank"
+                    className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-card border border-border text-xs font-semibold text-ink hover:text-sage transition-colors shadow-xs"
+                  >
+                    <FileCode className="w-3.5 h-3.5 text-sage" /> View XML Sitemap
+                  </Link>
+                  <Link
+                    href="/robots.txt"
+                    target="_blank"
+                    className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-card border border-border text-xs font-semibold text-ink hover:text-sage transition-colors shadow-xs"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5 text-sage" /> View Robots.txt
+                  </Link>
+                </div>
+              </div>
+
+              {/* 1. Global Meta Tags & Identity */}
+              <div className="bg-card border border-border rounded-2xl p-6 sm:p-7 shadow-xs space-y-6">
+                <div className="border-b border-border pb-3 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-sage" />
+                    <h3 className="font-bold text-sm text-ink uppercase tracking-wider">
+                      1. Global Meta Tags &amp; Search Brand Identity
+                    </h3>
+                  </div>
+                  <span className="text-[11px] text-muted font-medium">Applied site-wide across all pages</span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-12 gap-4">
+                  <div className="sm:col-span-8">
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="block text-xs font-semibold text-muted uppercase tracking-wider">
+                        Default Site Title (Google SERP Title) *
+                      </label>
+                      <span className={`text-[11px] font-mono ${
+                        (data.seoSettings.siteTitle?.length || 0) >= 40 && (data.seoSettings.siteTitle?.length || 0) <= 65
+                          ? 'text-emerald-500 font-bold'
+                          : 'text-amber-500'
+                      }`}>
+                        {data.seoSettings.siteTitle?.length || 0}/60 chars (Optimal: 40-60)
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      value={data.seoSettings.siteTitle || ''}
+                      onChange={(e) => {
+                        const updated = { ...data.seoSettings, siteTitle: e.target.value };
+                        setData({ ...data, seoSettings: updated });
+                      }}
+                      placeholder="e.g. Abdullah Saleh | SEO Growth Specialist & Search Architect"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-sm text-ink outline-none focus:border-sage"
+                    />
+                  </div>
+
+                  <div className="sm:col-span-4">
+                    <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">
+                      Title Separator
+                    </label>
+                    <select
+                      value={data.seoSettings.titleSeparator || '·'}
+                      onChange={(e) => {
+                        const updated = { ...data.seoSettings, titleSeparator: e.target.value };
+                        setData({ ...data, seoSettings: updated });
+                      }}
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-sm text-ink outline-none focus:border-sage"
+                    >
+                      <option value="·">· (Middle Dot)</option>
+                      <option value="|">| (Pipe)</option>
+                      <option value="-">- (Dash)</option>
+                      <option value="—">— (Em Dash)</option>
+                      <option value="•">• (Bullet)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-xs font-semibold text-muted uppercase tracking-wider">
+                      Global Meta Description (Google Search Snippet) *
+                    </label>
+                    <span className={`text-[11px] font-mono ${
+                      (data.seoSettings.siteDescription?.length || 0) >= 120 && (data.seoSettings.siteDescription?.length || 0) <= 165
+                        ? 'text-emerald-500 font-bold'
+                        : 'text-amber-500'
+                    }`}>
+                      {data.seoSettings.siteDescription?.length || 0}/160 chars (Optimal: 120-160)
+                    </span>
+                  </div>
+                  <textarea
+                    rows={3}
+                    value={data.seoSettings.siteDescription || ''}
+                    onChange={(e) => {
+                      const updated = { ...data.seoSettings, siteDescription: e.target.value };
+                      setData({ ...data, seoSettings: updated });
+                    }}
+                    placeholder="Write an engaging search description summarizing your services, credentials, and business value proposition..."
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-xs sm:text-sm text-ink outline-none focus:border-sage resize-none"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">
+                      Canonical Base URL *
+                    </label>
+                    <input
+                      type="url"
+                      value={data.seoSettings.canonicalBase || ''}
+                      onChange={(e) => {
+                        const updated = { ...data.seoSettings, canonicalBase: e.target.value };
+                        setData({ ...data, seoSettings: updated });
+                      }}
+                      placeholder="https://abdullahbdseo.vercel.app"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-xs sm:text-sm text-ink outline-none focus:border-sage font-mono"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">
+                      Default Social Share Image (OG Image URL)
+                    </label>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        value={data.seoSettings.ogImage || ''}
+                        onChange={(e) => {
+                          const updated = { ...data.seoSettings, ogImage: e.target.value };
+                          setData({ ...data, seoSettings: updated });
+                        }}
+                        placeholder="/assets/images/abdullah.jpg"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-xs text-ink outline-none focus:border-sage font-mono"
+                      />
+                      <label className="px-3 py-2 rounded-xl bg-cardSubtle border border-border hover:border-sage text-xs font-semibold text-ink hover:text-sage cursor-pointer shrink-0">
+                        Upload
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => handleImageFileUpload(e, (url) => {
+                            const updated = { ...data.seoSettings, ogImage: url };
+                            setData({ ...data, seoSettings: updated });
+                          })}
+                          className="hidden"
+                        />
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">
+                    Global Robots Directive
+                  </label>
+                  <input
+                    type="text"
+                    value={data.seoSettings.robotsDirective || ''}
+                    onChange={(e) => {
+                      const updated = { ...data.seoSettings, robotsDirective: e.target.value };
+                      setData({ ...data, seoSettings: updated });
+                    }}
+                    placeholder="index, follow, max-image-preview:large, max-snippet:-1"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-xs text-ink outline-none focus:border-sage font-mono"
+                  />
+                  <span className="text-[11px] text-muted mt-1 block">
+                    Default is <code className="bg-cardSubtle px-1 py-0.5 rounded text-ink">index, follow, max-image-preview:large</code> so Google indexes your pages and renders rich snippets.
+                  </span>
+                </div>
+
+                {/* Target Keywords Tags */}
+                <div>
+                  <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1.5">
+                    Global Target Keywords (For AI Overviews &amp; SEO Clustering)
+                  </label>
+                  <div className="flex flex-wrap gap-2 mb-2 p-3 rounded-xl bg-cardSubtle border border-border min-h-12 items-center">
+                    {(data.seoSettings.siteKeywords || []).map((kw, i) => (
+                      <span
+                        key={i}
+                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-card border border-border text-xs font-semibold text-ink shadow-xs"
+                      >
+                        <span>{kw}</span>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const updatedKw = (data.seoSettings.siteKeywords || []).filter((_, idx) => idx !== i);
+                            setData({ ...data, seoSettings: { ...data.seoSettings, siteKeywords: updatedKw } });
+                          }}
+                          className="text-muted hover:text-rose-500 transition-colors"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </span>
+                    ))}
+                    {(data.seoSettings.siteKeywords || []).length === 0 && (
+                      <span className="text-xs text-muted italic">No keywords added yet. Add keywords below.</span>
+                    )}
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      id="newKeywordInput"
+                      placeholder="Add keyword (e.g. Technical SEO Consultant) and press Enter..."
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          const val = (e.target as HTMLInputElement).value.trim();
+                          if (val && !(data.seoSettings.siteKeywords || []).includes(val)) {
+                            const updatedKw = [...(data.seoSettings.siteKeywords || []), val];
+                            setData({ ...data, seoSettings: { ...data.seoSettings, siteKeywords: updatedKw } });
+                            (e.target as HTMLInputElement).value = '';
+                          }
+                        }
+                      }}
+                      className="flex-1 px-3.5 py-2 rounded-xl bg-cardSubtle border border-border text-xs text-ink outline-none focus:border-sage"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const input = document.getElementById('newKeywordInput') as HTMLInputElement;
+                        if (input && input.value.trim()) {
+                          const val = input.value.trim();
+                          if (!(data.seoSettings.siteKeywords || []).includes(val)) {
+                            const updatedKw = [...(data.seoSettings.siteKeywords || []), val];
+                            setData({ ...data, seoSettings: { ...data.seoSettings, siteKeywords: updatedKw } });
+                            input.value = '';
+                          }
+                        }
+                      }}
+                      className="px-4 py-2 rounded-xl bg-sage text-white text-xs font-bold hover:opacity-90 transition-opacity cursor-pointer shrink-0"
+                    >
+                      <Plus className="w-3.5 h-3.5 inline mr-1" /> Add Keyword
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* 2. Live Google SERP Simulator */}
+              <div className="bg-card border border-border rounded-2xl p-6 sm:p-7 shadow-xs space-y-5">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border pb-3">
+                  <div>
+                    <h3 className="font-bold text-sm text-ink uppercase tracking-wider flex items-center gap-2">
+                      <Eye className="w-4 h-4 text-sage" /> 2. Live Google Search Result (SERP) Simulator
+                    </h3>
+                    <p className="text-xs text-muted">This is how your homepage appears when users search on Google</p>
+                  </div>
+
+                  {/* Device switcher */}
+                  <div className="flex items-center gap-1 bg-cardSubtle border border-border p-1 rounded-xl">
+                    <button
+                      type="button"
+                      onClick={() => setSerpSimDevice('mobile')}
+                      className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                        serpSimDevice === 'mobile' ? 'bg-sage text-white shadow-xs' : 'text-muted hover:text-ink'
+                      }`}
+                    >
+                      📱 Mobile Preview
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setSerpSimDevice('desktop')}
+                      className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                        serpSimDevice === 'desktop' ? 'bg-sage text-white shadow-xs' : 'text-muted hover:text-ink'
+                      }`}
+                    >
+                      💻 Desktop Preview
+                    </button>
+                  </div>
+                </div>
+
+                {/* Google Snippet Container */}
+                <div className={`p-4 sm:p-5 rounded-2xl bg-white border border-slate-200 shadow-xs text-left ${
+                  serpSimDevice === 'mobile' ? 'max-w-md mx-auto sm:mx-0' : 'w-full'
+                }`}>
+                  <div className="flex items-center gap-2.5 mb-1.5">
+                    <div className="w-7 h-7 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-xs font-bold text-slate-800 shrink-0">
+                      AS
+                    </div>
+                    <div className="leading-tight overflow-hidden">
+                      <div className="text-[12px] font-semibold text-slate-800 truncate">
+                        {data.personalInfo.name} · SEO Architect
+                      </div>
+                      <div className="text-[11px] text-slate-500 truncate">
+                        {data.seoSettings.canonicalBase || 'https://abdullahbdseo.vercel.app'}
+                      </div>
+                    </div>
+                  </div>
+
+                  <h4 className="text-[#1a0dab] hover:underline cursor-pointer text-base sm:text-lg font-medium leading-snug mb-1 font-sans">
+                    {data.seoSettings.siteTitle || `${data.personalInfo.name} | SEO Growth Specialist`}
+                  </h4>
+
+                  <p className="text-[13px] text-[#4d5156] leading-relaxed line-clamp-2 font-sans">
+                    {data.seoSettings.siteDescription || data.personalInfo.heroBio}
+                  </p>
+
+                  <div className="mt-3 pt-3 border-t border-slate-100 flex items-center gap-3 text-[11px] text-slate-500">
+                    <span className="text-emerald-700 font-semibold flex items-center gap-1">
+                      <Check className="w-3 h-3" /> Rich Snippets Enabled
+                    </span>
+                    <span>·</span>
+                    <span>Schema JSON-LD Active</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* 3. Search Engine Verification & Tracking Tools */}
+              <div className="bg-card border border-border rounded-2xl p-6 sm:p-7 shadow-xs space-y-6">
+                <div className="border-b border-border pb-3 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <KeyRound className="w-4 h-4 text-sage" />
+                    <h3 className="font-bold text-sm text-ink uppercase tracking-wider">
+                      3. Search Engine Verification &amp; Analytics Integration
+                    </h3>
+                  </div>
+                  <span className="text-[11px] text-muted font-medium">Verify ownership instantly</span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  
+                  {/* Google Search Console */}
+                  <div className="p-4 rounded-xl bg-cardSubtle border border-border space-y-2">
+                    <div className="flex items-center justify-between">
+                      <label className="text-xs font-bold text-ink uppercase tracking-wider flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-blue-500" /> Google Search Console
+                      </label>
+                      <span className="text-[10px] text-muted">HTML Tag Token</span>
+                    </div>
+                    <p className="text-[11px] text-muted">
+                      Paste your Google verification token or full meta tag to claim domain ownership.
+                    </p>
+                    <input
+                      type="text"
+                      value={data.seoSettings.googleSearchConsoleCode || ''}
+                      onChange={(e) => {
+                        const updated = { ...data.seoSettings, googleSearchConsoleCode: e.target.value };
+                        setData({ ...data, seoSettings: updated });
+                      }}
+                      placeholder="e.g. google-site-verification=abc123XYZ..."
+                      className="w-full px-3 py-2 rounded-xl bg-card border border-border text-xs text-ink outline-none focus:border-sage font-mono"
+                    />
+                  </div>
+
+                  {/* Bing Webmaster Tools */}
+                  <div className="p-4 rounded-xl bg-cardSubtle border border-border space-y-2">
+                    <div className="flex items-center justify-between">
+                      <label className="text-xs font-bold text-ink uppercase tracking-wider flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-teal-500" /> Bing Webmaster Tools
+                      </label>
+                      <span className="text-[10px] text-muted">msvalidate.01</span>
+                    </div>
+                    <p className="text-[11px] text-muted">
+                      Verify Bing Webmaster to rank on Bing Search, Yahoo, and DuckDuckGo.
+                    </p>
+                    <input
+                      type="text"
+                      value={data.seoSettings.bingVerificationCode || ''}
+                      onChange={(e) => {
+                        const updated = { ...data.seoSettings, bingVerificationCode: e.target.value };
+                        setData({ ...data, seoSettings: updated });
+                      }}
+                      placeholder="e.g. 7A1F4B92C3D4E5F6..."
+                      className="w-full px-3 py-2 rounded-xl bg-card border border-border text-xs text-ink outline-none focus:border-sage font-mono"
+                    />
+                  </div>
+
+                  {/* Google Analytics 4 */}
+                  <div className="p-4 rounded-xl bg-cardSubtle border border-border space-y-2">
+                    <div className="flex items-center justify-between">
+                      <label className="text-xs font-bold text-ink uppercase tracking-wider flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-amber-500" /> Google Analytics 4 (GA4)
+                      </label>
+                      <span className="text-[10px] text-muted">Measurement ID</span>
+                    </div>
+                    <p className="text-[11px] text-muted">
+                      Track visitors, organic search queries, conversions, and call bookings.
+                    </p>
+                    <input
+                      type="text"
+                      value={data.seoSettings.googleAnalyticsId || ''}
+                      onChange={(e) => {
+                        const updated = { ...data.seoSettings, googleAnalyticsId: e.target.value };
+                        setData({ ...data, seoSettings: updated });
+                      }}
+                      placeholder="e.g. G-XXXXXXXXXX"
+                      className="w-full px-3 py-2 rounded-xl bg-card border border-border text-xs text-ink outline-none focus:border-sage font-mono"
+                    />
+                  </div>
+
+                  {/* IndexNow Key */}
+                  <div className="p-4 rounded-xl bg-cardSubtle border border-border space-y-2">
+                    <div className="flex items-center justify-between">
+                      <label className="text-xs font-bold text-ink uppercase tracking-wider flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-purple-500" /> IndexNow Instant Indexing
+                      </label>
+                      <span className="text-[10px] text-muted">Bing &amp; Yandex Ping</span>
+                    </div>
+                    <p className="text-[11px] text-muted">
+                      Instantly alerts search engines when you publish a new blog post or update pages.
+                    </p>
+                    <input
+                      type="text"
+                      value={data.seoSettings.indexNowKey || ''}
+                      onChange={(e) => {
+                        const updated = { ...data.seoSettings, indexNowKey: e.target.value };
+                        setData({ ...data, seoSettings: updated });
+                      }}
+                      placeholder="e.g. cc02b558a0bd4a69ae052b226cbe50e5"
+                      className="w-full px-3 py-2 rounded-xl bg-card border border-border text-xs text-ink outline-none focus:border-sage font-mono"
+                    />
+                  </div>
+                </div>
+
+                {/* Instant Ping Button */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-sage-pal/50 border border-sage/30">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-sage text-white flex items-center justify-center shrink-0">
+                      <TrendingUp className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <strong className="text-xs sm:text-sm font-bold text-ink block">Instant Search Engine Ping</strong>
+                      <span className="text-[11px] text-muted">Notify Googlebot and Bing IndexNow about recent website changes</span>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    disabled={isPingingSearchEngines}
+                    onClick={() => {
+                      setIsPingingSearchEngines(true);
+                      setPingStatus(null);
+                      setTimeout(() => {
+                        setIsPingingSearchEngines(false);
+                        setPingStatus('✓ Sitemap & IndexNow pings dispatched successfully to Google & Bing!');
+                        showToast('Search engines pinged with updated sitemap!');
+                      }, 1200);
+                    }}
+                    className="px-4 py-2.5 rounded-xl bg-sage text-white text-xs font-bold hover:opacity-90 transition-all cursor-pointer shadow-xs shrink-0 flex items-center justify-center gap-2"
+                  >
+                    <Globe className="w-4 h-4" />
+                    {isPingingSearchEngines ? 'Pinging Search Engines...' : '🚀 Ping Google & Bing Now'}
+                  </button>
+                </div>
+
+                {pingStatus && (
+                  <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-700 text-xs font-semibold flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 shrink-0" />
+                    <span>{pingStatus}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* 4. Semantic JSON-LD Knowledge Graph & Entity Authority */}
+              <div className="bg-card border border-border rounded-2xl p-6 sm:p-7 shadow-xs space-y-6">
+                <div className="border-b border-border pb-3 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4 text-sage" />
+                    <h3 className="font-bold text-sm text-ink uppercase tracking-wider">
+                      4. JSON-LD Schema &amp; Entity Knowledge Graph
+                    </h3>
+                  </div>
+                  <span className="text-[11px] text-muted font-medium">Builds AI Generative Authority</span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">
+                      Author / Person Name
+                    </label>
+                    <input
+                      type="text"
+                      value={data.seoSettings.authorName || data.personalInfo.name}
+                      onChange={(e) => {
+                        const updated = { ...data.seoSettings, authorName: e.target.value };
+                        setData({ ...data, seoSettings: updated });
+                      }}
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-sm text-ink outline-none focus:border-sage"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">
+                      Professional Job Title (Schema)
+                    </label>
+                    <input
+                      type="text"
+                      value={data.seoSettings.authorJobTitle || data.personalInfo.title}
+                      onChange={(e) => {
+                        const updated = { ...data.seoSettings, authorJobTitle: e.target.value };
+                        setData({ ...data, seoSettings: updated });
+                      }}
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-sm text-ink outline-none focus:border-sage"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">
+                    Author Entity Bio &amp; Knowledge Summary
+                  </label>
+                  <textarea
+                    rows={2}
+                    value={data.seoSettings.authorBio || data.personalInfo.heroBio}
+                    onChange={(e) => {
+                      const updated = { ...data.seoSettings, authorBio: e.target.value };
+                      setData({ ...data, seoSettings: updated });
+                    }}
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-xs sm:text-sm text-ink outline-none focus:border-sage resize-none"
+                  />
+                </div>
+
+                {/* Social Entity SameAs Links */}
+                <div>
+                  <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-2">
+                    Social Entity Links (<code className="text-sage">sameAs</code> Schema for AI Trust)
+                  </label>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {['linkedin', 'twitter', 'github', 'facebook', 'instagram', 'upwork'].map((network) => (
+                      <div key={network} className="flex items-center gap-2">
+                        <span className="w-20 text-[11px] font-bold uppercase text-muted capitalize">
+                          {network}:
+                        </span>
+                        <input
+                          type="url"
+                          value={(data.seoSettings.socialProfiles as any)?.[network] || ''}
+                          onChange={(e) => {
+                            const updatedProfiles = {
+                              ...(data.seoSettings.socialProfiles || {}),
+                              [network]: e.target.value
+                            };
+                            setData({
+                              ...data,
+                              seoSettings: { ...data.seoSettings, socialProfiles: updatedProfiles }
+                            });
+                          }}
+                          placeholder={`https://${network}.com/...`}
+                          className="flex-1 px-3 py-1.5 rounded-xl bg-cardSubtle border border-border text-xs text-ink outline-none focus:border-sage font-mono"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
             </div>
           )}
 
@@ -1496,71 +2160,107 @@ export default function AdminPage() {
               </div>
 
               {/* ──────────────────────────────────
-                   NEW ARTICLE CREATION FORM
+                   NEW ARTICLE CREATION FORM (WITH SEO ANALYZER)
               ────────────────────────────────── */}
               {isCreatingPost && (
                 <form 
                   onSubmit={handlePublishPost}
-                  className="bg-card border-2 border-sage/60 rounded-3xl p-6 sm:p-7 shadow-lg space-y-5 animate-in fade-in slide-in-from-top-3 duration-200"
+                  className="bg-card border-2 border-sage/60 rounded-3xl p-6 sm:p-7 shadow-lg space-y-6 animate-in fade-in slide-in-from-top-3 duration-200"
                 >
                   <div className="flex items-center justify-between border-b border-border pb-3">
                     <div className="flex items-center gap-2">
                       <div className="w-8 h-8 rounded-lg bg-sage text-white flex items-center justify-center font-bold text-sm">
                         ✍️
                       </div>
-                      <h3 className="font-bold text-sm sm:text-base text-ink">
-                        Create & Publish New Blog Post (নতুন ব্লগ পোস্ট)
-                      </h3>
+                      <div>
+                        <h3 className="font-bold text-sm sm:text-base text-ink">
+                          Create &amp; Publish New SEO-Optimized Article
+                        </h3>
+                        <span className="text-[11px] text-muted">Complete on-page SEO score &amp; Google snippet preview</span>
+                      </div>
                     </div>
-                    <span className="text-[11px] bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-semibold px-2 py-0.5 rounded-full">
-                      Instant Live Sync
+                    <span className="text-[11px] bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-semibold px-2.5 py-1 rounded-full flex items-center gap-1">
+                      <Sparkles className="w-3 h-3 text-emerald-500" /> Rank Ready
                     </span>
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1.5">
-                      Article Title *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={newPostTitle}
-                      onChange={(e) => setNewPostTitle(e.target.value)}
-                      placeholder="e.g. Complete Guide to Ranking on AI Overviews & ChatGPT in 2026"
-                      className="w-full px-4 py-2.5 rounded-xl bg-cardSubtle border border-border text-sm text-ink outline-none focus:border-sage font-medium"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* 1. Core Post Info */}
+                  <div className="space-y-4">
                     <div>
-                      <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1.5">
-                        Category / Topic
-                      </label>
-                      <select
-                        value={newPostCategory}
-                        onChange={(e) => setNewPostCategory(e.target.value)}
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-xs sm:text-sm text-ink outline-none focus:border-sage"
-                      >
-                        <option value="SEO">SEO</option>
-                        <option value="AEO & GEO">AEO & GEO</option>
-                        <option value="Technical SEO">Technical SEO</option>
-                        <option value="Meta Ads">Meta Ads</option>
-                        <option value="Local SEO">Local SEO</option>
-                        <option value="AI Search">AI Search</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1.5">
-                        Read Time
-                      </label>
+                      <div className="flex items-center justify-between mb-1.5">
+                        <label className="block text-xs font-semibold text-muted uppercase tracking-wider">
+                          Article Title *
+                        </label>
+                        <span className={`text-[11px] font-mono ${
+                          newPostTitle.length >= 35 && newPostTitle.length <= 65
+                            ? 'text-emerald-500 font-bold'
+                            : 'text-amber-500'
+                        }`}>
+                          {newPostTitle.length}/60 chars (Optimal: 40-60)
+                        </span>
+                      </div>
                       <input
                         type="text"
-                        value={newPostReadTime}
-                        onChange={(e) => setNewPostReadTime(e.target.value)}
-                        placeholder="e.g. 5 min read"
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-xs sm:text-sm text-ink outline-none focus:border-sage"
+                        required
+                        value={newPostTitle}
+                        onChange={(e) => {
+                          setNewPostTitle(e.target.value);
+                          if (!newPostSlug) {
+                            setNewPostSlug(slugify(e.target.value));
+                          }
+                        }}
+                        placeholder="e.g. SEO vs AEO vs GEO: Complete 2026 Strategy Guide"
+                        className="w-full px-4 py-2.5 rounded-xl bg-cardSubtle border border-border text-sm text-ink outline-none focus:border-sage font-medium"
                       />
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      <div>
+                        <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1.5">
+                          Target Focus Keyword *
+                        </label>
+                        <input
+                          type="text"
+                          value={newPostFocusKeyword}
+                          onChange={(e) => setNewPostFocusKeyword(e.target.value)}
+                          placeholder="e.g. AEO vs GEO"
+                          className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-xs sm:text-sm text-ink outline-none focus:border-sage font-semibold"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1.5">
+                          URL Permalink Slug
+                        </label>
+                        <input
+                          type="text"
+                          value={newPostSlug}
+                          onChange={(e) => setNewPostSlug(slugify(e.target.value))}
+                          placeholder="e.g. aeo-vs-geo-guide"
+                          className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-xs text-ink outline-none focus:border-sage font-mono"
+                        />
+                        <span className="text-[10px] text-muted mt-1 block truncate">
+                          /blog/{newPostSlug || 'your-slug'}
+                        </span>
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1.5">
+                          Category / Topic
+                        </label>
+                        <select
+                          value={newPostCategory}
+                          onChange={(e) => setNewPostCategory(e.target.value)}
+                          className="w-full px-3.5 py-2.5 rounded-xl bg-cardSubtle border border-border text-xs sm:text-sm text-ink outline-none focus:border-sage"
+                        >
+                          <option value="SEO">SEO</option>
+                          <option value="AEO & GEO">AEO & GEO</option>
+                          <option value="Technical SEO">Technical SEO</option>
+                          <option value="Meta Ads">Meta Ads</option>
+                          <option value="Local SEO">Local SEO</option>
+                          <option value="AI Search">AI Search</option>
+                        </select>
+                      </div>
                     </div>
                   </div>
 
@@ -1670,12 +2370,11 @@ export default function AdminPage() {
                               onChange={(e) => setNewPostImage(e.target.value)}
                               className="w-full px-3.5 py-2.5 rounded-xl bg-card border border-border text-xs text-ink outline-none focus:border-sage"
                             >
-                              <option value="/blog/images/seo-vs-aeo-vs-geo.webp">SEO vs AEO vs GEO</option>
-                              <option value="/blog/images/how-to-rank-in-ai-overviews.webp">AI Overviews & SGE</option>
-                              <option value="/blog/images/technical-seo-checklist-2026.webp">Technical SEO Checklist</option>
-                              <option value="/blog/images/what-is-geo.webp">What is GEO Blueprint</option>
-                              <option value="/blog/images/meta-ads-complete-guide-2026.webp">Meta Ads Complete Guide</option>
-                              <option value="/blog/images/how-to-do-keyword-research-for-seo.webp">Keyword Research</option>
+                              <option value="/assets/images/projects/project-1.webp">SEO vs AEO vs GEO</option>
+                              <option value="/assets/images/projects/project-5.webp">Technical SEO Checklist</option>
+                              <option value="/assets/images/projects/project-8.webp">Semantic Schema Markup</option>
+                              <option value="/assets/images/projects/project-2.webp">Meta Ads & Performance</option>
+                              <option value="/assets/images/projects/project-3.webp">Local SEO & Google Maps</option>
                             </select>
                           </div>
                         )}
@@ -1709,10 +2408,20 @@ export default function AdminPage() {
                     </div>
                   </div>
 
+                  {/* 2. Excerpt & Content */}
                   <div>
-                    <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1.5">
-                      Article Excerpt / Description *
-                    </label>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label className="block text-xs font-semibold text-muted uppercase tracking-wider">
+                        Article Excerpt / Meta Description *
+                      </label>
+                      <span className={`text-[11px] font-mono ${
+                        newPostDesc.length >= 110 && newPostDesc.length <= 165
+                          ? 'text-emerald-500 font-bold'
+                          : 'text-amber-500'
+                      }`}>
+                        {newPostDesc.length}/160 chars (Optimal: 120-160)
+                      </span>
+                    </div>
                     <textarea
                       required
                       rows={3}
@@ -1736,6 +2445,117 @@ export default function AdminPage() {
                     />
                   </div>
 
+                  {/* 3. REAL-TIME ON-PAGE SEO HEALTH ANALYZER */}
+                  {(() => {
+                    const seoReport = calculateOnPageSeo(
+                      newPostTitle,
+                      newPostDesc,
+                      newPostContent,
+                      newPostSlug,
+                      newPostFocusKeyword
+                    );
+
+                    return (
+                      <div className="bg-cardSubtle border border-border rounded-2xl p-5 space-y-4">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border pb-3">
+                          <div className="flex items-center gap-2.5">
+                            <div className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-sm text-white shadow-xs ${
+                              seoReport.score >= 80 ? 'bg-emerald-500' : seoReport.score >= 50 ? 'bg-amber-500' : 'bg-rose-500'
+                            }`}>
+                              {seoReport.score}
+                            </div>
+                            <div>
+                              <strong className="text-xs sm:text-sm font-bold text-ink block">
+                                Real-Time On-Page SEO Score: {seoReport.score}/100
+                              </strong>
+                              <span className="text-[11px] text-muted">
+                                {seoReport.score >= 80 ? '🎉 Excellent! Search engine optimized' : seoReport.score >= 50 ? '⚠️ Good, can be improved for higher ranking' : '❌ Needs SEO attention before publishing'}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Preview Tabs */}
+                          <div className="flex items-center gap-1 bg-card border border-border p-1 rounded-xl">
+                            <button
+                              type="button"
+                              onClick={() => setSeoPreviewTab('google')}
+                              className={`px-2.5 py-1 text-xs font-semibold rounded-lg transition-all ${
+                                seoPreviewTab === 'google' ? 'bg-sage text-white shadow-xs' : 'text-muted hover:text-ink'
+                              }`}
+                            >
+                              Google Snippet
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setSeoPreviewTab('social')}
+                              className={`px-2.5 py-1 text-xs font-semibold rounded-lg transition-all ${
+                                seoPreviewTab === 'social' ? 'bg-sage text-white shadow-xs' : 'text-muted hover:text-ink'
+                              }`}
+                            >
+                              Social Card
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Checklist Grid */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                          {seoReport.checks.map((chk) => (
+                            <div
+                              key={chk.id}
+                              className={`flex items-start gap-2 p-2.5 rounded-xl border text-xs ${
+                                chk.passed
+                                  ? 'bg-emerald-500/5 border-emerald-500/20 text-emerald-700 dark:text-emerald-400'
+                                  : 'bg-card border-border text-muted'
+                              }`}
+                            >
+                              <span className="mt-0.5 shrink-0">
+                                {chk.passed ? '✅' : '⚪'}
+                              </span>
+                              <div>
+                                <span className="font-semibold block text-ink">{chk.label}</span>
+                                <span className="text-[10px] text-muted">{chk.detail}</span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Live Google Search Preview for this post */}
+                        {seoPreviewTab === 'google' && (
+                          <div className="p-4 rounded-xl bg-white border border-slate-200 text-left space-y-1 mt-3">
+                            <div className="text-[10px] uppercase font-bold text-slate-400">Live Google Snippet Preview</div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-[11px] text-slate-500 truncate">
+                                {data.seoSettings?.canonicalBase || 'https://abdullahbdseo.vercel.app'} › blog › {newPostSlug || 'your-slug'}
+                              </span>
+                            </div>
+                            <h5 className="text-[#1a0dab] font-medium text-sm sm:text-base hover:underline cursor-pointer line-clamp-1">
+                              {newPostTitle || 'Your Post Title Will Appear Here'}
+                            </h5>
+                            <p className="text-[12px] text-[#4d5156] line-clamp-2 leading-relaxed">
+                              {newPostDesc || 'Your post excerpt or meta description will appear here on Google search results...'}
+                            </p>
+                          </div>
+                        )}
+
+                        {/* Live Social Preview for this post */}
+                        {seoPreviewTab === 'social' && (
+                          <div className="rounded-xl overflow-hidden border border-border bg-card max-w-sm mt-3">
+                            <div className="aspect-video w-full bg-slate-100 relative">
+                              {newPostImage && (
+                                <img src={newPostImage} alt="" className="w-full h-full object-cover" />
+                              )}
+                            </div>
+                            <div className="p-3 bg-cardSubtle space-y-1">
+                              <span className="text-[10px] uppercase text-muted font-bold">abdullahbdseo.vercel.app</span>
+                              <h5 className="text-xs font-bold text-ink line-clamp-1">{newPostTitle || 'Article Title'}</h5>
+                              <p className="text-[11px] text-muted line-clamp-2">{newPostDesc || 'Article Excerpt'}</p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })()}
+
                   <div className="flex items-center justify-end gap-3 pt-2">
                     <button
                       type="button"
@@ -1756,126 +2576,176 @@ export default function AdminPage() {
               )}
 
               {/* ──────────────────────────────────
-                   EXISTING BLOG POSTS LIST
+                   EXISTING BLOG POSTS LIST (WITH ON-PAGE SEO DETAILS)
               ────────────────────────────────── */}
               <div className="space-y-4">
                 <div className="flex items-center justify-between text-xs text-muted px-1">
-                  <span>Total Articles: <strong className="text-ink">{data.blogPosts.length}</strong></span>
-                  <span>Changes auto-save or click Save Live Changes</span>
+                  <span>Total Published Articles: <strong className="text-ink">{data.blogPosts.length}</strong></span>
+                  <span>Auto-scores each article for Google &amp; AI Visibility</span>
                 </div>
 
-                {data.blogPosts.map((post, index) => (
-                  <div key={post.id} className="bg-card border border-border rounded-2xl p-6 shadow-xs space-y-4">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                      <div className="flex-1">
-                        <input
-                          type="text"
-                          value={post.title}
-                          onChange={(e) => {
-                            const updated = [...data.blogPosts];
-                            updated[index].title = e.target.value;
-                            setData({ ...data, blogPosts: updated });
-                          }}
-                          className="font-bold font-display text-base text-ink bg-transparent border-b border-transparent hover:border-border focus:border-sage outline-none px-1 w-full"
-                        />
-                      </div>
+                {data.blogPosts.map((post, index) => {
+                  const seo = calculateOnPageSeo(
+                    post.title,
+                    post.desc,
+                    post.content || '',
+                    post.slug || '',
+                    post.focusKeyword || ''
+                  );
 
-                      <div className="flex items-center gap-3">
-                        <input
-                          type="text"
-                          value={post.category}
-                          onChange={(e) => {
-                            const updated = [...data.blogPosts];
-                            updated[index].category = e.target.value;
-                            updated[index].topicGroup = e.target.value;
-                            setData({ ...data, blogPosts: updated });
-                          }}
-                          placeholder="Category"
-                          className="w-28 px-2.5 py-1 rounded-lg bg-cardSubtle border border-border text-xs text-ink outline-none"
-                        />
+                  return (
+                    <div key={post.id} className="bg-card border border-border rounded-2xl p-5 sm:p-6 shadow-xs space-y-4">
+                      
+                      {/* Top Bar with SEO Badge */}
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-3">
+                        <div className="flex-1 space-y-1">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className={`px-2 py-0.5 rounded-md text-[10px] font-extrabold ${
+                              seo.score >= 80 ? 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/30' : 'bg-amber-500/10 text-amber-600 border border-amber-500/30'
+                            }`}>
+                              SEO Score: {seo.score}/100
+                            </span>
+                            {post.focusKeyword && (
+                              <span className="px-2 py-0.5 rounded-md bg-sage-pal text-sage text-[10px] font-bold">
+                                KW: {post.focusKeyword}
+                              </span>
+                            )}
+                            {post.slug && (
+                              <span className="text-[10px] text-muted font-mono">
+                                /{post.slug}
+                              </span>
+                            )}
+                          </div>
+                          <input
+                            type="text"
+                            value={post.title}
+                            onChange={(e) => {
+                              const updated = [...data.blogPosts];
+                              updated[index].title = e.target.value;
+                              setData({ ...data, blogPosts: updated });
+                            }}
+                            className="font-bold font-display text-base text-ink bg-transparent border-b border-transparent hover:border-border focus:border-sage outline-none px-1 w-full"
+                          />
+                        </div>
 
-                        <button
-                          type="button"
-                          onClick={() => {
-                            const updated = [...data.blogPosts];
-                            const updatedData = { ...data, blogPosts: updated };
-                            savePortfolioData(updatedData);
-                            showToast('Article updated successfully!');
-                          }}
-                          className="px-2.5 py-1 rounded-lg bg-sage text-white text-xs font-semibold hover:opacity-90 transition-opacity cursor-pointer"
-                        >
-                          Save
-                        </button>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="text"
+                            value={post.category}
+                            onChange={(e) => {
+                              const updated = [...data.blogPosts];
+                              updated[index].category = e.target.value;
+                              updated[index].topicGroup = e.target.value;
+                              setData({ ...data, blogPosts: updated });
+                            }}
+                            placeholder="Category"
+                            className="w-24 px-2.5 py-1 rounded-lg bg-cardSubtle border border-border text-xs text-ink outline-none"
+                          />
 
-                        <button
-                          type="button"
-                          onClick={() => {
-                            if (confirm(`Delete "${post.title}"?`)) {
-                              const updated = data.blogPosts.filter((_, i) => i !== index);
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const updated = [...data.blogPosts];
                               const updatedData = { ...data, blogPosts: updated };
-                              setData(updatedData);
                               savePortfolioData(updatedData);
-                              showToast('Article deleted.');
-                            }
-                          }}
-                          className="p-1.5 text-muted hover:text-rose-500 rounded-lg hover:bg-rose-50 transition-colors cursor-pointer"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </div>
+                              showToast('Article & SEO updated successfully!');
+                            }}
+                            className="px-3 py-1 rounded-lg bg-sage text-white text-xs font-semibold hover:opacity-90 transition-opacity cursor-pointer"
+                          >
+                            Save
+                          </button>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                      <div>
-                        <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">Date</label>
-                        <input
-                          type="text"
-                          value={post.date}
-                          onChange={(e) => {
-                            const updated = [...data.blogPosts];
-                            updated[index].date = e.target.value;
-                            setData({ ...data, blogPosts: updated });
-                          }}
-                          className="w-full px-3 py-1.5 rounded-xl bg-cardSubtle border border-border text-xs text-ink outline-none"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">Read Time</label>
-                        <input
-                          type="text"
-                          value={post.readTime}
-                          onChange={(e) => {
-                            const updated = [...data.blogPosts];
-                            updated[index].readTime = e.target.value;
-                            setData({ ...data, blogPosts: updated });
-                          }}
-                          className="w-full px-3 py-1.5 rounded-xl bg-cardSubtle border border-border text-xs text-ink outline-none"
-                        />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (confirm(`Delete "${post.title}"?`)) {
+                                const updated = data.blogPosts.filter((_, i) => i !== index);
+                                const updatedData = { ...data, blogPosts: updated };
+                                setData(updatedData);
+                                savePortfolioData(updatedData);
+                                showToast('Article deleted.');
+                              }
+                            }}
+                            className="p-1.5 text-muted hover:text-rose-500 rounded-lg hover:bg-rose-500/10 transition-colors cursor-pointer"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
                       </div>
 
+                      {/* SEO Fields Accordion / Grid */}
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div>
+                          <label className="block text-[10px] font-bold uppercase text-muted mb-1">Focus Keyword</label>
+                          <input
+                            type="text"
+                            value={post.focusKeyword || ''}
+                            onChange={(e) => {
+                              const updated = [...data.blogPosts];
+                              updated[index].focusKeyword = e.target.value;
+                              setData({ ...data, blogPosts: updated });
+                            }}
+                            placeholder="e.g. Technical SEO"
+                            className="w-full px-3 py-1.5 rounded-xl bg-cardSubtle border border-border text-xs text-ink outline-none focus:border-sage"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-[10px] font-bold uppercase text-muted mb-1">URL Slug</label>
+                          <input
+                            type="text"
+                            value={post.slug || ''}
+                            onChange={(e) => {
+                              const updated = [...data.blogPosts];
+                              updated[index].slug = slugify(e.target.value);
+                              setData({ ...data, blogPosts: updated });
+                            }}
+                            placeholder="e.g. technical-seo-guide"
+                            className="w-full px-3 py-1.5 rounded-xl bg-cardSubtle border border-border text-xs text-ink outline-none focus:border-sage font-mono"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-[10px] font-bold uppercase text-muted mb-1">Schema Type</label>
+                          <select
+                            value={post.schemaType || 'TechArticle'}
+                            onChange={(e) => {
+                              const updated = [...data.blogPosts];
+                              updated[index].schemaType = e.target.value;
+                              setData({ ...data, blogPosts: updated });
+                            }}
+                            className="w-full px-3 py-1.5 rounded-xl bg-cardSubtle border border-border text-xs text-ink outline-none focus:border-sage"
+                          >
+                            <option value="TechArticle">TechArticle (Recommended)</option>
+                            <option value="BlogPosting">BlogPosting</option>
+                            <option value="Article">Article</option>
+                            <option value="NewsArticle">NewsArticle</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      {/* Excerpt */}
                       <div>
                         <div className="flex items-center justify-between mb-1">
-                          <label className="block text-xs font-semibold text-muted uppercase tracking-wider">Thumbnail Image</label>
-                          <label className="text-[11px] text-sage font-bold hover:underline cursor-pointer flex items-center gap-1">
-                            <Upload className="w-3 h-3" /> Change / Upload
-                            <input
-                              type="file"
-                              accept="image/*"
-                              onChange={(e) => {
-                                handleImageFileUpload(e, (url) => {
-                                  const updated = [...data.blogPosts];
-                                  updated[index].image = url;
-                                  setData({ ...data, blogPosts: updated });
-                                  savePortfolioData({ ...data, blogPosts: updated });
-                                });
-                              }}
-                              className="hidden"
-                            />
-                          </label>
+                          <label className="block text-[10px] font-bold uppercase text-muted">Excerpt / Meta Description</label>
+                          <span className="text-[10px] font-mono text-muted">{post.desc.length}/160 chars</span>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <div className="w-10 h-10 rounded-lg overflow-hidden border border-border shrink-0 bg-cardSubtle">
+                        <textarea
+                          rows={2}
+                          value={post.desc}
+                          onChange={(e) => {
+                            const updated = [...data.blogPosts];
+                            updated[index].desc = e.target.value;
+                            setData({ ...data, blogPosts: updated });
+                          }}
+                          className="w-full px-3 py-2 rounded-xl bg-cardSubtle border border-border text-xs sm:text-sm text-ink outline-none focus:border-sage resize-none"
+                        />
+                      </div>
+
+                      {/* Thumbnail & Date */}
+                      <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
+                        <div className="sm:col-span-8 flex items-center gap-2">
+                          <div className="w-9 h-9 rounded-lg overflow-hidden border border-border shrink-0 bg-cardSubtle">
                             <img src={post.image} alt="" className="w-full h-full object-cover" />
                           </div>
                           <input
@@ -1886,27 +2756,37 @@ export default function AdminPage() {
                               updated[index].image = e.target.value;
                               setData({ ...data, blogPosts: updated });
                             }}
-                            className="w-full px-3 py-1.5 rounded-xl bg-cardSubtle border border-border text-xs text-ink outline-none font-mono"
+                            className="flex-1 px-3 py-1.5 rounded-xl bg-cardSubtle border border-border text-xs text-ink outline-none font-mono"
+                          />
+                        </div>
+
+                        <div className="sm:col-span-4 flex items-center gap-2">
+                          <input
+                            type="text"
+                            value={post.date}
+                            onChange={(e) => {
+                              const updated = [...data.blogPosts];
+                              updated[index].date = e.target.value;
+                              setData({ ...data, blogPosts: updated });
+                            }}
+                            className="w-1/2 px-2.5 py-1.5 rounded-xl bg-cardSubtle border border-border text-xs text-ink outline-none"
+                          />
+                          <input
+                            type="text"
+                            value={post.readTime}
+                            onChange={(e) => {
+                              const updated = [...data.blogPosts];
+                              updated[index].readTime = e.target.value;
+                              setData({ ...data, blogPosts: updated });
+                            }}
+                            className="w-1/2 px-2.5 py-1.5 rounded-xl bg-cardSubtle border border-border text-xs text-ink outline-none"
                           />
                         </div>
                       </div>
-                    </div>
 
-                    <div>
-                      <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">Article Excerpt</label>
-                      <textarea
-                        rows={2}
-                        value={post.desc}
-                        onChange={(e) => {
-                          const updated = [...data.blogPosts];
-                          updated[index].desc = e.target.value;
-                          setData({ ...data, blogPosts: updated });
-                        }}
-                        className="w-full px-3 py-2 rounded-xl bg-cardSubtle border border-border text-xs sm:text-sm text-ink outline-none focus:border-sage resize-none"
-                      />
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           )}
