@@ -160,16 +160,16 @@ export default function ServicesHubPage() {
               </p>
             </div>
 
-            <div className="flex flex-wrap items-center gap-3 shrink-0">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 shrink-0 w-full md:w-auto">
               <Link
                 href="/free-audit"
-                className="px-5 py-3 rounded-xl bg-sage text-white text-xs sm:text-sm font-bold hover:opacity-95 transition-all shadow-xs"
+                className="w-full sm:w-auto text-center px-5 py-3 rounded-xl bg-sage text-white text-xs sm:text-sm font-bold hover:opacity-95 transition-all shadow-xs"
               >
                 Run Free Audit →
               </Link>
               <Link
                 href="/#pricing"
-                className="px-5 py-3 rounded-xl border border-border bg-cardSubtle text-ink text-xs sm:text-sm font-semibold hover:border-sage transition-all"
+                className="w-full sm:w-auto text-center px-5 py-3 rounded-xl border border-border bg-cardSubtle text-ink text-xs sm:text-sm font-semibold hover:border-sage transition-all"
               >
                 View Pricing Packages
               </Link>

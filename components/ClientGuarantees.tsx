@@ -132,7 +132,7 @@ export default function ClientGuarantees() {
             return (
               <div
                 key={item.id}
-                className={`p-7 rounded-3xl bg-card border border-border ${styles.hoverBorder} shadow-card hover:shadow-xl transition-all duration-300 flex flex-col justify-between group relative overflow-hidden`}
+                className={`p-6 sm:p-7 rounded-3xl bg-card border border-border ${styles.hoverBorder} shadow-card hover:shadow-xl transition-all duration-300 flex flex-col justify-between group relative overflow-hidden`}
               >
                 {/* Accent Top Gradient */}
                 <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-current to-transparent opacity-0 group-hover:opacity-100 transition-opacity text-sage" />
@@ -140,7 +140,7 @@ export default function ClientGuarantees() {
                 <div className="space-y-4">
                   {/* Icon & Pill Tag */}
                   <div className="flex items-center justify-between gap-3">
-                    <div className={`w-12 h-12 rounded-2xl ${styles.iconBg} flex items-center justify-center transition-transform group-hover:scale-110 duration-200`}>
+                    <div className={`w-11 h-11 sm:w-12 sm:h-12 rounded-2xl ${styles.iconBg} flex items-center justify-center transition-transform group-hover:scale-110 duration-200`}>
                       {renderIcon(item.iconName, styles.iconText)}
                     </div>
 
@@ -150,7 +150,7 @@ export default function ClientGuarantees() {
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-lg font-bold font-display text-ink group-hover:text-sage transition-colors leading-snug">
+                  <h3 className="text-base sm:text-lg font-bold font-display text-ink group-hover:text-sage transition-colors leading-snug">
                     {item.title}
                   </h3>
 
@@ -160,7 +160,7 @@ export default function ClientGuarantees() {
                   </p>
                 </div>
 
-                <div className="pt-5 mt-5 border-t border-border/60 flex items-center gap-2 text-[11px] font-semibold text-muted">
+                <div className="pt-4 sm:pt-5 mt-4 sm:mt-5 border-t border-border/60 flex items-center gap-2 text-[11px] font-semibold text-muted">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
                   <span>Guaranteed in writing</span>
                 </div>
@@ -170,8 +170,8 @@ export default function ClientGuarantees() {
         </div>
 
         {/* Action Callout */}
-        <div className="mt-14 p-7 sm:p-8 rounded-3xl bg-cardSubtle border border-border text-center max-w-4xl mx-auto shadow-xs flex flex-col sm:flex-row items-center justify-between gap-6">
-          <div className="text-left space-y-1">
+        <div className="mt-12 sm:mt-14 p-6 sm:p-8 rounded-3xl bg-cardSubtle border border-border text-center sm:text-left max-w-4xl mx-auto shadow-xs flex flex-col sm:flex-row items-center justify-between gap-5 sm:gap-6">
+          <div className="space-y-1 text-center sm:text-left">
             <strong className="text-base sm:text-lg font-bold text-ink block font-display">
               Ready to scale organic pipeline with complete peace of mind?
             </strong>
@@ -182,7 +182,7 @@ export default function ClientGuarantees() {
 
           <button
             onClick={triggerBookingModal}
-            className="px-6 py-3 rounded-xl bg-sage text-white text-xs sm:text-sm font-bold hover:opacity-95 transition-all shadow-md flex items-center justify-center gap-2 shrink-0 cursor-pointer hover:scale-[1.02]"
+            className="w-full sm:w-auto px-6 py-3 rounded-xl bg-sage text-white text-xs sm:text-sm font-bold hover:opacity-95 transition-all shadow-md flex items-center justify-center gap-2 shrink-0 cursor-pointer hover:scale-[1.02] active:scale-95"
           >
             <Calendar className="w-4 h-4" /> Schedule Strategy Call →
           </button>

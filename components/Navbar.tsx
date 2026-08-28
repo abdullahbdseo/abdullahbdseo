@@ -104,8 +104,8 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-card border border-border/80 flex items-center justify-center p-1.5 shadow-xs group-hover:scale-105 transition-transform overflow-hidden">
+          <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group max-w-[200px] xs:max-w-[260px] sm:max-w-none shrink-0">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-card border border-border/80 flex items-center justify-center p-1.5 shadow-xs group-hover:scale-105 transition-transform overflow-hidden shrink-0">
               <Image
                 src="/assets/images/favicon.png"
                 alt="Abdullah Saleh Logo"
@@ -115,11 +115,11 @@ export default function Navbar() {
                 priority
               />
             </div>
-            <div className="flex flex-col">
-              <strong className="text-base text-ink font-semibold leading-tight font-display tracking-wide group-hover:text-sage transition-colors">
+            <div className="flex flex-col min-w-0">
+              <strong className="text-sm sm:text-base text-ink font-semibold leading-tight font-display tracking-wide group-hover:text-sage transition-colors truncate">
                 {personalInfo.name}
               </strong>
-              <span className="text-[11px] text-muted tracking-tight">
+              <span className="text-[10px] sm:text-[11px] text-muted tracking-tight truncate hidden xs:block">
                 {personalInfo.title}
               </span>
             </div>
@@ -441,12 +441,12 @@ export default function Navbar() {
           </nav>
 
           {/* Right Action Tools */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             {/* Theme Toggle (Dark/Light) */}
             <button 
               onClick={toggleTheme}
               aria-label="Toggle theme mode"
-              className="p-2.5 rounded-xl text-ink hover:bg-cardSubtle border border-border/50 transition-colors"
+              className="p-2 sm:p-2.5 rounded-xl text-ink hover:bg-cardSubtle border border-border/50 transition-colors"
             >
               {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
             </button>
@@ -456,17 +456,17 @@ export default function Navbar() {
               <button 
                 onClick={() => cycleStyle()}
                 aria-label="Switch visual style automatically"
-                className="p-2.5 rounded-xl text-ink hover:bg-cardSubtle border border-border/50 transition-all hover:scale-105 active:scale-95 flex items-center gap-1.5 group"
+                className="p-2 sm:p-2.5 rounded-xl text-ink hover:bg-cardSubtle border border-border/50 transition-all hover:scale-105 active:scale-95 flex items-center gap-1.5 group"
                 title="Click to automatically change color & style"
               >
                 <Palette className="w-4 h-4 text-sage transition-transform group-hover:rotate-45" />
-                <span className="w-2 h-2 rounded-full hidden sm:inline-block shadow-xs" style={{ backgroundColor: stylesList.find(s => s.id === style)?.color || '#3D6B50' }} />
+                <span className="w-2 h-2 rounded-full hidden md:inline-block shadow-xs" style={{ backgroundColor: stylesList.find(s => s.id === style)?.color || '#3D6B50' }} />
               </button>
 
               <button
                 onClick={() => setStyleDropdown(!styleDropdown)}
                 aria-label="Choose visual style from list"
-                className="p-1 -ml-1 text-muted hover:text-ink transition-colors"
+                className="hidden sm:inline-flex p-1 -ml-1 text-muted hover:text-ink transition-colors"
                 title="Choose style from list"
               >
                 <ChevronDown className={`w-3 h-3 transition-transform ${styleDropdown ? 'rotate-180' : ''}`} />
@@ -507,7 +507,7 @@ export default function Navbar() {
               )}
             </div>
 
-            {/* Book Strategy Call */}
+            {/* Book Strategy Call - shown on tablet and desktop */}
             <button
               onClick={triggerBookingModal}
               className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-sage-pal border border-sage/40 text-sage font-semibold text-xs hover:bg-sage hover:text-white transition-all shadow-xs cursor-pointer"
@@ -515,10 +515,10 @@ export default function Navbar() {
               <Calendar className="w-3.5 h-3.5" /> Book Call
             </button>
 
-            {/* Let's Talk CTA */}
+            {/* Let's Talk CTA - shown on desktop */}
             <Link 
               href="/#contact" 
-              className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-ink text-surface font-semibold text-xs hover:bg-sage transition-all shadow-sm"
+              className="hidden lg:inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-ink text-surface font-semibold text-xs hover:bg-sage transition-all shadow-sm"
             >
               Let's Talk <ArrowRight className="w-3.5 h-3.5" />
             </Link>
@@ -527,7 +527,7 @@ export default function Navbar() {
             <button 
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label="Toggle mobile menu"
-              className="p-2.5 rounded-xl text-ink hover:bg-cardSubtle border border-border/50 lg:hidden"
+              className="p-2 sm:p-2.5 rounded-xl text-ink hover:bg-cardSubtle border border-border/50 lg:hidden"
             >
               {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>

@@ -176,16 +176,16 @@ export default function Certifications() {
         </div>
 
         {/* Bottom Trust Metrics Bar */}
-        <div className="mt-14 p-6 rounded-3xl bg-card border border-border shadow-xs flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="mt-12 sm:mt-14 p-5 sm:p-6 rounded-3xl bg-card border border-border shadow-xs flex flex-col md:flex-row items-center justify-between gap-5 sm:gap-6">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-sage/10 text-sage flex items-center justify-center shrink-0">
-              <Sparkles className="w-6 h-6" />
+            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-sage/10 text-sage flex items-center justify-center shrink-0">
+              <Sparkles className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
             <div>
               <strong className="text-sm sm:text-base font-bold text-ink block font-display">
                 Computer Science &amp; Engineering Foundation
               </strong>
-              <p className="text-xs text-muted">
+              <p className="text-xs text-muted mt-0.5">
                 Combining a B.Sc. in CSE with rigorous industry certifications to deliver data-backed search ranking results.
               </p>
             </div>
@@ -194,7 +194,7 @@ export default function Certifications() {
           <a
             href="/assets/files/abdullah-saleh-cv.pdf"
             download="Abdullah-Saleh-CV.pdf"
-            className="px-5 py-2.5 rounded-xl bg-ink text-surface font-semibold text-xs hover:bg-sage transition-all whitespace-nowrap shadow-xs"
+            className="w-full md:w-auto text-center px-5 py-2.5 rounded-xl bg-ink text-surface font-semibold text-xs hover:bg-sage transition-all whitespace-nowrap shadow-xs cursor-pointer"
           >
             Download Verified CV (PDF)
           </a>

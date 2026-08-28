@@ -97,11 +97,11 @@ export default function Services() {
           </div>
 
           {/* Action Buttons Header */}
-          <div className="flex items-center gap-3 shrink-0">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 shrink-0 w-full sm:w-auto">
             {/* Work With Me Button */}
             <Link 
               href="/#contact"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border bg-card text-ink font-semibold text-sm hover:border-sage hover:text-sage transition-all shadow-xs hover:shadow-sm"
+              className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full border border-border bg-card text-ink font-semibold text-xs sm:text-sm hover:border-sage hover:text-sage transition-all shadow-xs hover:shadow-sm text-center"
             >
               Work With Me <ArrowRight className="w-4 h-4" />
             </Link>
@@ -109,7 +109,7 @@ export default function Services() {
             {/* All Services Gradient Button */}
             <Link 
               href="/services"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-sage to-blush text-white font-semibold text-sm hover:opacity-90 transition-all shadow-md shadow-sage/20 hover:shadow-sage/30 hover:scale-[1.02]"
+              className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-gradient-to-r from-sage to-blush text-white font-semibold text-xs sm:text-sm hover:opacity-90 transition-all shadow-md shadow-sage/20 hover:shadow-sage/30 hover:scale-[1.02] text-center"
             >
               All Services <ArrowRight className="w-4 h-4" />
             </Link>
@@ -123,7 +123,7 @@ export default function Services() {
               return (
                 <div 
                   key={svc.id}
-                  className="relative rounded-[2rem] p-7 sm:p-8 flex flex-col justify-between overflow-hidden shadow-lg transition-all duration-500 hover:-translate-y-1 bg-gradient-to-b from-sage/25 via-sage/15 to-blush/20 border-2 border-sage"
+                  className="relative rounded-[1.75rem] sm:rounded-[2rem] p-6 sm:p-8 flex flex-col justify-between overflow-hidden shadow-lg transition-all duration-500 hover:-translate-y-1 bg-gradient-to-b from-sage/25 via-sage/15 to-blush/20 border-2 border-sage"
                 >
                   <div>
                     {/* Top Icon & Badge */}

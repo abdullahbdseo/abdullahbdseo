@@ -240,20 +240,20 @@ export default function FreeAuditPage() {
 
             {/* Input Form */}
             <form onSubmit={handleAudit} className="max-w-xl mx-auto space-y-3">
-              <div className="flex items-center gap-2 p-2 rounded-2xl bg-card border border-border shadow-lg">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 p-2 rounded-2xl bg-card border border-border shadow-lg">
                 <input
                   type="text"
                   required
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
                   placeholder="https://yourwebsite.com"
-                  className="flex-1 px-4 py-2 bg-transparent text-sm sm:text-base text-ink outline-none"
+                  className="w-full sm:flex-1 px-3 sm:px-4 py-2.5 sm:py-2 bg-transparent text-sm sm:text-base text-ink outline-none"
                 />
                 
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-6 py-2.5 rounded-xl bg-sage text-white font-semibold text-xs sm:text-sm hover:bg-sage-dark transition-all flex items-center gap-1.5 shadow-sm shrink-0 disabled:opacity-60"
+                  className="w-full sm:w-auto px-6 py-3 sm:py-2.5 rounded-xl bg-sage text-white font-semibold text-xs sm:text-sm hover:bg-sage-dark transition-all flex items-center justify-center gap-1.5 shadow-sm shrink-0 disabled:opacity-60"
                 >
                   {loading ? (
                     <>

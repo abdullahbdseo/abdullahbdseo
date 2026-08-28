@@ -39,16 +39,16 @@ export default function FaqSection() {
               >
                 <button
                   onClick={() => toggle(idx)}
-                  className="w-full p-5 sm:p-6 text-left flex items-center justify-between gap-4 font-display font-semibold text-base sm:text-lg text-ink hover:text-sage transition-colors"
+                  className="w-full p-4 sm:p-6 text-left flex items-center justify-between gap-3 sm:gap-4 font-display font-semibold text-sm sm:text-lg text-ink hover:text-sage transition-colors"
                 >
-                  <span>{item.q}</span>
-                  <span className="w-8 h-8 rounded-full bg-cardSubtle flex items-center justify-center shrink-0 text-muted">
-                    {isOpen ? <Minus className="w-4 h-4 text-sage" /> : <Plus className="w-4 h-4" />}
+                  <span className="leading-snug">{item.q}</span>
+                  <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-cardSubtle flex items-center justify-center shrink-0 text-muted">
+                    {isOpen ? <Minus className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-sage" /> : <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
                   </span>
                 </button>
 
                 {isOpen && (
-                  <div className="px-5 pb-5 sm:px-6 sm:pb-6 text-xs sm:text-sm text-muted leading-relaxed border-t border-border/60 pt-4 animate-in fade-in duration-150">
+                  <div className="px-4 pb-4 sm:px-6 sm:pb-6 text-xs sm:text-sm text-muted leading-relaxed border-t border-border/60 pt-3 sm:pt-4 animate-in fade-in duration-150">
                     {item.a}
                   </div>
                 )}

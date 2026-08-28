@@ -42,16 +42,16 @@ export default function Pricing() {
         </div>
 
         {/* Pricing Cards Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch">
           {pricingPackages.map((pkg) => {
             const isPopular = pkg.popular;
 
             return (
               <div
                 key={pkg.id}
-                className={`relative rounded-3xl p-7 sm:p-8 flex flex-col justify-between transition-all duration-300 ${
+                className={`relative rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 ${
                   isPopular
-                    ? 'bg-card border-2 border-sage shadow-xl scale-[1.02] z-10'
+                    ? 'bg-card border-2 border-sage shadow-xl lg:scale-[1.02] z-10'
                     : 'bg-card border border-border shadow-card hover:border-sage/40 hover:shadow-lg'
                 }`}
               >
@@ -68,14 +68,14 @@ export default function Pricing() {
                 <div className="space-y-4">
                   <div>
                     <h3 className="text-xl font-bold font-display text-ink">{pkg.name}</h3>
-                    <p className="text-xs text-muted mt-1.5 leading-relaxed min-h-[36px]">
+                    <p className="text-xs text-muted mt-1.5 leading-relaxed sm:min-h-[36px]">
                       {pkg.tagline}
                     </p>
                   </div>
 
                   {/* Price */}
                   <div className="pt-2 pb-4 border-b border-border flex items-baseline gap-1.5">
-                    <span className="text-4xl sm:text-5xl font-bold font-display text-ink tracking-tight">
+                    <span className="text-3xl xs:text-4xl sm:text-5xl font-bold font-display text-ink tracking-tight">
                       {pkg.price}
                     </span>
                     <span className="text-xs text-muted font-medium">
