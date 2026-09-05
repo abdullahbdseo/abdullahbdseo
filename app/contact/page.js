@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import Link from "next/link";
 import { siteSettings } from "@/lib/data";
 
 export default function ContactPage() {
@@ -9,277 +9,265 @@ export default function ContactPage() {
     name: "",
     email: "",
     website: "",
+    phone: "",
     service_interest: "Technical SEO Audit",
-    budget: "$1,000 - $3,000",
     message: ""
   });
-
-  const [status, setStatus] = useState({ loading: false, success: false, error: null });
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setStatus({ loading: true, success: false, error: null });
-
+    setLoading(true);
+    setError(null);
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData)
       });
-
       const data = await res.json();
       if (res.ok && data.success) {
-        setStatus({ loading: false, success: true, error: null });
+        setSuccess(true);
         setFormData({
           name: "",
           email: "",
           website: "",
+          phone: "",
           service_interest: "Technical SEO Audit",
-          budget: "$1,000 - $3,000",
           message: ""
         });
       } else {
-        setStatus({ loading: false, success: false, error: data.error || "Failed to send inquiry" });
+        setError(data.error || "Failed to submit message");
       }
     } catch (err) {
-      setStatus({ loading: false, success: false, error: "Network error. Please try again." });
+      setError("Network error. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="contact-page">
-      {/* PAGE HEADER */}
-      <section className="page-header-section">
-        <div className="container text-center">
-          <div className="sub-badge">Get In Touch</div>
-          <h1 className="page-title">Let&apos;s Build Your Search Dominance</h1>
-          <p className="page-subtitle max-w-2xl mx-auto">
-            Have questions about an audit, need an enterprise proposal, or want to discuss a monthly retainer? Send a message below.
+    <div className="contact-page-wrapper">
+      {/* Hero Header */}
+      <section className="digi-hero-section" style={{ padding: "50px 0 35px", textAlign: "center" }}>
+        <div className="container">
+          <span className="text-blue" style={{ fontWeight: 700, fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+            Direct Access
+          </span>
+          <h1 style={{ fontSize: "2.8rem", margin: "10px 0 14px", fontWeight: 800 }}>
+            Let&apos;s Build Your Search Growth
+          </h1>
+          <p style={{ fontSize: "1.05rem", color: "var(--digi-text-body)", maxWidth: "620px", margin: "0 auto", lineHeight: 1.6 }}>
+            Have a project in mind or need a custom technical roadmap? Send your domain details below for a forensic SEO diagnostic.
           </p>
         </div>
       </section>
 
-      {/* CONTACT BODY */}
-      <section className="section-padding">
+      {/* Main Content Area */}
+      <section className="contact-page-section" style={{ backgroundColor: "#f8fafc", padding: "50px 0 80px" }}>
         <div className="container">
-          <div className="contact-layout-grid">
-            {/* DIRECT INFO COLUMN */}
-            <div className="contact-info-col">
-              <div className="contact-info-card">
-                <div className="info-expert-header">
-                  <Image 
-                    src={siteSettings.profile_photo} 
-                    alt={siteSettings.expert_name} 
-                    width={70} 
-                    height={70} 
-                    className="info-expert-img"
+          <div className="contact-layout-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1.18fr", gap: "32px", maxWidth: "1120px", margin: "0 auto", alignItems: "start" }}>
+            
+            {/* Left Column: Contact Details & Perks */}
+            <div className="contact-left-column" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+              
+              {/* Contact Details Box */}
+              <div className="contact-details-box" style={{ background: "linear-gradient(180deg, #edf6ff 0%, #f4f9ff 100%)", border: "1px solid #dbeafe", borderRadius: "8px", padding: "28px 24px", boxShadow: "0 4px 20px -2px rgba(2, 132, 199, 0.06)" }}>
+                <h2 className="contact-details-heading" style={{ fontSize: "1.45rem", fontWeight: 800, color: "#0f172a", margin: "0 0 24px 0", letterSpacing: "-0.01em" }}>
+                  Contact Information
+                </h2>
+
+                <div className="contact-meta-group" style={{ marginBottom: "22px" }}>
+                  <span className="contact-meta-label" style={{ fontSize: "0.76rem", fontWeight: 700, textTransform: "uppercase", color: "#64748b", letterSpacing: "0.06em", marginBottom: "5px", display: "block" }}>
+                    Expert &amp; Strategist
+                  </span>
+                  <div style={{ fontSize: "1.1rem", fontWeight: 700, color: "#0f172a" }}>
+                    {siteSettings.expert_name}
+                  </div>
+                  <div style={{ fontSize: "0.85rem", color: "#64748b" }}>
+                    {siteSettings.expert_title}
+                  </div>
+                </div>
+
+                <div className="contact-meta-group" style={{ marginBottom: "22px" }}>
+                  <span className="contact-meta-label" style={{ fontSize: "0.76rem", fontWeight: 700, textTransform: "uppercase", color: "#64748b", letterSpacing: "0.06em", marginBottom: "5px", display: "block" }}>
+                    Primary Email
+                  </span>
+                  <a href={`mailto:${siteSettings.contact_email}`} className="contact-meta-email" style={{ fontSize: "1.12rem", fontWeight: 700, color: "#0284c7", textDecoration: "none", wordBreak: "break-all" }}>
+                    {siteSettings.contact_email}
+                  </a>
+                </div>
+
+                <div className="contact-meta-group" style={{ marginBottom: "22px" }}>
+                  <span className="contact-meta-label" style={{ fontSize: "0.76rem", fontWeight: 700, textTransform: "uppercase", color: "#64748b", letterSpacing: "0.06em", marginBottom: "5px", display: "block" }}>
+                    WhatsApp Direct
+                  </span>
+                  <a href={`https://wa.me/${siteSettings.whatsapp_number}`} target="_blank" rel="noopener noreferrer" style={{ fontSize: "1.05rem", fontWeight: 700, color: "#16a34a", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                    <i className="fa-brands fa-whatsapp"></i> {siteSettings.contact_phone}
+                  </a>
+                </div>
+
+                <div className="contact-meta-group" style={{ marginBottom: "0" }}>
+                  <span className="contact-meta-label" style={{ fontSize: "0.76rem", fontWeight: 700, textTransform: "uppercase", color: "#64748b", letterSpacing: "0.06em", marginBottom: "5px", display: "block" }}>
+                    Response Time
+                  </span>
+                  <span className="contact-meta-hours" style={{ fontSize: "1.05rem", fontWeight: 600, color: "#1e293b", display: "inline-block" }}>
+                    {siteSettings.working_hours}
+                  </span>
+                </div>
+              </div>
+
+              {/* Perk 1 */}
+              <div className="contact-perk-card" style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "6px", padding: "16px 20px", display: "flex", alignItems: "center", gap: "16px", boxShadow: "0 2px 8px rgba(0,0,0,0.02)" }}>
+                <div style={{ width: "42px", height: "42px", borderRadius: "8px", background: "rgba(22, 163, 74, 0.1)", color: "#16a34a", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.1rem", flexShrink: 0 }}>
+                  <i className="fa-solid fa-shield-halved"></i>
+                </div>
+                <div>
+                  <div style={{ fontWeight: 700, fontSize: "0.95rem", color: "#0f172a" }}>100% White-Hat Security</div>
+                  <div style={{ fontSize: "0.82rem", color: "#64748b" }}>All optimizations strictly follow Google Search Essentials guidelines.</div>
+                </div>
+              </div>
+
+              {/* Perk 2 */}
+              <div className="contact-perk-card" style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "6px", padding: "16px 20px", display: "flex", alignItems: "center", gap: "16px", boxShadow: "0 2px 8px rgba(0,0,0,0.02)" }}>
+                <div style={{ width: "42px", height: "42px", borderRadius: "8px", background: "rgba(37, 99, 235, 0.1)", color: "#2563eb", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.1rem", flexShrink: 0 }}>
+                  <i className="fa-solid fa-bolt"></i>
+                </div>
+                <div>
+                  <div style={{ fontWeight: 700, fontSize: "0.95rem", color: "#0f172a" }}>24-Hour Forensic Turnaround</div>
+                  <div style={{ fontSize: "0.82rem", color: "#64748b" }}>We inspect your domain before our initial strategy response.</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column: Contact Form */}
+            <div className="contact-form-card" style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "32px", boxShadow: "0 4px 20px -2px rgba(15, 23, 42, 0.05)" }}>
+              <div style={{ marginBottom: "24px" }}>
+                <h3 style={{ fontSize: "1.45rem", fontWeight: 800, color: "#0f172a", marginBottom: "4px" }}>
+                  Request SEO Analysis
+                </h3>
+                <p style={{ fontSize: "0.88rem", color: "#64748b" }}>
+                  Fill out the form below and we will get back to you promptly.
+                </p>
+              </div>
+
+              {success && (
+                <div style={{ background: "#dcfce7", border: "1px solid #bbf7d0", color: "#15803d", padding: "14px 18px", borderRadius: "6px", marginBottom: "20px", fontSize: "0.88rem" }}>
+                  <strong><i className="fa-solid fa-circle-check"></i> Inquiry Received!</strong>
+                  <p style={{ margin: "4px 0 0" }}>Thank you. We have received your request and will review your website within 24 hours.</p>
+                </div>
+              )}
+
+              {error && (
+                <div style={{ background: "#fee2e2", border: "1px solid #fecaca", color: "#b91c1c", padding: "14px 18px", borderRadius: "6px", marginBottom: "20px", fontSize: "0.88rem" }}>
+                  <strong><i className="fa-solid fa-triangle-exclamation"></i> Error:</strong> {error}
+                </div>
+              )}
+
+              <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                <div>
+                  <label style={{ display: "block", fontSize: "0.84rem", fontWeight: 600, color: "#334155", marginBottom: "6px" }}>
+                    Your Name <span style={{ color: "#ef4444" }}>*</span>
+                  </label>
+                  <input 
+                    type="text" 
+                    required 
+                    className="digi-input" 
+                    placeholder="e.g. Alex Morgan"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   />
+                </div>
+
+                <div>
+                  <label style={{ display: "block", fontSize: "0.84rem", fontWeight: 600, color: "#334155", marginBottom: "6px" }}>
+                    Email Address <span style={{ color: "#ef4444" }}>*</span>
+                  </label>
+                  <input 
+                    type="email" 
+                    required 
+                    className="digi-input" 
+                    placeholder="alex@company.com"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  />
+                </div>
+
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
                   <div>
-                    <h3 className="info-expert-name">{siteSettings.expert_name}</h3>
-                    <p className="info-expert-title">{siteSettings.expert_title}</p>
+                    <label style={{ display: "block", fontSize: "0.84rem", fontWeight: 600, color: "#334155", marginBottom: "6px" }}>
+                      Website URL
+                    </label>
+                    <input 
+                      type="url" 
+                      className="digi-input" 
+                      placeholder="https://example.com"
+                      value={formData.website}
+                      onChange={(e) => setFormData({ ...formData, website: e.target.value })}
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{ display: "block", fontSize: "0.84rem", fontWeight: 600, color: "#334155", marginBottom: "6px" }}>
+                      Phone / WhatsApp
+                    </label>
+                    <input 
+                      type="tel" 
+                      className="digi-input" 
+                      placeholder="+1 (555) 000-0000"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    />
                   </div>
                 </div>
 
-                <div className="info-channels-list mt-8">
-                  <div className="info-channel-item">
-                    <div className="channel-icon bg-primary-light">
-                      <i className="fa-solid fa-envelope text-primary"></i>
-                    </div>
-                    <div>
-                      <span className="channel-lbl">Email Inquiries</span>
-                      <a href={`mailto:${siteSettings.contact_email}`} className="channel-val">
-                        {siteSettings.contact_email}
-                      </a>
-                    </div>
-                  </div>
-
-                  <div className="info-channel-item">
-                    <div className="channel-icon bg-success-light">
-                      <i className="fa-brands fa-whatsapp text-success"></i>
-                    </div>
-                    <div>
-                      <span className="channel-lbl">WhatsApp Direct</span>
-                      <a href={`https://wa.me/${siteSettings.whatsapp_number}`} target="_blank" rel="noopener noreferrer" className="channel-val">
-                        {siteSettings.contact_phone}
-                      </a>
-                    </div>
-                  </div>
-
-                  <div className="info-channel-item">
-                    <div className="channel-icon bg-info-light">
-                      <i className="fa-solid fa-clock text-info"></i>
-                    </div>
-                    <div>
-                      <span className="channel-lbl">Business Hours</span>
-                      <span className="channel-val">{siteSettings.working_hours}</span>
-                    </div>
-                  </div>
-
-                  <div className="info-channel-item">
-                    <div className="channel-icon bg-warning-light">
-                      <i className="fa-solid fa-location-dot text-warning"></i>
-                    </div>
-                    <div>
-                      <span className="channel-lbl">Office HQ</span>
-                      <span className="channel-val">{siteSettings.office_address}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="info-social-links mt-8">
-                  <span className="social-links-label">Connect Online:</span>
-                  <div className="social-icons-row">
-                    <a href={siteSettings.social_linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                      <i className="fa-brands fa-linkedin-in"></i>
-                    </a>
-                    <a href={siteSettings.social_twitter} target="_blank" rel="noopener noreferrer" aria-label="Twitter">
-                      <i className="fa-brands fa-x-twitter"></i>
-                    </a>
-                    <a href={siteSettings.social_github} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                      <i className="fa-brands fa-github"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* FORM COLUMN */}
-            <div className="contact-form-col">
-              <div className="contact-form-card">
-                <h3 className="form-card-title">Send a Direct Inquiry</h3>
-                <p className="form-card-sub">Fill in your website details and I&apos;ll review your domain before getting back to you.</p>
-
-                {status.success && (
-                  <div className="alert-box alert-success my-6">
-                    <i className="fa-solid fa-circle-check"></i>
-                    <div>
-                      <strong>Inquiry Received!</strong>
-                      <p>Thank you. I have received your request and will review your website within 24 hours.</p>
-                    </div>
-                  </div>
-                )}
-
-                {status.error && (
-                  <div className="alert-box alert-danger my-6">
-                    <i className="fa-solid fa-circle-exclamation"></i>
-                    <div>
-                      <strong>Submission Error</strong>
-                      <p>{status.error}</p>
-                    </div>
-                  </div>
-                )}
-
-                <form onSubmit={handleSubmit} className="contact-form-fields mt-6">
-                  <div className="form-row-2">
-                    <div className="form-group">
-                      <label className="form-label">Your Full Name <span className="text-danger">*</span></label>
-                      <input 
-                        type="text" 
-                        name="name" 
-                        required 
-                        value={formData.name} 
-                        onChange={handleChange} 
-                        placeholder="e.g. Alex Morgan" 
-                        className="form-input"
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label className="form-label">Work Email <span className="text-danger">*</span></label>
-                      <input 
-                        type="email" 
-                        name="email" 
-                        required 
-                        value={formData.email} 
-                        onChange={handleChange} 
-                        placeholder="alex@company.com" 
-                        className="form-input"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="form-row-2">
-                    <div className="form-group">
-                      <label className="form-label">Website URL <span className="text-danger">*</span></label>
-                      <input 
-                        type="url" 
-                        name="website" 
-                        required 
-                        value={formData.website} 
-                        onChange={handleChange} 
-                        placeholder="https://yourwebsite.com" 
-                        className="form-input"
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label className="form-label">Area of Interest</label>
-                      <select 
-                        name="service_interest" 
-                        value={formData.service_interest} 
-                        onChange={handleChange} 
-                        className="form-select"
-                      >
-                        <option value="Technical SEO Audit">Comprehensive Technical SEO Audit</option>
-                        <option value="On-Page & Keyword Strategy">On-Page & Keyword Strategy</option>
-                        <option value="E-Commerce Store Optimization">E-Commerce Store Optimization</option>
-                        <option value="Monthly Growth Retainer">Monthly Growth Retainer</option>
-                        <option value="Penalty Recovery & Migration">Site Migration / Penalty Recovery</option>
-                        <option value="Other Consultation">Other Custom Strategy</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label">Estimated Monthly SEO Budget</label>
-                    <select 
-                      name="budget" 
-                      value={formData.budget} 
-                      onChange={handleChange} 
-                      className="form-select"
-                    >
-                      <option value="Under $1,000">Under $1,000 (One-Time Deliverable)</option>
-                      <option value="$1,000 - $3,000">$1,000 - $3,000 / month</option>
-                      <option value="$3,000 - $5,000">$3,000 - $5,000 / month</option>
-                      <option value="$5,000+">$5,000+ / month (Enterprise)</option>
-                    </select>
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label">Tell Me About Your Growth Goals & Blockers <span className="text-danger">*</span></label>
-                    <textarea 
-                      name="message" 
-                      rows={5} 
-                      required 
-                      value={formData.message} 
-                      onChange={handleChange} 
-                      placeholder="Briefly describe your current search challenges, traffic drops, competitor landscape, or goals..." 
-                      className="form-textarea"
-                    ></textarea>
-                  </div>
-
-                  <button 
-                    type="submit" 
-                    disabled={status.loading} 
-                    className="btn btn-primary btn-lg w-full"
+                <div>
+                  <label style={{ display: "block", fontSize: "0.84rem", fontWeight: 600, color: "#334155", marginBottom: "6px" }}>
+                    Service Interest
+                  </label>
+                  <select 
+                    className="digi-input"
+                    value={formData.service_interest}
+                    onChange={(e) => setFormData({ ...formData, service_interest: e.target.value })}
                   >
-                    {status.loading ? (
-                      <>
-                        <i className="fa-solid fa-spinner fa-spin"></i> Submitting...
-                      </>
-                    ) : (
-                      <>
-                        <i className="fa-solid fa-paper-plane"></i> Send Consultation Request
-                      </>
-                    )}
-                  </button>
-                </form>
-              </div>
+                    <option value="Technical SEO Audit">Comprehensive Technical SEO Audit</option>
+                    <option value="On-Page & Keyword Strategy">On-Page &amp; Keyword Strategy</option>
+                    <option value="Monthly Growth Retainer">Monthly Growth Retainer</option>
+                    <option value="E-Commerce Store Optimization">E-Commerce Store Optimization</option>
+                    <option value="Link Building & Digital PR">High-Authority Link Building</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label style={{ display: "block", fontSize: "0.84rem", fontWeight: 600, color: "#334155", marginBottom: "6px" }}>
+                    Project Goals &amp; Challenges
+                  </label>
+                  <textarea 
+                    rows={4} 
+                    className="digi-input" 
+                    placeholder="Tell us about your target keywords, recent ranking drops, or revenue goals..."
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  />
+                </div>
+
+                <button 
+                  type="submit" 
+                  disabled={loading}
+                  className="btn btn-lg btn-blue-solid btn-block"
+                  style={{ marginTop: "8px" }}
+                >
+                  {loading ? (
+                    <><i className="fa-solid fa-spinner fa-spin"></i> Submitting...</>
+                  ) : (
+                    <>Send Request <i className="fa-solid fa-paper-plane" style={{ marginLeft: "6px" }}></i></>
+                  )}
+                </button>
+              </form>
             </div>
+
           </div>
         </div>
       </section>

@@ -2,100 +2,167 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { pricingPlans, siteSettings } from "@/lib/data";
 import ServiceOrderModal from "@/components/ServiceOrderModal";
-import QuoteModal from "@/components/QuoteModal";
 
 export default function PricingPage() {
   const [selectedService, setSelectedService] = useState(null);
   const [selectedPackage, setSelectedPackage] = useState(null);
-  const [isQuoteOpen, setIsQuoteOpen] = useState(false);
 
-  const handleSelectPlan = (plan) => {
+  const handleOpenPlan = (name, price, kwCount, backlinks, pages) => {
     setSelectedService({
-      id: 999,
-      title: `${plan.name} Retainer`,
-      slug: "monthly-retainer",
-      starting_price: plan.price
+      id: 7,
+      title: "Monthly SEO Growth & Ranking Retainers",
+      slug: "monthly-seo-subscription-retainer",
+      starting_price: price
     });
     setSelectedPackage({
-      id: 9990 + plan.id,
-      name: plan.name,
-      price: plan.price,
+      id: 990 + price,
+      name: `${name} Monthly Plan`,
+      price: price,
       delivery_days: 30,
-      features: plan.features
+      features: [
+        `${kwCount} Target Keywords`,
+        "Full Technical & Speed Audit",
+        `On-Page Optimization (${pages} Pages)`,
+        `${backlinks} High-DA Backlinks / Month`,
+        "Monthly Performance & GSC Report"
+      ]
     });
   };
 
   return (
-    <div className="pricing-page">
-      {/* PAGE HEADER */}
-      <section className="page-header-section">
-        <div className="container text-center">
-          <div className="sub-badge">Predictable Growth</div>
-          <h1 className="page-title">Monthly SEO Retainers & Plans</h1>
-          <p className="page-subtitle max-w-2xl mx-auto">
-            Choose a dedicated monthly partnership tier for continuous technical execution, content scaling, and high-impact authority building.
+    <div className="pricing-page-wrapper">
+      {/* Hero Header */}
+      <section className="digi-hero-section" style={{ padding: "55px 0 40px", textAlign: "center" }}>
+        <div className="container">
+          <span className="text-blue" style={{ fontWeight: 700, fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+            Transparent Growth Plans
+          </span>
+          <h1 style={{ fontSize: "2.8rem", margin: "10px 0 14px", fontWeight: 800 }}>
+            Monthly SEO Retainers &amp; Subscription Packages
+          </h1>
+          <p style={{ fontSize: "1.1rem", color: "var(--digi-text-body)", maxWidth: "680px", margin: "0 auto", lineHeight: 1.6 }}>
+            Predictable, compounding organic traffic expansion with dedicated hours each month for technical health, content clusters, and high-authority links.
           </p>
         </div>
       </section>
 
-      {/* PRICING CARDS */}
-      <section className="section-padding">
+      {/* Subscription Pricing Grid */}
+      <section className="section digi-pricing-section" style={{ paddingTop: "10px", paddingBottom: "70px" }}>
         <div className="container">
-          <div className="pricing-grid">
-            {pricingPlans.map((plan) => (
-              <div key={plan.id} className={`pricing-card ${plan.is_popular ? "popular" : ""}`}>
-                {plan.is_popular && <div className="popular-badge">Most Popular Partnership</div>}
-
-                <div className="pricing-head">
-                  <h2 className="plan-name">{plan.name}</h2>
-                  <p className="plan-tagline">{plan.tagline}</p>
-                  <div className="plan-price-wrap">
-                    <span className="currency">$</span>
-                    <span className="amount">{plan.price}</span>
-                    <span className="period">{plan.billing_cycle}</span>
-                  </div>
-                </div>
-
-                <div className="plan-divider"></div>
-
-                <ul className="plan-features">
-                  {plan.features.map((feat, idx) => (
-                    <li key={idx}>
-                      <i className="fa-solid fa-check text-primary"></i>
-                      <span>{feat}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="pricing-action">
-                  <button 
-                    className={`btn w-full ${plan.is_popular ? "btn-primary" : "btn-outline"}`}
-                    onClick={() => handleSelectPlan(plan)}
-                  >
-                    Select {plan.name} Plan
-                  </button>
-                </div>
+          <div className="digi-pricing-grid">
+            {/* Plan 1: Starter */}
+            <div className="digi-pricing-card">
+              <div className="pricing-card-header">
+                <h4>Starter</h4>
+                <div className="pricing-card-price">$125<span>/month</span></div>
               </div>
-            ))}
-          </div>
-
-          {/* CUSTOM ENTERPRISE CALLOUT */}
-          <div className="custom-plan-card mt-16">
-            <div className="custom-plan-body">
-              <div>
-                <h3 className="custom-plan-title">Need a Custom Scope or Multi-Domain Audit?</h3>
-                <p className="custom-plan-desc">
-                  For large-scale marketplaces, SaaS with 50,000+ programmatic pages, or international multi-language domains.
-                </p>
+              <div className="pricing-card-badges">
+                <span>Audit</span>
+                <span>15 KW</span>
+                <span>On-Page</span>
               </div>
-              <div>
+              <ul className="pricing-card-features">
+                <li><i className="fa-solid fa-check"></i> 15 Target Keywords</li>
+                <li><i className="fa-solid fa-check"></i> Full Technical SEO Audit</li>
+                <li><i className="fa-solid fa-check"></i> On-Page Optimization (5 Pages)</li>
+                <li><i className="fa-solid fa-check"></i> Monthly Performance Report</li>
+                <li><i className="fa-solid fa-check"></i> Email Support</li>
+              </ul>
+              <div className="pricing-card-footer">
                 <button 
-                  className="btn btn-secondary btn-lg"
-                  onClick={() => setIsQuoteOpen(true)}
+                  type="button" 
+                  className="btn btn-aqua-solid btn-block"
+                  onClick={() => handleOpenPlan("Starter", 125, 15, 0, 5)}
                 >
-                  Request Custom Proposal
+                  Get Started <i className="fa-solid fa-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+
+            {/* Plan 2: Standard (Featured) */}
+            <div className="digi-pricing-card featured">
+              <div className="pricing-card-header">
+                <h4>Standard</h4>
+                <div className="pricing-card-price">$350<span>/month</span></div>
+              </div>
+              <div className="pricing-card-badges">
+                <span>30 KW</span>
+                <span>Links</span>
+                <span>Content</span>
+              </div>
+              <ul className="pricing-card-features">
+                <li><i className="fa-solid fa-check"></i> 30 Target Keywords</li>
+                <li><i className="fa-solid fa-check"></i> Full Technical &amp; Speed Audit</li>
+                <li><i className="fa-solid fa-check"></i> On-Page Optimization (15 Pages)</li>
+                <li><i className="fa-solid fa-check"></i> 10 High-DA Backlinks / Month</li>
+                <li><i className="fa-solid fa-check"></i> Bi-Weekly Progress Calls</li>
+              </ul>
+              <div className="pricing-card-footer">
+                <button 
+                  type="button" 
+                  className="btn btn-aqua-solid btn-block"
+                  onClick={() => handleOpenPlan("Standard", 350, 30, 10, 15)}
+                >
+                  Get Started <i className="fa-solid fa-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+
+            {/* Plan 3: Growth */}
+            <div className="digi-pricing-card">
+              <div className="pricing-card-header">
+                <h4>Growth</h4>
+                <div className="pricing-card-price">$550<span>/month</span></div>
+              </div>
+              <div className="pricing-card-badges">
+                <span>60 KW</span>
+                <span>PR Links</span>
+                <span>Scale</span>
+              </div>
+              <ul className="pricing-card-features">
+                <li><i className="fa-solid fa-check"></i> 60 Target Keywords</li>
+                <li><i className="fa-solid fa-check"></i> Complete Site Optimization (30 Pages)</li>
+                <li><i className="fa-solid fa-check"></i> 25 High-DA Backlinks / Month</li>
+                <li><i className="fa-solid fa-check"></i> Content Cluster Production</li>
+                <li><i className="fa-solid fa-check"></i> Dedicated Account Strategist</li>
+              </ul>
+              <div className="pricing-card-footer">
+                <button 
+                  type="button" 
+                  className="btn btn-aqua-solid btn-block"
+                  onClick={() => handleOpenPlan("Growth", 550, 60, 25, 30)}
+                >
+                  Get Started <i className="fa-solid fa-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+
+            {/* Plan 4: Enterprise */}
+            <div className="digi-pricing-card">
+              <div className="pricing-card-header">
+                <h4>Enterprise</h4>
+                <div className="pricing-card-price">$850<span>/month</span></div>
+              </div>
+              <div className="pricing-card-badges">
+                <span>Unlimited</span>
+                <span>Custom</span>
+                <span>VIP</span>
+              </div>
+              <ul className="pricing-card-features">
+                <li><i className="fa-solid fa-check"></i> Unlimited Keyword Targets</li>
+                <li><i className="fa-solid fa-check"></i> Full Website Overhaul &amp; Core Web Vitals</li>
+                <li><i className="fa-solid fa-check"></i> 50+ Premium Tier Backlinks / Month</li>
+                <li><i className="fa-solid fa-check"></i> Weekly Video Growth Review</li>
+                <li><i className="fa-solid fa-check"></i> 24/7 Priority Support</li>
+              </ul>
+              <div className="pricing-card-footer">
+                <button 
+                  type="button" 
+                  className="btn btn-aqua-solid btn-block"
+                  onClick={() => handleOpenPlan("Enterprise", 850, "Unlimited", 50, "All")}
+                >
+                  Get Started <i className="fa-solid fa-arrow-right"></i>
                 </button>
               </div>
             </div>
@@ -103,7 +170,7 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* SERVICE ORDER MODAL */}
+      {/* Service Order Modal */}
       <ServiceOrderModal 
         isOpen={!!selectedService}
         onClose={() => {
@@ -112,12 +179,6 @@ export default function PricingPage() {
         }}
         service={selectedService}
         initialPackage={selectedPackage}
-      />
-
-      {/* QUOTE MODAL */}
-      <QuoteModal 
-        isOpen={isQuoteOpen}
-        onClose={() => setIsQuoteOpen(false)}
       />
     </div>
   );

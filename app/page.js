@@ -2,17 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
-import { 
-  siteSettings, 
-  services, 
-  caseStudies, 
-  pricingPlans, 
-  testimonials, 
-  faqs, 
-  processSteps,
-  freeTools 
-} from "@/lib/data";
+import { siteSettings, services } from "@/lib/data";
 import QuoteModal from "@/components/QuoteModal";
 import ServiceOrderModal from "@/components/ServiceOrderModal";
 
@@ -20,470 +10,513 @@ export default function HomePage() {
   const [isQuoteOpen, setIsQuoteOpen] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
   const [selectedPackage, setSelectedPackage] = useState(null);
-  const [activeFaq, setActiveFaq] = useState(null);
 
-  const handleOrder = (service, pkg = null) => {
-    setSelectedService(service);
-    setSelectedPackage(pkg || service.packages?.[1] || service.packages?.[0]);
+  const [contactForm, setContactForm] = useState({
+    name: "",
+    email: "",
+    website: "",
+    phone: ""
+  });
+  const [contactSuccess, setContactSuccess] = useState(false);
+  const [contactLoading, setContactLoading] = useState(false);
+
+  const handleContactSubmit = async (e) => {
+    e.preventDefault();
+    setContactLoading(true);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: contactForm.name,
+          email: contactForm.email,
+          website: contactForm.website,
+          phone: contactForm.phone,
+          service_interest: "Free Website SEO Audit Request",
+          message: "Free SEO Audit requested from Homepage form."
+        })
+      });
+      if (res.ok) {
+        setContactSuccess(true);
+        setContactForm({ name: "", email: "", website: "", phone: "" });
+      }
+    } catch (err) {
+      alert("Error submitting request. Please try again.");
+    } finally {
+      setContactLoading(false);
+    }
   };
 
-  const toggleFaq = (index) => {
-    setActiveFaq(activeFaq === index ? null : index);
+  const handleOpenPlan = (name, price, kwCount, backlinks, pages) => {
+    setSelectedService({
+      id: 7,
+      title: "Monthly SEO Growth & Ranking Retainers",
+      slug: "monthly-seo-subscription-retainer",
+      starting_price: price
+    });
+    setSelectedPackage({
+      id: 990 + price,
+      name: `${name} Monthly Plan`,
+      price: price,
+      delivery_days: 30,
+      features: [
+        `${kwCount} Target Keywords`,
+        "Full Technical & Speed Audit",
+        `On-Page Optimization (${pages} Pages)`,
+        `${backlinks} High-DA Backlinks / Month`,
+        "Monthly Performance & GSC Report"
+      ]
+    });
   };
 
   return (
-    <div className="home-page">
-      {/* HERO SECTION */}
-      <section className="hero-section">
-        <div className="container hero-container">
-          <div className="hero-content">
-            <div className="hero-badge">
-              <span className="badge-dot"></span>
-              <span className="badge-text">Available for Q1/Q2 Strategy Engagements</span>
-            </div>
-
-            <h1 className="hero-title">
-              Data-Backed SEO That Drives <span className="text-gradient">Predictable Organic Revenue</span>
-            </h1>
-
-            <p className="hero-subtitle">
-              Hi, I&apos;m <strong>{siteSettings.expert_name}</strong>. I help B2B SaaS, enterprise brands, and e-commerce stores scale qualified search traffic, dominate competitive keywords, and build bulletproof search moats.
-            </p>
-
-            <div className="hero-actions">
-              <button 
-                className="btn btn-primary btn-lg" 
-                onClick={() => setIsQuoteOpen(true)}
-              >
-                <i className="fa-solid fa-bolt"></i>
-                Request Free SEO Audit
-              </button>
-              <Link href="/services" className="btn btn-outline btn-lg">
-                <i className="fa-solid fa-layer-group"></i>
-                Explore Services
-              </Link>
-            </div>
-
-            <div className="hero-trust">
-              <div className="trust-item">
-                <span className="trust-number">10+</span>
-                <span className="trust-label">Years Experience</span>
-              </div>
-              <div className="trust-divider"></div>
-              <div className="trust-item">
-                <span className="trust-number">550+</span>
-                <span className="trust-label">Rankings Scaled</span>
-              </div>
-              <div className="trust-divider"></div>
-              <div className="trust-item">
-                <span className="trust-number">380%</span>
-                <span className="trust-label">Avg. Traffic Growth</span>
-              </div>
-              <div className="trust-divider"></div>
-              <div className="trust-item">
-                <span className="trust-number">100%</span>
-                <span className="trust-label">White-Hat Strategy</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="hero-visual">
-            <div className="hero-card-glow"></div>
-            <div className="hero-image-wrapper">
-              <Image 
-                src="/images/seo_hero_3d.png" 
-                alt="SEO Strategy Analytics" 
-                width={560} 
-                height={520} 
-                className="hero-image"
-                priority
-              />
-              
-              {/* Floating Metric 1 */}
-              <div className="floating-badge badge-top-left">
-                <div className="badge-icon bg-success-light">
-                  <i className="fa-solid fa-arrow-trend-up text-success"></i>
-                </div>
-                <div>
-                  <div className="floating-title">+485% Organic ROI</div>
-                  <div className="floating-sub">Verified GSC Data</div>
-                </div>
-              </div>
-
-              {/* Floating Metric 2 */}
-              <div className="floating-badge badge-bottom-right">
-                <div className="badge-icon bg-primary-light">
-                  <i className="fa-solid fa-crown text-primary"></i>
-                </div>
-                <div>
-                  <div className="floating-title">#1 Position Secured</div>
-                  <div className="floating-sub">High-Intent B2B Keywords</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* TRUST LOGOS / INDUSTRY BADGES */}
-      <section className="brands-section">
+    <div className="home-page-wrapper">
+      {/* 1. HERO SECTION (Exact Digi Solution Mockup Match) */}
+      <section className="digi-hero-section">
         <div className="container">
-          <p className="brands-title">PROVEN AUDIT FRAMEWORK APPLIED ACROSS MODERN TECH STACKS & PLATFORMS</p>
-          <div className="brands-grid">
-            <div className="brand-logo"><i className="fa-brands fa-shopify"></i> Shopify Plus</div>
-            <div className="brand-logo"><i className="fa-brands fa-wordpress"></i> WordPress & Woo</div>
-            <div className="brand-logo"><i className="fa-brands fa-react"></i> Next.js & React</div>
-            <div className="brand-logo"><i className="fa-brands fa-magento"></i> Magento 2</div>
-            <div className="brand-logo"><i className="fa-brands fa-google"></i> Google Search Console</div>
-            <div className="brand-logo"><i className="fa-solid fa-chart-line"></i> Ahrefs & Semrush</div>
-          </div>
-        </div>
-      </section>
+          <div className="digi-hero-grid">
+            {/* Left Hero Content */}
+            <div className="digi-hero-content">
+              <h1>
+                <span className="text-blue">Search</span> Engine <span className="text-blue">Optimization</span><br />
+                <strong>SEO Services in Bangladesh</strong>
+              </h1>
 
-      {/* CORE SERVICES SECTION */}
-      <section className="services-section section-padding">
-        <div className="container">
-          <div className="section-header text-center">
-            <div className="sub-badge">Specialized Expertise</div>
-            <h2 className="section-title">Engineered For Measurable Business Growth</h2>
-            <p className="section-subtitle">
-              Every package is tailored to solve root technical blockages, outrank entrenched competitors, and compound high-converting buyer traffic.
-            </p>
-          </div>
-
-          <div className="services-grid">
-            {services.map((service) => (
-              <div key={service.id} className={`service-card ${service.is_featured ? "featured" : ""}`}>
-                {service.is_featured && <div className="card-ribbon">Top Performer</div>}
-                <div className="service-icon-box">
-                  <i className={`fa-solid ${service.icon}`}></i>
-                </div>
-                <h3 className="service-card-title">{service.title}</h3>
-                <p className="service-card-desc">{service.short_description}</p>
-                
-                <div className="service-card-meta">
-                  <div className="service-price">
-                    <span className="price-label">Starting from</span>
-                    <span className="price-value">${service.starting_price}</span>
-                  </div>
-                  <div className="service-delivery">
-                    <i className="fa-regular fa-clock"></i> {service.delivery_time}
-                  </div>
-                </div>
-
-                <div className="service-card-actions">
-                  <Link href={`/services/${service.slug}`} className="btn btn-outline btn-sm">
-                    View Packages
-                  </Link>
-                  <button 
-                    className="btn btn-primary btn-sm"
-                    onClick={() => handleOrder(service)}
-                  >
-                    Quick Order
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="text-center mt-12">
-            <Link href="/services" className="btn btn-secondary btn-lg">
-              View All 6 Core Solutions & Deliverables <i className="fa-solid fa-arrow-right"></i>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* PROOF & CASE STUDIES */}
-      <section className="case-studies-section section-padding bg-alt">
-        <div className="container">
-          <div className="section-header text-center">
-            <div className="sub-badge">Real Results</div>
-            <h2 className="section-title">Verified Search Growth Case Studies</h2>
-            <p className="section-subtitle">
-              Take a look at real Google Search Console metrics and ranking breakthroughs achieved for client campaigns.
-            </p>
-          </div>
-
-          <div className="case-grid">
-            {caseStudies.map((cs) => (
-              <div key={cs.id} className="case-card">
-                <div className="case-image-wrapper">
-                  <Image 
-                    src={cs.featured_image} 
-                    alt={cs.title} 
-                    width={600} 
-                    height={340} 
-                    className="case-image"
-                  />
-                  <div className="case-category">{cs.industry}</div>
-                </div>
-
-                <div className="case-content">
-                  <h3 className="case-title">{cs.title}</h3>
-                  <p className="case-desc">{cs.summary}</p>
-
-                  <div className="case-stats-grid">
-                    <div className="case-stat-box">
-                      <span className="stat-num">{cs.traffic_growth}</span>
-                      <span className="stat-text">Traffic Lift</span>
-                    </div>
-                    <div className="case-stat-box">
-                      <span className="stat-num">{cs.keyword_growth}</span>
-                      <span className="stat-text">Top 3 Keywords</span>
-                    </div>
-                    <div className="case-stat-box">
-                      <span className="stat-num">{cs.revenue_impact}</span>
-                      <span className="stat-text">Revenue Growth</span>
-                    </div>
-                  </div>
-
-                  <div className="case-footer">
-                    <Link href={`/portfolio/${cs.slug}`} className="btn btn-link">
-                      Read Full GSC Case Study <i className="fa-solid fa-arrow-right"></i>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="text-center mt-12">
-            <Link href="/portfolio" className="btn btn-primary btn-lg">
-              Explore All Case Studies & Proof <i className="fa-solid fa-arrow-right"></i>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* 6-STEP PROCESS SECTION */}
-      <section className="process-section section-padding">
-        <div className="container">
-          <div className="section-header text-center">
-            <div className="sub-badge">Methodology</div>
-            <h2 className="section-title">A Scientific, Step-by-Step SEO Framework</h2>
-            <p className="section-subtitle">
-              No guesswork or outdated tactics. Every campaign follows an iterative, data-driven framework built to withstand core algorithm updates.
-            </p>
-          </div>
-
-          <div className="process-grid">
-            {processSteps.map((step) => (
-              <div key={step.step} className="process-card">
-                <div className="process-step-num">{step.step}</div>
-                <div className="process-icon">
-                  <i className={`fa-solid ${step.icon}`}></i>
-                </div>
-                <h3 className="process-title">{step.title}</h3>
-                <p className="process-desc">{step.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FREE TOOLS HIGHLIGHT */}
-      <section className="tools-highlight-section section-padding bg-alt">
-        <div className="container">
-          <div className="section-header text-center">
-            <div className="sub-badge">Self-Service Utilities</div>
-            <h2 className="section-title">Free In-House SEO & ROI Tools Suite</h2>
-            <p className="section-subtitle">
-              Access 10 free utilities designed for marketers, developers, and founders to audit, optimize, and forecast returns.
-            </p>
-          </div>
-
-          <div className="tools-grid-mini">
-            {freeTools.map((tool) => (
-              <Link key={tool.slug} href={`/tools/${tool.slug}`} className="tool-card-mini">
-                <div className="tool-mini-icon" style={{ color: tool.color, backgroundColor: tool.bg }}>
-                  <i className={tool.icon}></i>
-                </div>
-                <div className="tool-mini-content">
-                  <h4 className="tool-mini-title">{tool.title}</h4>
-                  <p className="tool-mini-desc">{tool.desc}</p>
-                </div>
-                <div className="tool-mini-arrow">
-                  <i className="fa-solid fa-chevron-right"></i>
-                </div>
-              </Link>
-            ))}
-          </div>
-
-          <div className="text-center mt-10">
-            <Link href="/tools" className="btn btn-outline btn-lg">
-              Browse All 10 Free Tools <i className="fa-solid fa-toolbox"></i>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* MONTHLY PRICING RETAINERS */}
-      <section className="pricing-section section-padding">
-        <div className="container">
-          <div className="section-header text-center">
-            <div className="sub-badge">Monthly Growth Retainers</div>
-            <h2 className="section-title">Predictable Pricing for Dedicated Execution</h2>
-            <p className="section-subtitle">
-              Transparent retainers with dedicated technical resources, monthly deliverables, and ongoing performance reporting.
-            </p>
-          </div>
-
-          <div className="pricing-grid">
-            {pricingPlans.map((plan) => (
-              <div key={plan.id} className={`pricing-card ${plan.is_popular ? "popular" : ""}`}>
-                {plan.is_popular && <div className="popular-badge">Most Popular Choice</div>}
-                
-                <div className="pricing-head">
-                  <h3 className="plan-name">{plan.name}</h3>
-                  <p className="plan-tagline">{plan.tagline}</p>
-                  <div className="plan-price-wrap">
-                    <span className="currency">$</span>
-                    <span className="amount">{plan.price}</span>
-                    <span className="period">{plan.billing_cycle}</span>
-                  </div>
-                </div>
-
-                <div className="plan-divider"></div>
-
-                <ul className="plan-features">
-                  {plan.features.map((feat, idx) => (
-                    <li key={idx}>
-                      <i className="fa-solid fa-check text-primary"></i>
-                      <span>{feat}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="pricing-action">
-                  <button 
-                    className={`btn w-full ${plan.is_popular ? "btn-primary" : "btn-outline"}`}
-                    onClick={() => {
-                      setSelectedService({
-                        id: 999,
-                        title: `${plan.name} Retainer`,
-                        slug: "retainer",
-                        starting_price: plan.price
-                      });
-                      setSelectedPackage({
-                        id: 9990 + plan.id,
-                        name: plan.name,
-                        price: plan.price,
-                        delivery_days: 30,
-                        features: plan.features
-                      });
-                    }}
-                  >
-                    Select {plan.name}
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* TESTIMONIALS */}
-      <section className="testimonials-section section-padding bg-alt">
-        <div className="container">
-          <div className="section-header text-center">
-            <div className="sub-badge">Client Endorsements</div>
-            <h2 className="section-title">What Founders & Marketing Leaders Say</h2>
-            <p className="section-subtitle">
-              Feedback from B2B founders, e-commerce managers, and agency partners.
-            </p>
-          </div>
-
-          <div className="testimonials-grid">
-            {testimonials.map((test) => (
-              <div key={test.id} className="testimonial-card">
-                <div className="testimonial-rating">
-                  {[...Array(test.rating)].map((_, i) => (
-                    <i key={i} className="fa-solid fa-star text-warning"></i>
-                  ))}
-                </div>
-                <p className="testimonial-quote">&ldquo;{test.review}&rdquo;</p>
-
-                <div className="testimonial-author">
-                  <Image 
-                    src={test.avatar} 
-                    alt={test.name} 
-                    width={50} 
-                    height={50} 
-                    className="author-avatar"
-                  />
-                  <div>
-                    <h4 className="author-name">{test.name}</h4>
-                    <span className="author-role">{test.role}, {test.company}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ SECTION */}
-      <section className="faq-section section-padding">
-        <div className="container max-w-4xl">
-          <div className="section-header text-center">
-            <div className="sub-badge">Frequently Asked Questions</div>
-            <h2 className="section-title">Everything You Need to Know Before Starting</h2>
-            <p className="section-subtitle">
-              Clear answers on timelines, methodology, billing, and deliverables.
-            </p>
-          </div>
-
-          <div className="faq-accordion">
-            {faqs.map((faq, idx) => (
-              <div 
-                key={faq.id} 
-                className={`faq-item ${activeFaq === idx ? "open" : ""}`}
-                onClick={() => toggleFaq(idx)}
-              >
-                <button className="faq-question" aria-expanded={activeFaq === idx}>
-                  <span>{faq.question}</span>
-                  <i className={`fa-solid ${activeFaq === idx ? "fa-minus" : "fa-plus"}`}></i>
-                </button>
-                {activeFaq === idx && (
-                  <div className="faq-answer">
-                    <p>{faq.answer}</p>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA BANNER */}
-      <section className="cta-banner-section">
-        <div className="container">
-          <div className="cta-banner-box">
-            <div className="cta-content">
-              <h2 className="cta-title">Ready to Turn Search Into Your #1 Acquisition Channel?</h2>
-              <p className="cta-desc">
-                Let&apos;s analyze your domain, diagnose crawl bottlenecks, and uncover untapped keyword clusters.
+              <p className="digi-hero-desc">
+                All-in-one SEO and digital marketing solutions engineered to rank your website #1 on Google search results. Drive high-intent buyer traffic, generate qualified leads, and scale conversions organically.
               </p>
-              <div className="cta-actions">
-                <button 
-                  className="btn btn-light btn-lg" 
-                  onClick={() => setIsQuoteOpen(true)}
-                >
-                  <i className="fa-solid fa-comments"></i>
-                  Request Free Audit & Proposal
-                </button>
-                <Link href="/contact" className="btn btn-outline-light btn-lg">
-                  <i className="fa-solid fa-envelope"></i>
-                  Direct Contact
+
+              <div className="digi-hero-actions">
+                <Link href="/contact" className="btn btn-lg btn-blue-solid">
+                  Get Started <i className="fa-solid fa-arrow-right"></i>
                 </Link>
+                <a href="#pricing" className="btn btn-lg btn-outline-blue">
+                  View Pricing Plans
+                </a>
+              </div>
+            </div>
+
+            {/* Right Hero 3D Illustration */}
+            <div className="digi-hero-visual">
+              <div className="digi-3d-box">
+                <img src="/images/seo_hero_3d.png" alt="SEO 3D Illustration" className="digi-3d-img" />
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* MODALS */}
+      {/* 2. GET DISCOVERED (6 SERVICES GRID - Exact Mockup Match) */}
+      <section className="section digi-services-section" id="services">
+        <div className="container">
+          <div className="digi-section-head">
+            <h2>Get Discovered</h2>
+          </div>
+
+          <div className="digi-cards-grid">
+            {/* Card 1: Keyword Research */}
+            <div className="digi-service-card">
+              <div className="digi-card-icon-floating">
+                <i className="fa-solid fa-desktop" style={{ color: "#f59e0b" }}></i>
+              </div>
+              <div className="digi-card-body">
+                <h3>Keyword Research</h3>
+                <p className="card-intro">Identify high-converting, high-volume search queries for your target market.</p>
+                <ul className="digi-card-checklist">
+                  <li><i className="fa-solid fa-check"></i> High Commercial Intent Mapping</li>
+                  <li><i className="fa-solid fa-check"></i> Competitor Keyword Gap Analysis</li>
+                  <li><i className="fa-solid fa-check"></i> Search Volume &amp; CPC Forecasting</li>
+                  <li><i className="fa-solid fa-check"></i> Long-Tail Traffic Opportunities</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Card 2: On-Page SEO */}
+            <div className="digi-service-card">
+              <div className="digi-card-icon-floating">
+                <i className="fa-solid fa-lightbulb" style={{ color: "#06b6d4" }}></i>
+              </div>
+              <div className="digi-card-body">
+                <h3>On-Page SEO</h3>
+                <p className="card-intro">Optimize website structure, content relevance, and technical signals.</p>
+                <ul className="digi-card-checklist">
+                  <li><i className="fa-solid fa-check"></i> Title &amp; Meta Descriptions Tuning</li>
+                  <li><i className="fa-solid fa-check"></i> Semantic Content Structure (H1-H6)</li>
+                  <li><i className="fa-solid fa-check"></i> Internal Link &amp; Silo Restructuring</li>
+                  <li><i className="fa-solid fa-check"></i> Schema Structured Data Markup</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Card 3: Off-Page SEO */}
+            <div className="digi-service-card">
+              <div className="digi-card-icon-floating">
+                <i className="fa-solid fa-laptop-code" style={{ color: "#4361ee" }}></i>
+              </div>
+              <div className="digi-card-body">
+                <h3>Off-Page SEO</h3>
+                <p className="card-intro">Build domain authority with 100% white-hat contextual backlink equity.</p>
+                <ul className="digi-card-checklist">
+                  <li><i className="fa-solid fa-check"></i> High-DA Editorial Backlinks</li>
+                  <li><i className="fa-solid fa-check"></i> Relevant Niche Guest Posting</li>
+                  <li><i className="fa-solid fa-check"></i> Brand Mentions &amp; Digital PR</li>
+                  <li><i className="fa-solid fa-check"></i> Toxic Backlink Disavowal</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Card 4: Local SEO */}
+            <div className="digi-service-card">
+              <div className="digi-card-icon-floating">
+                <i className="fa-solid fa-location-dot" style={{ color: "#ef4444" }}></i>
+              </div>
+              <div className="digi-card-body">
+                <h3>Local SEO</h3>
+                <p className="card-intro">Dominate Google Maps and local search results in your city or region.</p>
+                <ul className="digi-card-checklist">
+                  <li><i className="fa-solid fa-check"></i> Google Business Profile Setup</li>
+                  <li><i className="fa-solid fa-check"></i> Local NAP Citation Consistency</li>
+                  <li><i className="fa-solid fa-check"></i> Google Maps Pack 3-Pack Ranking</li>
+                  <li><i className="fa-solid fa-check"></i> Local Review &amp; Rating Strategy</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Card 5: Link Building */}
+            <div className="digi-service-card">
+              <div className="digi-card-icon-floating">
+                <i className="fa-solid fa-link" style={{ color: "#8b5cf6" }}></i>
+              </div>
+              <div className="digi-card-body">
+                <h3>Link Building</h3>
+                <p className="card-intro">Sustainable link acquisition strategies that boost domain trust safety.</p>
+                <ul className="digi-card-checklist">
+                  <li><i className="fa-solid fa-check"></i> High Authority Link Placements</li>
+                  <li><i className="fa-solid fa-check"></i> Broken Link Reclamation</li>
+                  <li><i className="fa-solid fa-check"></i> Resource Page Link Building</li>
+                  <li><i className="fa-solid fa-check"></i> 100% Manual Outreach</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Card 6: E-Commerce SEO */}
+            <div className="digi-service-card">
+              <div className="digi-card-icon-floating">
+                <i className="fa-solid fa-cart-shopping" style={{ color: "#10b981" }}></i>
+              </div>
+              <div className="digi-card-body">
+                <h3>E-Commerce SEO</h3>
+                <p className="card-intro">Optimize product listings, category pages, and transactional buyer funnels.</p>
+                <ul className="digi-card-checklist">
+                  <li><i className="fa-solid fa-check"></i> Product Page Rich Snippets</li>
+                  <li><i className="fa-solid fa-check"></i> Category Hierarchy Optimization</li>
+                  <li><i className="fa-solid fa-check"></i> Faceted Navigation Indexing</li>
+                  <li><i className="fa-solid fa-check"></i> Checkout Funnel Optimization</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. WORKING STEPS (6 DARK CARDS ON LIGHT BLUE - Exact Mockup Match) */}
+      <section className="section digi-steps-section" id="steps">
+        <div className="container">
+          <div className="digi-section-head">
+            <h2>Working Steps</h2>
+          </div>
+
+          <div className="digi-steps-grid">
+            {/* Step 1 */}
+            <div className="digi-step-card">
+              <div className="step-badge-num">1</div>
+              <div className="step-card-content">
+                <h3>SEO Audit</h3>
+                <p>Comprehensive forensic audit of site crawlability, indexing errors, Core Web Vitals, and technical health bottlenecks.</p>
+              </div>
+            </div>
+
+            {/* Step 2 */}
+            <div className="digi-step-card">
+              <div className="step-badge-num">2</div>
+              <div className="step-card-content">
+                <h3>Competitor Analysis</h3>
+                <p>Reverse engineering your top competitors&apos; high-traffic keywords, link profiles, and market share opportunities.</p>
+              </div>
+            </div>
+
+            {/* Step 3 */}
+            <div className="digi-step-card">
+              <div className="step-badge-num">3</div>
+              <div className="step-card-content">
+                <h3>Keyword Research and Opportunity</h3>
+                <p>Identifying high-volume commercial intent keywords with high conversion value and favorable ranking difficulty.</p>
+              </div>
+            </div>
+
+            {/* Step 4 */}
+            <div className="digi-step-card">
+              <div className="step-badge-num">4</div>
+              <div className="step-card-content">
+                <h3>Strategy Formulation</h3>
+                <p>Designing a customized 6-month execution roadmap tailored specifically to your revenue targets and industry niche.</p>
+              </div>
+            </div>
+
+            {/* Step 5 */}
+            <div className="digi-step-card">
+              <div className="step-badge-num">5</div>
+              <div className="step-card-content">
+                <h3>Strategy Execution</h3>
+                <p>Implementing on-page optimization, content production clusters, technical fixes, and high-impact outreach.</p>
+              </div>
+            </div>
+
+            {/* Step 6 */}
+            <div className="digi-step-card">
+              <div className="step-badge-num">6</div>
+              <div className="step-card-content">
+                <h3>Continuous Optimization</h3>
+                <p>Weekly rank tracking, Google Search Console analytics review, conversion rate tuning, and compounding ROI growth.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. GET IN TOUCH (CONTACT SECTION - Exact Mockup Match) */}
+      <section className="section digi-contact-section" id="contact">
+        <div className="container">
+          <div className="digi-section-head">
+            <h2>Get In Touch</h2>
+          </div>
+
+          <div className="digi-contact-grid">
+            {/* Left Info */}
+            <div className="digi-contact-left">
+              <h3>
+                <span className="text-blue">Understand</span> user search intent and get noticed by quality organic users.
+              </h3>
+              <p>
+                Ready to dominate Google search results? Contact our SEO experts today for a free website analysis and tailored proposal.
+              </p>
+              <div style={{ marginTop: "24px", display: "flex", flexDirection: "column", gap: "12px", fontSize: "0.95rem", color: "#475569" }}>
+                <div><i className="fa-solid fa-circle-check" style={{ color: "#4361ee", marginRight: "8px" }}></i> 100% White-Hat Google Compliance</div>
+                <div><i className="fa-solid fa-circle-check" style={{ color: "#4361ee", marginRight: "8px" }}></i> NOWPayments Crypto &amp; bKash Supported</div>
+                <div><i className="fa-solid fa-circle-check" style={{ color: "#4361ee", marginRight: "8px" }}></i> Bi-Weekly Progress &amp; KPI Reporting</div>
+              </div>
+            </div>
+
+            {/* Right Form Box (Light Periwinkle Box) */}
+            <div className="digi-contact-form-box">
+              {contactSuccess && (
+                <div style={{ background: "#dcfce7", color: "#15803d", padding: "12px 16px", borderRadius: "6px", marginBottom: "16px", fontSize: "0.88rem", fontWeight: 600 }}>
+                  <i className="fa-solid fa-circle-check" style={{ marginRight: "6px" }}></i>
+                  Thank you! We will inspect your domain and get back to you within 24 hours.
+                </div>
+              )}
+
+              <form onSubmit={handleContactSubmit}>
+                <div className="form-group-clean">
+                  <input 
+                    type="text" 
+                    name="name" 
+                    className="digi-input" 
+                    placeholder="Full Name" 
+                    required 
+                    value={contactForm.name}
+                    onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
+                  />
+                </div>
+                <div className="form-group-clean">
+                  <input 
+                    type="email" 
+                    name="email" 
+                    className="digi-input" 
+                    placeholder="Email Address" 
+                    required 
+                    value={contactForm.email}
+                    onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
+                  />
+                </div>
+                <div className="form-group-clean">
+                  <input 
+                    type="url" 
+                    name="website" 
+                    className="digi-input" 
+                    placeholder="Website URL" 
+                    value={contactForm.website}
+                    onChange={(e) => setContactForm({ ...contactForm, website: e.target.value })}
+                  />
+                </div>
+                <div className="form-group-clean">
+                  <input 
+                    type="tel" 
+                    name="phone" 
+                    className="digi-input" 
+                    placeholder="Phone Number" 
+                    value={contactForm.phone}
+                    onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
+                  />
+                </div>
+                <button type="submit" disabled={contactLoading} className="btn btn-lg btn-blue-solid btn-block">
+                  {contactLoading ? (
+                    <><i className="fa-solid fa-spinner fa-spin"></i> Submitting...</>
+                  ) : (
+                    <>Get Free SEO Audit <i className="fa-solid fa-arrow-right"></i></>
+                  )}
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. SUBSCRIPTION (4 BLUE TOP-FOLDED PRICING CARDS - Exact Mockup Match) */}
+      <section className="section digi-pricing-section" id="pricing">
+        <div className="container">
+          <div className="digi-section-head">
+            <h2>Subscription</h2>
+          </div>
+
+          <div className="digi-pricing-grid">
+            {/* Plan 1: Starter */}
+            <div className="digi-pricing-card">
+              <div className="pricing-card-header">
+                <h4>Starter</h4>
+                <div className="pricing-card-price">$125<span>/month</span></div>
+              </div>
+              <div className="pricing-card-badges">
+                <span>Audit</span>
+                <span>15 KW</span>
+                <span>On-Page</span>
+              </div>
+              <ul className="pricing-card-features">
+                <li><i className="fa-solid fa-check"></i> 15 Target Keywords</li>
+                <li><i className="fa-solid fa-check"></i> Full Technical SEO Audit</li>
+                <li><i className="fa-solid fa-check"></i> On-Page Optimization (5 Pages)</li>
+                <li><i className="fa-solid fa-check"></i> Monthly Performance Report</li>
+                <li><i className="fa-solid fa-check"></i> Email Support</li>
+              </ul>
+              <div className="pricing-card-footer">
+                <button 
+                  type="button"
+                  className="btn btn-aqua-solid btn-block"
+                  onClick={() => handleOpenPlan("Starter", 125, 15, 0, 5)}
+                >
+                  <span>Get Started</span> <i className="fa-solid fa-arrow-right" style={{ fontSize: "0.85rem" }}></i>
+                </button>
+              </div>
+            </div>
+
+            {/* Plan 2: Standard (Featured) */}
+            <div className="digi-pricing-card featured">
+              <div className="pricing-card-header">
+                <h4>Standard</h4>
+                <div className="pricing-card-price">$350<span>/month</span></div>
+              </div>
+              <div className="pricing-card-badges">
+                <span>30 KW</span>
+                <span>Links</span>
+                <span>Content</span>
+              </div>
+              <ul className="pricing-card-features">
+                <li><i className="fa-solid fa-check"></i> 30 Target Keywords</li>
+                <li><i className="fa-solid fa-check"></i> Full Technical &amp; Speed Audit</li>
+                <li><i className="fa-solid fa-check"></i> On-Page Optimization (15 Pages)</li>
+                <li><i className="fa-solid fa-check"></i> 10 High-DA Backlinks / Month</li>
+                <li><i className="fa-solid fa-check"></i> Bi-Weekly Progress Calls</li>
+              </ul>
+              <div className="pricing-card-footer">
+                <button 
+                  type="button"
+                  className="btn btn-aqua-solid btn-block"
+                  onClick={() => handleOpenPlan("Standard", 350, 30, 10, 15)}
+                >
+                  <span>Get Started</span> <i className="fa-solid fa-arrow-right" style={{ fontSize: "0.85rem" }}></i>
+                </button>
+              </div>
+            </div>
+
+            {/* Plan 3: Growth */}
+            <div className="digi-pricing-card">
+              <div className="pricing-card-header">
+                <h4>Growth</h4>
+                <div className="pricing-card-price">$550<span>/month</span></div>
+              </div>
+              <div className="pricing-card-badges">
+                <span>60 KW</span>
+                <span>PR Links</span>
+                <span>Scale</span>
+              </div>
+              <ul className="pricing-card-features">
+                <li><i className="fa-solid fa-check"></i> 60 Target Keywords</li>
+                <li><i className="fa-solid fa-check"></i> Complete Site Optimization (30 Pages)</li>
+                <li><i className="fa-solid fa-check"></i> 25 High-DA Backlinks / Month</li>
+                <li><i className="fa-solid fa-check"></i> Content Cluster Production</li>
+                <li><i className="fa-solid fa-check"></i> Dedicated Account Strategist</li>
+              </ul>
+              <div className="pricing-card-footer">
+                <button 
+                  type="button"
+                  className="btn btn-aqua-solid btn-block"
+                  onClick={() => handleOpenPlan("Growth", 550, 60, 25, 30)}
+                >
+                  <span>Get Started</span> <i className="fa-solid fa-arrow-right" style={{ fontSize: "0.85rem" }}></i>
+                </button>
+              </div>
+            </div>
+
+            {/* Plan 4: Enterprise */}
+            <div className="digi-pricing-card">
+              <div className="pricing-card-header">
+                <h4>Enterprise</h4>
+                <div className="pricing-card-price">$850<span>/month</span></div>
+              </div>
+              <div className="pricing-card-badges">
+                <span>Unlimited</span>
+                <span>Custom</span>
+                <span>VIP</span>
+              </div>
+              <ul className="pricing-card-features">
+                <li><i className="fa-solid fa-check"></i> Unlimited Keyword Targets</li>
+                <li><i className="fa-solid fa-check"></i> Full Website Overhaul &amp; Core Web Vitals</li>
+                <li><i className="fa-solid fa-check"></i> 50+ Premium Tier Backlinks / Month</li>
+                <li><i className="fa-solid fa-check"></i> Weekly Video Growth Review</li>
+                <li><i className="fa-solid fa-check"></i> 24/7 Priority Support</li>
+              </ul>
+              <div className="pricing-card-footer">
+                <button 
+                  type="button"
+                  className="btn btn-aqua-solid btn-block"
+                  onClick={() => handleOpenPlan("Enterprise", 850, "Unlimited", 50, "All")}
+                >
+                  <span>Get Started</span> <i className="fa-solid fa-arrow-right" style={{ fontSize: "0.85rem" }}></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. NEWSLETTER / QUICK SUBSCRIPTION BANNER (Exact Mockup Match) */}
+      <section className="digi-newsletter-ribbon">
+        <div className="container">
+          <div className="newsletter-flex-box">
+            <div className="newsletter-text">
+              <h3>Join Our Newsletter for Weekly SEO Trends and Algorithm Updates</h3>
+            </div>
+            <div className="newsletter-form-wrapper">
+              <form className="newsletter-form-inline" onSubmit={(e) => { e.preventDefault(); alert("Thank you for subscribing!"); }}>
+                <input type="email" placeholder="Enter your email" required className="newsletter-input" />
+                <button type="submit" className="btn btn-aqua-solid">Subscribe</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Interactive Modals */}
       <QuoteModal 
         isOpen={isQuoteOpen} 
         onClose={() => setIsQuoteOpen(false)} 

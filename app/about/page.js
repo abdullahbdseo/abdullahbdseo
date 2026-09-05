@@ -1,133 +1,226 @@
-import Image from "next/image";
-import Link from "next/link";
-import { siteSettings } from "@/lib/data";
+"use client";
 
-export const metadata = {
-  title: `About ${siteSettings.expert_name} | SEO Specialist & Strategist`,
-  description: `Learn more about ${siteSettings.expert_name}, a veteran SEO Specialist and growth consultant with 10+ years of technical search experience.`
-};
+import Link from "next/link";
+import { siteSettings, testimonials, services } from "@/lib/data";
 
 export default function AboutPage() {
   return (
-    <div className="about-page">
-      {/* PAGE HEADER */}
-      <section className="page-header-section">
-        <div className="container text-center">
-          <div className="sub-badge">Strategic & Technical Background</div>
-          <h1 className="page-title">Meet {siteSettings.expert_name}</h1>
-          <p className="page-subtitle">
-            Senior SEO Consultant & Organic Growth Architect helping brands achieve dominant search rankings and compounding revenue.
-          </p>
-        </div>
-      </section>
+    <div style={{ background: "#ffffff", minHeight: "100vh", paddingTop: "40px", paddingBottom: "80px" }}>
+      <div className="container" style={{ maxWidth: "1240px", margin: "0 auto", padding: "0 20px" }}>
+        
+        {/* Main 2-Column Layout */}
+        <div style={{ display: "grid", gridTemplateColumns: "260px 1fr", gap: "40px", alignItems: "start" }}>
+          
+          {/* Left Sticky Sidebar: Table of Contents */}
+          <aside style={{ position: "sticky", top: "100px" }}>
+            <nav style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "16px", boxShadow: "0 4px 15px rgba(0,0,0,0.04)" }}>
+              <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "6px" }}>
+                <li>
+                  <a href="#vision" style={{ display: "flex", alignItems: "center", gap: "10px", padding: "8px 12px", borderRadius: "6px", fontSize: "0.85rem", fontWeight: 600, color: "#2563eb", background: "#eff6ff", textDecoration: "none" }}>
+                    <i className="fa-regular fa-eye" style={{ width: "16px" }}></i>
+                    <span>One Business System</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#methodology" style={{ display: "flex", alignItems: "center", gap: "10px", padding: "8px 12px", borderRadius: "6px", fontSize: "0.85rem", fontWeight: 600, color: "#64748b", textDecoration: "none" }}>
+                    <i className="fa-solid fa-diagram-project" style={{ width: "16px" }}></i>
+                    <span>Methodology</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#leadership" style={{ display: "flex", alignItems: "center", gap: "10px", padding: "8px 12px", borderRadius: "6px", fontSize: "0.85rem", fontWeight: 600, color: "#64748b", textDecoration: "none" }}>
+                    <i className="fa-regular fa-user" style={{ width: "16px" }}></i>
+                    <span>Leadership</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#why-us" style={{ display: "flex", alignItems: "center", gap: "10px", padding: "8px 12px", borderRadius: "6px", fontSize: "0.85rem", fontWeight: 600, color: "#64748b", textDecoration: "none" }}>
+                    <i className="fa-solid fa-circle-check" style={{ width: "16px" }}></i>
+                    <span>Why Me?</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#testimonials" style={{ display: "flex", alignItems: "center", gap: "10px", padding: "8px 12px", borderRadius: "6px", fontSize: "0.85rem", fontWeight: 600, color: "#64748b", textDecoration: "none" }}>
+                    <i className="fa-regular fa-star" style={{ width: "16px" }}></i>
+                    <span>Testimonials</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#services" style={{ display: "flex", alignItems: "center", gap: "10px", padding: "8px 12px", borderRadius: "6px", fontSize: "0.85rem", fontWeight: 600, color: "#64748b", textDecoration: "none" }}>
+                    <i className="fa-solid fa-layer-group" style={{ width: "16px" }}></i>
+                    <span>Service Expertise</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </aside>
 
-      {/* BIO SECTION */}
-      <section className="section-padding">
-        <div className="container">
-          <div className="about-grid">
-            <div className="about-image-col">
-              <div className="about-image-card">
-                <Image 
-                  src={siteSettings.profile_photo} 
-                  alt={siteSettings.expert_name} 
-                  width={500} 
-                  height={550} 
-                  className="about-profile-img"
-                  priority
-                />
-                <div className="about-badge">
-                  <span className="badge-years">10+</span>
-                  <span className="badge-text">Years of Proven Search Consulting</span>
-                </div>
-              </div>
-
-              <div className="about-sidebar-card mt-6">
-                <h4 className="sidebar-card-title"><i className="fa-solid fa-address-card text-primary"></i> Direct Connect</h4>
-                <ul className="sidebar-contact-list">
-                  <li>
-                    <i className="fa-solid fa-envelope"></i>
-                    <a href={`mailto:${siteSettings.contact_email}`}>{siteSettings.contact_email}</a>
-                  </li>
-                  <li>
-                    <i className="fa-solid fa-phone"></i>
-                    <a href={`tel:${siteSettings.contact_phone}`}>{siteSettings.contact_phone}</a>
-                  </li>
-                  <li>
-                    <i className="fa-brands fa-whatsapp"></i>
-                    <a href={`https://wa.me/${siteSettings.whatsapp_number}`} target="_blank" rel="noopener noreferrer">WhatsApp Direct</a>
-                  </li>
-                  <li>
-                    <i className="fa-solid fa-location-dot"></i>
-                    <span>{siteSettings.office_address}</span>
-                  </li>
-                </ul>
-              </div>
+          {/* Right Column: Main Content */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "40px" }}>
+            
+            {/* Page Hero Header */}
+            <div style={{ textAlign: "center", marginBottom: "16px" }}>
+              <h1 style={{ fontSize: "2.6rem", fontWeight: 800, color: "#0f172a", lineHeight: 1.25, marginBottom: "16px" }}>
+                I Build Revenue Systems for Businesses That Need to Move Faster
+              </h1>
+              <p style={{ fontSize: "1.05rem", color: "#475569", lineHeight: 1.65, maxWidth: "780px", margin: "0 auto" }}>
+                The market is getting harder: ad costs rise, attention drops, customers expect fast answers, and manual work slows good businesses down.
+                <br /><br />
+                I help businesses turn marketing, websites, lead capture, sales follow-up, and operations into connected systems. My work combines advanced technical SEO, web development, AI automation, paid acquisition, and conversion optimization built around the numbers that matter.
+              </p>
             </div>
 
-            <div className="about-content-col">
-              <h2 className="section-title">Turning Search Algorithms Into Your Biggest Competitive Advantage</h2>
-              
-              <p className="lead-text">
-                For the past decade, I have dedicated myself to understanding the mathematical, architectural, and behavioral mechanics of Google search algorithms.
+            {/* Section 1: Vision */}
+            <section id="vision">
+              <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "#eff6ff", border: "1px solid #dbeafe", padding: "6px 14px", borderRadius: "9999px", fontSize: "0.88rem", fontWeight: 700, color: "#1e40af", marginBottom: "16px" }}>
+                <i className="fa-regular fa-eye" style={{ color: "#2563eb" }}></i>
+                One Business System, Not Five Disconnected Tools
+              </div>
+
+              <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "28px 32px", boxShadow: "0 4px 20px -2px rgba(0,0,0,0.04)" }}>
+                <p style={{ color: "#334155", fontSize: "0.98rem", lineHeight: 1.7, margin: 0 }}>
+                  Most businesses do not need another isolated website, ad campaign, chatbot, or dashboard. They need the full customer journey to work together.
+                  <br /><br />
+                  I connect organic acquisition, high-converting pages, CRM workflows, AI automation, tracking, and follow-up so that every visitor has a clear path to become a lead, client, or booked consultation.
+                </p>
+              </div>
+            </section>
+
+            {/* Section 2: Methodology */}
+            <section id="methodology">
+              <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "#eff6ff", border: "1px solid #dbeafe", padding: "6px 14px", borderRadius: "9999px", fontSize: "0.88rem", fontWeight: 700, color: "#1e40af", marginBottom: "16px" }}>
+                <i className="fa-solid fa-diagram-project" style={{ color: "#2563eb" }}></i>
+                Build the System Around the Bottleneck
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
+                <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "24px" }}>
+                  <div style={{ width: "36px", height: "36px", borderRadius: "8px", background: "#eef2ff", color: "#4361ee", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "12px", fontSize: "1rem" }}>
+                    <i className="fa-solid fa-rocket"></i>
+                  </div>
+                  <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: "#0f172a", marginBottom: "8px" }}>Measure Before Making Noise</h3>
+                  <p style={{ fontSize: "0.88rem", color: "#64748b", lineHeight: 1.6, margin: 0 }}>
+                    I review search traffic sources, crawl performance, lead flow, website behavior, conversion points, operational delays, and existing analytics before recommending a solution.
+                  </p>
+                </div>
+
+                <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "24px" }}>
+                  <div style={{ width: "36px", height: "36px", borderRadius: "8px", background: "#eef2ff", color: "#4361ee", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "12px", fontSize: "1rem" }}>
+                    <i className="fa-solid fa-trophy"></i>
+                  </div>
+                  <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: "#0f172a", marginBottom: "8px" }}>Build for Real Customer Behaviour</h3>
+                  <p style={{ fontSize: "0.88rem", color: "#64748b", lineHeight: 1.6, margin: 0 }}>
+                    A system only works when customers understand what to do next. Every page, ad, form, message, booking flow, and automation is designed around real buyer intent and behavior.
+                  </p>
+                </div>
+
+                <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "24px" }}>
+                  <div style={{ width: "36px", height: "36px", borderRadius: "8px", background: "#eef2ff", color: "#4361ee", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "12px", fontSize: "1rem" }}>
+                    <i className="fa-solid fa-share-nodes"></i>
+                  </div>
+                  <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: "#0f172a", marginBottom: "8px" }}>Automate Repetitive Work</h3>
+                  <p style={{ fontSize: "0.88rem", color: "#64748b", lineHeight: 1.6, margin: 0 }}>
+                    I use AI and automation to handle lead capture, source tagging, routing, reminders, follow-up, task creation, support responses, and reporting without removing human control.
+                  </p>
+                </div>
+
+                <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "24px" }}>
+                  <div style={{ width: "36px", height: "36px", borderRadius: "8px", background: "#eef2ff", color: "#4361ee", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "12px", fontSize: "1rem" }}>
+                    <i className="fa-solid fa-bolt"></i>
+                  </div>
+                  <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: "#0f172a", marginBottom: "8px" }}>Improve From Evidence</h3>
+                  <p style={{ fontSize: "0.88rem", color: "#64748b", lineHeight: 1.6, margin: 0 }}>
+                    I use real Search Console data, user activity, lead data, workflow enrolment, cost per result, and conversion signals to continuously improve what is already working.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            {/* Section 3: Leadership */}
+            <section id="leadership">
+              <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "#eff6ff", border: "1px solid #dbeafe", padding: "6px 14px", borderRadius: "9999px", fontSize: "0.88rem", fontWeight: 700, color: "#1e40af", marginBottom: "16px" }}>
+                <i className="fa-regular fa-user" style={{ color: "#2563eb" }}></i>
+                Leadership
+              </div>
+
+              <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "28px 32px", boxShadow: "0 4px 20px -2px rgba(0,0,0,0.04)" }}>
+                <div style={{ display: "flex", gap: "28px", alignItems: "flex-start" }}>
+                  <img 
+                    src="/images/abdullah.jpg" 
+                    alt={siteSettings.expert_name} 
+                    style={{ width: "160px", height: "190px", objectFit: "cover", borderRadius: "8px", border: "1px solid #e2e8f0", flexShrink: 0 }} 
+                  />
+                  <div>
+                    <h3 style={{ fontSize: "1.6rem", fontWeight: 800, color: "#0f172a", marginBottom: "4px" }}>
+                      {siteSettings.expert_name}
+                    </h3>
+                    <p style={{ fontSize: "0.8rem", fontWeight: 700, color: "#2563eb", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "14px" }}>
+                      REVENUE SYSTEMS BUILDER · TECHNICAL SEO · DIGITAL MARKETING
+                    </p>
+                    <p style={{ fontSize: "0.95rem", color: "#475569", lineHeight: 1.65, margin: 0 }}>
+                      With 10+ years of experience across international markets, I combine digital marketing, web development, and AI automation to build systems that support scalable revenue growth. I have delivered everything from enterprise SEO recoveries to custom AI workflows and conversion-led web applications.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Section 4: Why Me? */}
+            <section id="why-us">
+              <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "#eff6ff", border: "1px solid #dbeafe", padding: "6px 14px", borderRadius: "9999px", fontSize: "0.88rem", fontWeight: 700, color: "#1e40af", marginBottom: "16px" }}>
+                <i className="fa-solid fa-circle-check" style={{ color: "#2563eb" }}></i>
+                Why Me?
+              </div>
+
+              <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "24px" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
+                  <div style={{ display: "flex", gap: "16px", alignItems: "flex-start" }}>
+                    <div style={{ width: "36px", height: "36px", borderRadius: "8px", background: "#eff6ff", color: "#2563eb", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: "2px" }}>
+                      <i className="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div>
+                      <h4 style={{ fontSize: "1.05rem", fontWeight: 700, color: "#0f172a", marginBottom: "4px" }}>One Owner Across the Journey</h4>
+                      <p style={{ fontSize: "0.88rem", color: "#64748b", lineHeight: 1.5, margin: 0 }}>You get one person who understands the ad, the landing page, the form, the CRM, the automation, the tracking, and the customer&apos;s next step.</p>
+                    </div>
+                  </div>
+
+                  <div style={{ display: "flex", gap: "16px", alignItems: "flex-start" }}>
+                    <div style={{ width: "36px", height: "36px", borderRadius: "8px", background: "#eff6ff", color: "#2563eb", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: "2px" }}>
+                      <i className="fa-solid fa-chart-line"></i>
+                    </div>
+                    <div>
+                      <h4 style={{ fontSize: "1.05rem", fontWeight: 700, color: "#0f172a", marginBottom: "4px" }}>Cost-Efficient by Design</h4>
+                      <p style={{ fontSize: "0.88rem", color: "#64748b", lineHeight: 1.5, margin: 0 }}>I use the right level of technology for the problem to reduce wasted spend, manual work, and duplicated agency layers.</p>
+                    </div>
+                  </div>
+
+                  <div style={{ display: "flex", gap: "16px", alignItems: "flex-start" }}>
+                    <div style={{ width: "36px", height: "36px", borderRadius: "8px", background: "#eff6ff", color: "#2563eb", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: "2px" }}>
+                      <i className="fa-solid fa-rocket"></i>
+                    </div>
+                    <div>
+                      <h4 style={{ fontSize: "1.05rem", fontWeight: 700, color: "#0f172a", marginBottom: "4px" }}>World-Class Tools, Practical Delivery</h4>
+                      <p style={{ fontSize: "0.88rem", color: "#64748b", lineHeight: 1.5, margin: 0 }}>I work with platforms and technologies used by growth-focused businesses worldwide: Meta, Google, GA4, GTM, Next.js, APIs, AI automations, and cloud systems.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* CTA Box */}
+            <div style={{ background: "linear-gradient(135deg, #4361ee 0%, #3a56d4 100%)", borderRadius: "8px", padding: "36px", color: "#ffffff", textAlign: "center" }}>
+              <h2 style={{ color: "#ffffff", fontSize: "1.8rem", marginBottom: "8px" }}>Ready to Build Your Growth System?</h2>
+              <p style={{ color: "rgba(255, 255, 255, 0.9)", fontSize: "0.98rem", maxWidth: "560px", margin: "0 auto 20px" }}>
+                Send your domain details for a complimentary diagnostic audit and clear strategic recommendations.
               </p>
-
-              <p className="text-muted mb-4">
-                Unlike generic marketing agencies that rely on outsourced templated audits or vanity metrics, my methodology is built on <strong>forensic technical audits</strong>, <strong>semantic entity clustering</strong>, and <strong>sustainable high-authority digital PR</strong>.
-              </p>
-
-              <div className="values-grid my-8">
-                <div className="value-card">
-                  <div className="value-icon"><i className="fa-solid fa-microscope text-primary"></i></div>
-                  <h4 className="value-title">Data-Driven Precision</h4>
-                  <p className="value-desc">Every recommendation is backed by log file analysis, crawl data, and real search intent metrics.</p>
-                </div>
-
-                <div className="value-card">
-                  <div className="value-icon"><i className="fa-solid fa-shield-halved text-success"></i></div>
-                  <h4 className="value-title">100% White-Hat Safety</h4>
-                  <p className="value-desc">Zero risky shortcuts. Strategies built to survive and thrive during core algorithm updates.</p>
-                </div>
-
-                <div className="value-card">
-                  <div className="value-icon"><i className="fa-solid fa-chart-line text-warning"></i></div>
-                  <h4 className="value-title">Revenue Focus</h4>
-                  <p className="value-desc">Search traffic is meaningless without conversion. We target high-intent commercial keywords.</p>
-                </div>
-
-                <div className="value-card">
-                  <div className="value-icon"><i className="fa-solid fa-code text-info"></i></div>
-                  <h4 className="value-title">Developer-Ready Specs</h4>
-                  <p className="value-desc">Deliverables with clear code snippets and instructions your engineering team can immediately ship.</p>
-                </div>
-              </div>
-
-              <h3 className="subheading mb-4">Core Competencies & Stack</h3>
-              <div className="skills-tags-wrap mb-8">
-                <span className="skill-tag">Technical SEO Auditing</span>
-                <span className="skill-tag">Log File Analysis</span>
-                <span className="skill-tag">Next.js & React SEO</span>
-                <span className="skill-tag">E-Commerce Architecture</span>
-                <span className="skill-tag">Core Web Vitals & CWV Optimization</span>
-                <span className="skill-tag">Schema & JSON-LD Entity Graph</span>
-                <span className="skill-tag">International Multi-Lingual hreflang</span>
-                <span className="skill-tag">Screaming Frog & Sitebulb</span>
-                <span className="skill-tag">Google Search Console API</span>
-                <span className="skill-tag">Ahrefs & Semrush Advanced Clustering</span>
-              </div>
-
-              <div className="cta-box-inline">
-                <div className="cta-inline-text">
-                  <h4>Want to discuss your website&apos;s growth bottlenecks?</h4>
-                  <p>Book a strategic consultation or request a custom diagnostic audit.</p>
-                </div>
-                <Link href="/contact" className="btn btn-primary">
-                  Get in Touch <i className="fa-solid fa-arrow-right"></i>
-                </Link>
-              </div>
+              <Link href="/contact" className="btn btn-lg btn-aqua-solid">
+                Contact Abdullah Directly <i className="fa-solid fa-arrow-right"></i>
+              </Link>
             </div>
+
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 }
