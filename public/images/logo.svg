@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 160" width="100%" height="100%">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@800&amp;family=Plus+Jakarta+Sans:wght@700;800&amp;display=swap');
+      .logo-brand-text {
+        font-family: 'Plus Jakarta Sans', 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-size: 56px;
+        font-weight: 600;
+        letter-spacing: -0.8px;
+        fill: #1e293b;
+      }
+      .logo-as-text {
+        font-family: 'Outfit', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-size: 62px;
+        font-weight: 900;
+        letter-spacing: -1.5px;
+        fill: #ffffff;
+      }
+    </style>
+
+    <!-- Background Gradient for Icon -->
+    <linearGradient id="asBgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="35%" stop-color="#2563eb" />
+      <stop offset="75%" stop-color="#1d4ed8" />
+      <stop offset="100%" stop-color="#0038c7" />
+    </linearGradient>
+
+    <!-- Gloss / Wave Highlight -->
+    <linearGradient id="asWaveGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#60a5fa" stop-opacity="0.75" />
+      <stop offset="45%" stop-color="#38bdf8" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="#2563eb" stop-opacity="0" />
+    </linearGradient>
+
+    <!-- Soft Top Light Glow -->
+    <linearGradient id="asTopGlow" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.4" />
+      <stop offset="60%" stop-color="#ffffff" stop-opacity="0" />
+    </linearGradient>
+
+    <!-- Clip Path for Rounded Corners of Icon -->
+    <clipPath id="asIconClip">
+      <rect x="0" y="10" width="140" height="140" rx="36" ry="36" />
+    </clipPath>
+  </defs>
+
+  <!-- ICON BADGE (140x140) -->
+  <g transform="translate(10, 0)">
+    <!-- Base Rounded Square -->
+    <rect x="0" y="10" width="140" height="140" rx="36" ry="36" fill="url(#asBgGrad)" />
+
+    <!-- Wave / Glass effects inside clip path -->
+    <g clip-path="url(#asIconClip)">
+      <!-- Smooth Organic Wave in Bottom-Left -->
+      <path d="M -10,110 Q 35,70 75,102 T 155,85 L 155,160 L -10,160 Z" fill="url(#asWaveGrad)" />
+      <!-- Soft Top Sheen -->
+      <rect x="0" y="10" width="140" height="70" fill="url(#asTopGlow)" />
+    </g>
+
+    <!-- "AS" Monogram Typography -->
+    <text x="70" y="100" class="logo-as-text" text-anchor="middle">AS</text>
+  </g>
+
+  <!-- BRAND TYPOGRAPHY: "Abdullah Saleh" -->
+  <text x="180" y="102" class="logo-brand-text">Abdullah Saleh</text>
+</svg>

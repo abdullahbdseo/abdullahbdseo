@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient for Icon -->
+    <linearGradient id="asIconBgGradFav" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="35%" stop-color="#2563eb" />
+      <stop offset="75%" stop-color="#1d4ed8" />
+      <stop offset="100%" stop-color="#0038c7" />
+    </linearGradient>
+
+    <!-- Gloss / Wave Highlight -->
+    <linearGradient id="asIconWaveGradFav" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#60a5fa" stop-opacity="0.75" />
+      <stop offset="45%" stop-color="#38bdf8" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="#2563eb" stop-opacity="0" />
+    </linearGradient>
+
+    <!-- Soft Top Light Glow -->
+    <linearGradient id="asIconTopGlowFav" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.4" />
+      <stop offset="60%" stop-color="#ffffff" stop-opacity="0" />
+    </linearGradient>
+
+    <!-- Clip Path for Rounded Corners of Icon -->
+    <clipPath id="asSingleIconClipFav">
+      <rect x="10" y="10" width="140" height="140" rx="36" ry="36" />
+    </clipPath>
+  </defs>
+
+  <!-- Base Rounded Square -->
+  <rect x="10" y="10" width="140" height="140" rx="36" ry="36" fill="url(#asIconBgGradFav)" />
+
+  <!-- Wave / Glass effects inside clip path -->
+  <g clip-path="url(#asSingleIconClipFav)">
+    <path d="M 0,110 Q 45,70 85,102 T 165,85 L 165,160 L 0,160 Z" fill="url(#asIconWaveGradFav)" />
+    <rect x="10" y="10" width="140" height="70" fill="url(#asIconTopGlowFav)" />
+  </g>
+
+  <!-- "AS" Monogram Typography -->
+  <text x="80" y="100"
+        font-family="'Outfit', 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+        font-size="62"
+        font-weight="900"
+        letter-spacing="-1.5"
+        fill="#ffffff"
+        text-anchor="middle">AS</text>
+</svg>

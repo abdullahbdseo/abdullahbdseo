@@ -1,0 +1,16 @@
+# .htaccess - Apache URL Rewriting for MD Abdullah SEO Service Platform
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /seoservice/
+
+    # Security: Block sensitive files
+    RewriteRule ^(\.git|config|database|core|views|uploads/.*\.php) - [F,L]
+
+    # Serve existing files directly
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Route all other requests to index.php
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>
