@@ -4168,3 +4168,93 @@ img {
         padding: 22px 18px;
     }
 }
+
+/* ==========================================================================
+   FREE TOOLS DIRECTORY & TOOL CARDS STYLING
+   ========================================================================== */
+.tool-page-wrapper {
+    background: #ffffff;
+    min-height: 100vh;
+    padding-top: 30px;
+    padding-bottom: 80px;
+}
+
+.tool-ref-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s;
+}
+
+.tool-ref-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+    border-color: #93c5fd;
+}
+
+.tool-ref-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 10px;
+    background: #f1f5f9;
+    color: #475569;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    margin-bottom: 16px;
+    transition: transform 0.2s;
+}
+
+.tool-ref-card:hover .tool-ref-icon {
+    transform: scale(1.08);
+}
+
+.tool-ref-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 8px;
+    line-height: 1.3;
+}
+
+.tool-ref-title a {
+    color: #0f172a;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.tool-ref-title a:hover {
+    color: #2563eb;
+}
+
+.tool-ref-desc {
+    font-size: 0.88rem;
+    color: #475569;
+    line-height: 1.55;
+    margin: 0 0 20px;
+    flex-grow: 1;
+}
+
+.tool-ref-footer {
+    border-top: 1px solid #f1f5f9;
+    padding-top: 14px;
+}
+
+.tool-ref-link {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #2563eb;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: gap 0.2s;
+}
+
+.tool-ref-link:hover {
+    gap: 10px;
+}
