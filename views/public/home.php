@@ -75,7 +75,7 @@
                     </h3>
                     <p style="font-size: 0.98rem; color: #334155; line-height: 1.7; margin: 0;">
                         My core areas of expertise include 
-                        <a href="https://abdullahseobd.com/services/local-seo-service-in-bangladesh/" target="_blank" rel="noopener noreferrer" style="color: #0062d2; font-weight: 700; text-decoration: underline;">Local SEO</a>, 
+                        <a href="/services/local-seo-service-in-bangladesh" style="color: #0062d2; font-weight: 700; text-decoration: underline;">Local SEO</a>, 
                         <a href="/services/technical-seo-service-in-bangladesh" style="color: #0062d2; font-weight: 700; text-decoration: underline;">Technical SEO</a>, 
                         <a href="/services/ecommerce-seo-service-in-bangladesh" style="color: #0062d2; font-weight: 700; text-decoration: underline;">Ecommerce SEO</a>, 
                         content optimization, keyword research, link building, and organic growth strategies.

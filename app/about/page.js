@@ -140,7 +140,7 @@ export default function AboutPage() {
               <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderLeft: "4px solid #0062d2", borderRadius: "6px", padding: "24px 28px" }}>
                 <p style={{ fontSize: "1.02rem", color: "#334155", lineHeight: 1.8, margin: 0 }}>
                   My core areas of expertise include{" "}
-                  <a href="https://abdullahseobd.com/services/local-seo-service-in-bangladesh/" target="_blank" rel="noopener noreferrer" style={{ color: "#0062d2", fontWeight: 700, textDecoration: "underline" }}>Local SEO</a>,{" "}
+                  <Link href="/services/local-seo-service-in-bangladesh" style={{ color: "#0062d2", fontWeight: 700, textDecoration: "underline" }}>Local SEO</Link>,{" "}
                   <Link href="/services/technical-seo-service-in-bangladesh" style={{ color: "#0062d2", fontWeight: 700, textDecoration: "underline" }}>Technical SEO</Link>,{" "}
                   <Link href="/services/ecommerce-seo-service-in-bangladesh" style={{ color: "#0062d2", fontWeight: 700, textDecoration: "underline" }}>Ecommerce SEO</Link>,{" "}
                   content optimization, keyword research, link building, and organic growth strategies.
