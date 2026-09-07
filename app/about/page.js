@@ -3,71 +3,52 @@
 import Link from "next/link";
 import { siteSettings } from "@/lib/data";
 
-export default function AboutPage() {
-  const reviews = [
-    {
-      stars: 4,
-      quote: "Fast communication and a practical automation setup. Our lead handling is now smoother and much easier to track.",
-      author: "Ryan Patel",
-      role: "Co-Founder, ClickPilot Studio",
-      avatarLetter: "R",
-      avatarBg: "#dcfce7",
-      avatarColor: "#15803d"
-    },
-    {
-      stars: 5,
-      quote: "The website improvements gave us a cleaner offer, stronger CTA flow, and noticeably better lead quality.",
-      author: "Sophie Turner",
-      role: "Marketing Lead, BrightPath Solutions",
-      avatarLetter: "S",
-      avatarBg: "#ede9fe",
-      avatarColor: "#7c3aed"
-    },
-    {
-      stars: 5,
-      quote: "Delivered exactly what was promised: automation, conversion focused pages, and reporting that shows what is actually working.",
-      author: "Alex Morgan",
-      role: "Owner, ScaleForge Agency",
-      avatarLetter: "A",
-      avatarBg: "#e0f2fe",
-      avatarColor: "#0284c7"
-    },
-    {
-      stars: 5,
-      quote: "Abdullah resolved our technical crawl bottlenecks and keyword cannibalization in 3 weeks. Ranked #1 for high-ticket commercial keywords.",
-      author: "David Miller",
-      role: "Managing Director, Apex Logistics UK",
-      avatarLetter: "D",
-      avatarBg: "#fef3c7",
-      avatarColor: "#b45309"
-    },
-    {
-      stars: 5,
-      quote: "Our Google and Meta Ads ROAS scaled from 1.8x to 4.2x with proper conversion tracking and high-converting landing page tuning.",
-      author: "Elena Rostova",
-      role: "Head of Growth, Nordic Retail Group",
-      avatarLetter: "E",
-      avatarBg: "#e0e7ff",
-      avatarColor: "#4338ca"
-    },
-    {
-      stars: 5,
-      quote: "One of the rare professionals on BlackHatWorld who actually masters clean code, technical SEO, and high-converting marketing funnels.",
-      author: "James O'Connor",
-      role: "E-Commerce Brand Owner, Sydney",
-      avatarLetter: "J",
-      avatarBg: "#fae8ff",
-      avatarColor: "#a21caf"
-    }
-  ];
+const verifiedReviews = [
+  {
+    name: "Mia Collins",
+    role: "Director, Northline Digital",
+    rating: 4,
+    quote: "He rebuilt our service funnel around conversions, not vanity metrics. More qualified enquiries and far less manual follow-up.",
+    avatar: "M",
+  },
+  {
+    name: "Ryan Patel",
+    role: "Co-Founder, ClickPilot Studio",
+    rating: 4,
+    quote: "Fast communication and a practical automation setup. Our lead handling is now smoother and much easier to track.",
+    avatar: "R",
+  },
+  {
+    name: "Sophie Turner",
+    role: "Marketing Lead, BrightPath Solutions",
+    rating: 5,
+    quote: "The website improvements gave us a cleaner offer, stronger CTA flow, and noticeably better lead quality.",
+    avatar: "S",
+  },
+  {
+    name: "Alex Morgan",
+    role: "Owner, ScaleForge Agency",
+    rating: 5,
+    quote: "Delivered exactly what was promised automation, conversion focused pages, and reporting that shows what is actually working.",
+    avatar: "A",
+  },
+  {
+    name: "Daniel Reed",
+    role: "GrowthStack Media",
+    rating: 5,
+    quote: "Clear strategy, clean delivery, and better-quality leads within weeks. The KPI reporting made every decision easier.",
+    avatar: "D",
+  },
+];
 
+export default function AboutPage() {
   return (
     <div style={{ background: "#ffffff", minHeight: "100vh", paddingTop: "40px", paddingBottom: "80px" }}>
       <div className="container" style={{ maxWidth: "1240px", margin: "0 auto", padding: "0 20px" }}>
-        
+
         {/* Main 2-Column Layout */}
         <div style={{ display: "grid", gridTemplateColumns: "260px 1fr", gap: "40px", alignItems: "start" }}>
-          
+
           {/* Left Sticky Sidebar: Table of Contents */}
           <aside style={{ position: "sticky", top: "100px" }}>
             <nav style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "6px", padding: "16px", boxShadow: "0 4px 15px rgba(0,0,0,0.04)" }}>
@@ -97,15 +78,15 @@ export default function AboutPage() {
                   </a>
                 </li>
                 <li>
-                  <a href="#why-choose" style={{ display: "flex", alignItems: "center", gap: "10px", padding: "8px 12px", borderRadius: "4px", fontSize: "0.85rem", fontWeight: 600, color: "#64748b", textDecoration: "none" }}>
-                    <i className="fa-solid fa-circle-check" style={{ width: "16px" }}></i>
-                    <span>Why Work With Me?</span>
+                  <a href="#testimonials" style={{ display: "flex", alignItems: "center", gap: "10px", padding: "8px 12px", borderRadius: "4px", fontSize: "0.85rem", fontWeight: 600, color: "#64748b", textDecoration: "none" }}>
+                    <i className="fa-solid fa-star" style={{ width: "16px", color: "#fbbf24" }}></i>
+                    <span>Verified Reviews</span>
                   </a>
                 </li>
                 <li>
-                  <a href="#testimonials" style={{ display: "flex", alignItems: "center", gap: "10px", padding: "8px 12px", borderRadius: "4px", fontSize: "0.85rem", fontWeight: 600, color: "#64748b", textDecoration: "none" }}>
-                    <i className="fa-regular fa-star" style={{ width: "16px" }}></i>
-                    <span>Verified Reviews</span>
+                  <a href="#why-choose" style={{ display: "flex", alignItems: "center", gap: "10px", padding: "8px 12px", borderRadius: "4px", fontSize: "0.85rem", fontWeight: 600, color: "#64748b", textDecoration: "none" }}>
+                    <i className="fa-solid fa-circle-check" style={{ width: "16px" }}></i>
+                    <span>Why Work With Me?</span>
                   </a>
                 </li>
               </ul>
@@ -114,7 +95,7 @@ export default function AboutPage() {
 
           {/* Right Column: Main Content */}
           <div style={{ display: "flex", flexDirection: "column", gap: "36px" }}>
-            
+
             {/* Page Hero Header */}
             <div>
               <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "#eff6ff", border: "1px solid #dbeafe", padding: "6px 14px", borderRadius: "4px", fontSize: "0.85rem", fontWeight: 700, color: "#0062d2", marginBottom: "14px" }}>
@@ -133,10 +114,10 @@ export default function AboutPage() {
             <section id="about-expert">
               <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "6px", padding: "28px 32px", boxShadow: "0 4px 20px -2px rgba(0,0,0,0.04)" }}>
                 <div style={{ display: "flex", gap: "28px", alignItems: "flex-start", flexWrap: "wrap" }}>
-                  <img 
-                    src="/images/abdullah.jpg" 
-                    alt="Abdullah Saleh - Best SEO Expert in Bangladesh" 
-                    style={{ width: "160px", height: "190px", objectFit: "cover", borderRadius: "6px", border: "1px solid #e2e8f0", flexShrink: 0 }} 
+                  <img
+                    src="/images/abdullah.jpg"
+                    alt="Abdullah Saleh - Best SEO Expert in Bangladesh"
+                    style={{ width: "160px", height: "190px", objectFit: "cover", borderRadius: "6px", border: "1px solid #e2e8f0", flexShrink: 0 }}
                   />
                   <div style={{ flex: 1, minWidth: "260px" }}>
                     <h2 style={{ fontSize: "1.5rem", fontWeight: 800, color: "#0f172a", marginBottom: "4px" }}>
@@ -231,7 +212,64 @@ export default function AboutPage() {
               </div>
             </section>
 
-            {/* Section 5: Why Choose */}
+            {/* Section 5: What Internet Finds About Me (Verified Reviews Marquee) */}
+            <section id="testimonials" style={{ scrollMarginTop: "100px" }}>
+              <div className="testimonial-marquee-container">
+                {/* Verified Reviews Pill */}
+                <div className="verified-pill-badge">
+                  <span className="pill-stars">
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                  </span>
+                  <span className="pill-divider"></span>
+                  <span className="pill-text">Verified Reviews</span>
+                </div>
+
+                <h2 className="marquee-section-title">What Internet Finds About Me</h2>
+                <p className="marquee-section-subtitle">
+                  Real feedback and client reviews from BlackHatWorld forum as a developer and marketer.
+                </p>
+
+                {/* Marquee Viewport */}
+                <div className="marquee-viewport-mask">
+                  <div className="marquee-track">
+                    {[...verifiedReviews, ...verifiedReviews].map((rev, idx) => (
+                      <div key={idx} className="marquee-review-card">
+                        <div>
+                          <div className="card-stars-row" aria-label={`${rev.rating} out of 5 stars`}>
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <i
+                                key={star}
+                                className="fa-solid fa-star"
+                                style={{
+                                  color: star <= rev.rating ? "#fbbf24" : "#e2e8f0",
+                                  fontSize: "0.85rem",
+                                }}
+                              ></i>
+                            ))}
+                          </div>
+                          <p className="card-quote-body">
+                            &ldquo;“{rev.quote}”&rdquo;
+                          </p>
+                        </div>
+                        <div className="card-bottom-row">
+                          <div>
+                            <h3 className="card-author-name">{rev.name}</h3>
+                            <p className="card-author-title">{rev.role}</p>
+                          </div>
+                          <div className="card-avatar-badge">{rev.avatar}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Section 6: Why Choose */}
             <section id="why-choose">
               <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "#eff6ff", border: "1px solid #dbeafe", padding: "6px 14px", borderRadius: "4px", fontSize: "0.85rem", fontWeight: 700, color: "#0062d2", marginBottom: "14px" }}>
                 <i className="fa-solid fa-circle-check"></i>
@@ -273,68 +311,6 @@ export default function AboutPage() {
               </div>
             </section>
 
-            {/* Section 6: Verified Client Reviews (What Internet Finds About Me) */}
-            <section id="testimonials">
-              <div className="testimonial-marquee-container">
-                
-                {/* Top Pill Badge */}
-                <div style={{ textAlign: "center", marginBottom: "16px" }}>
-                  <div className="verified-pill-badge">
-                    <span className="pill-stars">
-                      <i className="fa-solid fa-star"></i>
-                      <i className="fa-solid fa-star"></i>
-                      <i className="fa-solid fa-star"></i>
-                      <i className="fa-solid fa-star"></i>
-                      <i className="fa-solid fa-star"></i>
-                    </span>
-                    <span className="pill-divider"></span>
-                    <span className="pill-text">VERIFIED REVIEWS</span>
-                  </div>
-                </div>
-
-                {/* Title & Subtitle */}
-                <div style={{ textAlign: "center", marginBottom: "28px" }}>
-                  <h2 className="marquee-section-title">
-                    What Internet Finds About Me
-                  </h2>
-                  <p className="marquee-section-subtitle">
-                    Real feedback and client reviews from BlackHatWorld forum as a developer and marketer.
-                  </p>
-                </div>
-
-                {/* Infinite Smooth Marquee with Edge Masks */}
-                <div className="marquee-viewport-mask">
-                  <div className="marquee-track">
-                    {[...reviews, ...reviews].map((rev, idx) => (
-                      <article key={idx} className="marquee-review-card" aria-hidden={idx >= reviews.length ? "true" : undefined}>
-                        <div className="card-stars-row">
-                          {[...Array(rev.stars)].map((_, i) => (
-                            <i key={i} className="fa-solid fa-star"></i>
-                          ))}
-                          {[...Array(5 - rev.stars)].map((_, i) => (
-                            <i key={i} className="fa-regular fa-star" style={{ color: "#cbd5e1" }}></i>
-                          ))}
-                        </div>
-                        <p className="card-quote-body">
-                          “{rev.quote}”
-                        </p>
-                        <div className="card-bottom-row">
-                          <div>
-                            <div className="card-author-name">{rev.author}</div>
-                            <div className="card-author-title">{rev.role}</div>
-                          </div>
-                          <div className="card-avatar-badge" style={{ background: rev.avatarBg, color: rev.avatarColor }}>
-                            {rev.avatarLetter}
-                          </div>
-                        </div>
-                      </article>
-                    ))}
-                  </div>
-                </div>
-
-              </div>
-            </section>
-
             {/* CTA Box */}
             <div style={{ background: "linear-gradient(135deg, #0062d2 0%, #004bb5 100%)", borderRadius: "6px", padding: "36px", color: "#ffffff", textAlign: "center" }}>
               <h2 style={{ color: "#ffffff", fontSize: "1.8rem", marginBottom: "8px", fontWeight: 800 }}>Ready to Grow Your Business Organically?</h2>
@@ -352,3 +328,4 @@ export default function AboutPage() {
     </div>
   );
 }
+

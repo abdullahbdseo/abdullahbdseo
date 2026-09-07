@@ -99,6 +99,199 @@ img {
 }
 
 /* ==========================================================================
+   What Internet Finds About Me - Verified Reviews Marquee Section
+   ========================================================================== */
+.testimonial-marquee-container {
+    background: linear-gradient(135deg, #edf4ff 0%, #ffffff 50%, #e5f0ff 100%);
+    border: 1px solid rgba(219, 234, 254, 0.95);
+    border-radius: 28px;
+    padding: 38px 24px 34px;
+    box-shadow: 0 14px 40px -15px rgba(0, 89, 181, 0.08);
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+
+.testimonial-marquee-container::before {
+    content: '';
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: rgba(0, 98, 210, 0.05);
+    filter: blur(40px);
+    pointer-events: none;
+}
+
+.testimonial-marquee-container::after {
+    content: '';
+    position: absolute;
+    bottom: -60px;
+    left: -60px;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: rgba(59, 130, 246, 0.08);
+    filter: blur(40px);
+    pointer-events: none;
+}
+
+.verified-pill-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 98, 210, 0.18);
+    border-radius: 9999px;
+    padding: 5px 14px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+    margin-bottom: 12px;
+}
+
+.pill-stars {
+    color: #fbbf24;
+    display: inline-flex;
+    gap: 2.5px;
+    font-size: 0.8rem;
+}
+
+.pill-divider {
+    width: 1px;
+    height: 12px;
+    background: rgba(0, 98, 210, 0.2);
+}
+
+.pill-text {
+    color: #0059b3;
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.marquee-section-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.025em;
+    margin: 0 0 8px;
+    line-height: 1.25;
+    font-family: var(--font-heading, inherit);
+}
+
+.marquee-section-subtitle {
+    font-size: 0.92rem;
+    color: #475569;
+    max-width: 580px;
+    margin: 0 auto 24px;
+    line-height: 1.55;
+}
+
+.marquee-viewport-mask {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    padding: 6px 0 10px;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+
+.marquee-track {
+    display: flex;
+    gap: 18px;
+    width: max-content;
+    animation: smoothMarquee 36s linear infinite;
+}
+
+.marquee-track:hover {
+    animation-play-state: paused;
+}
+
+@keyframes smoothMarquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+.marquee-review-card {
+    width: 320px;
+    min-width: 320px;
+    max-width: 320px;
+    flex-shrink: 0;
+    background: #ffffff;
+    border: 1px solid rgba(219, 234, 254, 0.95);
+    border-radius: 16px;
+    padding: 22px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: left;
+    box-shadow: 0 3px 12px rgba(0, 89, 181, 0.04);
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    box-sizing: border-box;
+}
+
+.marquee-review-card:hover {
+    transform: translateY(-3px);
+    border-color: #93c5fd;
+    box-shadow: 0 10px 25px rgba(0, 89, 181, 0.09);
+}
+
+.card-stars-row {
+    color: #fbbf24;
+    display: flex;
+    gap: 3px;
+    font-size: 0.82rem;
+    margin-bottom: 10px;
+}
+
+.card-quote-body {
+    font-size: 0.88rem;
+    font-style: italic;
+    color: #334155;
+    line-height: 1.55;
+    margin: 0 0 14px;
+    flex: 1;
+}
+
+.card-bottom-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 10px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.card-author-name {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.2;
+}
+
+.card-author-title {
+    font-size: 0.74rem;
+    color: #64748b;
+    margin-top: 2px;
+}
+
+.card-avatar-badge {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-weight: 800;
+    font-size: 0.82rem;
+    background: rgba(0, 98, 210, 0.1);
+    border: 1px solid rgba(0, 98, 210, 0.2);
+    color: #0062d2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* ==========================================================================
    1. SITE HEADER & NAVIGATION
    ========================================================================== */
 .digi-header {
