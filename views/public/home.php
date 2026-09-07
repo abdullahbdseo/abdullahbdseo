@@ -90,9 +90,9 @@
                     </h3>
                     <p style="font-size: 0.98rem; color: #334155; line-height: 1.7; margin: 0;">
                         As search continues to evolve, I also focus on the growing world of AI-driven search. Through modern 
-                        <a href="https://abdullahseobd.com/services/ai-seo-service-in-bangladesh/" target="_blank" rel="noopener noreferrer" style="color: #0062d2; font-weight: 700; text-decoration: underline;">AI SEO</a> strategies, including 
-                        <a href="https://abdullahseobd.com/services/aeo-service-in-bangladesh/" target="_blank" rel="noopener noreferrer" style="color: #0062d2; font-weight: 700; text-decoration: underline;">AEO</a>, 
-                        <a href="https://abdullahseobd.com/services/geo-service-in-bangladesh/" target="_blank" rel="noopener noreferrer" style="color: #0062d2; font-weight: 700; text-decoration: underline;">GEO</a>, E-E-A-T optimization, and LLM SEO, I help businesses prepare their websites for the way people are discovering information today&mdash;and the way search is changing for tomorrow.
+                        <a href="/services/ai-seo-service-in-bangladesh" style="color: #0062d2; font-weight: 700; text-decoration: underline;">AI SEO</a> strategies, including 
+                        <a href="/services/aeo-service-in-bangladesh" style="color: #0062d2; font-weight: 700; text-decoration: underline;">AEO</a>, 
+                        <a href="/services/geo-service-in-bangladesh" style="color: #0062d2; font-weight: 700; text-decoration: underline;">GEO</a>, E-E-A-T optimization, and LLM SEO, I help businesses prepare their websites for the way people are discovering information today&mdash;and the way search is changing for tomorrow.
                     </p>
                 </div>
 
