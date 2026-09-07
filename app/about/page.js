@@ -51,42 +51,42 @@ export default function AboutPage() {
 
           {/* Left Sticky Sidebar: Table of Contents */}
           <aside style={{ position: "sticky", top: "100px" }}>
-            <nav style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "6px", padding: "16px", boxShadow: "0 4px 15px rgba(0,0,0,0.04)" }}>
-              <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "6px" }}>
+            <nav style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "14px", padding: "14px", boxShadow: "0 4px 15px rgba(0,0,0,0.03)" }}>
+              <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "4px" }}>
                 <li>
-                  <a href="#about-expert" style={{ display: "flex", alignItems: "center", gap: "10px", padding: "8px 12px", borderRadius: "4px", fontSize: "0.85rem", fontWeight: 600, color: "#0062d2", background: "#eff6ff", textDecoration: "none" }}>
-                    <i className="fa-regular fa-user" style={{ width: "16px" }}></i>
-                    <span>SEO Expert Profile</span>
+                  <a href="#vision" style={{ display: "flex", alignItems: "center", gap: "10px", padding: "8px 12px", borderRadius: "8px", fontSize: "0.85rem", fontWeight: 600, color: "#64748b", textDecoration: "none", transition: "all 0.2s ease" }}>
+                    <i className="fa-regular fa-eye" style={{ width: "16px", color: "#0062d2" }}></i>
+                    <span>Vision</span>
                   </a>
                 </li>
                 <li>
-                  <a href="#philosophy" style={{ display: "flex", alignItems: "center", gap: "10px", padding: "8px 12px", borderRadius: "4px", fontSize: "0.85rem", fontWeight: 600, color: "#64748b", textDecoration: "none" }}>
-                    <i className="fa-regular fa-eye" style={{ width: "16px" }}></i>
-                    <span>SEO Philosophy</span>
+                  <a href="#methodology" style={{ display: "flex", alignItems: "center", gap: "10px", padding: "8px 12px", borderRadius: "8px", fontSize: "0.85rem", fontWeight: 600, color: "#64748b", textDecoration: "none", transition: "all 0.2s ease" }}>
+                    <i className="fa-solid fa-diagram-project" style={{ width: "16px", color: "#0062d2" }}></i>
+                    <span>Methodology</span>
                   </a>
                 </li>
                 <li>
-                  <a href="#expertise" style={{ display: "flex", alignItems: "center", gap: "10px", padding: "8px 12px", borderRadius: "4px", fontSize: "0.85rem", fontWeight: 600, color: "#64748b", textDecoration: "none" }}>
-                    <i className="fa-solid fa-layer-group" style={{ width: "16px" }}></i>
-                    <span>Core Expertise</span>
+                  <a href="#leadership" style={{ display: "flex", alignItems: "center", gap: "10px", padding: "8px 12px", borderRadius: "8px", fontSize: "0.85rem", fontWeight: 600, color: "#64748b", textDecoration: "none", transition: "all 0.2s ease" }}>
+                    <i className="fa-regular fa-user" style={{ width: "16px", color: "#0062d2" }}></i>
+                    <span>Leadership</span>
                   </a>
                 </li>
                 <li>
-                  <a href="#ai-search" style={{ display: "flex", alignItems: "center", gap: "10px", padding: "8px 12px", borderRadius: "4px", fontSize: "0.85rem", fontWeight: 600, color: "#64748b", textDecoration: "none" }}>
-                    <i className="fa-solid fa-microchip" style={{ width: "16px" }}></i>
-                    <span>AI SEO &amp; Future</span>
+                  <a href="#why-us" style={{ display: "flex", alignItems: "center", gap: "10px", padding: "8px 12px", borderRadius: "8px", fontSize: "0.85rem", fontWeight: 600, color: "#64748b", textDecoration: "none", transition: "all 0.2s ease" }}>
+                    <i className="fa-solid fa-circle-check" style={{ width: "16px", color: "#0062d2" }}></i>
+                    <span>Why Me?</span>
                   </a>
                 </li>
                 <li>
-                  <a href="#testimonials" style={{ display: "flex", alignItems: "center", gap: "10px", padding: "8px 12px", borderRadius: "4px", fontSize: "0.85rem", fontWeight: 600, color: "#64748b", textDecoration: "none" }}>
+                  <a href="#testimonials" style={{ display: "flex", alignItems: "center", gap: "10px", padding: "8px 12px", borderRadius: "8px", fontSize: "0.85rem", fontWeight: 600, color: "#64748b", textDecoration: "none", transition: "all 0.2s ease" }}>
                     <i className="fa-solid fa-star" style={{ width: "16px", color: "#fbbf24" }}></i>
-                    <span>Verified Reviews</span>
+                    <span>Testimonials</span>
                   </a>
                 </li>
                 <li>
-                  <a href="#why-choose" style={{ display: "flex", alignItems: "center", gap: "10px", padding: "8px 12px", borderRadius: "4px", fontSize: "0.85rem", fontWeight: 600, color: "#64748b", textDecoration: "none" }}>
-                    <i className="fa-solid fa-circle-check" style={{ width: "16px" }}></i>
-                    <span>Why Work With Me?</span>
+                  <a href="#services" style={{ display: "flex", alignItems: "center", gap: "10px", padding: "8px 12px", borderRadius: "8px", fontSize: "0.85rem", fontWeight: 600, color: "#64748b", textDecoration: "none", transition: "all 0.2s ease" }}>
+                    <i className="fa-solid fa-layer-group" style={{ width: "16px", color: "#0062d2" }}></i>
+                    <span>Service Expertise</span>
                   </a>
                 </li>
               </ul>
@@ -94,121 +94,222 @@ export default function AboutPage() {
           </aside>
 
           {/* Right Column: Main Content */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "36px" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "40px" }}>
 
             {/* Page Hero Header */}
-            <div>
-              <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "#eff6ff", border: "1px solid #dbeafe", padding: "6px 14px", borderRadius: "4px", fontSize: "0.85rem", fontWeight: 700, color: "#0062d2", marginBottom: "14px" }}>
-                <i className="fa-solid fa-award"></i>
-                <span>Organic Business Growth Specialist</span>
-              </div>
-              <h1 style={{ fontSize: "2.4rem", fontWeight: 800, color: "#0f172a", lineHeight: 1.25, marginBottom: "16px", letterSpacing: "-0.015em" }}>
-                Best SEO Expert in Bangladesh &ndash; <span style={{ color: "#0062d2" }}>Abdullah Saleh</span>
+            <div style={{ textAlign: "center" }}>
+              <h1 className="about-hero-badge">
+                I Build Search &amp; Revenue Systems for Businesses That Need to Grow
               </h1>
-              <p style={{ fontSize: "1.05rem", color: "#334155", lineHeight: 1.8, margin: 0 }}>
-                I’m <strong>Abdullah Saleh</strong>, an Organic Business Growth Specialist and <strong>SEO Expert in Bangladesh</strong> with <strong>6+ years of hands-on experience</strong> in helping businesses grow through search. Over the years, I’ve worked with <strong>100+ local and international clients</strong>, helping them improve their online visibility, attract the right audience, generate qualified leads, and turn organic traffic into real business growth.
+              <p style={{ maxWidth: "680px", margin: "16px auto 0", fontSize: "0.98rem", color: "#475569", lineHeight: 1.7 }}>
+                The market is getting harder: ad costs rise, attention drops, and algorithms evolve. I help businesses turn search visibility, technical architecture, content, and conversion flows into connected revenue systems.
               </p>
             </div>
 
-            {/* Section 1: Expert Profile & Leadership */}
-            <section id="about-expert">
-              <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "6px", padding: "28px 32px", boxShadow: "0 4px 20px -2px rgba(0,0,0,0.04)" }}>
+            {/* Section 1: Vision */}
+            <section id="vision" style={{ scrollMarginTop: "100px" }}>
+              <div className="about-section-header">
+                <h2 className="about-section-badge-title">
+                  <i className="fa-regular fa-eye" style={{ color: "#0062d2" }}></i>
+                  <span>One Business System, Not Five Disconnected Tools</span>
+                </h2>
+              </div>
+              <div className="about-card-rounded" style={{ textAlign: "center", maxWidth: "780px", margin: "0 auto" }}>
+                <p style={{ margin: 0, fontSize: "0.95rem", color: "#475569", lineHeight: 1.75 }}>
+                  Most businesses do not need another isolated website, ad campaign, chatbot, or dashboard. They need the full customer journey to work seamlessly together. I connect organic search acquisition, high-converting service funnels, technical health, schema architecture, and follow-up workflows so that every visitor has a clear path to become a customer or booked enquiry.
+                </p>
+              </div>
+            </section>
+
+            {/* Section 2: Methodology */}
+            <section id="methodology" style={{ scrollMarginTop: "100px" }}>
+              <div className="about-section-header">
+                <h2 className="about-section-badge-title">
+                  <i className="fa-solid fa-diagram-project" style={{ color: "#0062d2" }}></i>
+                  <span>Build the System Around the Bottleneck</span>
+                </h2>
+              </div>
+              <div className="methodology-grid">
+                <div className="methodology-card">
+                  <div style={{ color: "#0062d2", fontSize: "1.2rem", marginBottom: "10px" }}>
+                    <i className="fa-solid fa-chart-pie"></i>
+                  </div>
+                  <h3 style={{ fontSize: "1.02rem", fontWeight: 700, color: "#0f172a", marginBottom: "6px" }}>
+                    Measure Before Making Noise
+                  </h3>
+                  <p style={{ fontSize: "0.88rem", color: "#64748b", lineHeight: 1.6, margin: 0 }}>
+                    I review traffic sources, keyword intent, crawl health, conversion points, operational delays, and competitor gaps before recommending a tailored solution.
+                  </p>
+                </div>
+
+                <div className="methodology-card">
+                  <div style={{ color: "#0062d2", fontSize: "1.2rem", marginBottom: "10px" }}>
+                    <i className="fa-solid fa-users"></i>
+                  </div>
+                  <h3 style={{ fontSize: "1.02rem", fontWeight: 700, color: "#0f172a", marginBottom: "6px" }}>
+                    Build for Real Customer Behaviour
+                  </h3>
+                  <p style={{ fontSize: "0.88rem", color: "#64748b", lineHeight: 1.6, margin: 0 }}>
+                    An SEO strategy only delivers value when searchers take action. Every page, meta description, and CTA is crafted around real buyer intent and decision-making patterns.
+                  </p>
+                </div>
+
+                <div className="methodology-card">
+                  <div style={{ color: "#0062d2", fontSize: "1.2rem", marginBottom: "10px" }}>
+                    <i className="fa-solid fa-robot"></i>
+                  </div>
+                  <h3 style={{ fontSize: "1.02rem", fontWeight: 700, color: "#0f172a", marginBottom: "6px" }}>
+                    Automate Repetitive Work &amp; Technicals
+                  </h3>
+                  <p style={{ fontSize: "0.88rem", color: "#64748b", lineHeight: 1.6, margin: 0 }}>
+                    I leverage automated schema generation, technical health monitoring, and AI answer engine optimizations (AEO &amp; GEO) to streamline operations and scale results.
+                  </p>
+                </div>
+
+                <div className="methodology-card">
+                  <div style={{ color: "#0062d2", fontSize: "1.2rem", marginBottom: "10px" }}>
+                    <i className="fa-solid fa-arrow-trend-up"></i>
+                  </div>
+                  <h3 style={{ fontSize: "1.02rem", fontWeight: 700, color: "#0f172a", marginBottom: "6px" }}>
+                    Improve From Evidence
+                  </h3>
+                  <p style={{ fontSize: "0.88rem", color: "#64748b", lineHeight: 1.6, margin: 0 }}>
+                    I use Search Console signals, user engagement data, organic conversion rates, and revenue impact metrics to continuously refine and compound organic growth.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            {/* Section 3: Leadership */}
+            <section id="leadership" style={{ scrollMarginTop: "100px" }}>
+              <div className="about-section-header">
+                <h2 className="about-section-badge-title">
+                  <i className="fa-regular fa-user" style={{ color: "#0062d2" }}></i>
+                  <span>Leadership</span>
+                </h2>
+              </div>
+              <div className="about-card-rounded">
                 <div style={{ display: "flex", gap: "28px", alignItems: "flex-start", flexWrap: "wrap" }}>
                   <img
                     src="/images/abdullah.jpg"
                     alt="Abdullah Saleh - Best SEO Expert in Bangladesh"
-                    style={{ width: "160px", height: "190px", objectFit: "cover", borderRadius: "6px", border: "1px solid #e2e8f0", flexShrink: 0 }}
+                    style={{ width: "160px", height: "190px", objectFit: "cover", borderRadius: "14px", border: "1px solid #e2e8f0", flexShrink: 0, boxShadow: "0 4px 12px rgba(0,0,0,0.06)" }}
                   />
                   <div style={{ flex: 1, minWidth: "260px" }}>
-                    <h2 style={{ fontSize: "1.5rem", fontWeight: 800, color: "#0f172a", marginBottom: "4px" }}>
+                    <h3 style={{ fontSize: "1.5rem", fontWeight: 800, color: "#0f172a", marginBottom: "4px" }}>
                       Abdullah Saleh
-                    </h2>
-                    <p style={{ fontSize: "0.82rem", fontWeight: 700, color: "#0062d2", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "12px" }}>
+                    </h3>
+                    <p style={{ fontSize: "0.8rem", fontWeight: 700, color: "#0062d2", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "12px" }}>
                       ORGANIC BUSINESS GROWTH SPECIALIST · SEO EXPERT IN BANGLADESH
                     </p>
-                    <p style={{ fontSize: "0.98rem", color: "#475569", lineHeight: 1.7, margin: 0 }}>
-                      My approach combines technical SEO, content, user experience, authority building, and search intent to create strategies that are practical, sustainable, and focused on business results. I work with businesses across different industries and markets, which has given me a strong understanding of how search behavior, competition, and customer intent can vary from one audience to another.
+                    <p style={{ fontSize: "0.95rem", color: "#475569", lineHeight: 1.7, margin: 0 }}>
+                      With <strong>6+ years of hands-on experience</strong> across international and local markets, I combine digital marketing, technical search engine optimization, content architecture, and AI search workflows to build systems that support sustainable revenue growth. I have helped 100+ businesses improve their search visibility, achieve top Google rankings, and convert searchers into long-term clients.
                     </p>
                   </div>
                 </div>
 
                 {/* 4-Stat Metric Grid */}
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "16px", marginTop: "24px", paddingTop: "20px", borderTop: "1px solid #f1f5f9" }}>
-                  <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "14px", textAlign: "center" }}>
-                    <div style={{ fontSize: "1.5rem", fontWeight: 800, color: "#0062d2" }}>6+ Years</div>
-                    <div style={{ fontSize: "0.82rem", color: "#64748b", fontWeight: 600 }}>Hands-On Experience</div>
+                  <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "14px", textAlign: "center" }}>
+                    <div style={{ fontSize: "1.45rem", fontWeight: 800, color: "#0062d2" }}>6+ Years</div>
+                    <div style={{ fontSize: "0.8rem", color: "#64748b", fontWeight: 600 }}>Hands-On Experience</div>
                   </div>
-                  <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "14px", textAlign: "center" }}>
-                    <div style={{ fontSize: "1.5rem", fontWeight: 800, color: "#0062d2" }}>100+ Clients</div>
-                    <div style={{ fontSize: "0.82rem", color: "#64748b", fontWeight: 600 }}>Local &amp; International</div>
+                  <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "14px", textAlign: "center" }}>
+                    <div style={{ fontSize: "1.45rem", fontWeight: 800, color: "#0062d2" }}>100+ Clients</div>
+                    <div style={{ fontSize: "0.8rem", color: "#64748b", fontWeight: 600 }}>Local &amp; International</div>
                   </div>
-                  <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "14px", textAlign: "center" }}>
-                    <div style={{ fontSize: "1.5rem", fontWeight: 800, color: "#0062d2" }}>100% White-Hat</div>
-                    <div style={{ fontSize: "0.82rem", color: "#64748b", fontWeight: 600 }}>Google Compliant</div>
+                  <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "14px", textAlign: "center" }}>
+                    <div style={{ fontSize: "1.45rem", fontWeight: 800, color: "#0062d2" }}>100% White-Hat</div>
+                    <div style={{ fontSize: "0.8rem", color: "#64748b", fontWeight: 600 }}>Google Compliant</div>
                   </div>
-                  <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "14px", textAlign: "center" }}>
-                    <div style={{ fontSize: "1.5rem", fontWeight: 800, color: "#059669" }}>AI &amp; GEO Ready</div>
-                    <div style={{ fontSize: "0.82rem", color: "#64748b", fontWeight: 600 }}>LLM &amp; AEO Optimization</div>
+                  <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "14px", textAlign: "center" }}>
+                    <div style={{ fontSize: "1.45rem", fontWeight: 800, color: "#059669" }}>AI &amp; GEO Ready</div>
+                    <div style={{ fontSize: "0.8rem", color: "#64748b", fontWeight: 600 }}>LLM &amp; AEO Optimization</div>
                   </div>
                 </div>
               </div>
             </section>
 
-            {/* Section 2: SEO Philosophy */}
-            <section id="philosophy">
-              <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "#eff6ff", border: "1px solid #dbeafe", padding: "6px 14px", borderRadius: "4px", fontSize: "0.85rem", fontWeight: 700, color: "#0062d2", marginBottom: "14px" }}>
-                <i className="fa-regular fa-eye"></i>
-                <span>Search Philosophy</span>
+            {/* Section 4: Why Me? */}
+            <section id="why-us" style={{ scrollMarginTop: "100px" }}>
+              <div className="about-section-header">
+                <h2 className="about-section-badge-title">
+                  <i className="fa-solid fa-circle-check" style={{ color: "#0062d2" }}></i>
+                  <span>Why Me?</span>
+                </h2>
               </div>
+              <div className="why-me-container">
+                <div className="why-me-list">
+                  <div className="why-me-item">
+                    <div className="why-me-icon-box">
+                      <i className="fa-solid fa-user-shield"></i>
+                    </div>
+                    <div>
+                      <h3 style={{ fontSize: "0.98rem", fontWeight: 700, color: "#0f172a", marginBottom: "3px" }}>
+                        One Owner Across the Search Journey
+                      </h3>
+                      <p style={{ fontSize: "0.86rem", color: "#64748b", lineHeight: 1.55, margin: 0 }}>
+                        You get one dedicated specialist who understands keyword research, landing page optimization, technical SEO health, schema markup, and customer conversion paths.
+                      </p>
+                    </div>
+                  </div>
 
-              <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "6px", padding: "28px 32px", boxShadow: "0 4px 20px -2px rgba(0,0,0,0.04)" }}>
-                <h3 style={{ fontSize: "1.3rem", fontWeight: 800, color: "#0f172a", marginBottom: "12px" }}>
-                  Rankings That Drive Revenue, Not Just Traffic
-                </h3>
-                <p style={{ color: "#334155", fontSize: "1rem", lineHeight: 1.8, margin: "0 0 16px" }}>
-                  For me, SEO is not just about rankings or getting more visitors from Google. It’s about understanding what people are searching for, creating a website that genuinely helps them, and building a strong online presence that can grow consistently over time.
-                </p>
-                <p style={{ color: "#475569", fontSize: "0.98rem", lineHeight: 1.75, margin: 0 }}>
-                  My goal is simple: build SEO strategies that don’t just bring traffic, but help businesses become more visible, trusted, and successful online.
-                </p>
-              </div>
-            </section>
+                  <div className="why-me-item">
+                    <div className="why-me-icon-box">
+                      <i className="fa-solid fa-hand-holding-dollar"></i>
+                    </div>
+                    <div>
+                      <h3 style={{ fontSize: "0.98rem", fontWeight: 700, color: "#0f172a", marginBottom: "3px" }}>
+                        Cost-Efficient by Design
+                      </h3>
+                      <p style={{ fontSize: "0.86rem", color: "#64748b", lineHeight: 1.55, margin: 0 }}>
+                        I use the right level of strategy for your growth stage. The aim is to eliminate wasted spend, reduce manual busywork, and deliver high ROI without unnecessary agency markups.
+                      </p>
+                    </div>
+                  </div>
 
-            {/* Section 3: Core Areas of Expertise */}
-            <section id="expertise">
-              <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "#eff6ff", border: "1px solid #dbeafe", padding: "6px 14px", borderRadius: "4px", fontSize: "0.85rem", fontWeight: 700, color: "#0062d2", marginBottom: "14px" }}>
-                <i className="fa-solid fa-layer-group"></i>
-                <span>Core Areas of Expertise</span>
-              </div>
+                  <div className="why-me-item">
+                    <div className="why-me-icon-box">
+                      <i className="fa-solid fa-toolbox"></i>
+                    </div>
+                    <div>
+                      <h3 style={{ fontSize: "0.98rem", fontWeight: 700, color: "#0f172a", marginBottom: "3px" }}>
+                        World-Class Tools &amp; White-Hat Methods
+                      </h3>
+                      <p style={{ fontSize: "0.86rem", color: "#64748b", lineHeight: 1.55, margin: 0 }}>
+                        I work with modern search platforms: Google Search Console, GA4, GTM, Ahrefs, SEMrush, Screaming Frog, Schema markup, and AI engine citation tools.
+                      </p>
+                    </div>
+                  </div>
 
-              <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderLeft: "4px solid #0062d2", borderRadius: "6px", padding: "24px 28px" }}>
-                <p style={{ fontSize: "1.02rem", color: "#334155", lineHeight: 1.8, margin: 0 }}>
-                  My core areas of expertise include{" "}
-                  <Link href="/services/local-seo-service-in-bangladesh" style={{ color: "#0062d2", fontWeight: 700, textDecoration: "underline" }}>Local SEO</Link>,{" "}
-                  <Link href="/services/technical-seo-service-in-bangladesh" style={{ color: "#0062d2", fontWeight: 700, textDecoration: "underline" }}>Technical SEO</Link>,{" "}
-                  <Link href="/services/ecommerce-seo-service-in-bangladesh" style={{ color: "#0062d2", fontWeight: 700, textDecoration: "underline" }}>Ecommerce SEO</Link>,{" "}
-                  content optimization, keyword research, link building, and organic growth strategies.
-                </p>
-              </div>
-            </section>
+                  <div className="why-me-item">
+                    <div className="why-me-icon-box">
+                      <i className="fa-solid fa-bolt"></i>
+                    </div>
+                    <div>
+                      <h3 style={{ fontSize: "0.98rem", fontWeight: 700, color: "#0f172a", marginBottom: "3px" }}>
+                        Built for 2026 and Beyond (AI SEO &amp; AEO)
+                      </h3>
+                      <p style={{ fontSize: "0.86rem", color: "#64748b", lineHeight: 1.55, margin: 0 }}>
+                        As search expands to AI answer engines (ChatGPT, Google Gemini, Perplexity), I optimize your brand for LLM entity citations and multimodal search discovery.
+                      </p>
+                    </div>
+                  </div>
 
-            {/* Section 4: AI SEO & Future of Search */}
-            <section id="ai-search">
-              <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "#ecfdf5", border: "1px solid #a7f3d0", padding: "6px 14px", borderRadius: "4px", fontSize: "0.85rem", fontWeight: 700, color: "#059669", marginBottom: "14px" }}>
-                <i className="fa-solid fa-microchip"></i>
-                <span>AI-Driven Search &amp; Modern SEO</span>
-              </div>
-
-              <div style={{ background: "linear-gradient(180deg, #edf6ff 0%, #f4f9ff 100%)", border: "1px solid #dbeafe", borderLeft: "4px solid #059669", borderRadius: "6px", padding: "24px 28px" }}>
-                <h3 style={{ fontSize: "1.2rem", fontWeight: 800, color: "#0f172a", marginBottom: "10px" }}>
-                  AI SEO, AEO, GEO &amp; LLM Optimization
-                </h3>
-                <p style={{ fontSize: "1rem", color: "#334155", lineHeight: 1.8, margin: 0 }}>
-                  As search continues to evolve, I also focus on the growing world of AI-driven search. Through modern{" "}
-                  <Link href="/services/ai-seo-service-in-bangladesh" style={{ color: "#0062d2", fontWeight: 700, textDecoration: "underline" }}>AI SEO</Link> strategies, including{" "}
-                  <Link href="/services/aeo-service-in-bangladesh" style={{ color: "#0062d2", fontWeight: 700, textDecoration: "underline" }}>AEO</Link>,{" "}
-                  <Link href="/services/geo-service-in-bangladesh" style={{ color: "#0062d2", fontWeight: 700, textDecoration: "underline" }}>GEO</Link>, E-E-A-T optimization, and LLM SEO, I help businesses prepare their websites for the way people are discovering information today&mdash;and the way search is changing for tomorrow.
-                </p>
+                  <div className="why-me-item">
+                    <div className="why-me-icon-box">
+                      <i className="fa-solid fa-award"></i>
+                    </div>
+                    <div>
+                      <h3 style={{ fontSize: "0.98rem", fontWeight: 700, color: "#0f172a", marginBottom: "3px" }}>
+                        Performance, Not Busywork
+                      </h3>
+                      <p style={{ fontSize: "0.86rem", color: "#64748b", lineHeight: 1.55, margin: 0 }}>
+                        I focus on measurable organic business metrics: higher ranking intent, lower customer acquisition cost, stronger technical health, and clearer revenue pipeline visibility.
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </section>
 
@@ -269,55 +370,88 @@ export default function AboutPage() {
               </div>
             </section>
 
-            {/* Section 6: Why Choose */}
-            <section id="why-choose">
-              <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "#eff6ff", border: "1px solid #dbeafe", padding: "6px 14px", borderRadius: "4px", fontSize: "0.85rem", fontWeight: 700, color: "#0062d2", marginBottom: "14px" }}>
-                <i className="fa-solid fa-circle-check"></i>
-                <span>Why Work With Me?</span>
+            {/* Section 6: Check My Service Expertise */}
+            <section id="services" style={{ scrollMarginTop: "100px" }}>
+              <div className="about-section-header">
+                <h2 className="about-section-badge-title">
+                  <i className="fa-solid fa-layer-group" style={{ color: "#0062d2" }}></i>
+                  <span>Check My Service Expertise</span>
+                </h2>
               </div>
-
-              <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "6px", padding: "24px" }}>
-                <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
-                  <div style={{ display: "flex", gap: "16px", alignItems: "flex-start" }}>
-                    <div style={{ width: "36px", height: "36px", borderRadius: "4px", background: "#eff6ff", color: "#0062d2", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: "2px" }}>
-                      <i className="fa-solid fa-shield-halved"></i>
-                    </div>
-                    <div>
-                      <h4 style={{ fontSize: "1.05rem", fontWeight: 700, color: "#0f172a", marginBottom: "4px" }}>6+ Years Proven Search Track Record</h4>
-                      <p style={{ fontSize: "0.88rem", color: "#64748b", lineHeight: 1.5, margin: 0 }}>Hands-on experience delivering measurable ranking gains and sustainable organic growth for 100+ businesses across competitive niches.</p>
-                    </div>
+              <div className="service-expertise-grid">
+                <Link href="/services/local-seo-service-in-bangladesh" className="service-expertise-card">
+                  <div>
+                    <span className="service-pill-tag">Local SEO</span>
+                    <h3 style={{ fontSize: "1.08rem", fontWeight: 700, color: "#0f172a", marginBottom: "8px" }}>
+                      Local SEO Service in Bangladesh
+                    </h3>
+                    <p style={{ fontSize: "0.86rem", color: "#64748b", lineHeight: 1.55, margin: "0 0 16px" }}>
+                      Dominate Google Map 3-Pack, local business queries, and geo-targeted organic searches to attract high-intent local buyers.
+                    </p>
                   </div>
-
-                  <div style={{ display: "flex", gap: "16px", alignItems: "flex-start" }}>
-                    <div style={{ width: "36px", height: "36px", borderRadius: "4px", background: "#eff6ff", color: "#0062d2", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: "2px" }}>
-                      <i className="fa-solid fa-chart-line"></i>
-                    </div>
-                    <div>
-                      <h4 style={{ fontSize: "1.05rem", fontWeight: 700, color: "#0f172a", marginBottom: "4px" }}>Business &amp; Revenue-Focused SEO</h4>
-                      <p style={{ fontSize: "0.88rem", color: "#64748b", lineHeight: 1.5, margin: 0 }}>Strategies tailored not just for impressions, but for search intent, qualified leads, high conversions, and measurable business growth.</p>
-                    </div>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: "0.85rem", fontWeight: 700, color: "#0062d2", paddingTop: "12px", borderTop: "1px solid #f1f5f9" }}>
+                    <span>Explore Local SEO</span>
+                    <i className="fa-solid fa-arrow-right"></i>
                   </div>
+                </Link>
 
-                  <div style={{ display: "flex", gap: "16px", alignItems: "flex-start" }}>
-                    <div style={{ width: "36px", height: "36px", borderRadius: "4px", background: "#eff6ff", color: "#0062d2", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: "2px" }}>
-                      <i className="fa-solid fa-microchip"></i>
-                    </div>
-                    <div>
-                      <h4 style={{ fontSize: "1.05rem", fontWeight: 700, color: "#0f172a", marginBottom: "4px" }}>Prepared for AI &amp; The Future of Search</h4>
-                      <p style={{ fontSize: "0.88rem", color: "#64748b", lineHeight: 1.5, margin: 0 }}>Cutting-edge AEO, GEO, and LLM optimization to ensure your brand is cited and recommended by AI answer engines and search algorithms.</p>
-                    </div>
+                <Link href="/services/technical-seo-service-in-bangladesh" className="service-expertise-card">
+                  <div>
+                    <span className="service-pill-tag">Technical SEO</span>
+                    <h3 style={{ fontSize: "1.08rem", fontWeight: 700, color: "#0f172a", marginBottom: "8px" }}>
+                      Technical SEO Service in Bangladesh
+                    </h3>
+                    <p style={{ fontSize: "0.86rem", color: "#64748b", lineHeight: 1.55, margin: "0 0 16px" }}>
+                      Advanced site crawlability, Core Web Vitals optimization, JSON-LD Schema markup, and indexing architecture fixes.
+                    </p>
                   </div>
-                </div>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: "0.85rem", fontWeight: 700, color: "#0062d2", paddingTop: "12px", borderTop: "1px solid #f1f5f9" }}>
+                    <span>Explore Technical SEO</span>
+                    <i className="fa-solid fa-arrow-right"></i>
+                  </div>
+                </Link>
+
+                <Link href="/services/ecommerce-seo-service-in-bangladesh" className="service-expertise-card">
+                  <div>
+                    <span className="service-pill-tag">Ecommerce SEO</span>
+                    <h3 style={{ fontSize: "1.08rem", fontWeight: 700, color: "#0f172a", marginBottom: "8px" }}>
+                      Ecommerce SEO Service in Bangladesh
+                    </h3>
+                    <p style={{ fontSize: "0.86rem", color: "#64748b", lineHeight: 1.55, margin: "0 0 16px" }}>
+                      Scale organic sales for online stores with product taxonomy, high-converting category SEO, and faceted navigation setup.
+                    </p>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: "0.85rem", fontWeight: 700, color: "#0062d2", paddingTop: "12px", borderTop: "1px solid #f1f5f9" }}>
+                    <span>Explore Ecommerce SEO</span>
+                    <i className="fa-solid fa-arrow-right"></i>
+                  </div>
+                </Link>
+
+                <Link href="/services/ai-seo-service-in-bangladesh" className="service-expertise-card">
+                  <div>
+                    <span className="service-pill-tag" style={{ background: "#ecfdf5", color: "#059669" }}>AI &amp; GEO Build</span>
+                    <h3 style={{ fontSize: "1.08rem", fontWeight: 700, color: "#0f172a", marginBottom: "8px" }}>
+                      AI SEO, AEO &amp; GEO Optimization
+                    </h3>
+                    <p style={{ fontSize: "0.86rem", color: "#64748b", lineHeight: 1.55, margin: "0 0 16px" }}>
+                      Position your business to be cited and recommended by generative AI engines, ChatGPT, Perplexity, and Google Gemini.
+                    </p>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: "0.85rem", fontWeight: 700, color: "#059669", paddingTop: "12px", borderTop: "1px solid #f1f5f9" }}>
+                    <span>Explore AI SEO</span>
+                    <i className="fa-solid fa-arrow-right"></i>
+                  </div>
+                </Link>
               </div>
             </section>
 
             {/* CTA Box */}
-            <div style={{ background: "linear-gradient(135deg, #0062d2 0%, #004bb5 100%)", borderRadius: "6px", padding: "36px", color: "#ffffff", textAlign: "center" }}>
+            <div style={{ background: "linear-gradient(135deg, #0059b3 0%, #003d80 100%)", borderRadius: "16px", padding: "38px 24px", color: "#ffffff", textAlign: "center", boxShadow: "0 10px 30px rgba(0, 89, 179, 0.15)" }}>
               <h2 style={{ color: "#ffffff", fontSize: "1.8rem", marginBottom: "8px", fontWeight: 800 }}>Ready to Grow Your Business Organically?</h2>
-              <p style={{ color: "rgba(255, 255, 255, 0.9)", fontSize: "0.98rem", maxWidth: "560px", margin: "0 auto 20px", lineHeight: 1.6 }}>
+              <p style={{ color: "rgba(255, 255, 255, 0.9)", fontSize: "0.95rem", maxWidth: "560px", margin: "0 auto 20px", lineHeight: 1.6 }}>
                 Connect with Abdullah Saleh for a comprehensive SEO audit and a customized organic growth roadmap.
               </p>
-              <Link href="/contact" className="btn btn-lg" style={{ background: "#ffffff", color: "#0062d2", fontWeight: 700, border: "none", borderRadius: "4px", padding: "12px 28px", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "8px" }}>
+              <Link href="/contact" className="btn btn-lg" style={{ background: "#ffffff", color: "#0059b3", fontWeight: 700, border: "none", borderRadius: "8px", padding: "12px 28px", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "8px", boxShadow: "0 4px 15px rgba(0,0,0,0.1)" }}>
                 Contact Abdullah Directly <i className="fa-solid fa-arrow-right"></i>
               </Link>
             </div>

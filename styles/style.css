@@ -292,6 +292,161 @@ img {
 }
 
 /* ==========================================================================
+   About Page Design System (Matching Reference Layout & Structure)
+   ========================================================================== */
+.about-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    border: 1px solid rgba(191, 219, 254, 0.9);
+    background: rgba(239, 246, 255, 0.9);
+    padding: 10px 24px;
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    color: #0f172a;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    text-align: center;
+}
+
+.about-section-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.about-section-badge-title {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 12px;
+    border: 1px solid #dbeafe;
+    background: linear-gradient(to right, rgba(239, 246, 255, 0.95), #ffffff, rgba(239, 246, 255, 0.95));
+    padding: 10px 24px;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #0f172a;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.about-card-rounded {
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    padding: 24px 28px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.methodology-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.methodology-card {
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    padding: 20px 22px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.methodology-card:hover {
+    border-color: #93c5fd;
+    box-shadow: 0 8px 20px rgba(0, 89, 181, 0.08);
+    transform: translateY(-2px);
+}
+
+.why-me-container {
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    padding: 24px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+}
+
+.why-me-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.why-me-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    padding: 16px 20px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.why-me-item:hover {
+    border-color: #93c5fd;
+    box-shadow: 0 6px 16px rgba(0, 89, 181, 0.06);
+    transform: translateY(-1px);
+}
+
+.why-me-icon-box {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    background: #eff6ff;
+    border: 1px solid #dbeafe;
+    color: #0062d2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+    font-size: 1rem;
+}
+
+.service-expertise-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+.service-expertise-card {
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    padding: 22px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    text-decoration: none;
+    color: inherit;
+}
+
+.service-expertise-card:hover {
+    border-color: #93c5fd;
+    box-shadow: 0 10px 25px rgba(0, 89, 181, 0.08);
+    transform: translateY(-3px);
+}
+
+.service-pill-tag {
+    display: inline-block;
+    align-self: flex-start;
+    background: #eff6ff;
+    color: #0062d2;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 9999px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+/* ==========================================================================
    1. SITE HEADER & NAVIGATION
    ========================================================================== */
 .digi-header {
