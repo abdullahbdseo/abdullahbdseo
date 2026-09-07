@@ -8,9 +8,7 @@ export default function ContactPage() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    website: "",
     phone: "",
-    service_interest: "Technical SEO Audit",
     message: ""
   });
   const [loading, setLoading] = useState(false);
@@ -25,7 +23,13 @@ export default function ContactPage() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          message: formData.message,
+          service_interest: "General Project Inquiry"
+        })
       });
       const data = await res.json();
       if (res.ok && data.success) {
@@ -33,9 +37,7 @@ export default function ContactPage() {
         setFormData({
           name: "",
           email: "",
-          website: "",
           phone: "",
-          service_interest: "Technical SEO Audit",
           message: ""
         });
       } else {
@@ -48,229 +50,498 @@ export default function ContactPage() {
     }
   };
 
+  const whatsappRaw = (siteSettings.whatsapp_number || "8801670769816").replace(/[^0-9]/g, "");
+
   return (
-    <div className="contact-page-wrapper">
-      {/* Hero Header */}
-      <section className="digi-hero-section" style={{ padding: "50px 0 35px", textAlign: "center" }}>
-        <div className="container">
-          <span className="text-blue" style={{ fontWeight: 700, fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-            Direct Access
-          </span>
-          <h1 style={{ fontSize: "2.8rem", margin: "10px 0 14px", fontWeight: 800 }}>
-            Let&apos;s Build Your Search Growth
-          </h1>
-          <p style={{ fontSize: "1.05rem", color: "var(--digi-text-body)", maxWidth: "620px", margin: "0 auto", lineHeight: 1.6 }}>
-            Have a project in mind or need a custom technical roadmap? Send your domain details below for a forensic SEO diagnostic.
-          </p>
-        </div>
-      </section>
-
-      {/* Main Content Area */}
-      <section className="contact-page-section" style={{ backgroundColor: "#f8fafc", padding: "50px 0 80px" }}>
-        <div className="container">
-          <div className="contact-layout-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1.18fr", gap: "32px", maxWidth: "1120px", margin: "0 auto", alignItems: "start" }}>
+    <div className="contact-page-wrapper" style={{ backgroundColor: "#f8fafc", minHeight: "calc(100vh - 120px)", padding: "50px 0 80px" }}>
+      <div className="container" style={{ maxWidth: "1140px", margin: "0 auto", padding: "0 20px" }}>
+        
+        <div 
+          className="contact-layout-grid" 
+          style={{ 
+            display: "grid", 
+            gridTemplateColumns: "1fr 1.15fr", 
+            gap: "32px", 
+            alignItems: "start" 
+          }}
+        >
+          
+          {/* =========================================================
+               LEFT COLUMN: Contact Details Card + 3 Assurance Cards
+             ========================================================= */}
+          <div className="contact-left-column" style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
             
-            {/* Left Column: Contact Details & Perks */}
-            <div className="contact-left-column" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-              
-              {/* Contact Details Box */}
-              <div className="contact-details-box" style={{ background: "linear-gradient(180deg, #edf6ff 0%, #f4f9ff 100%)", border: "1px solid #dbeafe", borderRadius: "8px", padding: "28px 24px", boxShadow: "0 4px 20px -2px rgba(2, 132, 199, 0.06)" }}>
-                <h2 className="contact-details-heading" style={{ fontSize: "1.45rem", fontWeight: 800, color: "#0f172a", margin: "0 0 24px 0", letterSpacing: "-0.01em" }}>
-                  Contact Information
-                </h2>
+            {/* Top Contact Details Card */}
+            <div 
+              className="contact-details-box" 
+              style={{ 
+                background: "linear-gradient(180deg, #edf6ff 0%, #f4f9ff 100%)", 
+                border: "1px solid #dbeafe", 
+                borderRadius: "6px", 
+                padding: "26px 22px", 
+                boxShadow: "0 4px 20px -2px rgba(2, 132, 199, 0.05)" 
+              }}
+            >
+              <h2 style={{ fontSize: "1.45rem", fontWeight: 800, color: "#0f172a", margin: "0 0 18px 0", letterSpacing: "-0.01em", fontFamily: "var(--font-heading, inherit)" }}>
+                Contact Details
+              </h2>
 
-                <div className="contact-meta-group" style={{ marginBottom: "22px" }}>
-                  <span className="contact-meta-label" style={{ fontSize: "0.76rem", fontWeight: 700, textTransform: "uppercase", color: "#64748b", letterSpacing: "0.06em", marginBottom: "5px", display: "block" }}>
-                    Expert &amp; Strategist
-                  </span>
-                  <div style={{ fontSize: "1.1rem", fontWeight: 700, color: "#0f172a" }}>
-                    {siteSettings.expert_name}
-                  </div>
-                  <div style={{ fontSize: "0.85rem", color: "#64748b" }}>
-                    {siteSettings.expert_title}
-                  </div>
-                </div>
+              {/* Email */}
+              <div style={{ marginBottom: "16px" }}>
+                <span style={{ fontSize: "0.75rem", fontWeight: 700, textTransform: "uppercase", color: "#64748b", letterSpacing: "0.06em", marginBottom: "4px", display: "block" }}>
+                  EMAIL
+                </span>
+                <a 
+                  href={`mailto:${siteSettings.contact_email}`} 
+                  style={{ fontSize: "1.08rem", fontWeight: 700, color: "#0062d2", textDecoration: "none", wordBreak: "break-all" }}
+                >
+                  {siteSettings.contact_email}
+                </a>
+              </div>
 
-                <div className="contact-meta-group" style={{ marginBottom: "22px" }}>
-                  <span className="contact-meta-label" style={{ fontSize: "0.76rem", fontWeight: 700, textTransform: "uppercase", color: "#64748b", letterSpacing: "0.06em", marginBottom: "5px", display: "block" }}>
-                    Primary Email
-                  </span>
-                  <a href={`mailto:${siteSettings.contact_email}`} className="contact-meta-email" style={{ fontSize: "1.12rem", fontWeight: 700, color: "#0284c7", textDecoration: "none", wordBreak: "break-all" }}>
-                    {siteSettings.contact_email}
-                  </a>
-                </div>
-
-                <div className="contact-meta-group" style={{ marginBottom: "22px" }}>
-                  <span className="contact-meta-label" style={{ fontSize: "0.76rem", fontWeight: 700, textTransform: "uppercase", color: "#64748b", letterSpacing: "0.06em", marginBottom: "5px", display: "block" }}>
-                    WhatsApp Direct
-                  </span>
-                  <a href={`https://wa.me/${siteSettings.whatsapp_number}`} target="_blank" rel="noopener noreferrer" style={{ fontSize: "1.05rem", fontWeight: 700, color: "#16a34a", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "6px" }}>
-                    <i className="fa-brands fa-whatsapp"></i> {siteSettings.contact_phone}
-                  </a>
-                </div>
-
-                <div className="contact-meta-group" style={{ marginBottom: "0" }}>
-                  <span className="contact-meta-label" style={{ fontSize: "0.76rem", fontWeight: 700, textTransform: "uppercase", color: "#64748b", letterSpacing: "0.06em", marginBottom: "5px", display: "block" }}>
-                    Response Time
-                  </span>
-                  <span className="contact-meta-hours" style={{ fontSize: "1.05rem", fontWeight: 600, color: "#1e293b", display: "inline-block" }}>
-                    {siteSettings.working_hours}
-                  </span>
+              {/* Business Hours */}
+              <div style={{ marginBottom: "18px" }}>
+                <span style={{ fontSize: "0.75rem", fontWeight: 700, textTransform: "uppercase", color: "#64748b", letterSpacing: "0.06em", marginBottom: "4px", display: "block" }}>
+                  BUSINESS HOURS
+                </span>
+                <div style={{ fontSize: "1.02rem", fontWeight: 600, color: "#1e293b" }}>
+                  Global 12-Hour Service
                 </div>
               </div>
 
-              {/* Perk 1 */}
-              <div className="contact-perk-card" style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "6px", padding: "16px 20px", display: "flex", alignItems: "center", gap: "16px", boxShadow: "0 2px 8px rgba(0,0,0,0.02)" }}>
-                <div style={{ width: "42px", height: "42px", borderRadius: "8px", background: "rgba(22, 163, 74, 0.1)", color: "#16a34a", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.1rem", flexShrink: 0 }}>
-                  <i className="fa-solid fa-shield-halved"></i>
+              {/* Embedded WhatsApp Card */}
+              <div 
+                style={{ 
+                  background: "#ffffff", 
+                  border: "1px solid #e2e8f0", 
+                  borderRadius: "6px", 
+                  padding: "10px 14px", 
+                  display: "flex", 
+                  alignItems: "center", 
+                  justifyContent: "space-between", 
+                  gap: "10px",
+                  boxShadow: "0 2px 6px rgba(0,0,0,0.02)"
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  <div 
+                    style={{ 
+                      width: "34px", 
+                      height: "34px", 
+                      borderRadius: "4px", 
+                      background: "#e8faf0", 
+                      border: "1px solid #d1fae5", 
+                      display: "flex", 
+                      alignItems: "center", 
+                      justifyContent: "center", 
+                      flexShrink: 0 
+                    }}
+                  >
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 3C7.02944 3 3 6.80558 3 11.5C3 13.3444 3.63588 15.0538 4.72147 16.4442L3.65685 20.1716C3.49397 20.7417 4.02058 21.2464 4.58284 21.0589L8.71887 19.6802C9.74233 20.1384 10.849 20.3889 12 20.3889C16.9706 20.3889 21 16.5833 21 11.8889C21 7.19442 16.9706 3 12 3Z" fill="#10B981" />
+                      <path d="M12 7.5V12M12 15V15.5" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </div>
+                  <span style={{ fontSize: "0.92rem", fontWeight: 700, color: "#1e293b", whiteSpace: "nowrap" }}>
+                    Prefer WhatsApp?
+                  </span>
                 </div>
-                <div>
-                  <div style={{ fontWeight: 700, fontSize: "0.95rem", color: "#0f172a" }}>100% White-Hat Security</div>
-                  <div style={{ fontSize: "0.82rem", color: "#64748b" }}>All optimizations strictly follow Google Search Essentials guidelines.</div>
-                </div>
+
+                <a 
+                  href={`https://wa.me/${whatsappRaw}?text=Hello%20Abdullah%2C%20I%20would%20like%20to%20discuss%20an%20SEO%20project.`} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  style={{ 
+                    background: "#00b365", 
+                    color: "#ffffff", 
+                    padding: "8px 14px", 
+                    borderRadius: "4px", 
+                    fontWeight: 700, 
+                    fontSize: "0.85rem", 
+                    textDecoration: "none", 
+                    display: "inline-flex", 
+                    alignItems: "center", 
+                    gap: "6px", 
+                    boxShadow: "0 2px 8px rgba(0, 179, 101, 0.22)",
+                    transition: "all 0.2s ease",
+                    whiteSpace: "nowrap"
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.background = "#009c58"}
+                  onMouseLeave={(e) => e.currentTarget.style.background = "#00b365"}
+                >
+                  <i className="fa-brands fa-whatsapp" style={{ fontSize: "1rem" }}></i>
+                  <span>Chat on WhatsApp</span>
+                  <span style={{ fontSize: "0.9rem", lineHeight: 1 }}>&rarr;</span>
+                </a>
               </div>
 
-              {/* Perk 2 */}
-              <div className="contact-perk-card" style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "6px", padding: "16px 20px", display: "flex", alignItems: "center", gap: "16px", boxShadow: "0 2px 8px rgba(0,0,0,0.02)" }}>
-                <div style={{ width: "42px", height: "42px", borderRadius: "8px", background: "rgba(37, 99, 235, 0.1)", color: "#2563eb", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.1rem", flexShrink: 0 }}>
-                  <i className="fa-solid fa-bolt"></i>
+            </div>
+
+            {/* Assurance Card 1: Direct Response */}
+            <div 
+              style={{ 
+                background: "#ffffff", 
+                border: "1px solid #e2e8f0", 
+                borderRadius: "6px", 
+                padding: "14px 18px", 
+                display: "flex", 
+                alignItems: "center", 
+                gap: "14px", 
+                boxShadow: "0 2px 6px rgba(0,0,0,0.02)" 
+              }}
+            >
+              <div 
+                style={{ 
+                  width: "36px", 
+                  height: "36px", 
+                  borderRadius: "4px", 
+                  background: "#eff6ff", 
+                  border: "1px solid #dbeafe",
+                  color: "#0062d2", 
+                  display: "flex", 
+                  alignItems: "center", 
+                  justifyContent: "center", 
+                  fontSize: "1rem", 
+                  flexShrink: 0 
+                }}
+              >
+                <i className="fa-solid fa-circle-check"></i>
+              </div>
+              <div>
+                <div style={{ fontWeight: 700, fontSize: "0.95rem", color: "#0f172a", marginBottom: "2px" }}>
+                  Direct Response
                 </div>
-                <div>
-                  <div style={{ fontWeight: 700, fontSize: "0.95rem", color: "#0f172a" }}>24-Hour Forensic Turnaround</div>
-                  <div style={{ fontSize: "0.82rem", color: "#64748b" }}>We inspect your domain before our initial strategy response.</div>
+                <div style={{ fontSize: "0.83rem", color: "#64748b", lineHeight: 1.4 }}>
+                  A real reply from a real person &mdash; no automated queue.
                 </div>
               </div>
             </div>
 
-            {/* Right Column: Contact Form */}
-            <div className="contact-form-card" style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "32px", boxShadow: "0 4px 20px -2px rgba(15, 23, 42, 0.05)" }}>
-              <div style={{ marginBottom: "24px" }}>
-                <h3 style={{ fontSize: "1.45rem", fontWeight: 800, color: "#0f172a", marginBottom: "4px" }}>
-                  Request SEO Analysis
-                </h3>
-                <p style={{ fontSize: "0.88rem", color: "#64748b" }}>
-                  Fill out the form below and we will get back to you promptly.
-                </p>
+            {/* Assurance Card 2: Free Consultation */}
+            <div 
+              style={{ 
+                background: "#ffffff", 
+                border: "1px solid #e2e8f0", 
+                borderRadius: "6px", 
+                padding: "14px 18px", 
+                display: "flex", 
+                alignItems: "center", 
+                gap: "14px", 
+                boxShadow: "0 2px 6px rgba(0,0,0,0.02)" 
+              }}
+            >
+              <div 
+                style={{ 
+                  width: "36px", 
+                  height: "36px", 
+                  borderRadius: "4px", 
+                  background: "#eff6ff", 
+                  border: "1px solid #dbeafe",
+                  color: "#0062d2", 
+                  display: "flex", 
+                  alignItems: "center", 
+                  justifyContent: "center", 
+                  fontSize: "1rem", 
+                  flexShrink: 0 
+                }}
+              >
+                <i className="fa-solid fa-circle-exclamation"></i>
               </div>
-
-              {success && (
-                <div style={{ background: "#dcfce7", border: "1px solid #bbf7d0", color: "#15803d", padding: "14px 18px", borderRadius: "6px", marginBottom: "20px", fontSize: "0.88rem" }}>
-                  <strong><i className="fa-solid fa-circle-check"></i> Inquiry Received!</strong>
-                  <p style={{ margin: "4px 0 0" }}>Thank you. We have received your request and will review your website within 24 hours.</p>
+              <div>
+                <div style={{ fontWeight: 700, fontSize: "0.95rem", color: "#0f172a", marginBottom: "2px" }}>
+                  Free Consultation
                 </div>
-              )}
-
-              {error && (
-                <div style={{ background: "#fee2e2", border: "1px solid #fecaca", color: "#b91c1c", padding: "14px 18px", borderRadius: "6px", marginBottom: "20px", fontSize: "0.88rem" }}>
-                  <strong><i className="fa-solid fa-triangle-exclamation"></i> Error:</strong> {error}
+                <div style={{ fontSize: "0.83rem", color: "#64748b", lineHeight: 1.4 }}>
+                  Your first conversation with us costs nothing.
                 </div>
-              )}
+              </div>
+            </div>
 
-              <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                <div>
-                  <label style={{ display: "block", fontSize: "0.84rem", fontWeight: 600, color: "#334155", marginBottom: "6px" }}>
-                    Your Name <span style={{ color: "#ef4444" }}>*</span>
-                  </label>
-                  <input 
-                    type="text" 
-                    required 
-                    className="digi-input" 
-                    placeholder="e.g. Alex Morgan"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  />
+            {/* Assurance Card 3: Clear Next Steps */}
+            <div 
+              style={{ 
+                background: "#ffffff", 
+                border: "1px solid #e2e8f0", 
+                borderRadius: "6px", 
+                padding: "14px 18px", 
+                display: "flex", 
+                alignItems: "center", 
+                gap: "14px", 
+                boxShadow: "0 2px 6px rgba(0,0,0,0.02)" 
+              }}
+            >
+              <div 
+                style={{ 
+                  width: "36px", 
+                  height: "36px", 
+                  borderRadius: "4px", 
+                  background: "#eff6ff", 
+                  border: "1px solid #dbeafe",
+                  color: "#0062d2", 
+                  display: "flex", 
+                  alignItems: "center", 
+                  justifyContent: "center", 
+                  fontSize: "1rem", 
+                  flexShrink: 0 
+                }}
+              >
+                <i className="fa-solid fa-arrow-trend-up"></i>
+              </div>
+              <div>
+                <div style={{ fontWeight: 700, fontSize: "0.95rem", color: "#0f172a", marginBottom: "2px" }}>
+                  Clear Next Steps
                 </div>
-
-                <div>
-                  <label style={{ display: "block", fontSize: "0.84rem", fontWeight: 600, color: "#334155", marginBottom: "6px" }}>
-                    Email Address <span style={{ color: "#ef4444" }}>*</span>
-                  </label>
-                  <input 
-                    type="email" 
-                    required 
-                    className="digi-input" 
-                    placeholder="alex@company.com"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  />
+                <div style={{ fontSize: "0.83rem", color: "#64748b", lineHeight: 1.4 }}>
+                  You&apos;ll know exactly what happens after you reach out.
                 </div>
-
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
-                  <div>
-                    <label style={{ display: "block", fontSize: "0.84rem", fontWeight: 600, color: "#334155", marginBottom: "6px" }}>
-                      Website URL
-                    </label>
-                    <input 
-                      type="url" 
-                      className="digi-input" 
-                      placeholder="https://example.com"
-                      value={formData.website}
-                      onChange={(e) => setFormData({ ...formData, website: e.target.value })}
-                    />
-                  </div>
-
-                  <div>
-                    <label style={{ display: "block", fontSize: "0.84rem", fontWeight: 600, color: "#334155", marginBottom: "6px" }}>
-                      Phone / WhatsApp
-                    </label>
-                    <input 
-                      type="tel" 
-                      className="digi-input" 
-                      placeholder="+1 (555) 000-0000"
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label style={{ display: "block", fontSize: "0.84rem", fontWeight: 600, color: "#334155", marginBottom: "6px" }}>
-                    Service Interest
-                  </label>
-                  <select 
-                    className="digi-input"
-                    value={formData.service_interest}
-                    onChange={(e) => setFormData({ ...formData, service_interest: e.target.value })}
-                  >
-                    <option value="Technical SEO Audit">Comprehensive Technical SEO Audit</option>
-                    <option value="On-Page & Keyword Strategy">On-Page &amp; Keyword Strategy</option>
-                    <option value="Monthly Growth Retainer">Monthly Growth Retainer</option>
-                    <option value="E-Commerce Store Optimization">E-Commerce Store Optimization</option>
-                    <option value="Link Building & Digital PR">High-Authority Link Building</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label style={{ display: "block", fontSize: "0.84rem", fontWeight: 600, color: "#334155", marginBottom: "6px" }}>
-                    Project Goals &amp; Challenges
-                  </label>
-                  <textarea 
-                    rows={4} 
-                    className="digi-input" 
-                    placeholder="Tell us about your target keywords, recent ranking drops, or revenue goals..."
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  />
-                </div>
-
-                <button 
-                  type="submit" 
-                  disabled={loading}
-                  className="btn btn-lg btn-blue-solid btn-block"
-                  style={{ marginTop: "8px" }}
-                >
-                  {loading ? (
-                    <><i className="fa-solid fa-spinner fa-spin"></i> Submitting...</>
-                  ) : (
-                    <>Send Request <i className="fa-solid fa-paper-plane" style={{ marginLeft: "6px" }}></i></>
-                  )}
-                </button>
-              </form>
+              </div>
             </div>
 
           </div>
+
+          {/* =========================================================
+               RIGHT COLUMN: "Ready to Start Your Project?" Form Card
+             ========================================================= */}
+          <div 
+            className="contact-form-card" 
+            style={{ 
+              background: "#ffffff", 
+              border: "1px solid #e2e8f0", 
+              borderRadius: "6px", 
+              padding: "32px 28px 24px", 
+              boxShadow: "0 4px 24px rgba(15, 23, 42, 0.04)" 
+            }}
+          >
+            <div style={{ textAlign: "center", marginBottom: "24px" }}>
+              <h1 style={{ fontSize: "1.75rem", fontWeight: 800, color: "#0f172a", margin: "0 0 6px 0", letterSpacing: "-0.015em", fontFamily: "var(--font-heading, inherit)" }}>
+                Ready to Start Your Project?
+              </h1>
+              <p style={{ fontSize: "0.92rem", color: "#64748b", margin: 0, lineHeight: 1.5 }}>
+                Tell me what you need help with. I usually reply within 24 hours.
+              </p>
+            </div>
+
+            {success && (
+              <div style={{ background: "#dcfce7", border: "1px solid #bbf7d0", color: "#15803d", padding: "12px 16px", borderRadius: "4px", marginBottom: "18px", fontSize: "0.88rem" }}>
+                <strong><i className="fa-solid fa-circle-check"></i> Inquiry Received!</strong>
+                <p style={{ margin: "4px 0 0" }}>Thank you. We have received your request and will review your website within 24 hours.</p>
+              </div>
+            )}
+
+            {error && (
+              <div style={{ background: "#fee2e2", border: "1px solid #fecaca", color: "#b91c1c", padding: "12px 16px", borderRadius: "4px", marginBottom: "18px", fontSize: "0.88rem" }}>
+                <strong><i className="fa-solid fa-triangle-exclamation"></i> Error:</strong> {error}
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+              
+              {/* Full Name */}
+              <div>
+                <label style={{ display: "block", fontSize: "0.86rem", fontWeight: 600, color: "#1e293b", marginBottom: "5px" }}>
+                  Full Name <span style={{ color: "#ef4444" }}>*</span>
+                </label>
+                <input 
+                  type="text" 
+                  required 
+                  placeholder="Jane Doe"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  style={{
+                    width: "100%",
+                    padding: "11px 13px",
+                    fontSize: "0.95rem",
+                    color: "#0f172a",
+                    backgroundColor: "#ffffff",
+                    border: "1px solid #cbd5e1",
+                    borderRadius: "4px",
+                    outline: "none",
+                    boxSizing: "border-box"
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = "#0062d2";
+                    e.target.style.boxShadow = "0 0 0 3px rgba(0, 98, 210, 0.12)";
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = "#cbd5e1";
+                    e.target.style.boxShadow = "none";
+                  }}
+                />
+              </div>
+
+              {/* Email Address */}
+              <div>
+                <label style={{ display: "block", fontSize: "0.86rem", fontWeight: 600, color: "#1e293b", marginBottom: "5px" }}>
+                  Email Address <span style={{ color: "#ef4444" }}>*</span>
+                </label>
+                <input 
+                  type="email" 
+                  required 
+                  placeholder="you@company.com"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  style={{
+                    width: "100%",
+                    padding: "11px 13px",
+                    fontSize: "0.95rem",
+                    color: "#0f172a",
+                    backgroundColor: "#ffffff",
+                    border: "1px solid #cbd5e1",
+                    borderRadius: "4px",
+                    outline: "none",
+                    boxSizing: "border-box"
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = "#0062d2";
+                    e.target.style.boxShadow = "0 0 0 3px rgba(0, 98, 210, 0.12)";
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = "#cbd5e1";
+                    e.target.style.boxShadow = "none";
+                  }}
+                />
+              </div>
+
+              {/* WhatsApp Number (Optional) */}
+              <div>
+                <label style={{ display: "block", fontSize: "0.86rem", fontWeight: 600, color: "#1e293b", marginBottom: "5px" }}>
+                  WhatsApp Number <span style={{ color: "#94a3b8", fontWeight: 400, fontSize: "0.82rem" }}>(Optional)</span>
+                </label>
+                <input 
+                  type="tel" 
+                  placeholder="+880 1XXX-XXXXXX"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  style={{
+                    width: "100%",
+                    padding: "11px 13px",
+                    fontSize: "0.95rem",
+                    color: "#0f172a",
+                    backgroundColor: "#ffffff",
+                    border: "1px solid #cbd5e1",
+                    borderRadius: "4px",
+                    outline: "none",
+                    boxSizing: "border-box"
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = "#0062d2";
+                    e.target.style.boxShadow = "0 0 0 3px rgba(0, 98, 210, 0.12)";
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = "#cbd5e1";
+                    e.target.style.boxShadow = "none";
+                  }}
+                />
+              </div>
+
+              {/* Message */}
+              <div>
+                <label style={{ display: "block", fontSize: "0.86rem", fontWeight: 600, color: "#1e293b", marginBottom: "5px" }}>
+                  Message <span style={{ color: "#ef4444" }}>*</span>
+                </label>
+                <textarea 
+                  rows={4} 
+                  required
+                  placeholder="Tell me about your website, automation, or marketing project..."
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  style={{
+                    width: "100%",
+                    padding: "11px 13px",
+                    fontSize: "0.95rem",
+                    color: "#0f172a",
+                    backgroundColor: "#ffffff",
+                    border: "1px solid #cbd5e1",
+                    borderRadius: "4px",
+                    outline: "none",
+                    resize: "vertical",
+                    boxSizing: "border-box",
+                    lineHeight: 1.5
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = "#0062d2";
+                    e.target.style.boxShadow = "0 0 0 3px rgba(0, 98, 210, 0.12)";
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = "#cbd5e1";
+                    e.target.style.boxShadow = "none";
+                  }}
+                />
+              </div>
+
+              {/* Submit Button */}
+              <button 
+                type="submit" 
+                disabled={loading}
+                style={{ 
+                  width: "100%",
+                  padding: "12px 20px",
+                  background: "#0062d2",
+                  color: "#ffffff",
+                  border: "none",
+                  borderRadius: "4px",
+                  fontSize: "1rem",
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "8px",
+                  boxShadow: "0 4px 14px rgba(0, 98, 210, 0.25)",
+                  transition: "all 0.2s ease",
+                  marginTop: "4px",
+                  marginBottom: "6px"
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "#0050ab";
+                  e.currentTarget.style.transform = "translateY(-1px)";
+                  e.currentTarget.style.boxShadow = "0 6px 18px rgba(0, 98, 210, 0.35)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "#0062d2";
+                  e.currentTarget.style.transform = "none";
+                  e.currentTarget.style.boxShadow = "0 4px 14px rgba(0, 98, 210, 0.25)";
+                }}
+              >
+                {loading ? (
+                  <><i className="fa-solid fa-spinner fa-spin"></i> Submitting...</>
+                ) : (
+                  <>Submit your response &rarr;</>
+                )}
+              </button>
+
+              {/* Trust Badges */}
+              <div 
+                style={{ 
+                  display: "flex", 
+                  alignItems: "center", 
+                  justifyContent: "center", 
+                  gap: "18px", 
+                  flexWrap: "wrap",
+                  fontSize: "0.84rem",
+                  fontWeight: 600,
+                  color: "#334155"
+                }}
+              >
+                <span style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                  <i className="fa-solid fa-circle-check" style={{ color: "#0062d2" }}></i> Direct Response
+                </span>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                  <i className="fa-solid fa-circle-check" style={{ color: "#0062d2" }}></i> Free Initial Consultation
+                </span>
+              </div>
+
+              {/* Privacy Disclaimer */}
+              <p style={{ fontSize: "0.8rem", color: "#64748b", textAlign: "center", margin: 0 }}>
+                By submitting, you agree to our <Link href="/privacy-policy" style={{ color: "#1e293b", textDecoration: "underline", fontWeight: 500 }}>Privacy Policy</Link>.
+              </p>
+
+            </form>
+          </div>
+
         </div>
-      </section>
+
+      </div>
     </div>
   );
 }

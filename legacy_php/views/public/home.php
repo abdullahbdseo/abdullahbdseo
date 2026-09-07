@@ -37,6 +37,95 @@
     </div>
 </section>
 
+<!-- SEO AUTHORITY SECTION - Best SEO Expert in Bangladesh -->
+<section class="section digi-seo-expert-section" style="background-color: #ffffff; padding: 65px 0; border-bottom: 1px solid #e2e8f0;">
+    <div class="container">
+        <div style="max-width: 1080px; margin: 0 auto;">
+            
+            <!-- Eyebrow badge -->
+            <div style="display: inline-flex; align-items: center; gap: 8px; background: #eff6ff; border: 1px solid #dbeafe; padding: 6px 14px; border-radius: 4px; fontSize: 0.85rem; font-weight: 700; color: #0062d2; margin-bottom: 14px;">
+                <i class="fa-solid fa-award"></i>
+                <span>Organic Business Growth Specialist</span>
+            </div>
+
+            <!-- Main H2 Heading -->
+            <h2 style="font-size: 2.35rem; font-weight: 800; color: #0f172a; margin-bottom: 22px; line-height: 1.25; letter-spacing: -0.015em; font-family: var(--font-heading, inherit);">
+                Best SEO Expert in Bangladesh &ndash; <span style="color: #0062d2;">Abdullah Saleh</span>
+            </h2>
+
+            <!-- Content Body -->
+            <div style="display: flex; flex-direction: column; gap: 18px;">
+                
+                <p style="font-size: 1.05rem; color: #334155; line-height: 1.8; margin: 0;">
+                    I’m <strong>Abdullah Saleh</strong>, an Organic Business Growth Specialist and <strong>SEO Expert in Bangladesh</strong> with <strong>6+ years of hands-on experience</strong> in helping businesses grow through search. Over the years, I’ve worked with <strong>100+ local and international clients</strong>, helping them improve their online visibility, attract the right audience, generate qualified leads, and turn organic traffic into real business growth.
+                </p>
+
+                <p style="font-size: 1.02rem; color: #475569; line-height: 1.8; margin: 0;">
+                    For me, SEO is not just about rankings or getting more visitors from Google. It’s about understanding what people are searching for, creating a website that genuinely helps them, and building a strong online presence that can grow consistently over time.
+                </p>
+
+                <p style="font-size: 1.02rem; color: #475569; line-height: 1.8; margin: 0;">
+                    My approach combines technical SEO, content, user experience, authority building, and search intent to create strategies that are practical, sustainable, and focused on business results. I work with businesses across different industries and markets, which has given me a strong understanding of how search behavior, competition, and customer intent can vary from one audience to another.
+                </p>
+
+                <!-- Core Expertise Callout Box -->
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #0062d2; border-radius: 6px; padding: 20px 24px; margin: 6px 0;">
+                    <h3 style="font-size: 1.1rem; font-weight: 700; color: #0f172a; margin-bottom: 8px; font-family: var(--font-heading, inherit);">
+                        Core Areas of Expertise
+                    </h3>
+                    <p style="font-size: 0.98rem; color: #334155; line-height: 1.7; margin: 0;">
+                        My core areas of expertise include 
+                        <a href="https://abdullahseobd.com/services/local-seo-service-in-bangladesh/" target="_blank" rel="noopener noreferrer" style="color: #0062d2; font-weight: 700; text-decoration: underline;">Local SEO</a>, 
+                        <a href="https://abdullahseobd.com/services/technical-seo-service-in-bangladesh/" target="_blank" rel="noopener noreferrer" style="color: #0062d2; font-weight: 700; text-decoration: underline;">Technical SEO</a>, 
+                        <a href="https://abdullahseobd.com/services/ecommerce-seo-service-in-bangladesh/" target="_blank" rel="noopener noreferrer" style="color: #0062d2; font-weight: 700; text-decoration: underline;">Ecommerce SEO</a>, 
+                        content optimization, keyword research, link building, and organic growth strategies.
+                    </p>
+                </div>
+
+                <!-- AI SEO & Future of Search Callout -->
+                <div style="background: linear-gradient(180deg, #edf6ff 0%, #f4f9ff 100%); border: 1px solid #dbeafe; border-left: 4px solid #059669; border-radius: 6px; padding: 20px 24px; margin: 6px 0;">
+                    <h3 style="font-size: 1.1rem; font-weight: 700; color: #0f172a; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; font-family: var(--font-heading, inherit);">
+                        <i class="fa-solid fa-microchip" style="color: #059669;"></i>
+                        AI-Driven Search, AEO, GEO &amp; LLM SEO
+                    </h3>
+                    <p style="font-size: 0.98rem; color: #334155; line-height: 1.7; margin: 0;">
+                        As search continues to evolve, I also focus on the growing world of AI-driven search. Through modern 
+                        <a href="https://abdullahseobd.com/services/ai-seo-service-in-bangladesh/" target="_blank" rel="noopener noreferrer" style="color: #0062d2; font-weight: 700; text-decoration: underline;">AI SEO</a> strategies, including 
+                        <a href="https://abdullahseobd.com/services/aeo-service-in-bangladesh/" target="_blank" rel="noopener noreferrer" style="color: #0062d2; font-weight: 700; text-decoration: underline;">AEO</a>, 
+                        <a href="https://abdullahseobd.com/services/geo-service-in-bangladesh/" target="_blank" rel="noopener noreferrer" style="color: #0062d2; font-weight: 700; text-decoration: underline;">GEO</a>, E-E-A-T optimization, and LLM SEO, I help businesses prepare their websites for the way people are discovering information today&mdash;and the way search is changing for tomorrow.
+                    </p>
+                </div>
+
+                <p style="font-size: 1.05rem; color: #1e293b; font-weight: 600; line-height: 1.75; margin: 4px 0 0;">
+                    My goal is simple: build SEO strategies that don’t just bring traffic, but help businesses become more visible, trusted, and successful online.
+                </p>
+
+                <!-- Quick Highlights / Stats Grid -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 10px;">
+                    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 4px; padding: 16px; text-align: center;">
+                        <div style="font-size: 1.65rem; font-weight: 800; color: #0062d2;">6+ Years</div>
+                        <div style="font-size: 0.82rem; color: #64748b; font-weight: 600;">Hands-On Experience</div>
+                    </div>
+                    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 4px; padding: 16px; text-align: center;">
+                        <div style="font-size: 1.65rem; font-weight: 800; color: #0062d2;">100+ Clients</div>
+                        <div style="font-size: 0.82rem; color: #64748b; font-weight: 600;">Local &amp; International</div>
+                    </div>
+                    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 4px; padding: 16px; text-align: center;">
+                        <div style="font-size: 1.65rem; font-weight: 800; color: #0062d2;">100% White-Hat</div>
+                        <div style="font-size: 0.82rem; color: #64748b; font-weight: 600;">Google Search Compliant</div>
+                    </div>
+                    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 4px; padding: 16px; text-align: center;">
+                        <div style="font-size: 1.65rem; font-weight: 800; color: #059669;">AI &amp; GEO Ready</div>
+                        <div style="font-size: 0.82rem; color: #64748b; font-weight: 600;">LLM &amp; AEO Optimization</div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</section>
+
 <!-- 2. GET DISCOVERED (SERVICES GRID) -->
 <section class="section digi-services-section" id="services">
     <div class="container">

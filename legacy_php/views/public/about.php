@@ -61,16 +61,18 @@ $contactEmail = setting('contact_email', 'abdullahbd.seo@gmail.com');
             <div class="about-content-column">
                 
                 <!-- Page Hero / Introduction Header -->
-                <div style="text-align: center; margin-bottom: 32px;">
+                <div style="margin-bottom: 32px;">
+                    <div style="display: inline-flex; align-items: center; gap: 8px; background: #eff6ff; border: 1px solid #dbeafe; padding: 6px 14px; border-radius: 4px; font-size: 0.85rem; font-weight: 700; color: #0062d2; margin-bottom: 14px;">
+                        <i class="fa-solid fa-award"></i>
+                        <span>Organic Business Growth Specialist</span>
+                    </div>
                     <div style="margin-bottom: 16px;">
-                        <h1 class="about-main-headline">
-                            I Build Revenue Systems for Businesses That Need to Move Faster
+                        <h1 class="about-main-headline" style="text-align: left; font-size: 2.35rem;">
+                            Best SEO Expert in Bangladesh &ndash; <span style="color: #0062d2;">Abdullah Saleh</span>
                         </h1>
                     </div>
-                    <p class="about-main-desc">
-                        The market is getting harder: ad costs rise, attention drops, customers expect fast answers, and manual work slows good businesses down.
-                        <br><br>
-                        I help businesses turn marketing, websites, lead capture, sales follow-up, and operations into connected systems. My work combines advanced technical SEO, web development, AI automation, paid acquisition, and conversion optimization built around the numbers that matter.
+                    <p class="about-main-desc" style="text-align: left; max-width: 100%; font-size: 1.05rem; line-height: 1.8; color: #334155;">
+                        I’m <strong>Abdullah Saleh</strong>, an Organic Business Growth Specialist and <strong>SEO Expert in Bangladesh</strong> with <strong>6+ years of hands-on experience</strong> in helping businesses grow through search. Over the years, I’ve worked with <strong>100+ local and international clients</strong>, helping them improve their online visibility, attract the right audience, generate qualified leads, and turn organic traffic into real business growth.
                     </p>
                 </div>
 
@@ -78,16 +80,17 @@ $contactEmail = setting('contact_email', 'abdullahbd.seo@gmail.com');
                 <section id="vision" class="about-section-block">
                     <div class="about-section-header">
                         <h2 class="about-section-pill">
-                            <i class="fa-regular fa-eye" style="color: #2563eb;"></i>
-                            One Business System, Not Five Disconnected Tools
+                            <i class="fa-regular fa-eye" style="color: #0062d2;"></i>
+                            Search &amp; Growth Philosophy
                         </h2>
                     </div>
 
-                    <div class="about-white-card text-center" style="padding: 28px 32px;">
-                        <p class="card-p-text" style="max-width: 680px; margin: 0 auto;">
-                            Most businesses do not need another isolated website, ad campaign, chatbot, or dashboard. They need the full customer journey to work together.
-                            <br><br>
-                            I connect organic acquisition, high-converting pages, CRM workflows, AI automation, tracking, and follow-up so that every visitor has a clear path to become a lead, client, or booked consultation.
+                    <div class="about-white-card" style="padding: 28px 32px;">
+                        <p class="card-p-text" style="margin: 0 0 16px; font-size: 1rem; line-height: 1.8; color: #334155;">
+                            For me, SEO is not just about rankings or getting more visitors from Google. It’s about understanding what people are searching for, creating a website that genuinely helps them, and building a strong online presence that can grow consistently over time.
+                        </p>
+                        <p class="card-p-text" style="margin: 0; font-size: 0.98rem; line-height: 1.75; color: #475569;">
+                            My goal is simple: build SEO strategies that don’t just bring traffic, but help businesses become more visible, trusted, and successful online.
                         </p>
                     </div>
                 </section>
@@ -96,49 +99,49 @@ $contactEmail = setting('contact_email', 'abdullahbd.seo@gmail.com');
                 <section id="methodology" class="about-section-block">
                     <div class="about-section-header">
                         <h2 class="about-section-pill">
-                            <i class="fa-solid fa-diagram-project" style="color: #2563eb;"></i>
-                            Build the System Around the Bottleneck
+                            <i class="fa-solid fa-diagram-project" style="color: #0062d2;"></i>
+                            Practical &amp; Sustainable Methodology
                         </h2>
                     </div>
 
                     <div class="about-2col-grid">
                         <div class="about-method-card">
                             <div class="method-icon-box">
-                                <i class="fa-solid fa-rocket"></i>
+                                <i class="fa-solid fa-screwdriver-wrench"></i>
                             </div>
-                            <h3 class="method-title">Measure Before Making Noise</h3>
+                            <h3 class="method-title">Technical SEO &amp; Speed</h3>
                             <p class="method-desc">
-                                I review search traffic sources, crawl performance, lead flow, website behavior, conversion points, operational delays, and existing analytics before recommending a solution.
+                                Fix crawl errors, indexation bottlenecks, site architecture, structured data, and Core Web Vitals to ensure optimal Google crawling and ranking.
                             </p>
                         </div>
 
                         <div class="about-method-card">
                             <div class="method-icon-box">
-                                <i class="fa-solid fa-trophy"></i>
+                                <i class="fa-solid fa-magnifying-glass-chart"></i>
                             </div>
-                            <h3 class="method-title">Build for Real Customer Behaviour</h3>
+                            <h3 class="method-title">Search Intent &amp; Content</h3>
                             <p class="method-desc">
-                                A system only works when customers understand what to do next. Every page, ad, form, message, booking flow, and automation is designed around real buyer intent and behavior.
+                                Understand audience search behavior, optimize keyword clustering, and build content that answers real search queries and drives conversions.
                             </p>
                         </div>
 
                         <div class="about-method-card">
                             <div class="method-icon-box">
-                                <i class="fa-solid fa-share-nodes"></i>
+                                <i class="fa-solid fa-link"></i>
                             </div>
-                            <h3 class="method-title">Automate Repetitive Work</h3>
+                            <h3 class="method-title">Authority &amp; White-Hat Links</h3>
                             <p class="method-desc">
-                                I use AI and automation to handle lead capture, source tagging, routing, reminders, follow-up, task creation, support responses, and reporting without removing human control.
+                                Build sustainable domain authority through natural link building, high-quality outreach, and Google-compliant off-page strategies.
                             </p>
                         </div>
 
                         <div class="about-method-card">
                             <div class="method-icon-box">
-                                <i class="fa-solid fa-bolt"></i>
+                                <i class="fa-solid fa-microchip"></i>
                             </div>
-                            <h3 class="method-title">Improve From Evidence</h3>
+                            <h3 class="method-title">AI SEO, AEO &amp; GEO</h3>
                             <p class="method-desc">
-                                I use real Search Console data, user activity, lead data, workflow enrolment, cost per result, and conversion signals to continuously improve what is already working.
+                                Optimize for AI answer engines, ChatGPT, Perplexity, and Google AI Overviews through E-E-A-T and LLM search strategies.
                             </p>
                         </div>
                     </div>
@@ -148,8 +151,8 @@ $contactEmail = setting('contact_email', 'abdullahbd.seo@gmail.com');
                 <section id="leadership" class="about-section-block">
                     <div class="about-section-header">
                         <h2 class="about-section-pill">
-                            <i class="fa-regular fa-user" style="color: #2563eb;"></i>
-                            Leadership
+                            <i class="fa-regular fa-user" style="color: #0062d2;"></i>
+                            Leadership &amp; Background
                         </h2>
                     </div>
 
@@ -160,14 +163,30 @@ $contactEmail = setting('contact_email', 'abdullahbd.seo@gmail.com');
                             </div>
                             <div class="leadership-info">
                                 <h3 class="leadership-name"><?= e($expertName) ?></h3>
-                                <p class="leadership-role">
-                                    REVENUE SYSTEMS BUILDER · TECHNICAL SEO · DIGITAL MARKETING
+                                <p class="leadership-role" style="color: #0062d2;">
+                                    ORGANIC BUSINESS GROWTH SPECIALIST · SEO EXPERT IN BANGLADESH
                                 </p>
-                                <p class="card-p-text" style="margin-top: 12px;">
-                                    With 6+ years of experience across international markets, I combine digital marketing, web development, and AI automation to build systems that support scalable revenue growth. I have delivered everything from enterprise SEO recoveries to custom AI workflows and conversion-led web applications.
-                                    <br><br>
-                                    Experience across international and local markets includes Media campaign portfolios, Custom and CMS website building, lead-automation workflows, technical SEO recovery, and conversion-led growth systems.
+                                <p class="card-p-text" style="margin-top: 12px; font-size: 0.98rem; line-height: 1.7; color: #475569;">
+                                    With <strong>6+ years of hands-on experience</strong>, my approach combines technical SEO, content, user experience, authority building, and search intent to create strategies that are practical, sustainable, and focused on business results. I work with businesses across different industries and markets, which has given me a strong understanding of how search behavior, competition, and customer intent vary from one audience to another.
                                 </p>
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-top: 18px;">
+                                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 4px; padding: 10px; text-align: center;">
+                                        <div style="font-size: 1.3rem; font-weight: 800; color: #0062d2;">6+ Years</div>
+                                        <div style="font-size: 0.78rem; color: #64748b; font-weight: 600;">Experience</div>
+                                    </div>
+                                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 4px; padding: 10px; text-align: center;">
+                                        <div style="font-size: 1.3rem; font-weight: 800; color: #0062d2;">100+ Clients</div>
+                                        <div style="font-size: 0.78rem; color: #64748b; font-weight: 600;">Delivered</div>
+                                    </div>
+                                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 4px; padding: 10px; text-align: center;">
+                                        <div style="font-size: 1.3rem; font-weight: 800; color: #0062d2;">100%</div>
+                                        <div style="font-size: 0.78rem; color: #64748b; font-weight: 600;">White-Hat SEO</div>
+                                    </div>
+                                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 4px; padding: 10px; text-align: center;">
+                                        <div style="font-size: 1.3rem; font-weight: 800; color: #059669;">AI &amp; GEO</div>
+                                        <div style="font-size: 0.78rem; color: #64748b; font-weight: 600;">Ready</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

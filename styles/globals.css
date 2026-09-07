@@ -4258,3 +4258,109 @@ img {
 .tool-ref-link:hover {
     gap: 10px;
 }
+
+/* ==========================================================================
+   WhatsApp Quick Connect Banner (Contact Page)
+   ========================================================================== */
+.contact-wa-banner {
+    max-width: 1120px;
+    margin: 0 auto 28px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    box-shadow: 0 2px 8px -2px rgba(15, 23, 42, 0.04);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.contact-wa-banner:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 4px 14px -2px rgba(15, 23, 42, 0.06);
+}
+
+.contact-wa-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.contact-wa-icon-badge {
+    width: 36px;
+    height: 36px;
+    border-radius: 4px;
+    background: #e8faf0;
+    border: 1px solid #d1fae5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+}
+
+.contact-wa-banner:hover .contact-wa-icon-badge {
+    transform: scale(1.05);
+}
+
+.contact-wa-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1e293b;
+    letter-spacing: -0.01em;
+    font-family: var(--font-heading, 'Outfit', sans-serif);
+}
+
+.whatsapp-chat-btn {
+    background: #00b365;
+    color: #ffffff !important;
+    padding: 9px 16px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-decoration: none !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(0, 179, 101, 0.22);
+    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    font-family: var(--font-body, inherit);
+    white-space: nowrap;
+}
+
+.whatsapp-chat-btn:hover {
+    background: #009c58;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 179, 101, 0.32);
+    color: #ffffff !important;
+}
+
+.whatsapp-chat-btn:active {
+    transform: translateY(0);
+}
+
+@media (max-width: 640px) {
+    .contact-wa-banner {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+        padding: 16px 14px;
+        gap: 14px;
+    }
+    .contact-wa-left {
+        justify-content: center;
+    }
+    .whatsapp-chat-btn {
+        justify-content: center;
+        width: 100%;
+    }
+}
+
+/* Hide Next.js Dev Indicator Badge */
+nextjs-portal,
+[data-nextjs-toast],
+[data-nextjs-dialog-overlay] {
+    display: none !important;
+}
