@@ -487,7 +487,7 @@ export default function LocalSeoServicePage() {
                       type="tel"
                       name="phone"
                       required
-                      placeholder="e.g. +880 1670-769816"
+                      placeholder="e.g. +880 1XXXXXXXXX"
                       value={formData.phone}
                       onChange={handleInputChange}
                       style={{ width: "100%", padding: "10px 14px", border: "1px solid #cbd5e1", borderRadius: "6px", fontSize: "0.92rem" }}

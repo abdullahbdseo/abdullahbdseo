@@ -793,7 +793,7 @@
 
             <div class="tool-form-group" style="margin-bottom: 16px;">
                 <label class="tool-form-label" style="font-size: 0.82rem;" for="gateWhatsapp">WhatsApp <span style="color: #94a3b8; font-weight: normal;">(Optional)</span></label>
-                <input type="tel" id="gateWhatsapp" name="phone" class="tool-form-control" placeholder="+880 1670-769816">
+                <input type="tel" id="gateWhatsapp" name="phone" class="tool-form-control" placeholder="+880 1XXXXXXXXX">
             </div>
 
             <button type="submit" class="tool-submit-btn">
