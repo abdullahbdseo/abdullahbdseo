@@ -446,6 +446,238 @@ img {
     letter-spacing: 0.04em;
 }
 
+/* About Page Responsive Layout Utilities */
+.about-page-wrapper {
+    background: #ffffff;
+    min-height: 100vh;
+    padding-top: 40px;
+    padding-bottom: 80px;
+}
+
+.about-layout-grid {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+.about-sidebar-toc {
+    position: sticky;
+    top: 100px;
+}
+
+.about-sidebar-toc-nav {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 14px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+.about-sidebar-toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.about-toc-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #64748b;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.about-toc-link:hover,
+.about-toc-link.active {
+    background: #eff6ff;
+    color: #0062d2;
+}
+
+.about-content-area {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+    min-width: 0;
+}
+
+.about-hero-title {
+    font-size: clamp(1.6rem, 4vw, 2.35rem);
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.25;
+    margin-bottom: 14px;
+    letter-spacing: -0.015em;
+}
+
+.about-hero-lead {
+    font-size: clamp(0.95rem, 2vw, 1.05rem);
+    color: #334155;
+    line-height: 1.8;
+    margin: 0;
+}
+
+.about-profile-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: clamp(20px, 3vw, 32px);
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.04);
+}
+
+.about-profile-flex {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+}
+
+.about-profile-img {
+    width: 150px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.about-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.about-stat-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 12px 10px;
+    text-align: center;
+}
+
+.about-stat-number {
+    font-size: clamp(1.2rem, 2.5vw, 1.45rem);
+    font-weight: 800;
+    color: #0062d2;
+    line-height: 1.2;
+}
+
+.about-stat-label {
+    font-size: 0.76rem;
+    color: #64748b;
+    font-weight: 600;
+    margin-top: 3px;
+}
+
+.about-section-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: clamp(20px, 3vw, 30px);
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03);
+}
+
+.about-why-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: clamp(20px, 3vw, 26px);
+}
+
+.about-cta-container {
+    background: linear-gradient(135deg, #0062d2 0%, #004bb5 100%);
+    border-radius: 14px;
+    padding: clamp(26px, 4vw, 36px) 20px;
+    color: #ffffff;
+    text-align: center;
+}
+
+/* Tablet & Mobile Media Queries for About Page */
+@media (max-width: 991px) {
+    .about-layout-grid {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+
+    .about-sidebar-toc {
+        position: static;
+        top: auto;
+    }
+
+    .about-sidebar-toc-list {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .about-toc-link {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+    }
+
+    .about-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .about-page-wrapper {
+        padding-top: 20px;
+        padding-bottom: 50px;
+    }
+
+    .about-profile-flex {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .about-profile-img {
+        width: 140px;
+        height: 165px;
+    }
+
+    .about-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .testimonial-marquee-container {
+        padding: 24px 12px 20px;
+        border-radius: 20px;
+    }
+
+    .marquee-section-title {
+        font-size: 1.45rem;
+    }
+
+    .marquee-review-card {
+        width: 275px;
+        min-width: 275px;
+        max-width: 275px;
+        padding: 16px 14px;
+    }
+}
+
+@media (max-width: 420px) {
+    .about-stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* ==========================================================================
    1. SITE HEADER & NAVIGATION
    ========================================================================== */
