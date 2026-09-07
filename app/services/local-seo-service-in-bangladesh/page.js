@@ -339,7 +339,7 @@ export default function LocalSeoServicePage() {
                 "@id": "https://abdullahseo.com/#localbusiness",
                 "name": "Abdullah Saleh - SEO Expert in Bangladesh",
                 "url": "https://abdullahseo.com",
-                "telephone": "+8801779256144",
+                "telephone": "+8801670769816",
                 "address": {
                   "@type": "PostalAddress",
                   "streetAddress": "House No: 8, Road No: 4, Senpara, Parbata, Mirpur-10",
@@ -487,7 +487,7 @@ export default function LocalSeoServicePage() {
                       type="tel"
                       name="phone"
                       required
-                      placeholder="e.g. +8801779256144"
+                      placeholder="e.g. +880 1670-769816"
                       value={formData.phone}
                       onChange={handleInputChange}
                       style={{ width: "100%", padding: "10px 14px", border: "1px solid #cbd5e1", borderRadius: "6px", fontSize: "0.92rem" }}
@@ -535,15 +535,14 @@ export default function LocalSeoServicePage() {
                   </button>
 
                   <div style={{ textAlign: "center", marginTop: "4px" }}>
-                    <span style={{ fontSize: "0.8rem", color: "#64748b" }}>Or reach out instantly:</span>
-                    <div style={{ display: "flex", justifyContent: "center", gap: "14px", marginTop: "8px" }}>
+                    <div style={{ display: "flex", justifyContent: "center", gap: "8px", marginTop: "4px" }}>
                       <a href="https://wa.me/8801670769816" target="_blank" rel="noopener noreferrer" style={{ color: "#059669", fontSize: "0.85rem", fontWeight: 700, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "5px" }}>
-                        <i className="fa-brands fa-whatsapp"></i> WhatsApp Direct
+                        <i className="fa-brands fa-whatsapp"></i> Chat on WhatsApp Directly
                       </a>
-                      <span style={{ color: "#cbd5e1" }}>|</span>
-                      <a href="tel:+8801779256144" style={{ color: "#0062d2", fontSize: "0.85rem", fontWeight: 700, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "5px" }}>
-                        <i className="fa-solid fa-phone"></i> +8801779256144
-                      </a>
+                    </div>
+                    <div style={{ fontSize: "0.78rem", color: "#64748b", marginTop: "6px" }}>
+                      <i className="fa-solid fa-lock" style={{ marginRight: "4px" }}></i>
+                      Your information is strictly confidential. Audit sent within 24h.
                     </div>
                   </div>
                 </form>
