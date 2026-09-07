@@ -463,19 +463,3 @@
     </div>
 </section>
 
-<!-- 6. NEWSLETTER / QUICK SUBSCRIPTION BANNER -->
-<section class="digi-newsletter-ribbon">
-    <div class="container">
-        <div class="newsletter-flex-box">
-            <div class="newsletter-text">
-                <h3>Join Our Newsletter for Weekly SEO Trends and Algorithm Updates</h3>
-            </div>
-            <div class="newsletter-form-wrapper">
-                <form class="newsletter-form-inline" onsubmit="event.preventDefault(); alert('Thank you for subscribing!');">
-                    <input type="email" placeholder="Enter your email" required class="newsletter-input">
-                    <button type="submit" class="btn btn-aqua-solid">Subscribe</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</section>

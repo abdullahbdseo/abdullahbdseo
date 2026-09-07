@@ -196,6 +196,23 @@ $currentUri = rtrim($cleanPath, '/') ?: '/';
         <?= $content ?>
     </main>
 
+    <!-- 1. NEWSLETTER / QUICK SUBSCRIPTION BANNER -->
+    <section class="digi-newsletter-ribbon">
+        <div class="container">
+            <div class="newsletter-flex-box">
+                <div class="newsletter-text">
+                    <h3>Join Our Newsletter for Weekly SEO Trends and Algorithm Updates</h3>
+                </div>
+                <div class="newsletter-form-wrapper">
+                    <form class="newsletter-form-inline" onsubmit="event.preventDefault(); alert('Thank you for subscribing!');">
+                        <input type="email" placeholder="Enter your email" required class="newsletter-input">
+                        <button type="submit" class="btn btn-aqua-solid">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Modern 4-Column Footer matching exact reference -->
     <footer class="digi-footer">
         <div class="container">
@@ -203,15 +220,15 @@ $currentUri = rtrim($cleanPath, '/') ?: '/';
                 <!-- Col 1: Brand, Bio & CTA -->
                 <div class="digi-footer-col digi-footer-brand">
                     <div class="digi-footer-logo">
-                        <a href="<?= url('/') ?>" aria-label="<?= e(setting('site_name', 'Ayeubur Rahman')) ?>" style="text-decoration: none; display: inline-flex; align-items: center; gap: 10px; color: #ffffff;">
+                        <a href="<?= url('/') ?>" aria-label="<?= e(setting('site_name', 'Abdullah Saleh')) ?>" style="text-decoration: none; display: inline-flex; align-items: center; gap: 10px; color: #ffffff;">
                             <div style="width: 38px; height: 38px; border-radius: 8px; background: rgba(255,255,255,0.22); border: 1px solid rgba(255,255,255,0.35); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; color: #ffffff;">
-                                <?= strtoupper(substr(setting('expert_name', 'Ayeubur Rahman'), 0, 2)) ?>
+                                <?= strtoupper(substr(setting('expert_name', 'Abdullah Saleh'), 0, 2)) ?>
                             </div>
-                            <span style="font-size: 1.4rem; font-weight: 800; letter-spacing: -0.02em; color: #ffffff;"><?= e(setting('expert_name', setting('site_name', 'Ayeubur Rahman'))) ?></span>
+                            <span style="font-size: 1.4rem; font-weight: 800; letter-spacing: -0.02em; color: #ffffff;"><?= e(setting('expert_name', setting('site_name', 'Abdullah Saleh'))) ?></span>
                         </a>
                     </div>
                     <p style="margin-top: 12px; margin-bottom: 20px; font-size: 0.92rem; line-height: 1.6; color: rgba(255, 255, 255, 0.9);">
-                        <?= e(setting('expert_bio', 'A Revenue System Builder | 6+ years of expertise in Web Development, AI Automation, and Digital Marketing.')) ?>
+                        <?= e(setting('expert_bio', 'Abdullah Saleh is an Organic Business Growth Specialist and SEO Expert in Bangladesh with 6+ years of experience helping 100+ businesses grow through search, technical SEO, content, and AI SEO.')) ?>
                     </p>
                     <div>
                         <a href="<?= url('/contact') ?>" class="btn-footer-cta" style="border-radius: 8px; padding: 10px 22px; font-weight: 700; background: #ffffff; color: #1e40af; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; box-shadow: 0 4px 15px rgba(0,0,0,0.12);">
@@ -259,7 +276,7 @@ $currentUri = rtrim($cleanPath, '/') ?: '/';
 
             <!-- Footer Bottom Bar -->
             <div class="digi-footer-bottom">
-                <div>&copy; <?= date('Y') ?> <strong><?= e(setting('expert_name', setting('site_name', 'Ayeubur Rahman'))) ?></strong>. All rights reserved.</div>
+                <div>&copy; <?= date('Y') ?> <strong><?= e(setting('expert_name', setting('site_name', 'Abdullah Saleh'))) ?></strong>. All rights reserved.</div>
                 <div class="digi-footer-legal">
                     <a href="<?= url('/tools') ?>">All Free Tools</a>
                     <span>&bull;</span>

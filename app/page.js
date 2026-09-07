@@ -588,22 +588,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 6. NEWSLETTER / QUICK SUBSCRIPTION BANNER (Exact Mockup Match) */}
-      <section className="digi-newsletter-ribbon">
-        <div className="container">
-          <div className="newsletter-flex-box">
-            <div className="newsletter-text">
-              <h3>Join Our Newsletter for Weekly SEO Trends and Algorithm Updates</h3>
-            </div>
-            <div className="newsletter-form-wrapper">
-              <form className="newsletter-form-inline" onSubmit={(e) => { e.preventDefault(); alert("Thank you for subscribing!"); }}>
-                <input type="email" placeholder="Enter your email" required className="newsletter-input" />
-                <button type="submit" className="btn btn-aqua-solid">Subscribe</button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </section>
+
 
       {/* Interactive Modals */}
       <QuoteModal 
