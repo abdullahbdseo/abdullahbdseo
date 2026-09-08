@@ -143,7 +143,7 @@ export default function FacebookAdsRoiCalculator() {
               </div>
 
               {/* Strategic Insights */}
-              <div style={{ marginTop: "14px", padding: "14px 16px", background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "8px", fontSize: "0.84rem", color: "#475569", lineHeight: 1.5 }}>
+              <div style={{ marginTop: "14px", padding: "14px 16px", background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px", fontSize: "0.84rem", color: "#475569", lineHeight: 1.5 }}>
                 <i className="fa-solid fa-chart-pie text-primary" style={{ marginRight: "6px" }}></i>
                 <strong>E-Commerce Tip:</strong> Diversify paid customer acquisition with <strong>Category Page SEO &amp; Schema</strong> to build compounding zero-CAC organic revenue.
               </div>

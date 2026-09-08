@@ -202,7 +202,7 @@ When conducting technical SEO optimization, search engine bots prioritize sites 
             {targetKeyword && totalWords > 0 && (
               <>
                 {isDensityHigh ? (
-                  <div style={{ padding: "14px 18px", background: "#fef2f2", border: "1px solid #fecaca", borderRadius: "8px", color: "#991b1b", marginBottom: "20px", display: "flex", alignItems: "flex-start", gap: "10px" }}>
+                  <div style={{ padding: "14px 18px", background: "#fef2f2", border: "1px solid #fecaca", borderRadius: "4px", color: "#991b1b", marginBottom: "20px", display: "flex", alignItems: "flex-start", gap: "10px" }}>
                     <i className="fa-solid fa-triangle-exclamation" style={{ marginTop: "2px" }}></i>
                     <div>
                       <strong style={{ fontSize: "0.9rem" }}>Over-Optimization Risk Detected ({targetDensity}%)</strong>
@@ -212,7 +212,7 @@ When conducting technical SEO optimization, search engine bots prioritize sites 
                     </div>
                   </div>
                 ) : isDensityHealthy ? (
-                  <div style={{ padding: "14px 18px", background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: "8px", color: "#166534", marginBottom: "20px", display: "flex", alignItems: "flex-start", gap: "10px" }}>
+                  <div style={{ padding: "14px 18px", background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: "4px", color: "#166534", marginBottom: "20px", display: "flex", alignItems: "flex-start", gap: "10px" }}>
                     <i className="fa-solid fa-circle-check" style={{ marginTop: "2px" }}></i>
                     <div>
                       <strong style={{ fontSize: "0.9rem" }}>Optimal Keyword Density ({targetDensity}%)</strong>
@@ -232,7 +232,7 @@ When conducting technical SEO optimization, search engine bots prioritize sites 
                   <h3 style={{ fontSize: "1.1rem", fontWeight: 800, color: "#0f172a", margin: 0 }}>
                     Semantic Keyword Frequency Analysis
                   </h3>
-                  <div style={{ display: "inline-flex", background: "#f1f5f9", padding: "3px", borderRadius: "8px", border: "1px solid #e2e8f0" }}>
+                  <div style={{ display: "inline-flex", background: "#f1f5f9", padding: "3px", borderRadius: "4px", border: "1px solid #e2e8f0" }}>
                     <button
                       type="button"
                       onClick={() => setActiveNGramTab("single")}
@@ -275,11 +275,11 @@ When conducting technical SEO optimization, search engine bots prioritize sites 
                           </td>
                           <td>
                             {parseFloat(item.density) > 3.5 ? (
-                              <span style={{ fontSize: "0.75rem", padding: "3px 8px", background: "#fef2f2", color: "#dc2626", borderRadius: "9999px", fontWeight: 700 }}>
+                              <span style={{ fontSize: "0.75rem", padding: "3px 8px", background: "#fef2f2", color: "#dc2626", borderRadius: "4px", fontWeight: 700 }}>
                                 High Density
                               </span>
                             ) : (
-                              <span style={{ fontSize: "0.75rem", padding: "3px 8px", background: "#f0fdf4", color: "#166534", borderRadius: "9999px", fontWeight: 700 }}>
+                              <span style={{ fontSize: "0.75rem", padding: "3px 8px", background: "#f0fdf4", color: "#166534", borderRadius: "4px", fontWeight: 700 }}>
                                 Natural
                               </span>
                             )}

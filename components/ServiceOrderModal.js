@@ -137,7 +137,7 @@ export default function ServiceOrderModal({ isOpen, onClose, service, selectedPa
             </div>
 
             {/* Contact Details (No Password Required) */}
-            <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "12px", padding: "16px", marginTop: "4px" }}>
+            <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "6px", padding: "16px", marginTop: "4px" }}>
               <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "#0f172a", marginBottom: "12px", display: "flex", alignItems: "center", gap: "6px" }}>
                 <i className="fa-solid fa-user" style={{ color: "#4361ee" }}></i> Contact Information
               </div>
@@ -171,7 +171,7 @@ export default function ServiceOrderModal({ isOpen, onClose, service, selectedPa
             <button 
               type="submit" 
               className="btn btn-lg btn-blue-solid btn-block" 
-              style={{ marginTop: "8px", borderRadius: "12px", fontSize: "1rem" }}
+              style={{ marginTop: "8px", borderRadius: "6px", fontSize: "1rem" }}
               disabled={loading}
             >
               {loading ? (

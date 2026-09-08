@@ -430,7 +430,7 @@ export default function LocalSeoServicePage() {
             </div>
 
             {/* Right Column: Interactive Audit Form */}
-            <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "32px 28px", boxShadow: "0 10px 25px -5px rgba(0,0,0,0.06)" }}>
+            <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "32px 28px", boxShadow: "0 10px 25px -5px rgba(0,0,0,0.06)" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "16px" }}>
                 <div style={{ width: "36px", height: "36px", borderRadius: "6px", background: "#eff6ff", color: "#0062d2", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.1rem" }}>
                   <i className="fa-solid fa-map-location-dot"></i>
@@ -670,7 +670,7 @@ export default function LocalSeoServicePage() {
                 style={{
                   background: "#f8fafc",
                   border: "1px solid #e2e8f0",
-                  borderRadius: "8px",
+                  borderRadius: "4px",
                   padding: "28px 24px",
                   display: "flex",
                   flexDirection: "column",
@@ -753,7 +753,7 @@ export default function LocalSeoServicePage() {
                 style={{
                   background: "#ffffff",
                   border: pkg.isPopular ? "2px solid #0062d2" : "1px solid #e2e8f0",
-                  borderRadius: "8px",
+                  borderRadius: "4px",
                   padding: "32px 26px",
                   position: "relative",
                   display: "flex",
@@ -763,7 +763,7 @@ export default function LocalSeoServicePage() {
                 }}
               >
                 {pkg.isPopular && (
-                  <div style={{ position: "absolute", top: "-12px", left: "50%", transform: "translateX(-50%)", background: "#0062d2", color: "#ffffff", padding: "4px 14px", borderRadius: "20px", fontSize: "0.78rem", fontWeight: 700, letterSpacing: "0.04em" }}>
+                  <div style={{ position: "absolute", top: "-12px", left: "50%", transform: "translateX(-50%)", background: "#0062d2", color: "#ffffff", padding: "4px 14px", borderRadius: "6px", fontSize: "0.78rem", fontWeight: 700, letterSpacing: "0.04em" }}>
                     MOST POPULAR
                   </div>
                 )}
@@ -834,7 +834,7 @@ export default function LocalSeoServicePage() {
                 style={{
                   background: "#f8fafc",
                   border: "1px solid #e2e8f0",
-                  borderRadius: "8px",
+                  borderRadius: "4px",
                   padding: "28px 24px",
                   display: "flex",
                   flexDirection: "column",

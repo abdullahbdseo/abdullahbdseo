@@ -51,7 +51,7 @@ export default function SinglePortfolioPage({ params }) {
         <div className="container" style={{ maxWidth: "1000px" }}>
 
           {/* GOOGLE SEARCH CONSOLE VERIFIED PROOF VIEWER */}
-          <div style={{ background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "8px", overflow: "hidden", boxShadow: "0 4px 20px rgba(0,0,0,0.06)", marginBottom: "40px" }}>
+          <div style={{ background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "4px", overflow: "hidden", boxShadow: "0 4px 20px rgba(0,0,0,0.06)", marginBottom: "40px" }}>
             <div style={{ background: "#0f172a", padding: "14px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", color: "#ffffff", flexWrap: "wrap", gap: "10px" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "10px", fontWeight: 700, fontSize: "0.95rem" }}>
                 <i className="fa-brands fa-google" style={{ color: "#4285F4", fontSize: "1.1rem" }}></i>
@@ -152,7 +152,7 @@ export default function SinglePortfolioPage({ params }) {
 
             {/* Testimonial Quote if present */}
             {portfolio.testimonials_quote && (
-              <div style={{ background: "#f0fdf4", border: "1px solid #bbf7d0", padding: "24px", borderRadius: "8px", marginBottom: "36px" }}>
+              <div style={{ background: "#f0fdf4", border: "1px solid #bbf7d0", padding: "24px", borderRadius: "4px", marginBottom: "36px" }}>
                 <p style={{ fontStyle: "italic", color: "#166534", marginBottom: "8px", fontSize: "1rem" }}>
                   &ldquo;{portfolio.testimonials_quote}&rdquo;
                 </p>

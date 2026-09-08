@@ -119,7 +119,7 @@ export default function WebsiteSeoAnalyzer() {
 
             {/* Error Message */}
             {error && (
-              <div style={{ marginTop: "24px", padding: "16px 20px", background: "#fef2f2", border: "1px solid #fecaca", borderRadius: "10px", color: "#991b1b", display: "flex", alignItems: "flex-start", gap: "12px" }}>
+              <div style={{ marginTop: "24px", padding: "16px 20px", background: "#fef2f2", border: "1px solid #fecaca", borderRadius: "4px", color: "#991b1b", display: "flex", alignItems: "flex-start", gap: "12px" }}>
                 <i className="fa-solid fa-circle-exclamation" style={{ fontSize: "1.2rem", marginTop: "2px" }}></i>
                 <div>
                   <strong style={{ display: "block", marginBottom: "2px" }}>Analysis Error</strong>
@@ -141,7 +141,7 @@ export default function WebsiteSeoAnalyzer() {
                       <h3>
                         {result.score >= 80 ? "Strong SEO Health" : result.score >= 50 ? "Moderate SEO Health - Improvements Needed" : "Critical SEO Issues Detected"}
                       </h3>
-                      <span style={{ fontSize: "0.8rem", padding: "4px 10px", borderRadius: "9999px", background: "rgba(255,255,255,0.15)", color: "#ffffff", fontWeight: 700 }}>
+                      <span style={{ fontSize: "0.8rem", padding: "4px 10px", borderRadius: "4px", background: "rgba(255,255,255,0.15)", color: "#ffffff", fontWeight: 700 }}>
                         HTTP {result.statusCode}
                       </span>
                     </div>

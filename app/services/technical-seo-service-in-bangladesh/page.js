@@ -173,7 +173,7 @@ export default function TechnicalSeoServicePage() {
             </div>
 
             {/* Right Lead Capture Box */}
-            <div id="audit-form" style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "28px", boxShadow: "0 10px 30px rgba(0,98,210,0.08)" }}>
+            <div id="audit-form" style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "28px", boxShadow: "0 10px 30px rgba(0,98,210,0.08)" }}>
               <div style={{ background: "#eff6ff", border: "1px solid #dbeafe", borderRadius: "4px", padding: "12px 16px", marginBottom: "18px" }}>
                 <h3 style={{ fontSize: "1.2rem", fontWeight: 800, color: "#0062d2", margin: "0 0 4px" }}>
                   Free Website Technical Audit
@@ -279,7 +279,7 @@ export default function TechnicalSeoServicePage() {
         <div className="container" style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 20px" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "40px", alignItems: "center" }}>
             
-            <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "30px" }}>
+            <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "30px" }}>
               <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "#eff6ff", border: "1px solid #dbeafe", padding: "6px 12px", borderRadius: "4px", fontSize: "0.82rem", fontWeight: 700, color: "#0062d2", marginBottom: "14px" }}>
                 <i className="fa-solid fa-lightbulb"></i>
                 <span>THE STOREFRONT ANALOGY</span>

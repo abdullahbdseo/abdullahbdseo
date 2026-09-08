@@ -129,7 +129,7 @@ export default function HttpHeaderChecker() {
 
             {/* Error Message */}
             {error && (
-              <div style={{ marginTop: "24px", padding: "16px 20px", background: "#fef2f2", border: "1px solid #fecaca", borderRadius: "10px", color: "#991b1b", display: "flex", alignItems: "flex-start", gap: "12px" }}>
+              <div style={{ marginTop: "24px", padding: "16px 20px", background: "#fef2f2", border: "1px solid #fecaca", borderRadius: "4px", color: "#991b1b", display: "flex", alignItems: "flex-start", gap: "12px" }}>
                 <i className="fa-solid fa-circle-exclamation" style={{ fontSize: "1.2rem", marginTop: "2px" }}></i>
                 <div>
                   <strong style={{ display: "block", marginBottom: "2px" }}>Inspection Error</strong>
@@ -181,7 +181,7 @@ export default function HttpHeaderChecker() {
 
                 {/* REDIRECT BANNER IF 301/302 */}
                 {result.location && (
-                  <div style={{ padding: "16px 20px", background: "#fffbeb", border: "1px solid #fde68a", borderRadius: "10px", color: "#92400e", marginBottom: "24px", display: "flex", alignItems: "flex-start", gap: "12px" }}>
+                  <div style={{ padding: "16px 20px", background: "#fffbeb", border: "1px solid #fde68a", borderRadius: "4px", color: "#92400e", marginBottom: "24px", display: "flex", alignItems: "flex-start", gap: "12px" }}>
                     <i className="fa-solid fa-arrow-right-arrow-left" style={{ fontSize: "1.2rem", marginTop: "3px" }}></i>
                     <div>
                       <strong style={{ fontSize: "0.95rem" }}>Redirect Target Destination (HTTP {result.status})</strong>
@@ -201,17 +201,17 @@ export default function HttpHeaderChecker() {
                     {Object.entries(result.securityHeaders || {}).map(([secKey, secVal]) => (
                       <div
                         key={secKey}
-                        style={{ padding: "12px 16px", border: "1px solid #e2e8f0", borderRadius: "8px", background: "#ffffff", display: "flex", alignItems: "center", justifyContent: "space-between" }}
+                        style={{ padding: "12px 16px", border: "1px solid #e2e8f0", borderRadius: "4px", background: "#ffffff", display: "flex", alignItems: "center", justifyContent: "space-between" }}
                       >
                         <span style={{ fontSize: "0.82rem", fontFamily: "monospace", color: "#334155", fontWeight: 600 }}>
                           {secKey}
                         </span>
                         {secVal ? (
-                          <span style={{ fontSize: "0.75rem", padding: "3px 8px", background: "#f0fdf4", color: "#166534", borderRadius: "9999px", fontWeight: 700 }}>
+                          <span style={{ fontSize: "0.75rem", padding: "3px 8px", background: "#f0fdf4", color: "#166534", borderRadius: "4px", fontWeight: 700 }}>
                             <i className="fa-solid fa-check"></i> Enabled
                           </span>
                         ) : (
-                          <span style={{ fontSize: "0.75rem", padding: "3px 8px", background: "#fef2f2", color: "#b91c1c", borderRadius: "9999px", fontWeight: 700 }}>
+                          <span style={{ fontSize: "0.75rem", padding: "3px 8px", background: "#fef2f2", color: "#b91c1c", borderRadius: "4px", fontWeight: 700 }}>
                             <i className="fa-solid fa-xmark"></i> Missing
                           </span>
                         )}
@@ -235,7 +235,7 @@ export default function HttpHeaderChecker() {
                       {copiedHeaders ? "Copied!" : "Copy Headers"}
                     </button>
                   </div>
-                  <div style={{ background: "#0f172a", color: "#93c5fd", padding: "20px", borderRadius: "10px", fontFamily: "monospace", fontSize: "0.84rem", lineHeight: 1.6, overflowX: "auto", maxHeight: "360px" }}>
+                  <div style={{ background: "#0f172a", color: "#93c5fd", padding: "20px", borderRadius: "4px", fontFamily: "monospace", fontSize: "0.84rem", lineHeight: 1.6, overflowX: "auto", maxHeight: "360px" }}>
                     {Object.entries(result.allHeaders || {}).map(([k, v]) => (
                       <div key={k} style={{ padding: "2px 0" }}>
                         <span style={{ color: "#38bdf8", fontWeight: 700 }}>{k}:</span>{" "}

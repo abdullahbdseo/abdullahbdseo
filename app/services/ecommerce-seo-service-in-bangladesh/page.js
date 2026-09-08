@@ -151,7 +151,7 @@ export default function EcommerceSeoServicePage() {
 
             {/* Right Visual Box */}
             <div style={{ display: "flex", justifyContent: "center" }}>
-              <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "24px", boxShadow: "0 10px 30px rgba(0,98,210,0.08)", width: "100%", maxWidth: "480px" }}>
+              <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "24px", boxShadow: "0 10px 30px rgba(0,98,210,0.08)", width: "100%", maxWidth: "480px" }}>
                 <div style={{ background: "linear-gradient(135deg, #0062d2 0%, #004bb5 100%)", borderRadius: "6px", padding: "20px", color: "#ffffff", marginBottom: "20px" }}>
                   <div style={{ fontSize: "0.85rem", textTransform: "uppercase", fontWeight: 700, opacity: 0.9 }}>Store Growth Diagnostic</div>
                   <div style={{ fontSize: "1.35rem", fontWeight: 800, marginTop: "4px" }}>Ecommerce Organic Growth Engine</div>

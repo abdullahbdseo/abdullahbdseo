@@ -75,7 +75,7 @@ export default function SerpSimulator() {
         <div className="container" style={{ maxWidth: "1140px" }}>
           
           {/* Quick Presets Bar */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "10px", marginBottom: "24px", background: "#ffffff", padding: "14px 20px", borderRadius: "10px", border: "1px solid #e2e8f0" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "10px", marginBottom: "24px", background: "#ffffff", padding: "14px 20px", borderRadius: "4px", border: "1px solid #e2e8f0" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.85rem", fontWeight: 700, color: "#475569" }}>
               <i className="fa-solid fa-wand-magic-sparkles text-primary"></i> Quick Presets:
             </div>
@@ -187,7 +187,7 @@ export default function SerpSimulator() {
                 <button
                   type="button"
                   onClick={copyMetaTags}
-                  style={{ width: "100%", padding: "10px 16px", borderRadius: "8px", background: copiedMeta ? "#059669" : "#0f172a", color: "#ffffff", border: "none", fontWeight: 700, fontSize: "0.88rem", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", transition: "all 0.2s" }}
+                  style={{ width: "100%", padding: "10px 16px", borderRadius: "4px", background: copiedMeta ? "#059669" : "#0f172a", color: "#ffffff", border: "none", fontWeight: 700, fontSize: "0.88rem", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", transition: "all 0.2s" }}
                 >
                   <i className={`fa-solid ${copiedMeta ? "fa-check" : "fa-code"}`}></i>
                   {copiedMeta ? "HTML Meta Tags Copied!" : "Copy Meta Tags HTML Code"}
@@ -203,7 +203,7 @@ export default function SerpSimulator() {
                 </h3>
 
                 {/* Device Selector */}
-                <div style={{ display: "inline-flex", background: "#f1f5f9", padding: "3px", borderRadius: "8px", border: "1px solid #e2e8f0" }}>
+                <div style={{ display: "inline-flex", background: "#f1f5f9", padding: "3px", borderRadius: "4px", border: "1px solid #e2e8f0" }}>
                   <button
                     type="button"
                     onClick={() => setDevice("desktop")}

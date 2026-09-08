@@ -145,7 +145,7 @@ export default function QuoteModal({ isOpen, onClose }) {
               <button 
                 type="submit" 
                 className="btn btn-blue-solid btn-block btn-lg" 
-                style={{ borderRadius: "8px", marginTop: "4px" }}
+                style={{ borderRadius: "4px", marginTop: "4px" }}
                 disabled={loading}
               >
                 {loading ? "Submitting..." : "Send Proposal Request"}
@@ -164,7 +164,7 @@ export default function QuoteModal({ isOpen, onClose }) {
             <p className="thankyou-desc" style={{ marginTop: "12px", color: "#475569" }}>
               <strong>{siteSettings.expert_name}</strong> and the technical team are reviewing your website details. You will receive a personalized growth roadmap within <strong>2–4 business hours</strong>.
             </p>
-            <button type="button" className="btn btn-blue-solid" onClick={onClose} style={{ marginTop: "18px", borderRadius: "8px", padding: "10px 24px" }}>
+            <button type="button" className="btn btn-blue-solid" onClick={onClose} style={{ marginTop: "18px", borderRadius: "4px", padding: "10px 24px" }}>
               Got It
             </button>
           </div>

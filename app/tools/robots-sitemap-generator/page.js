@@ -233,7 +233,7 @@ export default function RobotsSitemapGenerator() {
                   </div>
 
                   {/* AI Bot Toggle */}
-                  <div style={{ padding: "12px", background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "8px", marginTop: "14px" }}>
+                  <div style={{ padding: "12px", background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px", marginTop: "14px" }}>
                     <label style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "0.85rem", color: "#0f172a", fontWeight: 600, cursor: "pointer" }}>
                       <input
                         type="checkbox"

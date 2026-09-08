@@ -417,7 +417,7 @@ export default function GeoServicePage() {
             </div>
 
             {/* Hero Right Quick Audit Card */}
-            <div style={{ background: "#ffffff", border: "1px solid #dbeafe", borderRadius: "8px", padding: "30px", boxShadow: "0 10px 30px rgba(0, 98, 210, 0.08)" }}>
+            <div style={{ background: "#ffffff", border: "1px solid #dbeafe", borderRadius: "4px", padding: "30px", boxShadow: "0 10px 30px rgba(0, 98, 210, 0.08)" }}>
               <div style={{ borderBottom: "1px solid #f1f5f9", paddingBottom: "16px", marginBottom: "20px" }}>
                 <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "#0062d2", textTransform: "uppercase", letterSpacing: "0.05em" }}>
                   Free LLM Audit
@@ -753,7 +753,7 @@ export default function GeoServicePage() {
                 style={{
                   background: "#ffffff",
                   border: pkg.isPopular ? "2px solid #0062d2" : "1px solid #e2e8f0",
-                  borderRadius: "8px",
+                  borderRadius: "4px",
                   padding: "32px 26px",
                   display: "flex",
                   flexDirection: "column",
@@ -762,7 +762,7 @@ export default function GeoServicePage() {
                 }}
               >
                 {pkg.isPopular && (
-                  <div style={{ position: "absolute", top: "-12px", left: "50%", transform: "translateX(-50%)", background: "#0062d2", color: "#ffffff", padding: "4px 16px", borderRadius: "20px", fontSize: "0.78rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                  <div style={{ position: "absolute", top: "-12px", left: "50%", transform: "translateX(-50%)", background: "#0062d2", color: "#ffffff", padding: "4px 16px", borderRadius: "6px", fontSize: "0.78rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.05em" }}>
                     Most Popular
                   </div>
                 )}

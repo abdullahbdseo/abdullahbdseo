@@ -27,10 +27,10 @@
     --font-body: 'Plus Jakarta Sans', sans-serif;
 
     --radius-xs: 2px;
-    --radius-sm: 4px;
-    --radius-md: 6px;
-    --radius-lg: 8px;
-    --radius-full: 6px;
+    --radius-sm: 3px;
+    --radius-md: 4px;
+    --radius-lg: 6px;
+    --radius-full: 4px;
 
     --shadow-soft: 0 4px 20px -2px rgba(67, 97, 238, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
     --shadow-hover: 0 12px 30px -4px rgba(67, 97, 238, 0.18), 0 4px 12px -2px rgba(0, 0, 0, 0.06);
@@ -104,7 +104,7 @@ img {
 .testimonial-marquee-container {
     background: linear-gradient(135deg, #edf4ff 0%, #ffffff 50%, #e5f0ff 100%);
     border: 1px solid rgba(219, 234, 254, 0.95);
-    border-radius: 28px;
+    border-radius: 4px;
     padding: 38px 24px 34px;
     box-shadow: 0 14px 40px -15px rgba(0, 89, 181, 0.08);
     position: relative;
@@ -144,7 +144,7 @@ img {
     gap: 8px;
     background: rgba(255, 255, 255, 0.95);
     border: 1px solid rgba(0, 98, 210, 0.18);
-    border-radius: 9999px;
+    border-radius: 4px;
     padding: 5px 14px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
     margin-bottom: 12px;
@@ -221,7 +221,7 @@ img {
     flex-shrink: 0;
     background: #ffffff;
     border: 1px solid rgba(219, 234, 254, 0.95);
-    border-radius: 16px;
+    border-radius: 6px;
     padding: 22px 20px;
     display: flex;
     flex-direction: column;
@@ -298,7 +298,7 @@ img {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border-radius: 12px;
+    border-radius: 6px;
     border: 1px solid rgba(191, 219, 254, 0.9);
     background: rgba(239, 246, 255, 0.9);
     padding: 10px 24px;
@@ -320,7 +320,7 @@ img {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    border-radius: 12px;
+    border-radius: 6px;
     border: 1px solid #dbeafe;
     background: linear-gradient(to right, rgba(239, 246, 255, 0.95), #ffffff, rgba(239, 246, 255, 0.95));
     padding: 10px 24px;
@@ -331,7 +331,7 @@ img {
 }
 
 .about-card-rounded {
-    border-radius: 16px;
+    border-radius: 6px;
     border: 1px solid #e2e8f0;
     background: #ffffff;
     padding: 24px 28px;
@@ -345,7 +345,7 @@ img {
 }
 
 .methodology-card {
-    border-radius: 16px;
+    border-radius: 6px;
     border: 1px solid #e2e8f0;
     background: #ffffff;
     padding: 20px 22px;
@@ -360,7 +360,7 @@ img {
 }
 
 .why-me-container {
-    border-radius: 16px;
+    border-radius: 6px;
     border: 1px solid #e2e8f0;
     background: #f8fafc;
     padding: 24px;
@@ -377,7 +377,7 @@ img {
     display: flex;
     align-items: flex-start;
     gap: 16px;
-    border-radius: 12px;
+    border-radius: 6px;
     border: 1px solid #e2e8f0;
     background: #ffffff;
     padding: 16px 20px;
@@ -394,7 +394,7 @@ img {
 .why-me-icon-box {
     width: 38px;
     height: 38px;
-    border-radius: 8px;
+    border-radius: 4px;
     background: #eff6ff;
     border: 1px solid #dbeafe;
     color: #0062d2;
@@ -413,7 +413,7 @@ img {
 }
 
 .service-expertise-card {
-    border-radius: 16px;
+    border-radius: 6px;
     border: 1px solid #e2e8f0;
     background: #ffffff;
     padding: 22px 24px;
@@ -440,7 +440,7 @@ img {
     font-size: 0.72rem;
     font-weight: 700;
     padding: 3px 10px;
-    border-radius: 9999px;
+    border-radius: 4px;
     margin-bottom: 10px;
     text-transform: uppercase;
     letter-spacing: 0.04em;
@@ -469,7 +469,7 @@ img {
 .about-sidebar-toc-nav {
     background: #ffffff;
     border: 1px solid #e2e8f0;
-    border-radius: 12px;
+    border-radius: 6px;
     padding: 14px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
 }
@@ -528,7 +528,7 @@ img {
 .about-profile-card {
     background: #ffffff;
     border: 1px solid #e2e8f0;
-    border-radius: 14px;
+    border-radius: 6px;
     padding: clamp(20px, 3vw, 32px);
     box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.04);
 }
@@ -543,7 +543,7 @@ img {
     width: 150px;
     height: 180px;
     object-fit: cover;
-    border-radius: 10px;
+    border-radius: 4px;
     border: 1px solid #e2e8f0;
     flex-shrink: 0;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -561,7 +561,7 @@ img {
 .about-stat-box {
     background: #f8fafc;
     border: 1px solid #e2e8f0;
-    border-radius: 8px;
+    border-radius: 4px;
     padding: 12px 10px;
     text-align: center;
 }
@@ -583,7 +583,7 @@ img {
 .about-section-card {
     background: #ffffff;
     border: 1px solid #e2e8f0;
-    border-radius: 14px;
+    border-radius: 6px;
     padding: clamp(20px, 3vw, 30px);
     box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03);
 }
@@ -591,13 +591,13 @@ img {
 .about-why-card {
     background: #f8fafc;
     border: 1px solid #e2e8f0;
-    border-radius: 14px;
+    border-radius: 6px;
     padding: clamp(20px, 3vw, 26px);
 }
 
 .about-cta-container {
     background: linear-gradient(135deg, #0062d2 0%, #004bb5 100%);
-    border-radius: 14px;
+    border-radius: 6px;
     padding: clamp(26px, 4vw, 36px) 20px;
     color: #ffffff;
     text-align: center;
@@ -657,7 +657,7 @@ img {
 
     .testimonial-marquee-container {
         padding: 24px 12px 20px;
-        border-radius: 20px;
+        border-radius: 6px;
     }
 
     .marquee-section-title {
@@ -711,7 +711,7 @@ img {
 .site-main-logo-icon {
     height: 38px;
     width: 38px;
-    border-radius: 9px;
+    border-radius: 4px;
     display: block;
     flex-shrink: 0;
 }
@@ -798,7 +798,7 @@ img {
     width: 620px;
     background: #ffffff;
     border: 1px solid #e2e8f0;
-    border-radius: 14px;
+    border-radius: 6px;
     box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12);
     padding: 16px 20px 20px;
     opacity: 0;
@@ -876,7 +876,7 @@ img {
     align-items: center;
     gap: 12px;
     padding: 8px 10px;
-    border-radius: 8px;
+    border-radius: 4px;
     text-decoration: none;
     transition: background 0.15s ease, transform 0.15s ease;
 }
@@ -889,7 +889,7 @@ img {
 .dropdown-item-icon {
     width: 32px;
     height: 32px;
-    border-radius: 8px;
+    border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -954,7 +954,7 @@ img {
     border: 1px solid var(--digi-border);
     width: 40px;
     height: 40px;
-    border-radius: 8px;
+    border-radius: 4px;
     font-size: 1.2rem;
     color: var(--digi-text-main);
     cursor: pointer;
@@ -1502,7 +1502,7 @@ img {
 .digi-social-row a {
     width: 38px;
     height: 38px;
-    border-radius: 10px;
+    border-radius: 4px;
     background: rgba(255, 255, 255, 0.2);
     color: #ffffff;
     display: flex;
@@ -1594,7 +1594,7 @@ img {
     width: 34px;
     height: 34px;
     min-width: 34px;
-    border-radius: 8px;
+    border-radius: 4px;
     background: rgba(255, 255, 255, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.25);
     color: #ffffff;
@@ -1780,7 +1780,7 @@ img {
 .digi-thankyou-modal-card {
     background: #ffffff;
     border: 1.5px solid #e0e7ff;
-    border-radius: 8px;
+    border-radius: 4px;
     max-width: 480px;
     width: 100%;
     padding: 36px 28px 32px;
@@ -1919,7 +1919,7 @@ img {
 .thankyou-steps-box {
     background: #f8fafc;
     border: 1px solid #e2e8f0;
-    border-radius: 12px;
+    border-radius: 6px;
     padding: 16px;
     margin-bottom: 24px;
     text-align: left;
@@ -1969,7 +1969,7 @@ img {
     background: rgba(67, 97, 238, 0.08);
     color: #4361ee;
     padding: 6px 16px;
-    border-radius: 9999px;
+    border-radius: 4px;
     font-size: 0.82rem;
     font-weight: 700;
     letter-spacing: 0.04em;
@@ -2002,7 +2002,7 @@ img {
 
 .service-pkg-card {
     background: #ffffff;
-    border-radius: 8px;
+    border-radius: 4px;
     border: 1px solid #e2e8f0;
     box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
     display: flex;
@@ -2211,7 +2211,7 @@ img {
 .pkg-trust-banner {
     background: #ffffff;
     border: 1px solid #e2e8f0;
-    border-radius: 8px;
+    border-radius: 4px;
     padding: 22px 28px;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -2274,7 +2274,7 @@ img {
 
 .order-modal-content {
     background: #ffffff;
-    border-radius: 8px;
+    border-radius: 4px;
     max-width: 600px;
     width: 100%;
     padding: 30px;
@@ -2327,7 +2327,7 @@ img {
     background: #eef2ff;
     color: #4361ee;
     padding: 5px 12px;
-    border-radius: 8px;
+    border-radius: 4px;
     font-weight: 700;
     font-size: 0.88rem;
     margin-top: 6px;
@@ -2361,7 +2361,7 @@ img {
     background: #eef2ff;
     color: #4361ee;
     padding: 6px 16px;
-    border-radius: 9999px;
+    border-radius: 4px;
     font-size: 0.82rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -2397,7 +2397,7 @@ img {
 .gsc-stat-icon-wrap {
     width: 48px;
     height: 48px;
-    border-radius: 12px;
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2433,7 +2433,7 @@ img {
 .gsc-proof-card {
     background: #ffffff;
     border: 1px solid #e2e8f0;
-    border-radius: 8px;
+    border-radius: 4px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -2647,7 +2647,7 @@ img {
 
 .gsc-lightbox-container {
     background: #0f172a;
-    border-radius: 8px;
+    border-radius: 4px;
     border: 1px solid rgba(255, 255, 255, 0.15);
     max-width: 1100px;
     width: 100%;
@@ -2920,7 +2920,7 @@ img {
     overflow: hidden;
     position: relative;
     width: 100%;
-    border-radius: 8px;
+    border-radius: 4px;
     padding: 8px 4px 18px 4px;
     cursor: grab;
 }
@@ -3172,7 +3172,7 @@ img {
     overflow: hidden;
     position: relative;
     width: 100%;
-    border-radius: 8px;
+    border-radius: 4px;
     padding: 8px 4px 18px 4px;
     cursor: grab;
 }
@@ -3201,7 +3201,7 @@ img {
 .content-card {
     background: #ffffff;
     border: 1px solid #e2e8f0;
-    border-radius: 8px;
+    border-radius: 4px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -3446,7 +3446,7 @@ img {
 .content-carousel-dot {
     width: 10px;
     height: 10px;
-    border-radius: 9999px;
+    border-radius: 4px;
     background: #cbd5e1;
     border: none;
     cursor: pointer;
@@ -3662,7 +3662,7 @@ img {
     background: rgba(0, 0, 0, 0.08);
     color: inherit;
     padding: 2px 7px;
-    border-radius: 9999px;
+    border-radius: 4px;
     font-weight: 700;
 }
 
@@ -3755,7 +3755,7 @@ img {
 .faq-item {
     background: #ffffff;
     border: 1.5px solid #e2e8f0;
-    border-radius: 8px;
+    border-radius: 4px;
     overflow: hidden;
     transition: var(--transition);
     box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03);
@@ -3900,7 +3900,7 @@ img {
     padding: 60px 20px;
     background: #f8faff;
     border: 2px dashed #cbd5e1;
-    border-radius: 8px;
+    border-radius: 4px;
     margin: 20px 0;
 }
 
@@ -3934,7 +3934,7 @@ img {
 /* Still Have Questions CTA Section */
 .faq-cta-card {
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-    border-radius: 10px;
+    border-radius: 4px;
     padding: 44px;
     color: #ffffff;
     margin-top: 70px;
@@ -4159,7 +4159,7 @@ img {
 .legal-highlight-card {
     background: #ffffff;
     border: 1px solid #e2e8f0;
-    border-radius: 8px;
+    border-radius: 4px;
     padding: 22px 20px;
     box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -4217,7 +4217,7 @@ img {
 .legal-toc-card {
     background: #ffffff;
     border: 1px solid #e2e8f0;
-    border-radius: 8px;
+    border-radius: 4px;
     padding: 24px;
     box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03);
 }
@@ -4270,7 +4270,7 @@ img {
 
 .legal-sidebar-cta {
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-    border-radius: 8px;
+    border-radius: 4px;
     padding: 22px 20px;
     color: #ffffff;
     box-shadow: 0 6px 18px rgba(15, 23, 42, 0.12);
@@ -4293,7 +4293,7 @@ img {
 .legal-content-card {
     background: #ffffff;
     border: 1px solid #e2e8f0;
-    border-radius: 8px;
+    border-radius: 4px;
     padding: 40px 44px;
     box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
 }
@@ -4501,7 +4501,7 @@ img {
 .service-pillar-card {
     background: #ffffff;
     border: 1px solid #e2e8f0;
-    border-radius: 8px;
+    border-radius: 4px;
     padding: 24px 20px;
     box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03);
     transition: all 0.25s ease;
@@ -4566,7 +4566,7 @@ img {
 .service-process-card {
     background: #ffffff;
     border: 1px solid #e2e8f0;
-    border-radius: 8px;
+    border-radius: 4px;
     padding: 22px 18px;
     box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03);
     position: relative;
@@ -4604,7 +4604,7 @@ img {
 /* Verified Case Study Proof Callout */
 .service-proof-banner {
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-    border-radius: 8px;
+    border-radius: 4px;
     padding: 32px 36px;
     color: #ffffff;
     margin: 45px 0;
@@ -4686,7 +4686,7 @@ img {
 .link-quality-comparison-wrap {
     background: #ffffff;
     border: 1px solid #e2e8f0;
-    border-radius: 8px;
+    border-radius: 4px;
     padding: 28px 32px;
     margin: 40px 0;
     box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04);

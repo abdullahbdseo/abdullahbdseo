@@ -132,7 +132,7 @@ export default function AiAutomationSavingsCalculator() {
               </div>
 
               {/* Automation Insight Note */}
-              <div style={{ marginTop: "14px", padding: "14px 16px", background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "8px", fontSize: "0.84rem", color: "#475569", lineHeight: 1.5 }}>
+              <div style={{ marginTop: "14px", padding: "14px 16px", background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px", fontSize: "0.84rem", color: "#475569", lineHeight: 1.5 }}>
                 <i className="fa-solid fa-microchip text-primary" style={{ marginRight: "6px" }}></i>
                 <strong>Where AI Automation Excels:</strong> Programmatic content generation, technical SEO log analysis, automated SERP ranking tracking, and internal linking graph updates.
               </div>

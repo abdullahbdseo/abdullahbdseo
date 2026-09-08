@@ -144,7 +144,7 @@ export default function GoogleAdsRoiCalculator() {
               </div>
 
               {/* Strategic Insights */}
-              <div style={{ marginTop: "14px", padding: "14px 16px", background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "8px", fontSize: "0.84rem", color: "#475569", lineHeight: 1.5 }}>
+              <div style={{ marginTop: "14px", padding: "14px 16px", background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px", fontSize: "0.84rem", color: "#475569", lineHeight: 1.5 }}>
                 <i className="fa-solid fa-lightbulb text-warning" style={{ marginRight: "6px" }}></i>
                 <strong>Pro-Tip:</strong> High CPCs? Pair Google Ads with <strong>Technical SEO &amp; Organic Ranking</strong> to capture non-brand search traffic at zero incremental marginal cost.
               </div>

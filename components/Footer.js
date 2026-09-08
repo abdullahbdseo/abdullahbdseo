@@ -61,7 +61,7 @@ export default function Footer() {
                   <div style={{
                     width: "38px",
                     height: "38px",
-                    borderRadius: "8px",
+                    borderRadius: "4px",
                     background: "rgba(255,255,255,0.22)",
                     border: "1px solid rgba(255,255,255,0.35)",
                     display: "flex",
@@ -83,7 +83,7 @@ export default function Footer() {
               </p>
               <div>
                 <Link href="/contact" className="btn-footer-cta" style={{
-                  borderRadius: "8px",
+                  borderRadius: "4px",
                   padding: "10px 22px",
                   fontWeight: 700,
                   background: "#ffffff",

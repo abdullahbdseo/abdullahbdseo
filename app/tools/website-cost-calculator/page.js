@@ -87,7 +87,7 @@ export default function WebsiteCostCalculator() {
                       style={{
                         padding: "12px 10px",
                         border: pageCount === item.id ? "2px solid #2563eb" : "1px solid #e2e8f0",
-                        borderRadius: "8px",
+                        borderRadius: "4px",
                         background: pageCount === item.id ? "#eff6ff" : "#ffffff",
                         color: pageCount === item.id ? "#1d4ed8" : "#334155",
                         textAlign: "center",
@@ -120,7 +120,7 @@ export default function WebsiteCostCalculator() {
                       style={{
                         padding: "14px 12px",
                         border: designType === item.id ? "2px solid #2563eb" : "1px solid #e2e8f0",
-                        borderRadius: "8px",
+                        borderRadius: "4px",
                         background: designType === item.id ? "#eff6ff" : "#ffffff",
                         color: designType === item.id ? "#1d4ed8" : "#334155",
                         textAlign: "left",
@@ -159,7 +159,7 @@ export default function WebsiteCostCalculator() {
                         flexDirection: "column",
                         padding: "12px 14px",
                         border: features[feat.key] ? "1.5px solid #2563eb" : "1px solid #e2e8f0",
-                        borderRadius: "8px",
+                        borderRadius: "4px",
                         background: features[feat.key] ? "#eff6ff" : "#ffffff",
                         cursor: "pointer",
                         transition: "all 0.15s ease"

@@ -360,7 +360,7 @@ export default function SchemaMarkupGenerator() {
                     Add FAQs to trigger interactive expandable dropdowns in Google Search results.
                   </p>
                   {faqList.map((faq, idx) => (
-                    <div key={idx} style={{ padding: "16px", border: "1px solid #e2e8f0", borderRadius: "8px", background: "#f8fafc", marginBottom: "14px" }}>
+                    <div key={idx} style={{ padding: "16px", border: "1px solid #e2e8f0", borderRadius: "4px", background: "#f8fafc", marginBottom: "14px" }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
                         <strong style={{ fontSize: "0.85rem", color: "#0f172a" }}>FAQ #{idx + 1}</strong>
                         {faqList.length > 1 && (

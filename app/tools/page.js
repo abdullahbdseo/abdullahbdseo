@@ -158,7 +158,7 @@ export default function ToolsHubPage() {
           {/* ================= SECTION 1: SEO & TECHNICAL OPTIMIZATION TOOLS ================= */}
           <div style={{ marginBottom: "56px" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "26px", paddingBottom: "14px", borderBottom: "2px solid #e2e8f0" }}>
-              <span style={{ width: "36px", height: "36px", borderRadius: "8px", background: "#eff6ff", color: "#2563eb", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.1rem" }}>
+              <span style={{ width: "36px", height: "36px", borderRadius: "4px", background: "#eff6ff", color: "#2563eb", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.1rem" }}>
                 <i className="fa-solid fa-magnifying-glass-chart"></i>
               </span>
               <div>
@@ -178,7 +178,7 @@ export default function ToolsHubPage() {
                     <div className="tool-ref-icon" style={{ background: tool.iconBg, color: tool.iconColor, margin: 0 }}>
                       <i className={tool.icon}></i>
                     </div>
-                    <span style={{ fontSize: "0.75rem", padding: "3px 10px", background: "#f1f5f9", borderRadius: "9999px", color: "#475569", fontWeight: 700 }}>
+                    <span style={{ fontSize: "0.75rem", padding: "3px 10px", background: "#f1f5f9", borderRadius: "4px", color: "#475569", fontWeight: 700 }}>
                       {tool.badge}
                     </span>
                   </div>
@@ -201,7 +201,7 @@ export default function ToolsHubPage() {
           {/* ================= SECTION 2: MARKETING & ROI CALCULATORS ================= */}
           <div style={{ marginBottom: "50px" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "26px", paddingBottom: "14px", borderBottom: "2px solid #e2e8f0" }}>
-              <span style={{ width: "36px", height: "36px", borderRadius: "8px", background: "#ecfdf5", color: "#059669", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.1rem" }}>
+              <span style={{ width: "36px", height: "36px", borderRadius: "4px", background: "#ecfdf5", color: "#059669", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.1rem" }}>
                 <i className="fa-solid fa-calculator"></i>
               </span>
               <div>
@@ -221,7 +221,7 @@ export default function ToolsHubPage() {
                     <div className="tool-ref-icon" style={{ background: tool.iconBg, color: tool.iconColor, margin: 0 }}>
                       <i className={tool.icon}></i>
                     </div>
-                    <span style={{ fontSize: "0.75rem", padding: "3px 10px", background: "#f1f5f9", borderRadius: "9999px", color: "#475569", fontWeight: 700 }}>
+                    <span style={{ fontSize: "0.75rem", padding: "3px 10px", background: "#f1f5f9", borderRadius: "4px", color: "#475569", fontWeight: 700 }}>
                       {tool.badge}
                     </span>
                   </div>
@@ -242,7 +242,7 @@ export default function ToolsHubPage() {
           </div>
 
           {/* Custom SEO & Consultation Banner */}
-          <div style={{ marginTop: "40px", background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)", borderRadius: "16px", padding: "44px 36px", textAlign: "center", color: "#ffffff", boxShadow: "0 10px 30px rgba(15, 23, 42, 0.2)" }}>
+          <div style={{ marginTop: "40px", background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)", borderRadius: "6px", padding: "44px 36px", textAlign: "center", color: "#ffffff", boxShadow: "0 10px 30px rgba(15, 23, 42, 0.2)" }}>
             <h2 style={{ fontSize: "1.9rem", fontWeight: 800, margin: "0 0 12px", color: "#ffffff" }}>
               Need a Custom Technical SEO Audit or Dedicated Organic Strategy?
             </h2>
@@ -250,10 +250,10 @@ export default function ToolsHubPage() {
               Automated tools are great for initial diagnostics, but human expertise discovers deep architectural bottlenecks, indexation leaks, and untapped keyword ranking opportunities.
             </p>
             <div style={{ display: "flex", justifyContent: "center", gap: "14px", flexWrap: "wrap" }}>
-              <Link href="/contact" style={{ background: "#2563eb", color: "#ffffff", padding: "12px 28px", borderRadius: "8px", fontWeight: 700, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "8px", transition: "all 0.2s" }}>
+              <Link href="/contact" style={{ background: "#2563eb", color: "#ffffff", padding: "12px 28px", borderRadius: "4px", fontWeight: 700, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "8px", transition: "all 0.2s" }}>
                 <i className="fa-solid fa-comments"></i> Book Free Growth Consultation
               </Link>
-              <Link href="/services" style={{ background: "rgba(255,255,255,0.1)", color: "#ffffff", padding: "12px 28px", borderRadius: "8px", fontWeight: 700, textDecoration: "none", border: "1px solid rgba(255,255,255,0.2)", display: "inline-flex", alignItems: "center", gap: "8px" }}>
+              <Link href="/services" style={{ background: "rgba(255,255,255,0.1)", color: "#ffffff", padding: "12px 28px", borderRadius: "4px", fontWeight: 700, textDecoration: "none", border: "1px solid rgba(255,255,255,0.2)", display: "inline-flex", alignItems: "center", gap: "8px" }}>
                 View All SEO Services <i className="fa-solid fa-arrow-right"></i>
               </Link>
             </div>

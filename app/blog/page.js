@@ -136,7 +136,7 @@ export default function BlogPage() {
 
           {/* BLOG GRID */}
           {filteredPosts.length === 0 ? (
-            <div style={{ textAlign: "center", padding: "60px 20px", background: "#ffffff", borderRadius: "12px", border: "1px solid #e2e8f0" }}>
+            <div style={{ textAlign: "center", padding: "60px 20px", background: "#ffffff", borderRadius: "6px", border: "1px solid #e2e8f0" }}>
               <i className="fa-solid fa-book-open" style={{ fontSize: "2.5rem", color: "#94a3b8", marginBottom: "14px" }}></i>
               <h3 style={{ fontSize: "1.2rem", fontWeight: 700, color: "#0f172a", marginBottom: "6px" }}>No guides found</h3>
               <p style={{ color: "#64748b", fontSize: "0.9rem", marginBottom: "16px" }}>Try searching with a different term or clear the category filter.</p>

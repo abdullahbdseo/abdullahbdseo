@@ -181,7 +181,7 @@ export default function AboutPage() {
                 <span>Core Areas of Expertise</span>
               </div>
 
-              <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderLeft: "4px solid #0062d2", borderRadius: "8px", padding: "clamp(18px, 3vw, 24px)" }}>
+              <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderLeft: "4px solid #0062d2", borderRadius: "4px", padding: "clamp(18px, 3vw, 24px)" }}>
                 <p style={{ fontSize: "1.02rem", color: "#334155", lineHeight: 1.8, margin: 0 }}>
                   My core areas of expertise include{" "}
                   <Link href="/services/local-seo-service-in-bangladesh" style={{ color: "#0062d2", fontWeight: 700, textDecoration: "underline" }}>Local SEO</Link>,{" "}
@@ -199,7 +199,7 @@ export default function AboutPage() {
                 <span>AI-Driven Search &amp; Modern SEO</span>
               </div>
 
-              <div style={{ background: "linear-gradient(180deg, #edf6ff 0%, #f4f9ff 100%)", border: "1px solid #dbeafe", borderLeft: "4px solid #059669", borderRadius: "8px", padding: "clamp(18px, 3vw, 24px)" }}>
+              <div style={{ background: "linear-gradient(180deg, #edf6ff 0%, #f4f9ff 100%)", border: "1px solid #dbeafe", borderLeft: "4px solid #059669", borderRadius: "4px", padding: "clamp(18px, 3vw, 24px)" }}>
                 <h3 style={{ fontSize: "clamp(1.1rem, 2.5vw, 1.2rem)", fontWeight: 800, color: "#0f172a", marginBottom: "10px" }}>
                   AI SEO, AEO, GEO &amp; LLM Optimization
                 </h3>
