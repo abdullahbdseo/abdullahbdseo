@@ -3,11 +3,20 @@ import { siteSettings } from "@/lib/data";
 
 export const metadata = {
   title: `Free SEO & Marketing Tools Suite | ${siteSettings.site_name}`,
-  description: `Access 10 free in-house utilities for technical SEO auditing, schema markup generation, SERP preview, robots & sitemap building, HTTP headers, and ROI calculation.`
+  description: `Access 11 free in-house utilities for technical SEO auditing, action plan generation, schema markup, SERP preview, robots & sitemap building, and ROI calculation.`
 };
 
 export default function ToolsHubPage() {
   const seoTools = [
+    {
+      title: "SEO Audit & Action Plan Report",
+      href: "/tools/seo-audit-report-generator",
+      icon: "fa-solid fa-file-excel",
+      iconBg: "#ecfdf5",
+      iconColor: "#059669",
+      badge: "Excel-Grade Audit",
+      desc: "Complete 7-sheet diagnostic audit report featuring Executive Summary, Critical Issues, Technical SEO, Schema Code, Action Roadmap, and Keyword Strategy."
+    },
     {
       title: "Website SEO Analyzer",
       href: "/tools/website-seo-analyzer",

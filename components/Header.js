@@ -57,7 +57,7 @@ export default function Header() {
                   <i className="fa-solid fa-toolbox" style={{ color: "#2563eb", marginRight: "6px" }}></i> Free SEO &amp; Growth Tools
                 </span>
                 <Link href="/tools" className="dropdown-all-link">
-                  View All 10 Tools <i className="fa-solid fa-arrow-right" style={{ fontSize: "0.72rem", marginLeft: "4px" }}></i>
+                  View All {freeTools.length} Tools <i className="fa-solid fa-arrow-right" style={{ fontSize: "0.72rem", marginLeft: "4px" }}></i>
                 </Link>
               </div>
 
