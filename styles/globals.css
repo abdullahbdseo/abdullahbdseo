@@ -6513,6 +6513,125 @@ nextjs-portal,
     margin: 0;
 }
 
+/* ==========================================================================
+   BLOG ARTICLE 2-COLUMN TOC SIDEBAR LAYOUT
+   ========================================================================== */
+.article-layout-grid {
+    display: grid;
+    grid-template-columns: 290px 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+.article-sidebar-toc {
+    position: sticky;
+    top: 90px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.article-toc-box {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+.article-toc-header {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.article-toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.article-toc-link {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 7px 10px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #64748b;
+    text-decoration: none;
+    line-height: 1.4;
+    transition: all 0.2s ease;
+}
+
+.article-toc-link:hover,
+.article-toc-link.active {
+    background: #eff6ff;
+    color: #4361ee;
+    font-weight: 700;
+}
+
+.article-toc-link i {
+    font-size: 0.75rem;
+    margin-top: 3px;
+    color: #94a3b8;
+    flex-shrink: 0;
+}
+
+.article-toc-link:hover i,
+.article-toc-link.active i {
+    color: #4361ee;
+}
+
+.article-toc-link.level-3 {
+    padding-left: 22px;
+    font-size: 0.8rem;
+    color: #94a3b8;
+}
+
+.article-toc-cta {
+    background: linear-gradient(135deg, #eef2ff 0%, #edf2fe 100%);
+    border: 1px solid #c7d2fe;
+    border-radius: 12px;
+    padding: 18px;
+    text-align: center;
+}
+
+.article-toc-cta h5 {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #1e3a8a;
+    margin: 0 0 6px;
+}
+
+.article-toc-cta p {
+    font-size: 0.82rem;
+    color: #64748b;
+    margin: 0 0 12px;
+    line-height: 1.5;
+}
+
+@media (max-width: 1024px) {
+    .article-layout-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    .article-sidebar-toc {
+        position: relative;
+        top: 0;
+    }
+}
+
 @media (max-width: 768px) {
     .blog-featured-card {
         grid-template-columns: 1fr;
