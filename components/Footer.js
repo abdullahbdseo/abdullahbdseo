@@ -135,7 +135,6 @@ export default function Footer() {
                 <li><Link href="/privacy-policy">Privacy Policy</Link></li>
                 <li><Link href="/terms">Terms of Service</Link></li>
                 <li><Link href="/refund-policy">Refund Policy</Link></li>
-                <li><Link href="/login" style={{ color: "rgba(255,255,255,0.6)" }}><i className="fa-solid fa-shield-halved"></i> Admin Portal</Link></li>
               </ul>
             </div>
           </div>
