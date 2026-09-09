@@ -18,6 +18,11 @@ export default function DeepSeoAuditPage() {
   return (
     <div className={isDark ? 'indexscan-dark' : 'indexscan-light'} id="indexscan-audit-root">
       <style>{`
+        /* Hide global header & footer on this standalone page */
+        .digi-header { display: none !important; }
+        .digi-newsletter-ribbon,
+        footer { display: none !important; }
+        body > main { padding: 0 !important; margin: 0 !important; }
         #indexscan-audit-root {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
           min-height: 100vh;
