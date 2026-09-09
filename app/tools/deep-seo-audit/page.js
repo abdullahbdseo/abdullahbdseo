@@ -718,8 +718,3 @@ function Empty({ msg }) {
     </div>
   );
 }
-        </div >
-      </footer >
-    </div >
-  );
-}
