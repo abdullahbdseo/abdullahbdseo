@@ -1,676 +1,707 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
-export default function DeepSeoAuditPage() {
+// ── helpers ────────────────────────────────────────────────────────────────
+const scoreColor = s => s >= 80 ? '#059669' : s >= 50 ? '#d97706' : '#dc2626';
+const scoreLabel = s => s >= 80 ? 'Good' : s >= 50 ? 'Needs Work' : 'Poor';
+const scoreBg = s => s >= 80 ? '#ecfdf5' : s >= 50 ? '#fffbeb' : '#fef2f2';
+const priStyle = p => ({
+  Critical: { bg: '#fef2f2', color: '#dc2626', border: '#fecaca' },
+  High: { bg: '#fff7ed', color: '#ea580c', border: '#fed7aa' },
+  Medium: { bg: '#fffbeb', color: '#d97706', border: '#fde68a' },
+  Low: { bg: '#f0fdf4', color: '#16a34a', border: '#bbf7d0' },
+}[p] || { bg: '#f9fafb', color: '#6b7280', border: '#e5e7eb' });
+
+// ── Excel export (pure JS, no library) ────────────────────────────────────
+function escXml(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+function buildXlsx(sheets) {
+  // sheets = [{ name, rows: [[...cells]] }]
+  // cells = { v: value, s?: 'h'|'b' (header/bold) }
+
+  const sharedStrings = [];
+  const ssMap = {};
+  function si(v) {
+    const k = String(v);
+    if (k in ssMap) return ssMap[k];
+    const i = sharedStrings.length;
+    ssMap[k] = i;
+    sharedStrings.push(k);
+    return i;
+  }
+
+  const sheetXmls = sheets.map(({ name, rows }) => {
+    const rowsXml = rows.map((row, ri) => {
+      const cellsXml = row.map((cell, ci) => {
+        const col = String.fromCharCode(65 + ci);
+        const ref = `${col}${ri + 1}`;
+        const v = cell?.v ?? cell ?? '';
+        const s = cell?.s || '';
+        const style = s === 'h' ? ' s="1"' : s === 'b' ? ' s="2"' : '';
+        if (v === '' || v === null || v === undefined) return `<c r="${ref}"${style}/>`;
+        const idx = si(v);
+        return `<c r="${ref}" t="s"${style}><v>${idx}</v></c>`;
+      }).join('');
+      return `<row r="${ri + 1}">${cellsXml}</row>`;
+    }).join('');
+    return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetData>${rowsXml}</sheetData></worksheet>`;
+  });
+
+  const ssXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><sst xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" count="${sharedStrings.length}" uniqueCount="${sharedStrings.length}">${sharedStrings.map(s => `<si><t xml:space="preserve">${escXml(s)}</t></si>`).join('')}</sst>`;
+
+  const stylesXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="3"><font><sz val="11"/><name val="Calibri"/></font><font><sz val="11"/><name val="Calibri"/><b/></font><font><sz val="11"/><name val="Calibri"/><b/><color rgb="FFFFFFFF"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF059669"/></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="3"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="0" fontId="2" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"/></cellXfs></styleSheet>`;
+
+  const wbXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>${sheets.map((s, i) => `<sheet name="${escXml(s.name)}" sheetId="${i + 1}" r:id="rId${i + 2}"/>`).join('')}</sheets></workbook>`;
+
+  const wbRels = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings" Target="sharedStrings.xml"/>${sheets.map((_, i) => `<Relationship Id="rId${i + 2}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i + 1}.xml"/>`).join('')}</Relationships>`;
+
+  const contentTypes = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>${sheets.map((_, i) => `<Override PartName="/xl/worksheets/sheet${i + 1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join('')}<Override PartName="/xl/sharedStrings.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>`;
+
+  const rootRels = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>`;
+
+  // simple zip using data URIs (no JSZip needed — manual zip structure)
+  // We'll use a simplified approach with downloadable CSV-per-sheet wrapped as xlsx via Blob
+  // For a true xlsx without a library we use a known trick: store as a zip
+  // Since we can't use JSZip here, we'll use a workaround: build xlsx binary manually
+  // Actually let's use the simplest possible approach: write it as a multi-sheet CSV with clear separators
+  // and name it .xlsx so Excel opens it (Excel accepts tab-separated .xls too)
+
+  // Best no-lib approach: build a real ZIP binary in JS
+  function str2ab(str) {
+    const buf = new ArrayBuffer(str.length);
+    const view = new Uint8Array(buf);
+    for (let i = 0; i < str.length; i++) view[i] = str.charCodeAt(i) & 0xFF;
+    return buf;
+  }
+  function crc32(buf) {
+    const crcTable = [];
+    for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++)c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; crcTable[n] = c; }
+    let crc = 0xFFFFFFFF;
+    const bytes = new Uint8Array(buf);
+    for (let i = 0; i < bytes.length; i++) crc = (crc >>> 8) ^ crcTable[(crc ^ bytes[i]) & 0xFF];
+    return (crc ^ 0xFFFFFFFF) >>> 0;
+  }
+  function deflate(data) { return new Uint8Array(data); } // stored (no compression)
+  function u32(n) { const b = new Uint8Array(4); new DataView(b.buffer).setUint32(0, n, true); return b; }
+  function u16(n) { const b = new Uint8Array(2); new DataView(b.buffer).setUint16(0, n, true); return b; }
+  function concat(...arrs) {
+    const total = arrs.reduce((s, a) => s + a.length, 0);
+    const out = new Uint8Array(total); let off = 0;
+    for (const a of arrs) { out.set(a, off); off += a.length; }
+    return out;
+  }
+  function enc(s) { return new TextEncoder().encode(s); }
+
+  const files = [
+    ['[Content_Types].xml', contentTypes],
+    ['_rels/.rels', rootRels],
+    ['xl/workbook.xml', wbXml],
+    ['xl/_rels/workbook.xml.rels', wbRels],
+    ['xl/sharedStrings.xml', ssXml],
+    ['xl/styles.xml', stylesXml],
+    ...sheets.map((s, i) => [`xl/worksheets/sheet${i + 1}.xml`, sheetXmls[i]]),
+  ];
+
+  const localHeaders = []; const centralDir = []; let offset = 0;
+  for (const [name, content] of files) {
+    const nameBytes = enc(name);
+    const dataBytes = enc(content);
+    const crc = crc32(dataBytes.buffer);
+    const sig = new Uint8Array([0x50, 0x4B, 0x03, 0x04]);
+    const localHeader = concat(sig, u16(20), u16(0), u16(0), u32(crc), u32(dataBytes.length), u32(dataBytes.length), u16(nameBytes.length), u16(0), nameBytes, dataBytes);
+    localHeaders.push(localHeader);
+    const cdSig = new Uint8Array([0x50, 0x4B, 0x01, 0x02]);
+    const cd = concat(cdSig, u16(20), u16(20), u16(0), u16(0), u32(crc), u32(dataBytes.length), u32(dataBytes.length), u16(nameBytes.length), u16(0), u16(0), u16(0), u16(0), u32(0), u32(offset), nameBytes);
+    centralDir.push(cd);
+    offset += localHeader.length;
+  }
+  const localData = concat(...localHeaders);
+  const cdData = concat(...centralDir);
+  const cdSize = cdData.length;
+  const cdOffset = localData.length;
+  const eocd = concat(new Uint8Array([0x50, 0x4B, 0x05, 0x06]), u16(0), u16(0), u16(files.length), u16(files.length), u32(cdSize), u32(cdOffset), u16(0));
+  return concat(localData, cdData, eocd);
+}
+
+// ── Analyze HTML ───────────────────────────────────────────────────────────
+function analyzeHTML(html, targetUrl) {
+  const parser = typeof DOMParser !== 'undefined' ? new DOMParser() : null;
+  let doc = null;
+  if (parser) doc = parser.parseFromString(html, 'text/html');
+  const get = s => doc ? doc.querySelector(s) : null;
+  const getAll = s => doc ? [...doc.querySelectorAll(s)] : [];
+  const attr = (el, a) => el ? el.getAttribute(a) || '' : '';
+  const txt = el => el ? el.textContent.trim() : '';
+
+  const title = txt(get('title'));
+  const metaDesc = attr(get('meta[name="description"]'), 'content');
+  const metaRobots = attr(get('meta[name="robots"]'), 'content');
+  const canonical = attr(get('link[rel="canonical"]'), 'href');
+  const viewport = attr(get('meta[name="viewport"]'), 'content');
+  const charset = get('meta[charset]') ? 'UTF-8' : '';
+  const ogTitle = attr(get('meta[property="og:title"]'), 'content');
+  const ogDesc = attr(get('meta[property="og:description"]'), 'content');
+  const ogImage = attr(get('meta[property="og:image"]'), 'content');
+  const ogType = attr(get('meta[property="og:type"]'), 'content');
+  const ogUrl = attr(get('meta[property="og:url"]'), 'content');
+  const twitterCard = attr(get('meta[name="twitter:card"]'), 'content');
+  const twitterTitle = attr(get('meta[name="twitter:title"]'), 'content');
+  const twitterImage = attr(get('meta[name="twitter:image"]'), 'content');
+
+  const h1s = getAll('h1'); const h2s = getAll('h2'); const h3s = getAll('h3'); const h4s = getAll('h4');
+  const imgs = getAll('img');
+  const imgsNoAlt = imgs.filter(i => !i.getAttribute('alt') || i.getAttribute('alt').trim() === '');
+  const allLinks = getAll('a[href]');
+  let hostname = '';
+  try { hostname = new URL(targetUrl).hostname; } catch (e) { }
+  const internalLinks = allLinks.filter(a => { const h = a.getAttribute('href') || ''; return h.startsWith('/') || h.includes(hostname); });
+  const externalLinks = allLinks.filter(a => { const h = a.getAttribute('href') || ''; return h.startsWith('http') && !h.includes(hostname); });
+  const nofollowLinks = allLinks.filter(a => (a.getAttribute('rel') || '').includes('nofollow'));
+  const schemaScripts = getAll('script[type="application/ld+json"]');
+  const hreflang = getAll('link[rel="hreflang"]');
+  const bodyText = doc ? (doc.body ? doc.body.textContent : '') : '';
+  const wordCount = bodyText.trim().split(/\s+/).filter(w => w.length > 1).length;
+  const tl = title.length, dl = metaDesc.length;
+  const noindex = metaRobots.includes('noindex');
+
+  // ── Checks ──
+  const onpage = [
+    { label: 'Title Tag Present', pass: tl > 0, value: title || 'Missing', note: tl > 0 ? `${tl} chars` : 'No title tag found' },
+    { label: 'Title Length (50–60 chars)', pass: tl >= 50 && tl <= 60, value: `${tl} chars`, note: tl < 50 ? 'Too short' : tl > 60 ? 'Too long' : 'Optimal' },
+    { label: 'Meta Description Present', pass: dl > 0, value: metaDesc || 'Missing', note: dl > 0 ? `${dl} chars` : 'No meta description' },
+    { label: 'Meta Description (120–160)', pass: dl >= 120 && dl <= 160, value: `${dl} chars`, note: dl < 120 && dl > 0 ? 'Too short' : dl > 160 ? 'Too long' : dl === 0 ? 'Missing' : 'Optimal' },
+    { label: 'Single H1 Tag', pass: h1s.length === 1, value: `${h1s.length} H1 found`, note: h1s.length === 0 ? 'No H1 found' : h1s.length > 1 ? 'Multiple H1s — bad for SEO' : txt(h1s[0]).substring(0, 60) },
+    { label: 'H2 Subheadings Present', pass: h2s.length > 0, value: `${h2s.length} H2 tags`, note: h2s.length > 0 ? 'Good content structure' : 'No H2 subheadings found' },
+    { label: 'H3–H4 Sub-sections', pass: h3s.length > 0, value: `${h3s.length} H3, ${h4s.length} H4`, note: h3s.length > 0 ? 'Good hierarchy' : 'Consider adding H3 headings' },
+    { label: 'Image Alt Text Coverage', pass: imgsNoAlt.length === 0, value: `${imgsNoAlt.length}/${imgs.length} missing alt`, note: imgsNoAlt.length === 0 ? 'All images have alt text' : `${imgsNoAlt.length} images missing alt attribute` },
+    { label: 'Word Count (min 300)', pass: wordCount >= 300, value: `${wordCount} words`, note: wordCount < 300 ? 'Thin content — add more text' : 'Good content volume' },
+  ];
+
+  const technical = [
+    { label: 'Canonical URL Set', pass: canonical.length > 0, value: canonical || 'Not set', note: canonical ? 'Self-referencing canonical set' : 'Missing canonical — may cause duplicate issues' },
+    { label: 'Viewport Meta Tag', pass: viewport.length > 0, value: viewport || 'Missing', note: viewport ? 'Mobile-friendly' : 'Missing viewport meta tag' },
+    { label: 'Charset Declaration', pass: charset.length > 0, value: charset || 'Not found', note: charset ? 'UTF-8 declared' : 'No charset declaration found' },
+    { label: 'Robots Meta Tag', pass: true, value: metaRobots || 'Not set (default: index)', note: noindex ? '⚠️ Page is NOINDEX!' : 'Page is indexable' },
+    { label: 'NOT Noindexed', pass: !noindex, value: noindex ? 'NOINDEX DETECTED' : 'Indexable', note: noindex ? '🚨 Google is blocked from indexing this page!' : 'Crawlable by search engines' },
+    { label: 'JSON-LD Schema Markup', pass: schemaScripts.length > 0, value: schemaScripts.length > 0 ? `${schemaScripts.length} schema block(s)` : 'None found', note: schemaScripts.length > 0 ? 'Rich snippet eligible' : 'Add structured data for rich results' },
+    { label: 'Hreflang Tags', pass: true, value: `${hreflang.length} hreflang tag(s)`, note: hreflang.length > 0 ? 'International targeting configured' : 'None (fine for single-language sites)' },
+  ];
+
+  const social = [
+    { label: 'OG Title', pass: ogTitle.length > 0, value: ogTitle || 'Missing', note: ogTitle ? 'Set' : 'Missing — social shares look poor' },
+    { label: 'OG Description', pass: ogDesc.length > 0, value: ogDesc || 'Missing', note: ogDesc ? 'Set' : 'Missing' },
+    { label: 'OG Image', pass: ogImage.length > 0, value: ogImage || 'Missing', note: ogImage ? 'Set' : 'Missing — no image on social previews' },
+    { label: 'OG Type', pass: ogType.length > 0, value: ogType || 'Not set', note: ogType || 'Not defined' },
+    { label: 'OG URL', pass: ogUrl.length > 0, value: ogUrl || 'Not set', note: ogUrl ? 'Canonical URL set in OG' : 'OG URL not specified' },
+    { label: 'Twitter Card', pass: twitterCard.length > 0, value: twitterCard || 'Missing', note: twitterCard ? twitterCard : 'Twitter card not configured' },
+    { label: 'Twitter Title', pass: twitterTitle.length > 0, value: twitterTitle || 'Missing', note: twitterTitle ? 'Set' : 'Missing' },
+    { label: 'Twitter Image', pass: twitterImage.length > 0, value: twitterImage || 'Missing', note: twitterImage ? 'Set' : 'No Twitter-specific image' },
+  ];
+
+  const links = [
+    { label: 'Internal Links (min 3)', pass: internalLinks.length >= 3, value: `${internalLinks.length} internal links`, note: internalLinks.length < 3 ? 'Too few internal links' : 'Good internal linking' },
+    { label: 'External Links', pass: true, value: `${externalLinks.length} external links`, note: 'Informational' },
+    { label: 'Nofollow Links', pass: true, value: `${nofollowLinks.length} nofollow links`, note: 'Informational' },
+    { label: 'Total Crawlable Links', pass: allLinks.length > 0, value: `${allLinks.length} total`, note: allLinks.length > 0 ? 'Links found' : 'No links detected' },
+  ];
+
+  const calc = checks => Math.round((checks.filter(c => c.pass).length / checks.length) * 100);
+  const onpageScore = calc(onpage), techScore = calc(technical), socialScore = calc(social), linkScore = calc(links);
+  const overall = Math.round((onpageScore + techScore + socialScore + linkScore) / 4);
+
+  const critical = [
+    ...onpage.filter(c => !c.pass).map(c => ({ area: 'On-Page', ...c, priority: 'High' })),
+    ...technical.filter(c => !c.pass).map(c => ({ area: 'Technical', ...c, priority: c.label.includes('Noindex') ? 'Critical' : 'High' })),
+    ...social.filter(c => !c.pass).map(c => ({ area: 'Social/OG', ...c, priority: 'Medium' })),
+  ];
+  const priOrder = { Critical: 0, High: 1, Medium: 2, Low: 3 };
+  const roadmap = [...critical].sort((a, b) => priOrder[a.priority] - priOrder[b.priority]).map((r, i) => ({ ...r, step: i + 1 }));
+
+  return {
+    url: targetUrl, auditedAt: new Date().toLocaleString(),
+    overall, onpageScore, techScore, socialScore, linkScore,
+    title, metaDesc, canonical, viewport, charset, noindex,
+    wordCount, h1s: h1s.map(txt), h2s: h2s.map(txt), h3s: h3s.map(txt),
+    imgTotal: imgs.length, imgNoAlt: imgsNoAlt.length,
+    imgUrls: imgs.slice(0, 20).map(i => ({ src: i.getAttribute('src') || '', alt: i.getAttribute('alt') || '' })),
+    internalLinks: internalLinks.length, externalLinks: externalLinks.length,
+    nofollowLinks: nofollowLinks.length, totalLinks: allLinks.length,
+    schemaCount: schemaScripts.length, schemaBlocks: schemaScripts.map(s => s.textContent.trim().substring(0, 200)),
+    hreflangCount: hreflang.length,
+    ogTitle, ogDesc, ogImage, ogType, ogUrl, twitterCard, twitterTitle, twitterImage,
+    onpage, technical, social, links, critical, roadmap,
+  };
+}
+
+// ── XLSX Builder ───────────────────────────────────────────────────────────
+function buildAuditExcel(r) {
+  const H = v => ({ v, s: 'h' }); // header cell
+  const B = v => ({ v, s: 'b' }); // bold cell
+  const V = v => ({ v });        // normal cell
+
+  const pass = c => c.pass ? '✓ PASS' : '✗ FAIL';
+  const priMap = { Critical: '🔴 Critical', High: '🟠 High', Medium: '🟡 Medium', Low: '🟢 Low' };
+
+  const sheets = [
+    {
+      name: '1. Executive Summary', rows: [
+        [H('SEO DEEP AUDIT REPORT')],
+        [V('URL:'), B(r.url)],
+        [V('Audited At:'), V(r.auditedAt)],
+        [],
+        [H('Category'), H('Score'), H('Status')],
+        [V('Overall Score'), V(r.overall + '%'), V(scoreLabel(r.overall))],
+        [V('On-Page SEO'), V(r.onpageScore + '%'), V(scoreLabel(r.onpageScore))],
+        [V('Technical SEO'), V(r.techScore + '%'), V(scoreLabel(r.techScore))],
+        [V('Social / OG'), V(r.socialScore + '%'), V(scoreLabel(r.socialScore))],
+        [V('Link Analysis'), V(r.linkScore + '%'), V(scoreLabel(r.linkScore))],
+        [],
+        [H('Key Data Point'), H('Value')],
+        [V('Page Title'), V(r.title || 'Missing')],
+        [V('Title Length'), V(r.title.length + ' chars')],
+        [V('Meta Description'), V(r.metaDesc || 'Missing')],
+        [V('Meta Desc Length'), V(r.metaDesc.length + ' chars')],
+        [V('Canonical URL'), V(r.canonical || 'Not set')],
+        [V('Noindex?'), V(r.noindex ? 'YES — BLOCKED!' : 'No')],
+        [V('Word Count'), V(r.wordCount + ' words')],
+        [V('H1 Tags'), V(r.h1s.length + ': ' + r.h1s.join(' | '))],
+        [V('H2 Tags'), V(r.h2s.length + ' H2 tags')],
+        [V('Total Images'), V(r.imgTotal)],
+        [V('Images Missing Alt'), V(r.imgNoAlt)],
+        [V('Schema Blocks'), V(r.schemaCount)],
+        [V('Internal Links'), V(r.internalLinks)],
+        [V('External Links'), V(r.externalLinks)],
+        [V('Total Links'), V(r.totalLinks)],
+      ]
+    },
+    {
+      name: '2. Critical Issues', rows: [
+        [H('#'), H('Area'), H('Issue'), H('Current Value'), H('Detail / Fix'), H('Priority')],
+        ...(r.critical.length > 0
+          ? r.critical.map((c, i) => [V(i + 1), V(c.area), V(c.label), V(c.value), V(c.note), V(priMap[c.priority] || c.priority)])
+          : [[V(''), V('✅ No critical issues found!')]]
+        ),
+      ]
+    },
+    {
+      name: '3. On-Page SEO', rows: [
+        [H('Check'), H('Status'), H('Current Value'), H('Note / Recommendation')],
+        ...r.onpage.map(c => [V(c.label), V(pass(c)), V(c.value), V(c.note)]),
+      ]
+    },
+    {
+      name: '4. Technical SEO', rows: [
+        [H('Check'), H('Status'), H('Current Value'), H('Note / Recommendation')],
+        ...r.technical.map(c => [V(c.label), V(pass(c)), V(c.value), V(c.note)]),
+      ]
+    },
+    {
+      name: '5. Social & OG Tags', rows: [
+        [H('Check'), H('Status'), H('Current Value'), H('Note / Recommendation')],
+        ...r.social.map(c => [V(c.label), V(pass(c)), V(c.value), V(c.note)]),
+      ]
+    },
+    {
+      name: '6. Images', rows: [
+        [H('#'), H('Image URL'), H('Alt Text'), H('Status')],
+        ...r.imgUrls.map((img, i) => [V(i + 1), V(img.src || '(no src)'), V(img.alt || 'MISSING ALT'), V(img.alt ? '✓ Has Alt' : '✗ Missing Alt')]),
+      ]
+    },
+    {
+      name: '7. Link Analysis', rows: [
+        [H('Check'), H('Status'), H('Value'), H('Note')],
+        ...r.links.map(c => [V(c.label), V(pass(c)), V(c.value), V(c.note)]),
+        [],
+        [H('Metric'), H('Count')],
+        [V('Internal Links'), V(r.internalLinks)],
+        [V('External Links'), V(r.externalLinks)],
+        [V('Nofollow Links'), V(r.nofollowLinks)],
+        [V('Total Links'), V(r.totalLinks)],
+      ]
+    },
+    {
+      name: '8. Action Roadmap', rows: [
+        [H('Step'), H('Priority'), H('Action Required'), H('Area'), H('Detail')],
+        ...(r.roadmap.length > 0
+          ? r.roadmap.map(t => [V(t.step), V(priMap[t.priority] || t.priority), V('Fix: ' + t.label), V(t.area), V(t.note)])
+          : [[V(''), V('✅ No actions required!')]]
+        ),
+      ]
+    },
+  ];
+
+  return buildXlsx(sheets);
+}
+
+// ── MAIN COMPONENT ─────────────────────────────────────────────────────────
+const SHEETS = [
+  { id: 0, label: '📊 Executive Summary' },
+  { id: 1, label: '🔴 Critical Issues' },
+  { id: 2, label: '⚙️ Technical SEO' },
+  { id: 3, label: '📝 On-Page SEO' },
+  { id: 4, label: '🔗 Links & Structure' },
+  { id: 5, label: '🖼️ Images' },
+  { id: 6, label: '🌐 Social / OG Tags' },
+  { id: 7, label: '🎯 Action Roadmap' },
+];
+
+export default function DeepSEOAuditPage() {
   const [url, setUrl] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [isDark, setIsDark] = useState(false);
-  const [activeNav, setActiveNav] = useState('audit');
+  const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [progressLabel, setProgressLabel] = useState('');
+  const [results, setResults] = useState(null);
+  const [error, setError] = useState('');
+  const [activeSheet, setActiveSheet] = useState(0);
 
-  const handleSubmit = (e) => {
+  async function runAudit(e) {
     e.preventDefault();
     if (!url.trim()) return;
-    setIsLoading(true);
-    setTimeout(() => setIsLoading(false), 3000);
-  };
+    let target = url.trim();
+    if (!/^https?:\/\//i.test(target)) target = 'https://' + target;
+    setError(''); setResults(null); setLoading(true); setProgress(0); setActiveSheet(0);
+
+    const steps = ['Resolving domain…', 'Fetching page HTML…', 'Parsing meta tags…', 'Checking headings…', 'Analyzing images…', 'Inspecting canonical & robots…', 'Checking Open Graph…', 'Analyzing link structure…', 'Auditing social tags…', 'Computing scores…', 'Generating Excel data…'];
+    for (let i = 0; i < steps.length; i++) {
+      setProgressLabel(steps[i]);
+      setProgress(Math.round(((i + 1) / steps.length) * 88));
+      await new Promise(r => setTimeout(r, 250 + Math.random() * 200));
+    }
+    try {
+      const resp = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(target)}`);
+      if (!resp.ok) throw new Error('Could not reach the URL. Make sure it is publicly accessible.');
+      const data = await resp.json();
+      setProgressLabel('Finalizing report…'); setProgress(96);
+      await new Promise(r => setTimeout(r, 300));
+      const audit = analyzeHTML(data.contents || '', target);
+      setResults(audit); setProgress(100); setProgressLabel('Done!');
+    } catch (err) {
+      setError(err.message || 'Failed to audit. The site may block external requests.');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function downloadExcel() {
+    if (!results) return;
+    const bytes = buildAuditExcel(results);
+    const blob = new Blob([bytes], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `SEO-Audit-${(() => { try { return new URL(results.url).hostname; } catch (e) { return 'report'; } })()}-${Date.now()}.xlsx`;
+    a.click();
+  }
 
   return (
-    <div className={isDark ? 'indexscan-dark' : 'indexscan-light'} id="indexscan-audit-root">
-      <style>{`
-        /* Hide global header & footer on this standalone page */
-        .digi-header { display: none !important; }
-        .digi-newsletter-ribbon,
-        footer { display: none !important; }
-        body > main { padding: 0 !important; margin: 0 !important; }
-        #indexscan-audit-root {
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-          min-height: 100vh;
-          display: flex;
-          flex-direction: column;
-          transition: background 0.2s, color 0.2s;
-        }
-        .indexscan-light {
-          background: #f8fafc;
-          color: #0f172a;
-        }
-        .indexscan-dark {
-          background: #030712;
-          color: #f8fafc;
-        }
+    <div style={{ minHeight: '100vh', background: 'var(--bg-primary,#f9fafb)', fontFamily: "Inter,'Segoe UI',system-ui,sans-serif" }}>
 
-        /* ─── HEADER ─── */
-        .ic-header {
-          position: sticky;
-          top: 0;
-          z-index: 40;
-          width: 100%;
-          border-bottom: 1px solid;
-          backdrop-filter: blur(12px);
-          transition: background 0.2s, border-color 0.2s;
-        }
-        .indexscan-light .ic-header {
-          background: rgba(255,255,255,0.9);
-          border-color: #e2e8f0;
-        }
-        .indexscan-dark .ic-header {
-          background: rgba(3,7,18,0.9);
-          border-color: #1e293b;
-        }
-        .ic-header-inner {
-          max-width: 1280px;
-          margin: 0 auto;
-          padding: 0 1.5rem;
-          height: 64px;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-        }
-        .ic-logo {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          text-decoration: none;
-          cursor: pointer;
-        }
-        .ic-logo-icon {
-          width: 36px;
-          height: 36px;
-          border-radius: 8px;
-          background: #2563eb;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: white;
-          box-shadow: 0 4px 12px rgba(37,99,235,0.2);
-          flex-shrink: 0;
-          transition: background 0.2s;
-        }
-        .ic-logo-icon:hover { background: #1d4ed8; }
-        .ic-logo-text {
-          font-size: 1.2rem;
-          font-weight: 900;
-          letter-spacing: -0.03em;
-          line-height: 1;
-        }
-        .indexscan-light .ic-logo-text { color: #0f172a; }
-        .indexscan-dark .ic-logo-text { color: #f8fafc; }
-        .ic-logo-text span { color: #2563eb; }
-        .ic-badge-api {
-          display: inline-block;
-          margin-left: 8px;
-          padding: 2px 6px;
-          font-size: 10px;
-          font-weight: 700;
-          border-radius: 4px;
-          border: 1px solid;
-          line-height: 1.4;
-        }
-        .indexscan-light .ic-badge-api {
-          background: #eff6ff;
-          color: #2563eb;
-          border-color: rgba(37,99,235,0.3);
-        }
-        .indexscan-dark .ic-badge-api {
-          background: rgba(30,58,138,0.5);
-          color: #93c5fd;
-          border-color: #1e3a8a;
-        }
-        .ic-nav {
-          display: flex;
-          align-items: center;
-          gap: 4px;
-        }
-        @media (max-width: 768px) { .ic-nav { display: none; } }
-        .ic-nav-btn {
-          padding: 8px 14px;
-          font-size: 0.875rem;
-          font-weight: 500;
-          border-radius: 8px;
-          border: none;
-          cursor: pointer;
-          transition: all 0.15s;
-          display: flex;
-          align-items: center;
-          gap: 6px;
-          background: transparent;
-          text-decoration: none;
-        }
-        .indexscan-light .ic-nav-btn {
-          color: #475569;
-        }
-        .indexscan-light .ic-nav-btn:hover {
-          color: #0f172a;
-          background: #f1f5f9;
-        }
-        .indexscan-dark .ic-nav-btn {
-          color: #94a3b8;
-        }
-        .indexscan-dark .ic-nav-btn:hover {
-          color: #f8fafc;
-          background: #1e293b;
-        }
-        .ic-nav-btn-audit {
-          font-weight: 700 !important;
-          border: 1px solid !important;
-        }
-        .indexscan-light .ic-nav-btn-audit {
-          color: #065f46 !important;
-          background: #ecfdf5 !important;
-          border-color: #6ee7b7 !important;
-        }
-        .indexscan-dark .ic-nav-btn-audit {
-          color: #6ee7b7 !important;
-          background: rgba(6,78,59,0.5) !important;
-          border-color: #065f46 !important;
-        }
-        .ic-new-badge {
-          padding: 1px 6px;
-          font-size: 9px;
-          font-weight: 800;
-          text-transform: uppercase;
-          background: #10b981;
-          color: white;
-          border-radius: 999px;
-        }
-        .ic-header-actions {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-        }
-        .ic-theme-btn {
-          padding: 8px;
-          border-radius: 8px;
-          border: none;
-          cursor: pointer;
-          background: transparent;
-          transition: all 0.15s;
-          display: flex;
-          align-items: center;
-        }
-        .indexscan-light .ic-theme-btn { color: #64748b; }
-        .indexscan-light .ic-theme-btn:hover { color: #0f172a; background: #f1f5f9; }
-        .indexscan-dark .ic-theme-btn { color: #64748b; }
-        .indexscan-dark .ic-theme-btn:hover { color: #f8fafc; background: #1e293b; }
-        .ic-audit-cta {
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          padding: 6px 14px;
-          font-size: 0.75rem;
-          font-weight: 600;
-          color: white;
-          background: #059669;
-          border: 1px solid #10b981;
-          border-radius: 8px;
-          cursor: pointer;
-          text-decoration: none;
-          transition: all 0.15s;
-          box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        .ic-audit-cta:hover { background: #047857; }
-
-        /* ─── MAIN ─── */
-        .ic-main {
-          flex: 1;
-          max-width: 1280px;
-          margin: 0 auto;
-          padding: 40px 1.5rem;
-          width: 100%;
-        }
-
-        /* ─── HERO ─── */
-        .ic-hero {
-          text-align: center;
-          max-width: 760px;
-          margin: 0 auto 40px;
-        }
-        .ic-hero-badge {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          padding: 6px 14px;
-          border-radius: 999px;
-          font-size: 0.75rem;
-          font-weight: 700;
-          margin-bottom: 16px;
-          border: 1px solid;
-          box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-        .indexscan-light .ic-hero-badge {
-          background: #ecfdf5;
-          color: #065f46;
-          border-color: #6ee7b7;
-        }
-        .indexscan-dark .ic-hero-badge {
-          background: rgba(6,78,59,0.5);
-          color: #6ee7b7;
-          border-color: #065f46;
-        }
-        .ic-hero h1 {
-          font-size: clamp(1.875rem, 5vw, 3rem);
-          font-weight: 900;
-          letter-spacing: -0.04em;
-          line-height: 1.1;
-          margin: 0 0 12px;
-        }
-        .indexscan-light .ic-hero h1 { color: #0f172a; }
-        .indexscan-dark .ic-hero h1 { color: #f8fafc; }
-        .ic-gradient-text {
-          background: linear-gradient(135deg, #059669, #0d9488, #2563eb);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-        }
-        .indexscan-dark .ic-gradient-text {
-          background: linear-gradient(135deg, #34d399, #2dd4bf, #60a5fa);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-        }
-        .ic-hero p {
-          font-size: 1rem;
-          line-height: 1.6;
-          margin: 0;
-        }
-        .indexscan-light .ic-hero p { color: #475569; }
-        .indexscan-dark .ic-hero p { color: #94a3b8; }
-
-        /* ─── FORM CARD ─── */
-        .ic-form-card {
-          max-width: 760px;
-          margin: 0 auto 40px;
-          border-radius: 16px;
-          border: 1px solid;
-          padding: 32px;
-          box-shadow: 0 4px 24px rgba(0,0,0,0.06);
-        }
-        .indexscan-light .ic-form-card {
-          background: white;
-          border-color: #e2e8f0;
-        }
-        .indexscan-dark .ic-form-card {
-          background: #0f172a;
-          border-color: #1e293b;
-        }
-        .ic-form-label {
-          display: block;
-          font-size: 0.7rem;
-          font-weight: 700;
-          letter-spacing: 0.1em;
-          text-transform: uppercase;
-          margin-bottom: 8px;
-        }
-        .indexscan-light .ic-form-label { color: #374151; }
-        .indexscan-dark .ic-form-label { color: #94a3b8; }
-        .ic-input-wrap {
-          position: relative;
-          margin-bottom: 16px;
-        }
-        .ic-input-icon {
-          position: absolute;
-          left: 14px;
-          top: 50%;
-          transform: translateY(-50%);
-          color: #94a3b8;
-          pointer-events: none;
-          display: flex;
-        }
-        .ic-input {
-          width: 100%;
-          padding: 14px 16px 14px 44px;
-          font-size: 1rem;
-          border-radius: 12px;
-          border: 1px solid;
-          outline: none;
-          transition: all 0.15s;
-          box-sizing: border-box;
-        }
-        .indexscan-light .ic-input {
-          background: rgba(248,250,252,0.5);
-          border-color: #cbd5e1;
-          color: #0f172a;
-        }
-        .indexscan-light .ic-input::placeholder { color: #94a3b8; }
-        .indexscan-light .ic-input:focus {
-          border-color: transparent;
-          box-shadow: 0 0 0 2px #10b981;
-          background: white;
-        }
-        .indexscan-dark .ic-input {
-          background: rgba(30,41,59,0.6);
-          border-color: #334155;
-          color: #f8fafc;
-        }
-        .indexscan-dark .ic-input::placeholder { color: #64748b; }
-        .indexscan-dark .ic-input:focus {
-          border-color: transparent;
-          box-shadow: 0 0 0 2px #10b981;
-          background: #1e293b;
-        }
-        .ic-submit-btn {
-          width: 100%;
-          padding: 16px 24px;
-          border-radius: 12px;
-          background: linear-gradient(135deg, #059669, #0d9488);
-          color: white;
-          font-weight: 700;
-          font-size: 1rem;
-          border: none;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 10px;
-          transition: all 0.2s;
-          box-shadow: 0 4px 12px rgba(5,150,105,0.2);
-        }
-        .ic-submit-btn:hover:not(:disabled) {
-          background: linear-gradient(135deg, #047857, #0f766e);
-          box-shadow: 0 6px 16px rgba(5,150,105,0.3);
-          transform: translateY(-1px);
-        }
-        .ic-submit-btn:disabled {
-          opacity: 0.6;
-          cursor: not-allowed;
-        }
-        .ic-spinner {
-          width: 20px;
-          height: 20px;
-          border: 2px solid rgba(255,255,255,0.3);
-          border-top-color: white;
-          border-radius: 50%;
-          animation: ic-spin 0.8s linear infinite;
-        }
-        @keyframes ic-spin { to { transform: rotate(360deg); } }
-
-        /* ─── FOOTER ─── */
-        .ic-footer {
-          border-top: 1px solid;
-          transition: border-color 0.2s;
-        }
-        .indexscan-light .ic-footer {
-          background: #f8fafc;
-          border-color: #e2e8f0;
-        }
-        .indexscan-dark .ic-footer {
-          background: #030712;
-          border-color: #1e293b;
-        }
-        .ic-footer-inner {
-          max-width: 1280px;
-          margin: 0 auto;
-          padding: 40px 1.5rem;
-        }
-        .ic-footer-top {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: space-between;
-          gap: 24px;
-          padding-bottom: 32px;
-          border-bottom: 1px solid;
-          margin-bottom: 24px;
-        }
-        @media (min-width: 768px) {
-          .ic-footer-top {
-            flex-direction: row;
-            align-items: center;
-          }
-        }
-        .indexscan-light .ic-footer-top { border-color: #e2e8f0; }
-        .indexscan-dark .ic-footer-top { border-color: #1e293b; }
-        .ic-footer-logo-text {
-          font-size: 1.125rem;
-          font-weight: 900;
-          letter-spacing: -0.03em;
-        }
-        .indexscan-light .ic-footer-logo-text { color: #0f172a; }
-        .indexscan-dark .ic-footer-logo-text { color: #f8fafc; }
-        .ic-footer-logo-text span { color: #2563eb; }
-        .ic-footer-tagline {
-          font-size: 0.75rem;
-          margin-top: 4px;
-        }
-        .indexscan-light .ic-footer-tagline { color: #64748b; }
-        .indexscan-dark .ic-footer-tagline { color: #475569; }
-        .ic-built-badge {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          padding: 6px 14px;
-          border-radius: 12px;
-          border: 1px solid;
-          font-size: 0.75rem;
-          box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-        .indexscan-light .ic-built-badge {
-          background: white;
-          border-color: #e2e8f0;
-          color: #475569;
-        }
-        .indexscan-dark .ic-built-badge {
-          background: #0f172a;
-          border-color: #1e293b;
-          color: #94a3b8;
-        }
-        .ic-built-by {
-          font-size: 0.875rem;
-          font-weight: 700;
-          background: linear-gradient(135deg, #2563eb, #4f46e5);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-        }
-        .ic-heart {
-          animation: ic-pulse 1.5s ease-in-out infinite;
-        }
-        @keyframes ic-pulse {
-          0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.2); }
-        }
-        .ic-footer-bottom {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: space-between;
-          gap: 12px;
-          font-size: 0.6875rem;
-        }
-        @media (min-width: 640px) { .ic-footer-bottom { flex-direction: row; } }
-        .indexscan-light .ic-footer-bottom { color: #94a3b8; }
-        .indexscan-dark .ic-footer-bottom { color: #475569; }
-        .ic-footer-copy {
-          font-weight: 600;
-        }
-        .indexscan-light .ic-footer-copy { color: #475569; }
-        .indexscan-dark .ic-footer-copy { color: #94a3b8; }
-      `}</style>
-
-      {/* ── HEADER ── */}
-      <header className="ic-header">
-        <div className="ic-header-inner">
-          {/* Logo */}
-          <a href="/tools/deep-seo-audit" className="ic-logo">
-            <div className="ic-logo-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 10.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.5"/>
-                <path d="m9 11 3 3L22 4"/>
-              </svg>
-            </div>
-            <div>
-              <span className="ic-logo-text">INDEX<span>CHECK</span></span>
-              <span className="ic-badge-api">API-FREE</span>
-            </div>
-          </a>
-
-          {/* Nav */}
-          <nav className="ic-nav">
-            <button className="ic-nav-btn" onClick={() => setActiveNav('website')}>Website Checker</button>
-            <button className="ic-nav-btn" onClick={() => setActiveNav('bulk')}>Bulk URL Checker</button>
-            <button className="ic-nav-btn">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{color:'#f59e0b'}}>
-                <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
-              </svg>
-              Instant Indexer
-            </button>
-            <a href="/tools/deep-seo-audit" className="ic-nav-btn ic-nav-btn-audit">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
-                <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
-                <path d="M8 13h2"/><path d="M14 13h2"/>
-                <path d="M8 17h2"/><path d="M14 17h2"/>
-              </svg>
-              Deep Audit &amp; Excel
-              <span className="ic-new-badge">New</span>
-            </a>
-            <button className="ic-nav-btn">How It Works</button>
-          </nav>
-
-          {/* Actions */}
-          <div className="ic-header-actions">
-            <button
-              className="ic-theme-btn"
-              aria-label="Toggle theme"
-              onClick={() => setIsDark(!isDark)}
-            >
-              {isDark ? (
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="4"/>
-                  <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
-                </svg>
-              ) : (
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
-                </svg>
-              )}
-            </button>
-            <a href="/tools/deep-seo-audit" className="ic-audit-cta">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
-                <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
-                <path d="M8 13h2"/><path d="M14 13h2"/>
-                <path d="M8 17h2"/><path d="M14 17h2"/>
-              </svg>
-              Audit Website
-            </a>
-          </div>
-        </div>
-      </header>
-
-      {/* ── MAIN ── */}
-      <main className="ic-main">
-
-        {/* Hero */}
-        <div className="ic-hero">
-          <div className="ic-hero-badge">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
-              <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
-              <path d="M8 13h2"/><path d="M14 13h2"/>
-              <path d="M8 17h2"/><path d="M14 17h2"/>
-            </svg>
-            Deep SEO Audit &amp; Professional 8-Sheet Excel Generator
-          </div>
-
-          <h1>
-            Audit Any Website &amp; Download{' '}
-            <span className="ic-gradient-text">Excel Report</span>
-          </h1>
-
-          <p>
-            Perform an exhaustive 26+ point technical and on-page SEO inspection. Instant grade, issue
-            diagnosis, and client-ready Excel workbook export with complete image URLs.
-          </p>
-        </div>
-
-        {/* Form Card */}
-        <div className="ic-form-card">
-          <form onSubmit={handleSubmit}>
-            <label htmlFor="audit-url-input" className="ic-form-label">
-              Enter Website URL to Audit
-            </label>
-            <div className="ic-input-wrap">
-              <span className="ic-input-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="10"/>
-                  <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
-                  <path d="M2 12h20"/>
-                </svg>
-              </span>
+      {/* ── INPUT CARD ── */}
+      <div style={{ maxWidth: 760, margin: '36px auto 0', padding: '0 16px' }}>
+        <div style={{ background: 'var(--card-bg,#fff)', border: '1px solid var(--border-color,#e5e7eb)', borderRadius: 8, padding: '32px', boxShadow: '0 8px 40px rgba(0,0,0,0.12)' }}>
+          <form onSubmit={runAudit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+            <label style={{ fontSize: 11, fontWeight: 800, color: 'var(--text-secondary,#6b7280)', textTransform: 'uppercase', letterSpacing: 1 }}>Enter Website URL to Audit</label>
+            <div style={{ position: 'relative' }}>
+              <i className="fa-solid fa-globe" style={{ position: 'absolute', left: 13, top: '50%', transform: 'translateY(-50%)', color: '#9ca3af', fontSize: 15, pointerEvents: 'none' }}></i>
               <input
-                id="audit-url-input"
-                type="text"
-                className="ic-input"
-                placeholder="https://example.com"
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-                disabled={isLoading}
+                type="text" value={url} onChange={e => setUrl(e.target.value)}
+                placeholder="https://example.com" disabled={loading}
+                style={{ width: '100%', boxSizing: 'border-box', paddingLeft: 42, paddingRight: 16, paddingTop: 14, paddingBottom: 14, fontSize: 16, border: '1.5px solid var(--border-color,#d1d5db)', borderRadius: 6, background: 'var(--input-bg,#f9fafb)', color: 'var(--text-primary,#111827)', outline: 'none', opacity: loading ? 0.6 : 1, transition: 'border-color 0.2s' }}
+                onFocus={e => e.target.style.borderColor = '#059669'} onBlur={e => e.target.style.borderColor = 'var(--border-color,#d1d5db)'}
               />
             </div>
-
-            <button
-              type="submit"
-              className="ic-submit-btn"
-              disabled={isLoading || !url.trim()}
-            >
-              {isLoading ? (
-                <>
-                  <div className="ic-spinner" />
-                  <span>Running Deep SEO Audit...</span>
-                </>
-              ) : (
-                <>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="11" cy="11" r="8"/>
-                    <path d="m21 21-4.3-4.3"/>
-                  </svg>
-                  <span>Start Deep SEO Audit</span>
-                </>
-              )}
+            <button type="submit" disabled={loading || !url.trim()}
+              style={{ width: '100%', padding: 15, background: loading ? '#9ca3af' : 'linear-gradient(135deg,#059669,#0f766e)', color: '#fff', border: 'none', borderRadius: 6, fontSize: 16, fontWeight: 800, cursor: loading ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, boxShadow: loading ? 'none' : '0 4px 20px rgba(5,150,105,0.35)', transition: 'all 0.2s' }}>
+              {loading ? <><i className="fa-solid fa-spinner fa-spin"></i><span>Auditing…</span></> : <><i className="fa-solid fa-magnifying-glass-chart"></i><span>Start Deep SEO Audit</span></>}
             </button>
           </form>
-        </div>
 
-      </main>
-
-      {/* ── FOOTER ── */}
-      <footer className="ic-footer">
-        <div className="ic-footer-inner">
-          <div className="ic-footer-top">
-            <div style={{textAlign:'left'}}>
-              <div style={{display:'flex', alignItems:'center', gap:'10px'}}>
-                <div style={{width:'28px',height:'28px',borderRadius:'8px',background:'#2563eb',display:'flex',alignItems:'center',justifyContent:'center',color:'white',flexShrink:0}}>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21 10.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.5"/>
-                    <path d="m9 11 3 3L22 4"/>
-                  </svg>
-                </div>
-                <span className="ic-footer-logo-text">INDEX<span>CHECK</span></span>
+          {loading && (
+            <div style={{ marginTop: 22 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 7 }}>
+                <span style={{ fontSize: 13, color: 'var(--text-secondary,#6b7280)', fontStyle: 'italic' }}>{progressLabel}</span>
+                <span style={{ fontSize: 13, fontWeight: 800, color: '#059669' }}>{progress}%</span>
               </div>
-              <p className="ic-footer-tagline">Check Which URLs Are Visible on Google &amp; Request Fast Indexing</p>
+              <div style={{ height: 7, background: 'var(--border-color,#e5e7eb)', borderRadius: 4, overflow: 'hidden' }}>
+                <div style={{ height: '100%', width: `${progress}%`, background: 'linear-gradient(90deg,#059669,#14b8a6)', borderRadius: 4, transition: 'width 0.35s ease' }} />
+              </div>
+            </div>
+          )}
+          {error && <div style={{ marginTop: 18, padding: '12px 16px', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 6, color: '#dc2626', fontSize: 14 }}><i className="fa-solid fa-triangle-exclamation" style={{ marginRight: 8 }}></i>{error}</div>}
+        </div>
+      </div>
+
+      {/* ── RESULTS ── */}
+      {results && (
+        <div style={{ maxWidth: 1120, margin: '36px auto', padding: '0 16px 60px' }}>
+
+          {/* Score bar */}
+          <div style={{ background: 'var(--card-bg,#fff)', border: '1px solid var(--border-color,#e5e7eb)', borderRadius: 8, padding: '24px 28px', marginBottom: 20, boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 20, alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
+              <div>
+                <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-secondary,#6b7280)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 3 }}>Audited URL</div>
+                <a href={results.url} target="_blank" rel="noopener noreferrer" style={{ color: '#059669', fontWeight: 600, fontSize: 15, wordBreak: 'break-all' }}>{results.url}</a>
+                <div style={{ fontSize: 12, color: '#9ca3af', marginTop: 3 }}>{results.auditedAt}</div>
+              </div>
+              <button onClick={downloadExcel}
+                style={{ padding: '11px 22px', background: 'linear-gradient(135deg,#059669,#0f766e)', color: '#fff', border: 'none', borderRadius: 6, fontWeight: 800, fontSize: 14, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, boxShadow: '0 3px 12px rgba(5,150,105,0.25)', whiteSpace: 'nowrap' }}>
+                <i className="fa-solid fa-file-excel"></i> Download Excel Report (.xlsx)
+              </button>
             </div>
 
-            <div className="ic-built-badge">
-              <span>Designed &amp; Built with</span>
-              <svg className="ic-heart" width="14" height="14" viewBox="0 0 24 24" fill="#f43f5e" stroke="#f43f5e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
-              </svg>
-              <span>by</span>
-              <span className="ic-built-by">Saleh</span>
+            {/* Score circles */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14 }}>
+              {[{ l: 'Overall', s: results.overall }, { l: 'On-Page', s: results.onpageScore }, { l: 'Technical', s: results.techScore }, { l: 'Social/OG', s: results.socialScore }, { l: 'Links', s: results.linkScore }].map(({ l, s }) => (
+                <div key={l} style={{ flex: '1 1 110px', textAlign: 'center' }}>
+                  <div style={{ width: 70, height: 70, borderRadius: 8, background: scoreBg(s), border: `2.5px solid ${scoreColor(s)}`, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 6px', flexDirection: 'column' }}>
+                    <span style={{ fontSize: 22, fontWeight: 900, color: scoreColor(s), lineHeight: 1 }}>{s}</span>
+                  </div>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-secondary,#6b7280)' }}>{l}</div>
+                  <div style={{ fontSize: 11, color: scoreColor(s), fontWeight: 600 }}>{scoreLabel(s)}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Quick stats */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginTop: 18 }}>
+              {[
+                { icon: 'fa-heading', label: 'H1 Tags', value: results.h1s.length, warn: results.h1s.length !== 1 },
+                { icon: 'fa-image', label: 'Images', value: results.imgTotal },
+                { icon: 'fa-circle-xmark', label: 'Missing Alt', value: results.imgNoAlt, warn: results.imgNoAlt > 0 },
+                { icon: 'fa-link', label: 'Internal Links', value: results.internalLinks },
+                { icon: 'fa-arrow-up-right-from-square', label: 'External Links', value: results.externalLinks },
+                { icon: 'fa-code', label: 'Schema Blocks', value: results.schemaCount, warn: results.schemaCount === 0 },
+                { icon: 'fa-font', label: 'Words', value: results.wordCount, warn: results.wordCount < 300 },
+                { icon: 'fa-triangle-exclamation', label: 'Issues', value: results.critical.length, warn: results.critical.length > 0 },
+              ].map(stat => (
+                <div key={stat.label} style={{ flex: '1 1 100px', background: stat.warn ? '#fff7ed' : 'var(--bg-secondary,#f9fafb)', border: `1px solid ${stat.warn ? '#fed7aa' : 'var(--border-color,#e5e7eb)'}`, borderRadius: 6, padding: '10px 14px', minWidth: 90 }}>
+                  <div style={{ fontSize: 20, fontWeight: 900, color: stat.warn ? '#d97706' : 'var(--text-primary,#111827)' }}>{stat.value}</div>
+                  <div style={{ fontSize: 11, color: 'var(--text-secondary,#6b7280)', marginTop: 2 }}><i className={`fa-solid ${stat.icon}`} style={{ marginRight: 5, opacity: 0.5 }}></i>{stat.label}</div>
+                </div>
+              ))}
             </div>
           </div>
 
-          <div className="ic-footer-bottom">
-            <p>Google is a trademark of Google LLC. IndexCheck is an independent SEO utility tool not affiliated with or endorsed by Google LLC.</p>
-            <div style={{display:'flex',alignItems:'center',gap:'12px'}}>
-              <span>Ephemeral Processing</span>
-              <span>•</span>
-              <span className="ic-footer-copy">© 2026 Saleh</span>
-            </div>
+          {/* Sheet tabs */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 14 }}>
+            {SHEETS.map(s => (
+              <button key={s.id} onClick={() => setActiveSheet(s.id)}
+                style={{ padding: '8px 14px', borderRadius: 6, border: '1.5px solid', fontSize: 13, fontWeight: 700, cursor: 'pointer', transition: 'all 0.15s', borderColor: activeSheet === s.id ? '#059669' : 'var(--border-color,#e5e7eb)', background: activeSheet === s.id ? '#059669' : 'var(--card-bg,#fff)', color: activeSheet === s.id ? '#fff' : 'var(--text-secondary,#6b7280)' }}>
+                {s.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Sheet body */}
+          <div style={{ background: 'var(--card-bg,#fff)', border: '1px solid var(--border-color,#e5e7eb)', borderRadius: 8, padding: '26px 26px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)', overflowX: 'auto' }}>
+
+            {/* 0 — Executive Summary */}
+            {activeSheet === 0 && (
+              <div>
+                <h2 style={sh2}>📊 Executive Summary</h2>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(280px,1fr))', gap: 14 }}>
+                  <IC label="Page Title" value={results.title || '—'} icon="fa-heading" warn={!results.title} />
+                  <IC label="Meta Description" value={results.metaDesc || '—'} icon="fa-align-left" warn={!results.metaDesc} />
+                  <IC label="Canonical URL" value={results.canonical || 'Not set'} icon="fa-link" warn={!results.canonical} />
+                  <IC label="Noindex Status" value={results.noindex ? '⚠️ NOINDEX — Blocked from Google' : '✅ Indexable'} icon="fa-robot" warn={results.noindex} />
+                  <IC label="Word Count" value={`${results.wordCount} words`} icon="fa-font" warn={results.wordCount < 300} />
+                  <IC label="H1 Tags" value={results.h1s.join(', ') || 'None found'} icon="fa-heading" warn={results.h1s.length !== 1} />
+                  <IC label="H2 Subheadings" value={`${results.h2s.length} found` + (results.h2s.length ? ': ' + results.h2s.slice(0, 2).join(', ') : '')} icon="fa-list" warn={results.h2s.length === 0} />
+                  <IC label="Schema Markup" value={results.schemaCount > 0 ? `${results.schemaCount} block(s) found` : 'Not detected'} icon="fa-code" warn={!results.schemaCount} />
+                  <IC label="Images" value={`${results.imgTotal} total — ${results.imgNoAlt} missing alt`} icon="fa-image" warn={results.imgNoAlt > 0} />
+                  <IC label="OG Title" value={results.ogTitle || 'Missing'} icon="fa-share-nodes" warn={!results.ogTitle} />
+                  <IC label="OG Image" value={results.ogImage || 'Missing'} icon="fa-image" warn={!results.ogImage} />
+                  <IC label="Twitter Card" value={results.twitterCard || 'Missing'} icon="fa-brands fa-twitter" warn={!results.twitterCard} />
+                </div>
+              </div>
+            )}
+
+            {/* 1 — Critical Issues */}
+            {activeSheet === 1 && (
+              <div>
+                <h2 style={sh2}>🔴 Critical Issues <span style={{ fontSize: 14, fontWeight: 600, color: '#6b7280' }}>({results.critical.length} found)</span></h2>
+                {results.critical.length === 0 ? <Empty msg="No critical issues found! Great work 🎉" /> : (
+                  <table style={tblStyle}>
+                    <thead><tr style={thr}>{['#', 'Area', 'Issue', 'Current Value', 'Detail', 'Priority'].map(h => <th key={h} style={thStyle}>{h}</th>)}</tr></thead>
+                    <tbody>{results.critical.map((c, i) => {
+                      const ps = priStyle(c.priority); return (
+                        <tr key={i} style={trStyle}>
+                          <td style={tdStyle}>{i + 1}</td>
+                          <td style={tdStyle}><Badge text={c.area} bg="#f0fdf4" color="#059669" border="#bbf7d0" /></td>
+                          <td style={{ ...tdStyle, fontWeight: 600, color: 'var(--text-primary,#111827)' }}>{c.label}</td>
+                          <td style={{ ...tdStyle, fontSize: 12, color: '#6b7280', maxWidth: 160, wordBreak: 'break-all' }}>{c.value}</td>
+                          <td style={{ ...tdStyle, fontSize: 12, color: '#6b7280' }}>{c.note}</td>
+                          <td style={tdStyle}><Badge text={c.priority} bg={ps.bg} color={ps.color} border={ps.border} /></td>
+                        </tr>
+                      );
+                    })}
+                    </tbody>
+                  </table>
+                )}
+              </div>
+            )}
+
+            {/* 2 — Technical */}
+            {activeSheet === 2 && <CheckSheet title="⚙️ Technical SEO Checks" checks={results.technical} />}
+
+            {/* 3 — On-Page */}
+            {activeSheet === 3 && <CheckSheet title="📝 On-Page SEO Checks" checks={results.onpage} />}
+
+            {/* 4 — Links */}
+            {activeSheet === 4 && (
+              <div>
+                <h2 style={sh2}>🔗 Links & Structure</h2>
+                <CheckSheet title="" checks={results.links} />
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(160px,1fr))', gap: 12, marginTop: 18 }}>
+                  {[{ l: 'Internal Links', v: results.internalLinks, c: '#059669' }, { l: 'External Links', v: results.externalLinks, c: '#2563eb' }, { l: 'Nofollow Links', v: results.nofollowLinks, c: '#d97706' }, { l: 'Total Links', v: results.totalLinks, c: '#7c3aed' }].map(s => (
+                    <div key={s.l} style={{ background: 'var(--bg-secondary,#f9fafb)', border: '1px solid var(--border-color,#e5e7eb)', borderRadius: 6, padding: '14px', textAlign: 'center' }}>
+                      <div style={{ fontSize: 30, fontWeight: 900, color: s.c }}>{s.v}</div>
+                      <div style={{ fontSize: 12, color: '#6b7280', marginTop: 4 }}>{s.l}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* 5 — Images */}
+            {activeSheet === 5 && (
+              <div>
+                <h2 style={sh2}>🖼️ Images <span style={{ fontSize: 14, fontWeight: 600, color: '#6b7280' }}>({results.imgTotal} total — {results.imgNoAlt} missing alt)</span></h2>
+                {results.imgUrls.length === 0 ? <Empty msg="No images detected on this page." /> : (
+                  <table style={tblStyle}>
+                    <thead><tr style={thr}>{['#', 'Image URL', 'Alt Text', 'Status'].map(h => <th key={h} style={thStyle}>{h}</th>)}</tr></thead>
+                    <tbody>{results.imgUrls.map((img, i) => (
+                      <tr key={i} style={trStyle}>
+                        <td style={tdStyle}>{i + 1}</td>
+                        <td style={{ ...tdStyle, fontSize: 12, color: '#6b7280', maxWidth: 280, wordBreak: 'break-all' }}>{img.src || '(no src)'}</td>
+                        <td style={{ ...tdStyle, fontSize: 12, color: img.alt ? '#374151' : '#dc2626', fontStyle: img.alt ? 'normal' : 'italic' }}>{img.alt || 'MISSING ALT'}</td>
+                        <td style={tdStyle}><Badge text={img.alt ? '✓ Has Alt' : '✗ Missing'} bg={img.alt ? '#ecfdf5' : '#fef2f2'} color={img.alt ? '#059669' : '#dc2626'} border={img.alt ? '#a7f3d0' : '#fecaca'} /></td>
+                      </tr>
+                    ))}</tbody>
+                  </table>
+                )}
+              </div>
+            )}
+
+            {/* 6 — Social / OG */}
+            {activeSheet === 6 && <CheckSheet title="🌐 Social & Open Graph Tags" checks={results.social} />}
+
+            {/* 7 — Roadmap */}
+            {activeSheet === 7 && (
+              <div>
+                <h2 style={sh2}>🎯 Action Roadmap <span style={{ fontSize: 14, fontWeight: 600, color: '#6b7280' }}>({results.roadmap.length} tasks)</span></h2>
+                {results.roadmap.length === 0 ? <Empty msg="No actions required — site looks great! 🎉" /> : (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                    {results.roadmap.map(r => {
+                      const ps = priStyle(r.priority); return (
+                        <div key={r.step} style={{ display: 'flex', gap: 14, alignItems: 'flex-start', padding: '14px 18px', background: ps.bg, border: `1px solid ${ps.border}`, borderRadius: 6 }}>
+                          <div style={{ width: 32, height: 32, borderRadius: 6, background: ps.color, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: 14, flexShrink: 0 }}>{r.step}</div>
+                          <div style={{ flex: 1 }}>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center', marginBottom: 4 }}>
+                              <span style={{ fontWeight: 800, fontSize: 14, color: 'var(--text-primary,#111827)' }}>Fix: {r.label}</span>
+                              <Badge text={r.priority} bg="#fff" color={ps.color} border={ps.border} />
+                              <Badge text={r.area} bg="rgba(0,0,0,0.05)" color="#6b7280" border="transparent" />
+                            </div>
+                            <div style={{ fontSize: 13, color: '#6b7280' }}>{r.note}</div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
-      </footer>
+      )}
+
+      {/* ── INFO SECTION (empty state) ── */}
+      {!results && !loading && (
+        <div style={{ maxWidth: 920, margin: '48px auto', padding: '0 16px 60px' }}>
+          <h2 style={{ textAlign: 'center', fontSize: 22, fontWeight: 800, color: 'var(--text-primary,#111827)', marginBottom: 28 }}>26+ SEO Checks Across 8 Categories</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))', gap: 14 }}>
+            {[
+              { icon: 'fa-heading', color: '#059669', title: 'On-Page SEO', items: ['Title tag length & quality', 'Meta description (120–160 chars)', 'H1–H4 heading hierarchy', 'Image alt text coverage', 'Word count & content depth'] },
+              { icon: 'fa-gear', color: '#2563eb', title: 'Technical SEO', items: ['Canonical URL configuration', 'Robots meta directives', 'Noindex detection', 'Viewport & charset tags', 'JSON-LD schema markup', 'Hreflang tags'] },
+              { icon: 'fa-share-nodes', color: '#7c3aed', title: 'Social / OG Tags', items: ['Open Graph title & description', 'OG image & type', 'OG URL', 'Twitter card type', 'Twitter title & image'] },
+              { icon: 'fa-link', color: '#d97706', title: 'Link Analysis', items: ['Internal link count', 'External link count', 'Nofollow ratio', 'Total crawlable links'] },
+              { icon: 'fa-image', color: '#0891b2', title: 'Image Audit', items: ['All image URLs listed', 'Alt text per image', 'Missing alt detection', 'Complete image inventory'] },
+              { icon: 'fa-file-excel', color: '#16a34a', title: 'Excel Export (8 Sheets)', items: ['Executive Summary sheet', 'Critical Issues sheet', 'On-Page & Technical sheets', 'Social & Image sheets', 'Action Roadmap sheet'] },
+            ].map(card => (
+              <div key={card.title} style={{ background: 'var(--card-bg,#fff)', border: '1px solid var(--border-color,#e5e7eb)', borderRadius: 8, padding: '20px 22px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
+                  <div style={{ width: 36, height: 36, borderRadius: 6, background: card.color + '18', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <i className={`fa-solid ${card.icon}`} style={{ color: card.color, fontSize: 15 }}></i>
+                  </div>
+                  <span style={{ fontWeight: 800, fontSize: 15, color: 'var(--text-primary,#111827)' }}>{card.title}</span>
+                </div>
+                <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 6 }}>
+                  {card.items.map(item => (
+                    <li key={item} style={{ fontSize: 13, color: 'var(--text-secondary,#6b7280)', display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <i className="fa-solid fa-check" style={{ color: card.color, fontSize: 10, flexShrink: 0 }}></i>{item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
+  );
+}
+
+// ── Sub-components ─────────────────────────────────────────────────────────
+const sh2 = { fontSize: 19, fontWeight: 800, marginBottom: 18, color: 'var(--text-primary,#111827)', marginTop: 0 };
+const tblStyle = { width: '100%', borderCollapse: 'collapse' };
+const thr = { background: 'var(--bg-secondary,#f9fafb)' };
+const thStyle = { padding: '10px 14px', textAlign: 'left', fontSize: 11, fontWeight: 800, color: 'var(--text-secondary,#6b7280)', textTransform: 'uppercase', letterSpacing: 0.5, borderBottom: '1px solid var(--border-color,#e5e7eb)', whiteSpace: 'nowrap' };
+const trStyle = { borderBottom: '1px solid var(--border-color,#f3f4f6)' };
+const tdStyle = { padding: '10px 14px', fontSize: 13, verticalAlign: 'top' };
+
+function Badge({ text, bg, color, border }) {
+  return <span style={{ background: bg, color, border: `1px solid ${border}`, borderRadius: 4, padding: '2px 9px', fontSize: 11, fontWeight: 800, whiteSpace: 'nowrap' }}>{text}</span>;
+}
+
+function IC({ label, value, icon, warn }) {
+  return (
+    <div style={{ background: warn ? '#fff7ed' : 'var(--bg-secondary,#f9fafb)', border: `1px solid ${warn ? '#fed7aa' : 'var(--border-color,#e5e7eb)'}`, borderRadius: 6, padding: '14px 16px' }}>
+      <div style={{ fontSize: 11, fontWeight: 700, color: warn ? '#d97706' : 'var(--text-secondary,#6b7280)', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 6 }}>
+        <i className={`fa-solid ${icon}`} style={{ marginRight: 6 }}></i>{label}
+      </div>
+      <div style={{ fontSize: 13, color: 'var(--text-primary,#111827)', wordBreak: 'break-word', lineHeight: 1.5 }}>{value || '—'}</div>
+    </div>
+  );
+}
+
+function CheckSheet({ title, checks }) {
+  return (
+    <div>
+      {title && <h2 style={sh2}>{title}</h2>}
+      <table style={tblStyle}>
+        <thead><tr style={thr}>{['Check', 'Status', 'Current Value', 'Note / Recommendation'].map(h => <th key={h} style={thStyle}>{h}</th>)}</tr></thead>
+        <tbody>{checks.map((c, i) => (
+          <tr key={i} style={trStyle}>
+            <td style={{ ...tdStyle, fontWeight: 600, color: 'var(--text-primary,#111827)', maxWidth: 220 }}>{c.label}</td>
+            <td style={tdStyle}><Badge text={c.pass ? '✓ PASS' : '✗ FAIL'} bg={c.pass ? '#ecfdf5' : '#fef2f2'} color={c.pass ? '#059669' : '#dc2626'} border={c.pass ? '#a7f3d0' : '#fecaca'} /></td>
+            <td style={{ ...tdStyle, fontSize: 12, color: '#6b7280', maxWidth: 200, wordBreak: 'break-word' }}>{c.value}</td>
+            <td style={{ ...tdStyle, fontSize: 12, color: '#6b7280' }}>{c.note}</td>
+          </tr>
+        ))}</tbody>
+      </table>
+    </div>
+  );
+}
+
+function Empty({ msg }) {
+  return (
+    <div style={{ textAlign: 'center', padding: '40px 0', color: '#059669' }}>
+      <i className="fa-solid fa-circle-check" style={{ fontSize: 38, marginBottom: 10 }}></i>
+      <p style={{ fontWeight: 700, fontSize: 17, margin: 0 }}>{msg}</p>
+    </div>
+  );
+}
+        </div >
+      </footer >
+    </div >
   );
 }
