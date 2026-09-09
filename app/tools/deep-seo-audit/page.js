@@ -395,8 +395,26 @@ export default function DeepSEOAuditPage() {
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-primary,#f9fafb)', fontFamily: "Inter,'Segoe UI',system-ui,sans-serif" }}>
 
+      {/* ── HERO ── */}
+      <div style={{ background: 'linear-gradient(135deg,#064e3b 0%,#065f46 50%,#0f766e 100%)', padding: '56px 20px 52px', textAlign: 'center' }}>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(255,255,255,0.13)', border: '1px solid rgba(255,255,255,0.22)', borderRadius: 6, padding: '6px 16px', marginBottom: 18 }}>
+          <i className="fa-solid fa-file-spreadsheet" style={{ color: '#6ee7b7', fontSize: 13 }}></i>
+          <span style={{ color: '#a7f3d0', fontSize: 12, fontWeight: 700, letterSpacing: 0.6 }}>Deep SEO Audit · 26+ Point Inspection · 8-Sheet Excel Export</span>
+        </div>
+        <h1 style={{ fontSize: 'clamp(26px,5vw,50px)', fontWeight: 900, color: '#fff', margin: '0 0 14px', letterSpacing: -1, lineHeight: 1.15 }}>
+          Audit Any Website &amp; Download
+          <br />
+          <span style={{ background: 'linear-gradient(90deg,#34d399,#14b8a6,#60a5fa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+            Professional Excel Report
+          </span>
+        </h1>
+        <p style={{ color: '#a7f3d0', fontSize: 16, maxWidth: 600, margin: '0 auto', lineHeight: 1.7 }}>
+          Exhaustive technical &amp; on-page SEO inspection with instant scores, issue diagnosis, and a client-ready 8-sheet Excel workbook with complete image URLs.
+        </p>
+      </div>
+
       {/* ── INPUT CARD ── */}
-      <div style={{ maxWidth: 760, margin: '36px auto 0', padding: '0 16px' }}>
+      <div style={{ maxWidth: 760, margin: '-26px auto 0', padding: '0 16px' }}>
         <div style={{ background: 'var(--card-bg,#fff)', border: '1px solid var(--border-color,#e5e7eb)', borderRadius: 8, padding: '32px', boxShadow: '0 8px 40px rgba(0,0,0,0.12)' }}>
           <form onSubmit={runAudit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
             <label style={{ fontSize: 11, fontWeight: 800, color: 'var(--text-secondary,#6b7280)', textTransform: 'uppercase', letterSpacing: 1 }}>Enter Website URL to Audit</label>
