@@ -1,8 +1,7 @@
 // app/layout.js - Master Application Layout
 
 import "@/styles/globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import ClientLayout from "@/components/ClientLayout";
 import { siteSettings } from "@/lib/data";
 
 export const metadata = {
@@ -71,9 +70,7 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body>
-        <Header />
-        <main>{children}</main>
-        <Footer />
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   );

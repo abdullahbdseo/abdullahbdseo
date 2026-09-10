@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const navGroups = [
   {
@@ -35,6 +35,16 @@ export default function AdminLayout({ children }) {
   const pathname = usePathname();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [authChecked, setAuthChecked] = useState(false);
+
+  useEffect(() => {
+    const auth = localStorage.getItem("admin_auth");
+    if (!auth || auth !== "true") {
+      router.replace("/login");
+    } else {
+      setAuthChecked(true);
+    }
+  }, [router]);
 
   const handleLogout = () => {
     if (typeof window !== "undefined") {
@@ -47,6 +57,14 @@ export default function AdminLayout({ children }) {
     if (exact) return pathname === href;
     return pathname.startsWith(href);
   };
+
+  if (!authChecked) {
+    return (
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+        <div className="text-slate-400 text-sm"><i className="fa-solid fa-spinner fa-spin mr-2"></i>Authenticating...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="admin-layout flex min-h-screen bg-slate-900 text-slate-100">
