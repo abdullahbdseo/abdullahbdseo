@@ -100,6 +100,15 @@ export default function ToolsHubPage() {
       iconColor: "#059669",
       badge: "Labor Efficiency",
       desc: "Calculate how automating repetitive marketing and operational workflows with AI and programmatic SEO reduces payroll overhead."
+    },
+    {
+      title: "Love Compatibility Calculator",
+      href: "/tools/love-calculator",
+      icon: "fa-solid fa-heart",
+      iconBg: "#ffe4e6",
+      iconColor: "#e11d48",
+      badge: "Fun & Romance",
+      desc: "Calculate couple name matching score, romantic chemistry, love percentage algorithm, and relationship compatibility insights."
     }
   ];
 
