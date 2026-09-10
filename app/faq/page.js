@@ -18,8 +18,26 @@ export default function FaqPage() {
     setActiveFaq(activeFaq === id ? null : id);
   };
 
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map((f) => ({
+      "@type": "Question",
+      "name": f.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": f.answer
+      }
+    }))
+  };
+
   return (
     <div className="faq-page">
+      {/* Schema.org FAQPage Structured Data for Google Rich Snippets & AI Engines */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       {/* PAGE HEADER */}
       <section className="page-header-section">
         <div className="container text-center">
