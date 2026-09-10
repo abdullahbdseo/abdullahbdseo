@@ -18,24 +18,6 @@ export default function ToolsHubPage() {
       desc: "Perform a full 26+ point technical & on-page SEO inspection. Get instant grades, critical issue diagnosis, and a downloadable CSV audit report."
     },
     {
-      title: "SEO Audit & Action Plan Report",
-      href: "/tools/seo-audit-report-generator",
-      icon: "fa-solid fa-file-excel",
-      iconBg: "#ecfdf5",
-      iconColor: "#059669",
-      badge: "Excel-Grade Audit",
-      desc: "Complete 7-sheet diagnostic audit report featuring Executive Summary, Critical Issues, Technical SEO, Schema Code, Action Roadmap, and Keyword Strategy."
-    },
-    {
-      title: "Website SEO Analyzer",
-      href: "/tools/website-seo-analyzer",
-      icon: "fa-solid fa-magnifying-glass-chart",
-      iconBg: "#dbeafe",
-      iconColor: "#1d4ed8",
-      badge: "On-Page Audit",
-      desc: "Instantly audit on-page SEO health score, Meta Title, Description, H1-H6 headings, OpenGraph social tags, canonical URLs, and image alt tags."
-    },
-    {
       title: "Google SERP Simulator",
       href: "/tools/serp-simulator",
       icon: "fa-brands fa-google",

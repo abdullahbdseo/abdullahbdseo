@@ -80,13 +80,6 @@ $currentUri = rtrim($cleanPath, '/') ?: '/';
                             <!-- Column 1: SEO Tools -->
                             <div class="dropdown-col">
                                 <span class="dropdown-cat-title"><i class="fa-solid fa-magnifying-glass-chart" style="color: #2563eb;"></i> SEO & Technical</span>
-                                <a href="<?= url('/tools/website-seo-analyzer') ?>" class="dropdown-item">
-                                    <div class="dropdown-item-icon" style="background:#dbeafe; color:#1d4ed8;"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
-                                    <div class="dropdown-item-text">
-                                        <strong>SEO Analyzer</strong>
-                                        <span>Instant on-page audit</span>
-                                    </div>
-                                </a>
                                 <a href="<?= url('/tools/schema-markup-generator') ?>" class="dropdown-item">
                                     <div class="dropdown-item-icon" style="background:#e0e7ff; color:#4338ca;"><i class="fa-solid fa-code"></i></div>
                                     <div class="dropdown-item-text">
@@ -253,7 +246,6 @@ $currentUri = rtrim($cleanPath, '/') ?: '/';
                 <div class="digi-footer-col">
                     <h4>Free SEO Tools</h4>
                     <ul class="digi-footer-links">
-                        <li><a href="<?= url('/tools/website-seo-analyzer') ?>">Website SEO Analyzer</a></li>
                         <li><a href="<?= url('/tools/schema-markup-generator') ?>">Schema Markup Generator</a></li>
                         <li><a href="<?= url('/tools/serp-simulator') ?>">SERP Simulator & Previewer</a></li>
                         <li><a href="<?= url('/tools/robots-sitemap-generator') ?>">Robots.txt & Sitemap Builder</a></li>
