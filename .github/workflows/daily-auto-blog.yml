@@ -1,0 +1,41 @@
+name: Daily Automatic Blog Publisher
+
+on:
+  schedule:
+    # Runs every day at 06:00 UTC (12:00 PM BST / Bangladesh Standard Time)
+    - cron: '0 6 * * *'
+  workflow_dispatch: # Allows manual trigger anytime from GitHub Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  publish-daily-blog:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: ⚙️ Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: ✍️ Generate & Publish Today's SEO/AI Blog Post
+        run: node scripts/daily-auto-blog.mjs
+
+      - name: 🚀 Commit & Push New Blog Post to Main Branch
+        run: |
+          git config --global user.name "Abdullah SEO Auto-Publisher"
+          git config --global user.email "abdullahbd.seo@gmail.com"
+          git add lib/data.js
+          if ! git diff --cached --quiet; then
+            git commit -m "✨ Auto-publish daily SEO & AI blog post [skip ci]"
+            git push origin main
+            echo "Successfully published and pushed new blog post to main branch!"
+          else
+            echo "No new blog post needed for today (already published)."
+          fi

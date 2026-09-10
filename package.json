@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "auto-blog": "node scripts/daily-auto-blog.mjs"
   },
   "dependencies": {
     "next": "^15.1.0",
