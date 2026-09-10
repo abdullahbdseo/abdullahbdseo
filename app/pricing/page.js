@@ -1,13 +1,20 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
+import ServiceOrderModal from "@/components/ServiceOrderModal";
 
 export default function PricingPage() {
+  const [selectedPlan, setSelectedPlan] = useState(null);
+
   const plans = [
     {
+      id: 901,
       name: "Starter",
-      price: "$125",
+      price: 125,
+      priceFormatted: "$125",
       period: "/month",
+      delivery_days: 30,
       badges: ["Audit", "15 KW", "On-Page"],
       features: [
         "15 Target Keywords",
@@ -19,9 +26,12 @@ export default function PricingPage() {
       featured: false,
     },
     {
+      id: 902,
       name: "Standard",
-      price: "$350",
+      price: 350,
+      priceFormatted: "$350",
       period: "/month",
+      delivery_days: 30,
       badges: ["30 KW", "Links", "Content"],
       features: [
         "30 Target Keywords",
@@ -33,9 +43,12 @@ export default function PricingPage() {
       featured: true,
     },
     {
+      id: 903,
       name: "Growth",
-      price: "$550",
+      price: 550,
+      priceFormatted: "$550",
       period: "/month",
+      delivery_days: 30,
       badges: ["60 KW", "PR Links", "Scale"],
       features: [
         "60 Target Keywords",
@@ -47,9 +60,12 @@ export default function PricingPage() {
       featured: false,
     },
     {
+      id: 904,
       name: "Enterprise",
-      price: "$850",
+      price: 850,
+      priceFormatted: "$850",
       period: "/month",
+      delivery_days: 30,
       badges: ["Unlimited", "Custom", "VIP"],
       features: [
         "Unlimited Keyword Targets",
@@ -61,6 +77,10 @@ export default function PricingPage() {
       featured: false,
     },
   ];
+
+  const handleOpenPlan = (plan) => {
+    setSelectedPlan(plan);
+  };
 
   return (
     <div className="pricing-page-wrapper">
@@ -87,7 +107,7 @@ export default function PricingPage() {
               <div key={plan.name} className={`digi-pricing-card${plan.featured ? " featured" : ""}`}>
                 <div className="pricing-card-header">
                   <h4>{plan.name}</h4>
-                  <div className="pricing-card-price">{plan.price}<span>{plan.period}</span></div>
+                  <div className="pricing-card-price">{plan.priceFormatted}<span>{plan.period}</span></div>
                 </div>
                 <div className="pricing-card-badges">
                   {plan.badges.map((b) => <span key={b}>{b}</span>)}
@@ -98,15 +118,31 @@ export default function PricingPage() {
                   ))}
                 </ul>
                 <div className="pricing-card-footer">
-                  <Link href="/contact" className="btn btn-aqua-solid btn-block">
-                    Get Started <i className="fa-solid fa-arrow-right"></i>
-                  </Link>
+                  <button 
+                    type="button" 
+                    onClick={() => handleOpenPlan(plan)} 
+                    className="btn btn-aqua-solid btn-block"
+                  >
+                    <i className="fa-solid fa-paper-plane"></i> Inquire &amp; Get Started
+                  </button>
                 </div>
               </div>
             ))}
           </div>
         </div>
       </section>
+
+      {/* Service Order Modal (Email + Intake Form) */}
+      <ServiceOrderModal
+        isOpen={!!selectedPlan}
+        onClose={() => setSelectedPlan(null)}
+        service={{
+          id: 7,
+          title: "Monthly SEO Subscription & Retainer",
+          starting_price: selectedPlan?.price || 125
+        }}
+        initialPackage={selectedPlan}
+      />
     </div>
   );
 }
