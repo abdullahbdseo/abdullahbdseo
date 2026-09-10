@@ -37,8 +37,40 @@ export default async function SingleBlogPostPage({ params }) {
 
   const relatedPosts = blogPosts.filter((p) => p.id !== post.id).slice(0, 3);
 
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": post.title,
+    "description": post.summary || post.excerpt,
+    "image": post.featured_image || post.image,
+    "datePublished": post.publish_date || post.date,
+    "dateModified": post.publish_date || post.date,
+    "author": {
+      "@type": "Person",
+      "name": post.author?.name || siteSettings.expert_name,
+      "jobTitle": post.author?.role || siteSettings.expert_title
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": siteSettings.site_name,
+      "logo": {
+        "@type": "ImageObject",
+        "url": "/images/logo.svg"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `/blog/${post.slug}`
+    }
+  };
+
   return (
     <div className="single-blog-page">
+      {/* Schema.org BlogPosting Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
       {/* ARTICLE HEADER & BREADCRUMBS */}
       <section className="article-header-section">
         <div className="container" style={{ maxWidth: "1240px" }}>
