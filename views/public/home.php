@@ -322,7 +322,7 @@
                 </p>
                 <div style="margin-top: 24px; display: flex; flex-direction: column; gap: 12px; font-size: 0.95rem; color: #475569;">
                     <div><i class="fa-solid fa-circle-check" style="color:#4361ee; margin-right: 8px;"></i> 100% White-Hat Google Compliance</div>
-                    <div><i class="fa-solid fa-circle-check" style="color:#4361ee; margin-right: 8px;"></i> NOWPayments Crypto & bKash Supported</div>
+                    <div><i class="fa-solid fa-circle-check" style="color:#4361ee; margin-right: 8px;"></i> Dedicated Strategy &amp; Growth Consulting</div>
                     <div><i class="fa-solid fa-circle-check" style="color:#4361ee; margin-right: 8px;"></i> Bi-Weekly Progress & KPI Reporting</div>
                 </div>
             </div>

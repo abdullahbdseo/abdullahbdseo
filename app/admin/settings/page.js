@@ -47,28 +47,6 @@ const FIELD_GROUPS = [
       { key: "default_meta_keywords", label: "Default Meta Keywords", type: "textarea" },
     ],
   },
-  {
-    label: "Payment — bKash",
-    icon: "fa-mobile-screen-button",
-    fields: [
-      { key: "bkash_number", label: "bKash Number", type: "text" },
-      { key: "bkash_type", label: "bKash Type", type: "text" },
-      { key: "bkash_rate", label: "BDT Exchange Rate", type: "number" },
-      { key: "bkash_instructions", label: "bKash Instructions", type: "textarea" },
-    ],
-  },
-  {
-    label: "Payment — Crypto",
-    icon: "fa-bitcoin-sign",
-    fields: [
-      { key: "usdt_trc20_address", label: "USDT TRC-20 Address", type: "text" },
-      { key: "usdt_erc20_address", label: "USDT ERC-20 Address", type: "text" },
-      { key: "btc_address", label: "BTC Address", type: "text" },
-      { key: "eth_address", label: "ETH Address", type: "text" },
-      { key: "sol_address", label: "SOL Address", type: "text" },
-      { key: "payment_expiry_minutes", label: "Payment Expiry (minutes)", type: "number" },
-    ],
-  },
 ];
 
 export default function AdminSettingsPage() {
@@ -98,7 +76,7 @@ export default function AdminSettingsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white">Site Settings</h1>
-          <p className="text-slate-400 text-sm mt-1">Manage your brand, contact, SEO, and payment settings</p>
+          <p className="text-slate-400 text-sm mt-1">Manage your brand, contact, and SEO settings</p>
         </div>
         <button
           onClick={handleSave}

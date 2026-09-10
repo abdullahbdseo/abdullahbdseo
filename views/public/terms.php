@@ -111,7 +111,7 @@
                     <a href="#intro" class="legal-toc-link active"><i class="fa-solid fa-angle-right" style="font-size: 0.75rem;"></i> 1. Acceptance of Terms</a>
                     <a href="#scope" class="legal-toc-link"><i class="fa-solid fa-angle-right" style="font-size: 0.75rem;"></i> 2. Scope of Services &amp; Retainers</a>
                     <a href="#client-obligations" class="legal-toc-link"><i class="fa-solid fa-angle-right" style="font-size: 0.75rem;"></i> 3. Client Responsibilities</a>
-                    <a href="#payments" class="legal-toc-link"><i class="fa-solid fa-angle-right" style="font-size: 0.75rem;"></i> 4. Payments &amp; Invoicing</a>
+                    <a href="#payments" class="legal-toc-link"><i class="fa-solid fa-angle-right" style="font-size: 0.75rem;"></i> 4. Invoicing &amp; Engagement</a>
                     <a href="#disclaimer" class="legal-toc-link"><i class="fa-solid fa-angle-right" style="font-size: 0.75rem;"></i> 5. Search Algorithm Disclaimer</a>
                     <a href="#deliverables" class="legal-toc-link"><i class="fa-solid fa-angle-right" style="font-size: 0.75rem;"></i> 6. Deliverables &amp; Turnaround</a>
                     <a href="#intellectual-property" class="legal-toc-link"><i class="fa-solid fa-angle-right" style="font-size: 0.75rem;"></i> 7. Intellectual Property</a>
@@ -195,21 +195,21 @@
             <article class="legal-article-section" id="payments">
                 <div class="legal-section-header">
                     <span class="legal-section-num">04</span>
-                    <h3>Payments, Invoicing &amp; Billing Terms</h3>
+                    <h3>Invoicing &amp; Engagement Terms</h3>
                 </div>
                 <p>
-                    All service package prices, subscription retainers, and consulting engagements are quoted in United States Dollars (USD).
+                    All service package specifications, consulting scopes, and custom proposals are quoted transparently based on agreed client requirements.
                 </p>
                 <ul>
-                    <li><i class="fa-solid fa-circle-check"></i> <strong>Secure Digital Payment Gateways:</strong> Transactions are processed through verified payment channels and secure checkout protocols.</li>
-                    <li><i class="fa-solid fa-circle-check"></i> <strong>Prepayment Requirement:</strong> All standard service packages require full prepayment prior to the initiation of strategic analysis, audits, or link acquisition sprints.</li>
-                    <li><i class="fa-solid fa-circle-check"></i> <strong>Enterprise Billing:</strong> Custom milestone invoicing schedules may be established for enterprise clients under a signed Master Services Agreement (MSA).</li>
+                    <li><i class="fa-solid fa-circle-check"></i> <strong>Transparent Project Scoping:</strong> All engagement scopes, timelines, and deliverables are agreed upon prior to project onboarding.</li>
+                    <li><i class="fa-solid fa-circle-check"></i> <strong>Consulting Agreements:</strong> Deliverables and recurring retainer services commence following mutual project confirmation and onboarding access.</li>
+                    <li><i class="fa-solid fa-circle-check"></i> <strong>Enterprise Agreements:</strong> Custom milestone invoicing schedules may be established for enterprise clients under a signed Master Services Agreement (MSA).</li>
                 </ul>
                 <div class="legal-callout-box success">
                     <i class="fa-solid fa-receipt legal-callout-icon"></i>
                     <div class="legal-callout-content">
-                        <strong>Official Invoices &amp; Order Confirmation</strong>
-                        An official digital invoice and deliverable tracking receipt with a unique Order ID (e.g. `ORD-YYYYMMDD-XXXXX`) is issued immediately upon order confirmation.
+                        <strong>Official Proposals &amp; Invoices</strong>
+                        Official project documentation, scope confirmations, and deliverable reports are provided with unique reference IDs for tracking.
                     </div>
                 </div>
                 <p>

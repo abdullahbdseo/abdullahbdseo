@@ -26,7 +26,7 @@ export default function SingleInvoicePage({ params }) {
         package_name: "Standard Audit Package",
         total: 650.00,
         subtotal: 650.00,
-        payment_method: "NOWPAYMENTS-USDT",
+        payment_method: "Direct Agreement",
         status: "paid",
         created_at: new Date().toISOString()
       });

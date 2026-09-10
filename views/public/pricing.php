@@ -7,7 +7,7 @@
         <span class="text-blue" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;">Transparent Investment</span>
         <h1 style="font-size: 2.8rem; margin: 10px 0 14px;">SEO Service Pricing Plans</h1>
         <p style="font-size: 1.1rem; color: var(--digi-text-body); max-width: 680px; margin: 0 auto;">
-            Clear deliverables, no hidden fees, with instant NOWPayments Crypto and bKash checkout.
+            Clear deliverables, transparent scopes, and personalized growth strategies for every stage of your business.
         </p>
     </div>
 </section>

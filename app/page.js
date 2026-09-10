@@ -391,7 +391,7 @@ export default function HomePage() {
               </p>
               <div style={{ marginTop: "24px", display: "flex", flexDirection: "column", gap: "12px", fontSize: "0.95rem", color: "#475569" }}>
                 <div><i className="fa-solid fa-circle-check" style={{ color: "#4361ee", marginRight: "8px" }}></i> 100% White-Hat Google Compliance</div>
-                <div><i className="fa-solid fa-circle-check" style={{ color: "#4361ee", marginRight: "8px" }}></i> NOWPayments Crypto &amp; bKash Supported</div>
+                <div><i className="fa-solid fa-circle-check" style={{ color: "#4361ee", marginRight: "8px" }}></i> Dedicated Account Strategy &amp; Growth Support</div>
                 <div><i className="fa-solid fa-circle-check" style={{ color: "#4361ee", marginRight: "8px" }}></i> Bi-Weekly Progress &amp; KPI Reporting</div>
               </div>
             </div>

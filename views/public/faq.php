@@ -61,7 +61,7 @@ $faqJsonLd = [
         </h1>
 
         <p class="faq-hero-desc">
-            Clear, transparent answers regarding our data-driven SEO processes, ranking timelines, technical audit deliverables, and cryptocurrency payment workflows.
+            Clear, transparent answers regarding our data-driven SEO processes, ranking timelines, technical audit deliverables, and consulting engagement workflows.
         </p>
 
         <!-- Live Search Bar -->
@@ -72,7 +72,7 @@ $faqJsonLd = [
                     type="text" 
                     id="faqSearchInput" 
                     class="faq-search-input" 
-                    placeholder="Search any question, keyword, or topic (e.g. crypto, ranking timeline, audit)..." 
+                    placeholder="Search any question, keyword, or topic (e.g. ranking timeline, audit, backlinks)..." 
                     autocomplete="off"
                     aria-label="Search FAQs"
                 >

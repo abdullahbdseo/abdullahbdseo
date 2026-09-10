@@ -279,15 +279,13 @@ $specializedServices = array_filter($services, function($s) {
                 <?php endif; ?>
 
                 <button type="submit" id="servicesOrderSubmitBtn" class="btn btn-lg btn-blue-solid btn-block" style="margin-top: 8px; border-radius: 12px; font-size: 1rem; padding: 14px;">
-                    <i class="fa-solid fa-lock" style="margin-right: 6px;"></i> Proceed to Secure Payment <i class="fa-solid fa-arrow-right"></i>
+                    <i class="fa-solid fa-paper-plane" style="margin-right: 6px;"></i> Send Service Inquiry <i class="fa-solid fa-arrow-right"></i>
                 </button>
 
                 <div style="display: flex; justify-content: center; align-items: center; gap: 16px; font-size: 0.75rem; color: #64748b; margin-top: 4px; flex-wrap: wrap;">
-                    <span><i class="fa-brands fa-bitcoin" style="color: #f59e0b;"></i> USDT &amp; Crypto</span>
+                    <span><i class="fa-solid fa-check" style="color: #10b981;"></i> 100% White-Hat SEO</span>
                     <span>&bull;</span>
-                    <span><i class="fa-solid fa-mobile-screen-button" style="color: #e11d48;"></i> bKash Manual</span>
-                    <span>&bull;</span>
-                    <span><i class="fa-solid fa-shield-halved" style="color: #10b981;"></i> 256-bit Encrypted</span>
+                    <span><i class="fa-solid fa-shield-halved" style="color: #4361ee;"></i> Confidential &amp; Protected</span>
                 </div>
             </div>
         </form>

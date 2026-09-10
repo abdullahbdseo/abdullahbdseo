@@ -11,7 +11,7 @@ export default function WebsiteCostCalculator() {
     seoSetup: true,
     speedOpt: true,
     cmsBlog: true,
-    cryptoPayments: false,
+    clientPortal: false,
     customApi: false
   });
 
@@ -36,7 +36,7 @@ export default function WebsiteCostCalculator() {
   if (features.seoSetup) featureAddons += 350;
   if (features.speedOpt) featureAddons += 250;
   if (features.cmsBlog) featureAddons += 200;
-  if (features.cryptoPayments) featureAddons += 300;
+  if (features.clientPortal) featureAddons += 300;
   if (features.customApi) featureAddons += 400;
 
   const totalEstimate = Math.round(basePrice * designMultiplier + featureAddons);
@@ -147,9 +147,9 @@ export default function WebsiteCostCalculator() {
                   {[
                     { key: "seoSetup", title: "Full On-Page & Schema SEO", price: "+$350", desc: "Complete JSON-LD markup, meta, & sitemap" },
                     { key: "speedOpt", title: "Core Web Vitals 95+ Speed", price: "+$250", desc: "Sub-second load times & image optimization" },
-                    { key: "ecommerce", title: "E-Commerce Checkout & Store", price: "+$450", desc: "Stripe, bKash, or gateway integration" },
+                    { key: "ecommerce", title: "E-Commerce Catalog & Products", price: "+$450", desc: "Product filters, variations & cart systems" },
                     { key: "cmsBlog", title: "CMS Dynamic Blog Engine", price: "+$200", desc: "Author dashboard & article management" },
-                    { key: "cryptoPayments", title: "USDT / Crypto Gateway", price: "+$300", desc: "Automated wallet webhook checkout" },
+                    { key: "clientPortal", title: "Client Portal & Dashboard", price: "+$300", desc: "User accounts & authenticated access" },
                     { key: "customApi", title: "Custom API & Automation", price: "+$400", desc: "CRM sync, Zapier, or webhook pipelines" }
                   ].map((feat) => (
                     <label

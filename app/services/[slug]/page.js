@@ -99,7 +99,7 @@ export default function SingleServicePage({ params }) {
                     className={`btn w-full btn-lg ${pkg.is_popular ? "btn-primary" : "btn-outline"}`}
                     onClick={() => handleOrder(pkg)}
                   >
-                    <i className="fa-solid fa-cart-shopping"></i> Order {pkg.name}
+                    <i className="fa-solid fa-paper-plane"></i> Inquire About {pkg.name}
                   </button>
                 </div>
               </div>

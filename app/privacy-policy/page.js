@@ -38,7 +38,7 @@ export default function PrivacyPolicyPage() {
             <li>To provide, operate, and maintain our SEO services and deliverables.</li>
             <li>To communicate with you regarding your project, invoices, or audit reports.</li>
             <li>To diagnose website crawlability and technical performance on requested URLs.</li>
-            <li>To process secure cryptocurrency and local payment transactions.</li>
+            <li>To deliver comprehensive SEO strategy documents and audit reports.</li>
           </ul>
 
           <h2>4. Data Confidentiality & Non-Disclosure</h2>

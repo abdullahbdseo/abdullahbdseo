@@ -32,9 +32,9 @@ export default function TermsPage() {
             While we apply 100% white-hat, industry-leading methodologies and battle-tested technical frameworks, search engine algorithms (such as Google Core updates) are owned and operated by third parties. No ethical SEO consultant can guarantee specific #1 keyword positions. We guarantee meticulous execution of all contracted deliverables, diagnostic accuracy, and industry best practices.
           </p>
 
-          <h2>4. Payment Terms</h2>
+          <h2>4. Invoicing & Engagement Terms</h2>
           <p>
-            One-time deliverables are billed upfront via supported crypto payment gateways (USDT, BTC, ETH, SOL) or verified local payment rails (bKash). Monthly retainers are billed on a recurring 30-day billing cycle.
+            Consulting agreements and custom project deliverables are established directly between {siteSettings.site_name} and the client upon project onboarding. Invoices and agreements are provided directly upon custom service engagement.
           </p>
 
           <h2>5. Contact</h2>

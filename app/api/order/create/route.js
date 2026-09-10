@@ -22,14 +22,14 @@ export async function POST(req) {
       subtotal: parseFloat(data.total),
       total: parseFloat(data.total),
       currency: "USD",
-      payment_method: data.payment_method || "NOWPAYMENTS-USDT"
+      payment_method: data.payment_method || "Direct Inquiry"
     });
 
     return NextResponse.json({
       success: true,
       order: newOrder,
       orderId: newOrder.id,
-      redirectUrl: `/checkout/${newOrder.id}`
+      redirectUrl: `/contact`
     });
   } catch (error) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
