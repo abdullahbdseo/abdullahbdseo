@@ -24,6 +24,9 @@ export default function AdminBlogsPage() {
     image: "/images/blog1.jpg",
     summary: "",
     excerpt: "",
+    meta_title: "",
+    meta_description: "",
+    meta_keywords: "",
     tags: [],
     author: {
       name: "Abdullah Saleh",
@@ -138,7 +141,7 @@ export default function AdminBlogsPage() {
                 <th className="px-5 py-3.5">Title</th>
                 <th className="px-5 py-3.5">Category</th>
                 <th className="px-5 py-3.5">Date</th>
-                <th className="px-5 py-3.5">Slug</th>
+                <th className="px-5 py-3.5">SEO Description</th>
                 <th className="px-5 py-3.5 text-right">Actions</th>
               </tr>
             </thead>
@@ -146,7 +149,8 @@ export default function AdminBlogsPage() {
               {filtered.map((post) => (
                 <tr key={post.id} className="hover:bg-slate-700/30 transition">
                   <td className="px-5 py-3.5 font-medium text-white max-w-xs">
-                    <div className="truncate">{post.title}</div>
+                    <div className="truncate font-semibold">{post.title}</div>
+                    <div className="text-xs text-slate-500 font-mono mt-0.5">/blog/{post.slug}</div>
                   </td>
                   <td className="px-5 py-3.5">
                     <span className="bg-primary/15 text-primary text-xs px-2.5 py-1 rounded-full font-semibold">
@@ -154,8 +158,17 @@ export default function AdminBlogsPage() {
                     </span>
                   </td>
                   <td className="px-5 py-3.5 text-slate-400 text-xs">{post.date || post.publish_date}</td>
-                  <td className="px-5 py-3.5 font-mono text-xs text-cyan-400 max-w-xs">
-                    <div className="truncate">/blog/{post.slug}</div>
+                  <td className="px-5 py-3.5 text-xs text-slate-400 max-w-sm">
+                    {post.meta_description ? (
+                      <div className="truncate text-emerald-400 flex items-center gap-1.5" title={post.meta_description}>
+                        <i className="fa-solid fa-circle-check text-[10px]"></i>
+                        <span>{post.meta_description}</span>
+                      </div>
+                    ) : (
+                      <div className="truncate text-slate-500 italic" title={post.summary || post.excerpt}>
+                        {post.summary || post.excerpt || "Default summary"}
+                      </div>
+                    )}
                   </td>
                   <td className="px-5 py-3.5 text-right">
                     <div className="flex items-center justify-end gap-2">
@@ -227,17 +240,30 @@ export default function AdminBlogsPage() {
 }
 
 function BlogForm({ initial, onSave, onCancel, saving, isEdit }) {
-  const [form, setForm] = useState({ ...initial, tags: Array.isArray(initial.tags) ? initial.tags.join(", ") : "" });
+  const [form, setForm] = useState({ 
+    ...initial, 
+    meta_description: initial.meta_description || initial.summary || initial.excerpt || "",
+    meta_title: initial.meta_title || initial.title || "",
+    meta_keywords: initial.meta_keywords || (Array.isArray(initial.tags) ? initial.tags.join(", ") : ""),
+    tags: Array.isArray(initial.tags) ? initial.tags.join(", ") : initial.tags || ""
+  });
 
   const set = (key, val) => setForm((p) => ({ ...p, [key]: val }));
   const setAuthor = (key, val) => setForm((p) => ({ ...p, author: { ...p.author, [key]: val } }));
+
+  const metaDescLen = form.meta_description?.length || 0;
+  const metaTitleLen = form.meta_title?.length || 0;
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const payload = {
       ...form,
+      meta_description: form.meta_description || form.summary || form.excerpt,
+      meta_title: form.meta_title || form.title,
+      meta_keywords: form.meta_keywords || form.tags,
       tags: form.tags ? form.tags.split(",").map((t) => t.trim()).filter(Boolean) : [],
-      excerpt: form.summary,
+      excerpt: form.summary || form.meta_description,
+      summary: form.summary || form.meta_description
     };
     onSave(payload);
   };
@@ -247,63 +273,229 @@ function BlogForm({ initial, onSave, onCancel, saving, isEdit }) {
       <div className="flex items-center justify-between px-5 py-4 border-b border-slate-700 bg-slate-900/50">
         <h2 className="font-bold text-white text-sm">
           <i className="fa-solid fa-pen-nib mr-2 text-primary"></i>
-          {isEdit ? "Edit Blog Post" : "Add New Blog Post"}
+          {isEdit ? "Edit Blog Post & SEO" : "Add New Blog Post & SEO"}
         </h2>
         <button onClick={onCancel} className="text-slate-400 hover:text-white transition text-sm">
           <i className="fa-solid fa-xmark"></i>
         </button>
       </div>
-      <form onSubmit={handleSubmit} className="p-5 space-y-5">
+
+      <form onSubmit={handleSubmit} className="p-5 space-y-6">
         {/* Basic Info */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="md:col-span-2">
-            <label className="field-label">Title *</label>
-            <input type="text" required value={form.title} onChange={(e) => set("title", e.target.value)}
-              className="cms-input" placeholder="e.g. Complete Guide to Technical SEO in 2026" />
-          </div>
-          <div>
-            <label className="field-label">Slug (URL)</label>
-            <input type="text" value={form.slug} onChange={(e) => set("slug", e.target.value)}
-              className="cms-input font-mono text-xs" placeholder="auto-generated from title" />
-          </div>
-          <div>
-            <label className="field-label">Category *</label>
-            <input type="text" required value={form.category} onChange={(e) => set("category", e.target.value)}
-              className="cms-input" placeholder="e.g. Technical SEO, AI & Search" />
-          </div>
-          <div>
-            <label className="field-label">Publish Date</label>
-            <input type="date" value={form.date || form.publish_date} onChange={(e) => { set("date", e.target.value); set("publish_date", e.target.value); }}
-              className="cms-input" />
-          </div>
-          <div>
-            <label className="field-label">Read Time</label>
-            <input type="text" value={form.read_time} onChange={(e) => set("read_time", e.target.value)}
-              className="cms-input" placeholder="5 min read" />
-          </div>
-          <div>
-            <label className="field-label">Featured Image URL</label>
-            <input type="text" value={form.featured_image} onChange={(e) => { set("featured_image", e.target.value); set("image", e.target.value); }}
-              className="cms-input" placeholder="/images/blog1.jpg" />
-          </div>
-          <div>
-            <label className="field-label">Tags (comma separated)</label>
-            <input type="text" value={form.tags} onChange={(e) => set("tags", e.target.value)}
-              className="cms-input" placeholder="SEO, Technical, Google" />
+        <div>
+          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
+            <i className="fa-solid fa-file-lines text-primary"></i> Article General Information
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="md:col-span-2">
+              <label className="field-label">Post Title *</label>
+              <input 
+                type="text" 
+                required 
+                value={form.title} 
+                onChange={(e) => {
+                  set("title", e.target.value);
+                  if (!form.meta_title || form.meta_title === form.title) {
+                    set("meta_title", e.target.value);
+                  }
+                }}
+                className="cms-input" 
+                placeholder="e.g. Complete Guide to Technical SEO in 2026" 
+              />
+            </div>
+            <div>
+              <label className="field-label">Slug (URL)</label>
+              <input 
+                type="text" 
+                value={form.slug} 
+                onChange={(e) => set("slug", e.target.value)}
+                className="cms-input font-mono text-xs" 
+                placeholder="auto-generated from title" 
+              />
+            </div>
+            <div>
+              <label className="field-label">Category *</label>
+              <input 
+                type="text" 
+                required 
+                value={form.category} 
+                onChange={(e) => set("category", e.target.value)}
+                className="cms-input" 
+                placeholder="e.g. Technical SEO, AI & Search" 
+              />
+            </div>
+            <div>
+              <label className="field-label">Publish Date</label>
+              <input 
+                type="date" 
+                value={form.date || form.publish_date} 
+                onChange={(e) => { set("date", e.target.value); set("publish_date", e.target.value); }}
+                className="cms-input" 
+              />
+            </div>
+            <div>
+              <label className="field-label">Read Time</label>
+              <input 
+                type="text" 
+                value={form.read_time} 
+                onChange={(e) => set("read_time", e.target.value)}
+                className="cms-input" 
+                placeholder="5 min read" 
+              />
+            </div>
+            <div>
+              <label className="field-label">Featured Image URL</label>
+              <input 
+                type="text" 
+                value={form.featured_image} 
+                onChange={(e) => { set("featured_image", e.target.value); set("image", e.target.value); }}
+                className="cms-input" 
+                placeholder="/images/blog1.jpg" 
+              />
+            </div>
+            <div>
+              <label className="field-label">Tags (comma separated)</label>
+              <input 
+                type="text" 
+                value={form.tags} 
+                onChange={(e) => set("tags", e.target.value)}
+                className="cms-input" 
+                placeholder="SEO, Technical, Google, AI" 
+              />
+            </div>
           </div>
         </div>
 
-        <div>
-          <label className="field-label">Summary / Excerpt *</label>
-          <textarea rows={2} required value={form.summary} onChange={(e) => { set("summary", e.target.value); set("excerpt", e.target.value); }}
-            className="cms-input resize-none" placeholder="Short description shown on blog listing page" />
+        {/* SEO META SECTION */}
+        <div className="bg-slate-900/70 border border-slate-700 rounded-xl p-5 space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-2">
+              <i className="fa-solid fa-magnifying-glass-chart"></i> Search Engine Optimization (SEO &amp; Meta)
+            </h3>
+            <span className="text-[11px] text-slate-400 bg-slate-800 px-2.5 py-1 rounded-full border border-slate-700">
+              Google Snippet &amp; AI Friendly
+            </span>
+          </div>
+
+          <div className="space-y-4">
+            {/* SEO Meta Title */}
+            <div>
+              <div className="flex justify-between items-center mb-1">
+                <label className="field-label mb-0">SEO Meta Title (Title Tag)</label>
+                <span className={`text-[11px] font-mono ${metaTitleLen > 60 ? "text-amber-400" : "text-slate-400"}`}>
+                  {metaTitleLen} / 60 chars {metaTitleLen > 60 && "(may truncate in SERP)"}
+                </span>
+              </div>
+              <input 
+                type="text" 
+                value={form.meta_title} 
+                onChange={(e) => set("meta_title", e.target.value)}
+                className="cms-input" 
+                placeholder="e.g. Complete Guide to Technical SEO in 2026 | Abdullah Saleh" 
+              />
+            </div>
+
+            {/* SEO Meta Description */}
+            <div>
+              <div className="flex justify-between items-center mb-1">
+                <label className="field-label mb-0 flex items-center gap-1.5">
+                  <span>SEO Meta Description</span>
+                  <span className="text-emerald-400 text-[11px] font-bold uppercase tracking-wider">(Recommended)</span>
+                </label>
+                <span className={`text-[11px] font-mono font-semibold ${
+                  metaDescLen >= 120 && metaDescLen <= 160 
+                    ? "text-emerald-400" 
+                    : metaDescLen > 160 
+                    ? "text-amber-400" 
+                    : "text-slate-400"
+                }`}>
+                  {metaDescLen} / 160 chars {metaDescLen >= 120 && metaDescLen <= 160 ? "✓ Optimal" : metaDescLen > 160 ? "⚠ Too Long" : ""}
+                </span>
+              </div>
+              <textarea 
+                rows={3} 
+                value={form.meta_description} 
+                onChange={(e) => {
+                  set("meta_description", e.target.value);
+                  if (!form.summary) {
+                    set("summary", e.target.value);
+                  }
+                }}
+                className="cms-input resize-y" 
+                placeholder="Enter a compelling 140-160 character meta description summarizing the key insights of this article for Google and searchers..." 
+              />
+              <p className="text-[11px] text-slate-400 mt-1">
+                This description appears under your link in Google search results. Keep it between 120–160 characters for best click-through rates.
+              </p>
+            </div>
+
+            {/* SEO Keywords */}
+            <div>
+              <label className="field-label">Target Focus Keywords (Meta Keywords)</label>
+              <input 
+                type="text" 
+                value={form.meta_keywords} 
+                onChange={(e) => set("meta_keywords", e.target.value)}
+                className="cms-input" 
+                placeholder="e.g. technical seo audit, core web vitals fix, bangladesh seo" 
+              />
+            </div>
+
+            {/* LIVE GOOGLE SERP PREVIEW BOX */}
+            <div className="mt-4 p-4 bg-slate-950 border border-slate-700/80 rounded-lg">
+              <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-2 flex items-center gap-1.5">
+                <i className="fa-brands fa-google text-blue-400"></i> Google Search Result Preview
+              </div>
+              <div className="font-sans text-left space-y-1">
+                <div className="text-xs text-slate-400 truncate flex items-center gap-1">
+                  <span>https://abdullahbdseo.com</span>
+                  <span className="text-slate-600">&rsaquo;</span>
+                  <span>blog</span>
+                  <span className="text-slate-600">&rsaquo;</span>
+                  <span className="text-slate-300 font-mono">{form.slug || "your-post-slug"}</span>
+                </div>
+                <div className="text-base text-blue-400 hover:underline font-medium truncate cursor-pointer">
+                  {form.meta_title || form.title || "Your Blog Post Title"} | Abdullah Saleh
+                </div>
+                <div className="text-xs text-slate-300 line-clamp-2 leading-relaxed">
+                  {form.meta_description || form.summary || "This is how your blog post snippet and meta description will appear to users searching on Google Search and AI answer engines..."}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
+        {/* Excerpt / Summary */}
         <div>
-          <label className="field-label">Content (HTML) *</label>
-          <textarea rows={12} required value={form.content} onChange={(e) => set("content", e.target.value)}
-            className="cms-input font-mono text-xs resize-y" placeholder="<h2>Section Title</h2><p>Your content...</p>" />
-          <p className="text-xs text-slate-500 mt-1">Write content in HTML format. Use &lt;h2&gt;, &lt;p&gt;, &lt;ul&gt;, &lt;strong&gt; tags.</p>
+          <label className="field-label">Listing Summary / Excerpt *</label>
+          <textarea 
+            rows={2} 
+            required 
+            value={form.summary} 
+            onChange={(e) => { 
+              set("summary", e.target.value); 
+              set("excerpt", e.target.value); 
+              if (!form.meta_description) {
+                set("meta_description", e.target.value);
+              }
+            }}
+            className="cms-input resize-none" 
+            placeholder="Short 2-sentence summary shown on the blog cards & listing archive" 
+          />
+        </div>
+
+        {/* Content (HTML) */}
+        <div>
+          <label className="field-label">Article Body Content (HTML) *</label>
+          <textarea 
+            rows={12} 
+            required 
+            value={form.content} 
+            onChange={(e) => set("content", e.target.value)}
+            className="cms-input font-mono text-xs resize-y" 
+            placeholder="<h2>Section Title</h2><p>Write your detailed guide here...</p>" 
+          />
+          <p className="text-xs text-slate-500 mt-1">Write content in semantic HTML format. Use &lt;h2&gt;, &lt;h3&gt;, &lt;p&gt;, &lt;ul&gt;, &lt;strong&gt;, &lt;table&gt; tags for high topical authority.</p>
         </div>
 
         {/* Author */}
@@ -326,7 +518,7 @@ function BlogForm({ initial, onSave, onCancel, saving, isEdit }) {
             Cancel
           </button>
           <button type="submit" disabled={saving} className="btn btn-primary px-6 py-2.5 rounded-lg text-sm font-semibold">
-            {saving ? <><i className="fa-solid fa-spinner fa-spin mr-2"></i>Saving...</> : <><i className="fa-solid fa-floppy-disk mr-2"></i>{isEdit ? "Update Post" : "Publish Post"}</>}
+            {saving ? <><i className="fa-solid fa-spinner fa-spin mr-2"></i>Saving...</> : <><i className="fa-solid fa-floppy-disk mr-2"></i>{isEdit ? "Update Post & SEO" : "Publish Post & SEO"}</>}
           </button>
         </div>
       </form>

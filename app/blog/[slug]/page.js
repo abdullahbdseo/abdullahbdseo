@@ -8,8 +8,9 @@ export async function generateMetadata({ params }) {
   const post = blogPosts.find((p) => p.slug === unwrappedParams.slug);
   if (!post) return { title: "Article Not Found" };
   return {
-    title: `${post.title} | ${siteSettings.site_name}`,
-    description: post.summary || post.excerpt
+    title: post.meta_title || `${post.title} | ${siteSettings.site_name}`,
+    description: post.meta_description || post.summary || post.excerpt,
+    keywords: post.meta_keywords || (Array.isArray(post.tags) ? post.tags.join(", ") : post.tags)
   };
 }
 
@@ -41,7 +42,7 @@ export default async function SingleBlogPostPage({ params }) {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     "headline": post.title,
-    "description": post.summary || post.excerpt,
+    "description": post.meta_description || post.summary || post.excerpt,
     "image": post.featured_image || post.image,
     "datePublished": post.publish_date || post.date,
     "dateModified": post.publish_date || post.date,
