@@ -53,17 +53,24 @@ export default function AdminSettingsPage() {
   const { data, loading, saving, error, saveMsg, saveSection } = useCMS();
   const [form, setForm] = useState(null);
 
-  // Password Change States
+  // Security & Credentials States (Both Username and Password)
+  const [currentUsername, setCurrentUsername] = useState("admin@seoservice.local");
+  const [newUsername, setNewUsername] = useState("");
   const [currentPass, setCurrentPass] = useState("");
   const [newPass, setNewPass] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
   const [showPass, setShowPass] = useState(false);
-  const [passMsg, setPassMsg] = useState(null);
-  const [passErr, setPassErr] = useState(null);
+  const [credMsg, setCredMsg] = useState(null);
+  const [credErr, setCredErr] = useState(null);
 
   useEffect(() => {
     if (data?.siteSettings) {
       setForm({ ...data.siteSettings });
+    }
+    if (typeof window !== "undefined") {
+      const savedUser = localStorage.getItem("admin_custom_username") || "admin@seoservice.local";
+      setCurrentUsername(savedUser);
+      setNewUsername(savedUser);
     }
   }, [data]);
 
@@ -75,33 +82,57 @@ export default function AdminSettingsPage() {
     await saveSection("siteSettings", form);
   };
 
-  const handlePasswordChange = (e) => {
+  const handleCredentialsUpdate = (e) => {
     e.preventDefault();
-    setPassMsg(null);
-    setPassErr(null);
+    setCredMsg(null);
+    setCredErr(null);
 
     const savedPass = (typeof window !== "undefined" && localStorage.getItem("admin_custom_password")) || "admin123";
 
+    // 1. Verify Current Password
     if (currentPass !== savedPass && currentPass !== "admin123") {
-      setPassErr("Current password does not match.");
+      setCredErr("Current password does not match.");
       return;
     }
 
-    if (newPass.length < 5) {
-      setPassErr("New password must be at least 5 characters long.");
+    // 2. Validate Username
+    const cleanUser = newUsername.trim().toLowerCase();
+    if (!cleanUser || cleanUser.length < 3) {
+      setCredErr("Username or Email must be at least 3 characters long.");
       return;
     }
 
-    if (newPass !== confirmPass) {
-      setPassErr("New password and confirm password do not match.");
-      return;
+    // 3. If user wants to change password
+    let updatedPassword = savedPass;
+    if (newPass || confirmPass) {
+      if (newPass.length < 5) {
+        setCredErr("New password must be at least 5 characters long.");
+        return;
+      }
+      if (newPass !== confirmPass) {
+        setCredErr("New password and confirm password do not match.");
+        return;
+      }
+      updatedPassword = newPass;
     }
 
+    // 4. Save to localStorage
     if (typeof window !== "undefined") {
-      localStorage.setItem("admin_custom_password", newPass);
+      localStorage.setItem("admin_custom_username", cleanUser);
+      localStorage.setItem("admin_custom_password", updatedPassword);
+
+      // Update admin_user profile session
+      const existingUser = localStorage.getItem("admin_user");
+      let parsed = { name: "Abdullah Saleh", role: "Master Administrator" };
+      if (existingUser) {
+        try { parsed = JSON.parse(existingUser); } catch(err) {}
+      }
+      parsed.email = cleanUser;
+      localStorage.setItem("admin_user", JSON.stringify(parsed));
     }
 
-    setPassMsg("Admin password successfully updated! Use your new password for all future logins.");
+    setCurrentUsername(cleanUser);
+    setCredMsg("Admin Username & Password credentials updated successfully! Use them on your next login.");
     setCurrentPass("");
     setNewPass("");
     setConfirmPass("");
@@ -115,8 +146,8 @@ export default function AdminSettingsPage() {
       {/* Header */}
       <div className="admin-page-header" style={{ marginBottom: 0 }}>
         <div>
-          <h1 className="admin-page-title">Site Settings & Security</h1>
-          <p className="admin-page-desc">Manage brand details, contact info, SEO defaults, and admin password</p>
+          <h1 className="admin-page-title">Site Settings & Admin Security</h1>
+          <p className="admin-page-desc">Manage brand details, contact info, SEO defaults, and admin login credentials</p>
         </div>
         <button
           onClick={handleSave}
@@ -141,95 +172,124 @@ export default function AdminSettingsPage() {
         </div>
       )}
 
-      {/* SECURITY & PASSWORD CHANGE CARD */}
+      {/* SECURITY: CHANGE ADMIN USERNAME & PASSWORD */}
       <div className="admin-table-card" style={{ marginBottom: 0 }}>
         <div className="admin-table-header" style={{ background: "#f8fafc" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <div style={{ width: "32px", height: "32px", borderRadius: "8px", background: "#eff6ff", color: "#2563eb", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <i className="fa-solid fa-lock"></i>
+            <div style={{ width: "34px", height: "34px", borderRadius: "8px", background: "#eff6ff", color: "#2563eb", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "16px" }}>
+              <i className="fa-solid fa-shield-halved"></i>
             </div>
             <div>
-              <h2 className="admin-table-title" style={{ fontSize: "15px" }}>Change Admin Password</h2>
-              <p style={{ margin: 0, fontSize: "12px", color: "#64748b" }}>Update your secret credential to secure the admin panel</p>
+              <h2 className="admin-table-title" style={{ fontSize: "15px" }}>Change Admin Username & Password</h2>
+              <p style={{ margin: 0, fontSize: "12px", color: "#64748b" }}>
+                Current Active ID: <strong style={{ color: "#2563eb" }}>{currentUsername}</strong>
+              </p>
             </div>
           </div>
         </div>
 
         <div style={{ padding: "20px" }}>
-          {passMsg && (
+          {credMsg && (
             <div style={{ background: "#ecfdf5", border: "1px solid #a7f3d0", color: "#059669", padding: "10px 14px", borderRadius: "8px", fontSize: "13px", marginBottom: "16px", display: "flex", alignItems: "center", gap: "8px" }}>
               <i className="fa-solid fa-circle-check"></i>
-              <span>{passMsg}</span>
+              <span>{credMsg}</span>
             </div>
           )}
 
-          {passErr && (
+          {credErr && (
             <div style={{ background: "#fff1f2", border: "1px solid #fecdd3", color: "#e11d48", padding: "10px 14px", borderRadius: "8px", fontSize: "13px", marginBottom: "16px", display: "flex", alignItems: "center", gap: "8px" }}>
               <i className="fa-solid fa-triangle-exclamation"></i>
-              <span>{passErr}</span>
+              <span>{credErr}</span>
             </div>
           )}
 
-          <form onSubmit={handlePasswordChange} style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "16px", alignItems: "flex-end" }}>
-            <div>
-              <label style={{ display: "block", fontSize: "12px", fontWeight: 700, color: "#475569", marginBottom: "6px" }}>
-                Current Password *
-              </label>
-              <input
-                type={showPass ? "text" : "password"}
-                required
-                placeholder="Enter current password"
-                value={currentPass}
-                onChange={(e) => setCurrentPass(e.target.value)}
-                style={{ width: "100%", background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "8px", padding: "9px 12px", fontSize: "13.5px", color: "#0f172a", outline: "none", boxSizing: "border-box" }}
-              />
+          <form onSubmit={handleCredentialsUpdate} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "16px" }}>
+              {/* NEW USERNAME / EMAIL */}
+              <div>
+                <label style={{ display: "block", fontSize: "12px", fontWeight: 700, color: "#475569", marginBottom: "6px" }}>
+                  Admin Username or Email *
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. admin@seoservice.local or abdullah"
+                  value={newUsername}
+                  onChange={(e) => setNewUsername(e.target.value)}
+                  style={{ width: "100%", background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "8px", padding: "9px 12px", fontSize: "13.5px", color: "#0f172a", outline: "none", boxSizing: "border-box" }}
+                />
+                <span style={{ fontSize: "11px", color: "#64748b", marginTop: "4px", display: "block" }}>
+                  This username or email will be required at login.
+                </span>
+              </div>
+
+              {/* CURRENT PASSWORD */}
+              <div>
+                <label style={{ display: "block", fontSize: "12px", fontWeight: 700, color: "#475569", marginBottom: "6px" }}>
+                  Current Password (for authorization) *
+                </label>
+                <input
+                  type={showPass ? "text" : "password"}
+                  required
+                  placeholder="Enter current password"
+                  value={currentPass}
+                  onChange={(e) => setCurrentPass(e.target.value)}
+                  style={{ width: "100%", background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "8px", padding: "9px 12px", fontSize: "13.5px", color: "#0f172a", outline: "none", boxSizing: "border-box" }}
+                />
+                <span style={{ fontSize: "11px", color: "#64748b", marginTop: "4px", display: "block" }}>
+                  Default is <code>admin123</code> if never changed.
+                </span>
+              </div>
             </div>
 
-            <div>
-              <label style={{ display: "block", fontSize: "12px", fontWeight: 700, color: "#475569", marginBottom: "6px" }}>
-                New Password *
-              </label>
-              <input
-                type={showPass ? "text" : "password"}
-                required
-                placeholder="Enter new password"
-                value={newPass}
-                onChange={(e) => setNewPass(e.target.value)}
-                style={{ width: "100%", background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "8px", padding: "9px 12px", fontSize: "13.5px", color: "#0f172a", outline: "none", boxSizing: "border-box" }}
-              />
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "16px" }}>
+              {/* NEW PASSWORD */}
+              <div>
+                <label style={{ display: "block", fontSize: "12px", fontWeight: 700, color: "#475569", marginBottom: "6px" }}>
+                  New Password (leave blank to keep current)
+                </label>
+                <input
+                  type={showPass ? "text" : "password"}
+                  placeholder="Enter new password (optional)"
+                  value={newPass}
+                  onChange={(e) => setNewPass(e.target.value)}
+                  style={{ width: "100%", background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "8px", padding: "9px 12px", fontSize: "13.5px", color: "#0f172a", outline: "none", boxSizing: "border-box" }}
+                />
+              </div>
+
+              {/* CONFIRM NEW PASSWORD */}
+              <div>
+                <label style={{ display: "block", fontSize: "12px", fontWeight: 700, color: "#475569", marginBottom: "6px" }}>
+                  Confirm New Password
+                </label>
+                <input
+                  type={showPass ? "text" : "password"}
+                  placeholder="Repeat new password"
+                  value={confirmPass}
+                  onChange={(e) => setConfirmPass(e.target.value)}
+                  style={{ width: "100%", background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "8px", padding: "9px 12px", fontSize: "13.5px", color: "#0f172a", outline: "none", boxSizing: "border-box" }}
+                />
+              </div>
             </div>
 
-            <div>
-              <label style={{ display: "block", fontSize: "12px", fontWeight: 700, color: "#475569", marginBottom: "6px" }}>
-                Confirm New Password *
-              </label>
-              <input
-                type={showPass ? "text" : "password"}
-                required
-                placeholder="Repeat new password"
-                value={confirmPass}
-                onChange={(e) => setConfirmPass(e.target.value)}
-                style={{ width: "100%", background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "8px", padding: "9px 12px", fontSize: "13.5px", color: "#0f172a", outline: "none", boxSizing: "border-box" }}
-              />
-            </div>
-
-            <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "8px", flexWrap: "wrap", gap: "10px" }}>
               <button
                 type="button"
                 onClick={() => setShowPass(!showPass)}
                 className="btn-admin btn-admin-outline"
-                style={{ padding: "9px 12px", fontSize: "12px" }}
-                title={showPass ? "Hide passwords" : "Show passwords"}
+                style={{ padding: "8px 12px", fontSize: "12px" }}
               >
                 <i className={`fa-solid ${showPass ? "fa-eye-slash" : "fa-eye"}`}></i>
+                <span>{showPass ? "Hide Passwords" : "Show Passwords"}</span>
               </button>
+
               <button
                 type="submit"
                 className="btn-admin btn-admin-primary"
-                style={{ width: "100%", padding: "9px 16px" }}
+                style={{ padding: "9px 20px" }}
               >
-                <i className="fa-solid fa-key"></i>
-                <span>Update Password</span>
+                <i className="fa-solid fa-user-shield"></i>
+                <span>Save Admin Credentials</span>
               </button>
             </div>
           </form>

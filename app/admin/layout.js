@@ -32,7 +32,7 @@ const navGroups = [
   {
     label: "System & Config",
     items: [
-      { href: "/admin/settings", label: "Site & SEO Settings", icon: "fa-sliders" },
+      { href: "/admin/settings", label: "Settings & Password", icon: "fa-user-shield" },
     ],
   },
 ];
@@ -194,7 +194,9 @@ export default function AdminLayout({ children }) {
                 />
                 <div className="admin-user-info">
                   <div className="admin-user-name">{adminUser.name}</div>
-                  <div className="admin-user-role">{adminUser.role}</div>
+                  <div className="admin-user-role" title={adminUser.email} style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                    {adminUser.email || "admin@seoservice.local"}
+                  </div>
                 </div>
               </div>
               <button onClick={handleLogout} className="admin-logout-btn">

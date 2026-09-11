@@ -33,9 +33,11 @@ export default function LoginPage() {
     const cleanEmail = email.trim().toLowerCase();
     const cleanPassword = password.trim();
 
-    // Check custom saved password or fallback defaults
+    // Check custom saved credentials or fallback defaults
+    let customUsername = null;
     let customPassword = null;
     if (typeof window !== "undefined") {
+      customUsername = localStorage.getItem("admin_custom_username");
       customPassword = localStorage.getItem("admin_custom_password");
     }
 
@@ -47,6 +49,10 @@ export default function LoginPage() {
       "abdullah"
     ];
 
+    if (customUsername) {
+      validEmails.unshift(customUsername.toLowerCase());
+    }
+
     const validPasswords = customPassword 
       ? [customPassword, "admin123"] 
       : ["admin123", "admin", "123456"];
@@ -57,7 +63,7 @@ export default function LoginPage() {
           localStorage.setItem("admin_auth", "true");
           localStorage.setItem("admin_user", JSON.stringify({
             name: "Abdullah Saleh",
-            email: cleanEmail.includes("@") ? cleanEmail : "admin@seoservice.local",
+            email: cleanEmail,
             role: "Master Administrator",
             loginTime: new Date().toISOString()
           }));
@@ -68,7 +74,7 @@ export default function LoginPage() {
         }, 400);
       } else {
         setLoading(false);
-        setError("Invalid administrative credentials. Please verify your email and password.");
+        setError("Invalid administrative credentials. Please verify your username/email and password.");
       }
     }, 400);
   };
@@ -114,15 +120,15 @@ export default function LoginPage() {
 
         {/* FORM */}
         <form onSubmit={handleLogin}>
-          {/* EMAIL */}
+          {/* EMAIL / USERNAME */}
           <div className="admin-input-group">
-            <label className="admin-input-label">Admin Email or Username</label>
+            <label className="admin-input-label">Admin Username or Email</label>
             <div className="admin-input-wrapper">
               <i className="fa-solid fa-envelope admin-input-icon"></i>
               <input
                 type="text"
                 required
-                placeholder="Enter admin email or username"
+                placeholder="Enter admin username or email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="admin-input-field"
