@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { caseStudies } from "@/lib/data";
 
@@ -9,24 +9,6 @@ export default function PortfolioPage() {
   const [viewMode, setViewMode] = useState("carousel"); // 'carousel' | 'grid'
   const [currentSlide, setCurrentSlide] = useState(0);
   const [enlargedItem, setEnlargedItem] = useState(null);
-  const [itemsPerView, setItemsPerView] = useState(3);
-
-  useEffect(() => {
-    const updateItemsPerView = () => {
-      if (typeof window !== "undefined") {
-        if (window.innerWidth <= 768) {
-          setItemsPerView(1);
-        } else if (window.innerWidth <= 1024) {
-          setItemsPerView(2);
-        } else {
-          setItemsPerView(3);
-        }
-      }
-    };
-    updateItemsPerView();
-    window.addEventListener("resize", updateItemsPerView);
-    return () => window.removeEventListener("resize", updateItemsPerView);
-  }, []);
 
   const categories = [
     { name: "SaaS & Enterprise SEO", slug: "saas" },
@@ -35,13 +17,13 @@ export default function PortfolioPage() {
 
   const filteredStudies = activeCategory === "all"
     ? caseStudies
-    : caseStudies.filter(c => 
-        (c.category_name && c.category_name.toLowerCase().includes(activeCategory)) ||
-        (c.industry && c.industry.toLowerCase().includes(activeCategory)) ||
-        c.slug.includes(activeCategory)
-      );
+    : caseStudies.filter(c =>
+      (c.category_name && c.category_name.toLowerCase().includes(activeCategory)) ||
+      (c.industry && c.industry.toLowerCase().includes(activeCategory)) ||
+      c.slug.includes(activeCategory)
+    );
 
-  const maxSlides = Math.max(0, filteredStudies.length - itemsPerView);
+  const maxSlides = Math.max(0, filteredStudies.length - 1);
 
   const handlePrev = () => {
     setCurrentSlide(prev => Math.max(0, prev - 1));
@@ -125,8 +107,8 @@ export default function PortfolioPage() {
         <div className="container">
           {/* Category Filter Tabs */}
           <div style={{ display: "flex", justifyContent: "center", gap: "10px", flexWrap: "wrap", marginBottom: "40px" }}>
-            <button 
-              type="button" 
+            <button
+              type="button"
               className={`btn btn-sm ${activeCategory === "all" ? "btn-blue-solid" : "btn-outline-blue"}`}
               onClick={() => handleCategoryChange("all")}
             >
@@ -152,46 +134,46 @@ export default function PortfolioPage() {
                   <span className="gsc-live-dot"></span> Verified Results
                 </span>
                 <span className="gsc-carousel-counter">
-                  Showing <strong>{filteredStudies.length > 0 ? `${currentSlide + 1} - ${Math.min(filteredStudies.length, currentSlide + itemsPerView)}` : "0"}</strong> of <strong>{filteredStudies.length}</strong> Results
+                  Showing <strong>{filteredStudies.length > 0 ? "1 - " + filteredStudies.length : "0"}</strong> of <strong>{filteredStudies.length}</strong> Results
                 </span>
               </div>
               <div className="gsc-carousel-controls">
                 <div className="gsc-view-toggle">
-                  <button 
-                    type="button" 
-                    className={`gsc-view-btn ${viewMode === "carousel" ? "active" : ""}`} 
+                  <button
+                    type="button"
+                    className={`gsc-view-btn ${viewMode === "carousel" ? "active" : ""}`}
                     onClick={() => setViewMode("carousel")}
                     title="Carousel Slider View"
                   >
                     <i className="fa-solid fa-sliders"></i> Slider
                   </button>
-                  <button 
-                    type="button" 
-                    className={`gsc-view-btn ${viewMode === "grid" ? "active" : ""}`} 
+                  <button
+                    type="button"
+                    className={`gsc-view-btn ${viewMode === "grid" ? "active" : ""}`}
                     onClick={() => setViewMode("grid")}
                     title="Grid View"
                   >
                     <i className="fa-solid fa-border-all"></i> Grid
                   </button>
                 </div>
-                {viewMode === "carousel" && maxSlides > 0 && (
+                {viewMode === "carousel" && (
                   <div className="gsc-carousel-nav">
-                    <button 
-                      type="button" 
-                      className="gsc-nav-btn gsc-prev-btn" 
-                      onClick={handlePrev} 
+                    <button
+                      type="button"
+                      className="gsc-nav-btn gsc-prev-btn"
+                      onClick={handlePrev}
                       disabled={currentSlide === 0}
-                      aria-label="Previous Slide" 
+                      aria-label="Previous Slide"
                       title="Previous Slide"
                     >
                       <i className="fa-solid fa-chevron-left"></i>
                     </button>
-                    <button 
-                      type="button" 
-                      className="gsc-nav-btn gsc-next-btn" 
-                      onClick={handleNext} 
+                    <button
+                      type="button"
+                      className="gsc-nav-btn gsc-next-btn"
+                      onClick={handleNext}
                       disabled={currentSlide >= maxSlides}
-                      aria-label="Next Slide" 
+                      aria-label="Next Slide"
                       title="Next Slide"
                     >
                       <i className="fa-solid fa-chevron-right"></i>
@@ -203,9 +185,9 @@ export default function PortfolioPage() {
 
             {/* Carousel Viewport & Track */}
             <div className="gsc-carousel-viewport">
-              <div 
-                className="gsc-carousel-track" 
-                style={viewMode === "carousel" ? { transform: `translateX(-${currentSlide * (itemsPerView === 1 ? 100 : itemsPerView === 2 ? 50 : 33.333)}%)` } : {}}
+              <div
+                className="gsc-carousel-track"
+                style={viewMode === "carousel" ? { transform: `translateX(-${currentSlide * 33.333}%)` } : {}}
               >
                 {filteredStudies.map((item) => {
                   const metrics = item.metrics || {};
@@ -217,11 +199,11 @@ export default function PortfolioPage() {
                     <div key={item.id} className="gsc-carousel-slide">
                       <div className="gsc-proof-card">
                         {/* Image with interactive zoom trigger */}
-                        <div 
-                          className="gsc-proof-media gsc-trigger" 
+                        <div
+                          className="gsc-proof-media gsc-trigger"
                           onClick={() => setEnlargedItem({ src: imgSrc, title: modalTitle, stats: modalStats })}
-                          role="button" 
-                          tabIndex={0} 
+                          role="button"
+                          tabIndex={0}
                           title="Click to enlarge Google Search Console report"
                         >
                           <span className="gsc-verified-badge">
@@ -287,9 +269,9 @@ export default function PortfolioPage() {
 
                           {/* Action Footer */}
                           <div className="gsc-proof-footer">
-                            <button 
-                              type="button" 
-                              className="btn-gsc-zoom" 
+                            <button
+                              type="button"
+                              className="btn-gsc-zoom"
                               onClick={() => setEnlargedItem({ src: imgSrc, title: modalTitle, stats: modalStats })}
                             >
                               <i className="fa-solid fa-magnifying-glass-plus"></i> Inspect
@@ -307,10 +289,10 @@ export default function PortfolioPage() {
             </div>
 
             {/* Bottom Pagination Dots for Carousel Mode */}
-            {viewMode === "carousel" && maxSlides > 0 && (
+            {viewMode === "carousel" && filteredStudies.length > 1 && (
               <div className="gsc-carousel-bottom-bar">
                 <div className="gsc-carousel-dots">
-                  {Array.from({ length: maxSlides + 1 }).map((_, idx) => (
+                  {filteredStudies.map((_, idx) => (
                     <button
                       key={idx}
                       type="button"
@@ -339,8 +321,8 @@ export default function PortfolioPage() {
 
       {/* Interactive Lightbox Modal */}
       {enlargedItem && (
-        <div 
-          className="gsc-lightbox-backdrop active" 
+        <div
+          className="gsc-lightbox-backdrop active"
           onClick={() => setEnlargedItem(null)}
         >
           <div className="gsc-lightbox-container" onClick={(e) => e.stopPropagation()}>
@@ -349,9 +331,9 @@ export default function PortfolioPage() {
                 <i className="fa-brands fa-google" style={{ color: "#4285F4" }}></i>
                 <span>{enlargedItem.title}</span>
               </div>
-              <button 
-                type="button" 
-                className="gsc-lightbox-close" 
+              <button
+                type="button"
+                className="gsc-lightbox-close"
                 onClick={() => setEnlargedItem(null)}
                 aria-label="Close Preview"
               >
