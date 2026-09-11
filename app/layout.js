@@ -36,23 +36,39 @@ export const metadata = {
 export default function RootLayout({ children }) {
   const orgSchema = {
     "@context": "https://schema.org",
-    "@type": "ProfessionalService",
-    "name": siteSettings.site_name,
-    "url": "https://seoservice.local",
-    "logo": "https://seoservice.local/images/logo.svg",
-    "image": "https://seoservice.local/images/abdullah.jpg",
-    "description": siteSettings.default_meta_description,
-    "telephone": siteSettings.contact_phone,
-    "email": siteSettings.contact_email,
-    "priceRange": "$$$",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Silicon Oasis Tech Park, Suite 402",
-      "addressLocality": "New York",
-      "addressRegion": "NY",
-      "postalCode": "10001",
-      "addressCountry": "US"
-    }
+    "@graph": [
+      {
+        "@type": "ProfessionalService",
+        "@id": "https://abdullahbdseo.vercel.app/#organization",
+        "name": siteSettings.site_name,
+        "url": "https://abdullahbdseo.vercel.app",
+        "logo": "https://abdullahbdseo.vercel.app/images/logo.svg",
+        "image": "https://abdullahbdseo.vercel.app/images/abdullah.jpg",
+        "description": siteSettings.default_meta_description,
+        "telephone": siteSettings.contact_phone,
+        "email": siteSettings.contact_email,
+        "priceRange": "$$$",
+        "sameAs": [
+          siteSettings.social_linkedin,
+          siteSettings.social_twitter,
+          siteSettings.social_github,
+          siteSettings.social_youtube
+        ].filter(Boolean)
+      },
+      {
+        "@type": "Person",
+        "@id": "https://abdullahbdseo.vercel.app/#person",
+        "name": siteSettings.expert_name,
+        "jobTitle": siteSettings.expert_title,
+        "description": siteSettings.expert_bio,
+        "url": "https://abdullahbdseo.vercel.app",
+        "image": "https://abdullahbdseo.vercel.app/images/abdullah.jpg",
+        "sameAs": [
+          siteSettings.social_linkedin,
+          siteSettings.social_twitter
+        ].filter(Boolean)
+      }
+    ]
   };
 
   return (
