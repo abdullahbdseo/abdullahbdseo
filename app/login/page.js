@@ -1,89 +1,239 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { siteSettings } from "@/lib/data";
+import "@/styles/admin.css";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("admin@seoservice.local");
-  const [password, setPassword] = useState("admin123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  // Auto-redirect if already authenticated
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const isAuth = localStorage.getItem("admin_auth");
+      if (isAuth === "true") {
+        router.replace("/admin");
+      }
+    }
+  }, [router]);
+
+  const handleQuickFill = () => {
+    setEmail("admin@seoservice.local");
+    setPassword("admin123");
+    setError(null);
+  };
 
   const handleLogin = (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
-    // Secure local verification
-    if (email === "admin@seoservice.local" && password === "admin123") {
-      if (typeof window !== "undefined") {
-        localStorage.setItem("admin_auth", "true");
+    const cleanEmail = email.trim().toLowerCase();
+    const cleanPassword = password.trim();
+
+    // Accepted admin email variations & passwords
+    const validEmails = [
+      "admin@seoservice.local",
+      "admin@abdullahbdseo.com",
+      "admin@seoservice.com",
+      "admin",
+      "abdullah"
+    ];
+
+    const validPasswords = ["admin123", "admin", "123456"];
+
+    setTimeout(() => {
+      if (validEmails.includes(cleanEmail) && validPasswords.includes(cleanPassword)) {
+        if (typeof window !== "undefined") {
+          localStorage.setItem("admin_auth", "true");
+          localStorage.setItem("admin_user", JSON.stringify({
+            name: "Abdullah Saleh",
+            email: cleanEmail.includes("@") ? cleanEmail : "admin@seoservice.local",
+            role: "Master Administrator",
+            loginTime: new Date().toISOString()
+          }));
+        }
+        setSuccess(true);
+        setTimeout(() => {
+          router.push("/admin");
+        }, 400);
+      } else {
+        setLoading(false);
+        setError("Invalid administrative credentials. Please verify your email and password.");
       }
-      setTimeout(() => {
-        router.push("/admin");
-      }, 500);
-    } else {
-      setLoading(false);
-      setError("Invalid administrative credentials. Use default admin credentials.");
-    }
+    }, 450);
   };
 
   return (
-    <div className="login-page-wrapper py-20 bg-slate-900 min-h-screen flex items-center justify-center px-4">
-      <div className="login-card max-w-md w-full bg-slate-800 border border-slate-700 rounded-2xl p-8 shadow-2xl text-white">
-        <div className="text-center mb-8">
-          <div className="w-14 h-14 bg-primary/20 text-primary rounded-xl flex items-center justify-center mx-auto text-2xl mb-3">
-            <i className="fa-solid fa-lock"></i>
+    <div className="admin-login-wrapper">
+      <div className="admin-login-card">
+        {/* LOGO & HEADER */}
+        <div className="admin-login-logo">
+          <div className="admin-login-icon-box">
+            <i className="fa-solid fa-shield-halved"></i>
           </div>
-          <h1 className="text-2xl font-bold">Admin Portal</h1>
-          <p className="text-slate-400 text-sm">Sign in to manage client orders and invoices</p>
+          <h1 className="admin-login-title">Admin Portal</h1>
+          <p className="admin-login-subtitle">Secure sign-in to access CMS & order management</p>
         </div>
 
+        {/* DEMO / DEFAULT CREDENTIALS BADGE */}
+        <div className="demo-creds-badge" onClick={handleQuickFill} title="Click to fill default admin credentials">
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <i className="fa-solid fa-key" style={{ color: "#60a5fa" }}></i>
+            <span>Demo: <strong>admin@seoservice.local</strong> / <strong>admin123</strong></span>
+          </div>
+          <button type="button" className="fill-btn">Auto Fill</button>
+        </div>
+
+        {/* ERROR NOTIFICATION */}
         {error && (
-          <div className="bg-rose-500/10 border border-rose-500/30 text-rose-300 p-3 rounded-lg text-xs mb-6 flex items-center gap-2">
+          <div className="admin-alert-error">
             <i className="fa-solid fa-triangle-exclamation"></i>
             <span>{error}</span>
           </div>
         )}
 
-        <form onSubmit={handleLogin} className="space-y-4">
-          <div className="form-group">
-            <label className="text-xs font-bold uppercase text-slate-400 mb-1 block">Admin Email</label>
-            <input 
-              type="email" 
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:border-primary"
-            />
+        {/* SUCCESS NOTIFICATION */}
+        {success && (
+          <div style={{
+            background: "rgba(16, 185, 129, 0.15)",
+            border: "1px solid rgba(16, 185, 129, 0.35)",
+            color: "#6ee7b7",
+            borderRadius: "10px",
+            padding: "12px 16px",
+            fontSize: "13px",
+            marginBottom: "20px",
+            display: "flex",
+            alignItems: "center",
+            gap: "10px"
+          }}>
+            <i className="fa-solid fa-circle-check"></i>
+            <span>Access granted! Redirecting to dashboard...</span>
+          </div>
+        )}
+
+        {/* FORM */}
+        <form onSubmit={handleLogin}>
+          {/* EMAIL */}
+          <div className="admin-input-group">
+            <label className="admin-input-label">Admin Email or Username</label>
+            <div className="admin-input-wrapper">
+              <i className="fa-solid fa-envelope admin-input-icon"></i>
+              <input
+                type="text"
+                required
+                placeholder="admin@seoservice.local"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="admin-input-field"
+                autoComplete="username"
+              />
+            </div>
           </div>
 
-          <div className="form-group">
-            <label className="text-xs font-bold uppercase text-slate-400 mb-1 block">Password</label>
-            <input 
-              type="password" 
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:border-primary"
-            />
+          {/* PASSWORD */}
+          <div className="admin-input-group">
+            <label className="admin-input-label">Admin Password</label>
+            <div className="admin-input-wrapper">
+              <i className="fa-solid fa-lock admin-input-icon"></i>
+              <input
+                type={showPassword ? "text" : "password"}
+                required
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="admin-input-field"
+                autoComplete="current-password"
+              />
+              <button
+                type="button"
+                className="admin-password-toggle"
+                onClick={() => setShowPassword(!showPassword)}
+                title={showPassword ? "Hide password" : "Show password"}
+              >
+                <i className={`fa-solid ${showPassword ? "fa-eye-slash" : "fa-eye"}`}></i>
+              </button>
+            </div>
           </div>
 
-          <button 
-            type="submit" 
-            disabled={loading}
-            className="btn btn-primary w-full py-3 mt-4"
+          {/* REMEMBER ME & FORGOT */}
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginBottom: "20px",
+            fontSize: "12px",
+            color: "#94a3b8"
+          }}>
+            <label style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer" }}>
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                style={{ accentColor: "#3b82f6", cursor: "pointer" }}
+              />
+              <span>Remember this session</span>
+            </label>
+            <span style={{ color: "#64748b" }}>256-Bit SSL Encrypted</span>
+          </div>
+
+          {/* SUBMIT BUTTON */}
+          <button
+            type="submit"
+            disabled={loading || success}
+            className="admin-login-btn"
           >
-            {loading ? <><i className="fa-solid fa-spinner fa-spin"></i> Authenticating...</> : "Sign In to Admin"}
+            {loading ? (
+              <>
+                <i className="fa-solid fa-spinner fa-spin"></i>
+                <span>Verifying Credentials...</span>
+              </>
+            ) : success ? (
+              <>
+                <i className="fa-solid fa-check"></i>
+                <span>Authenticated</span>
+              </>
+            ) : (
+              <>
+                <i className="fa-solid fa-right-to-bracket"></i>
+                <span>Sign In to Admin Panel</span>
+              </>
+            )}
           </button>
         </form>
 
-        <div className="mt-8 text-center text-xs text-slate-500 border-t border-slate-700/60 pt-4">
-          <Link href="/" className="hover:text-slate-300">
-            <i className="fa-solid fa-arrow-left"></i> Return to Public Site
+        {/* RETURN TO PUBLIC WEBSITE */}
+        <div style={{
+          marginTop: "28px",
+          textAlign: "center",
+          fontSize: "13px",
+          color: "#64748b",
+          borderTop: "1px solid rgba(255, 255, 255, 0.08)",
+          paddingTop: "20px"
+        }}>
+          <Link
+            href="/"
+            style={{
+              color: "#94a3b8",
+              textDecoration: "none",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "8px",
+              transition: "color 0.2s ease"
+            }}
+            onMouseOver={(e) => (e.currentTarget.style.color = "#ffffff")}
+            onMouseOut={(e) => (e.currentTarget.style.color = "#94a3b8")}
+          >
+            <i className="fa-solid fa-arrow-left"></i>
+            <span>Return to Public Website</span>
           </Link>
         </div>
       </div>

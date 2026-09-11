@@ -6,70 +6,118 @@ import { DB } from "@/lib/db";
 
 export default function AdminInvoicesPage() {
   const [invoices, setInvoices] = useState([]);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     setInvoices(DB.getInvoices());
   }, []);
 
+  const filtered = invoices.filter(inv =>
+    inv.invoice_number?.toLowerCase().includes(search.toLowerCase()) ||
+    inv.client_name?.toLowerCase().includes(search.toLowerCase()) ||
+    inv.client_email?.toLowerCase().includes(search.toLowerCase()) ||
+    inv.order_number?.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
-    <div className="admin-invoices-page space-y-6">
-      <div className="flex justify-between items-center">
+    <div className="admin-invoices-page" style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+      <div className="admin-page-header">
         <div>
-          <h1 className="text-2xl font-bold text-white">Client Invoices</h1>
-          <p className="text-slate-400 text-sm">Downloadable & printable receipts for all completed payments</p>
+          <h1 className="admin-page-title">Client Billing & Invoices</h1>
+          <p className="admin-page-desc">Downloadable, printable official tax & receipt invoices for all client services</p>
+        </div>
+
+        <div>
+          <input
+            type="text"
+            placeholder="Search invoice #, client or order..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            style={{
+              background: "#0b1120",
+              border: "1px solid rgba(255, 255, 255, 0.15)",
+              color: "#ffffff",
+              padding: "8px 14px",
+              borderRadius: "8px",
+              fontSize: "13px",
+              outline: "none",
+              minWidth: "260px"
+            }}
+          />
         </div>
       </div>
 
-      <div className="bg-slate-800 border border-slate-700 rounded-xl overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-slate-300">
-            <thead className="bg-slate-900/60 text-xs uppercase text-slate-400">
+      <div className="admin-table-card">
+        <div className="admin-table-header">
+          <h2 className="admin-table-title">Invoice Records ({filtered.length})</h2>
+          <span style={{ fontSize: "12px", color: "#94a3b8" }}>PDF & Print Ready</span>
+        </div>
+
+        <div className="admin-table-container">
+          <table className="admin-data-table">
+            <thead>
               <tr>
-                <th className="px-5 py-3.5">Invoice #</th>
-                <th className="px-5 py-3.5">Order Ref</th>
-                <th className="px-5 py-3.5">Client Info</th>
-                <th className="px-5 py-3.5">Deliverable Service</th>
-                <th className="px-5 py-3.5">Amount</th>
-                <th className="px-5 py-3.5">Status</th>
-                <th className="px-5 py-3.5">Action</th>
+                <th>Invoice #</th>
+                <th>Order Ref</th>
+                <th>Client Info</th>
+                <th>Deliverable Service</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-700/60">
-              {invoices.map((inv) => (
-                <tr key={inv.id} className="hover:bg-slate-700/30">
-                  <td className="px-5 py-3.5 font-mono text-xs font-bold text-white">
-                    {inv.invoice_number}
-                  </td>
-                  <td className="px-5 py-3.5 font-mono text-xs text-slate-400">
-                    {inv.order_number}
-                  </td>
-                  <td className="px-5 py-3.5">
-                    <div className="font-medium text-white">{inv.client_name}</div>
-                    <div className="text-xs text-slate-400">{inv.client_email}</div>
-                  </td>
-                  <td className="px-5 py-3.5">
-                    <div className="text-white">{inv.service_title}</div>
-                    <div className="text-xs text-slate-400">{inv.package_name}</div>
-                  </td>
-                  <td className="px-5 py-3.5 font-bold text-white">
-                    ${inv.total}
-                  </td>
-                  <td className="px-5 py-3.5">
-                    <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${inv.status === "paid" ? "bg-emerald-500/20 text-emerald-300" : "bg-amber-500/20 text-amber-300"}`}>
-                      {inv.status.toUpperCase()}
-                    </span>
-                  </td>
-                  <td className="px-5 py-3.5">
-                    <Link
-                      href={`/admin/invoices/${inv.id}`}
-                      target="_blank"
-                      className="btn btn-primary btn-xs text-xs"
-                    >
-                      <i className="fa-solid fa-print"></i> Print / View
-                    </Link>
+            <tbody>
+              {filtered.length === 0 ? (
+                <tr>
+                  <td colSpan={7} style={{ textAlign: "center", padding: "36px", color: "#64748b" }}>
+                    No invoices found.
                   </td>
                 </tr>
-              ))}
+              ) : (
+                filtered.map((inv) => (
+                  <tr key={inv.id}>
+                    <td>
+                      <span style={{ fontFamily: "monospace", fontWeight: 700, color: "#ffffff" }}>
+                        {inv.invoice_number}
+                      </span>
+                    </td>
+                    <td>
+                      <span style={{ fontFamily: "monospace", fontSize: "12px", color: "#94a3b8" }}>
+                        {inv.order_number}
+                      </span>
+                    </td>
+                    <td>
+                      <div style={{ fontWeight: 600, color: "#f8fafc" }}>{inv.client_name}</div>
+                      <div style={{ fontSize: "12px", color: "#64748b" }}>{inv.client_email}</div>
+                    </td>
+                    <td>
+                      <div style={{ color: "#ffffff", fontWeight: 500 }}>{inv.service_title}</div>
+                      <div style={{ fontSize: "11px", color: "#64748b" }}>{inv.package_name}</div>
+                    </td>
+                    <td>
+                      <span style={{ fontWeight: 800, color: "#ffffff", fontSize: "15px" }}>
+                        ${inv.total}
+                      </span>
+                    </td>
+                    <td>
+                      <span className={`badge-status ${inv.status}`}>
+                        <i className="fa-solid fa-circle-check"></i>
+                        <span>{inv.status.toUpperCase()}</span>
+                      </span>
+                    </td>
+                    <td>
+                      <Link
+                        href={`/admin/invoices/${inv.id}`}
+                        target="_blank"
+                        className="btn-admin btn-admin-primary btn-admin-sm"
+                      >
+                        <i className="fa-solid fa-print"></i>
+                        <span>View / Print</span>
+                      </Link>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
