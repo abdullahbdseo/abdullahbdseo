@@ -2,12 +2,21 @@
 // views/public/home.php - Pixel-Perfect Layout matching Digi Solution Mockup
 ?>
 
-<!-- 1. HERO SECTION -->
+<!-- 1. HERO SECTION (Ultra-Professional & High-Converting) -->
 <section class="digi-hero-section">
     <div class="container">
         <div class="digi-hero-grid">
             <!-- Left Hero Content -->
             <div class="digi-hero-content">
+                <!-- Top Eyebrow Badge -->
+                <div class="hero-top-badge">
+                    <span class="hero-badge-dot"></span>
+                    <span class="hero-badge-text">
+                        <i class="fa-solid fa-bolt" style="color: #0284c7;"></i> Top-Rated SEO Specialist in Bangladesh &bull; 6+ Years Experience
+                    </span>
+                    <span class="hero-badge-pill">ROI-Driven</span>
+                </div>
+
                 <h1>
                     <span class="text-blue">Search</span> Engine <span class="text-blue">Optimization</span><br>
                     <strong>SEO Services in Bangladesh</strong>
@@ -17,6 +26,20 @@
                     All-in-one SEO and digital marketing solutions engineered to rank your website #1 on Google search results. Drive high-intent buyer traffic, generate qualified leads, and scale conversions organically.
                 </p>
 
+                <!-- Key Trust Highlights Strip -->
+                <div class="hero-highlights-strip">
+                    <div class="hero-highlight-item">
+                        <i class="fa-solid fa-circle-check"></i> 100% White-Hat SEO
+                    </div>
+                    <div class="hero-highlight-item">
+                        <i class="fa-solid fa-circle-check"></i> Google Rank #1 Strategy
+                    </div>
+                    <div class="hero-highlight-item">
+                        <i class="fa-solid fa-circle-check"></i> Verified ROI &amp; Reports
+                    </div>
+                </div>
+
+                <!-- Call to Actions -->
                 <div class="digi-hero-actions">
                     <a href="<?= url('/contact') ?>" class="btn btn-lg btn-blue-solid">
                         Get Started <i class="fa-solid fa-arrow-right"></i>
@@ -25,17 +48,87 @@
                         View Pricing Plans
                     </a>
                 </div>
+
+                <!-- Social Proof Review Rating -->
+                <div class="hero-trust-proof">
+                    <div class="hero-rating-stars">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <span class="rating-score">4.9/5</span>
+                    </div>
+                    <span class="trust-divider">|</span>
+                    <span class="trust-stat-text">
+                        <i class="fa-solid fa-shield-check" style="color: #10b981;"></i> Trusted by <strong>100+ Brands</strong> &amp; Clients Globally
+                    </span>
+                </div>
             </div>
 
-            <!-- Right Hero 3D Illustration -->
+            <!-- Right Hero 3D Illustration with Floating Stat Badges -->
             <div class="digi-hero-visual">
                 <div class="digi-3d-box">
+                    <!-- Ambient Radial Glow -->
+                    <div class="hero-glow-aura"></div>
+
+                    <!-- Floating Badge 1: Top Left -->
+                    <div class="hero-floating-card float-card-top">
+                        <div class="float-card-icon growth-icon">
+                            <i class="fa-solid fa-arrow-trend-up"></i>
+                        </div>
+                        <div class="float-card-info">
+                            <span class="float-card-num">+340%</span>
+                            <span class="float-card-lbl">Organic Traffic</span>
+                        </div>
+                    </div>
+
+                    <!-- 3D Main Image -->
                     <img src="<?= asset('images/seo_hero_3d.png') ?>" alt="SEO 3D Illustration" class="digi-3d-img">
+
+                    <!-- Floating Badge 2: Bottom Right -->
+                    <div class="hero-floating-card float-card-bottom">
+                        <div class="float-card-icon rank-icon">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+                        <div class="float-card-info">
+                            <span class="float-card-num">Rank #1</span>
+                            <span class="float-card-lbl">Google Verified</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+<!-- Hero Authority & Tool Platform Strip -->
+<div class="hero-authority-strip">
+    <div class="container">
+        <div class="authority-strip-inner">
+            <span class="authority-strip-label">
+                <i class="fa-solid fa-circle-nodes" style="color: #0062d2;"></i> Trusted SEO Framework &amp; Data:
+            </span>
+            <div class="authority-strip-logos">
+                <div class="authority-badge">
+                    <i class="fa-brands fa-google" style="color: #4285F4;"></i> Search Console
+                </div>
+                <div class="authority-badge">
+                    <i class="fa-solid fa-chart-pie" style="color: #EA4335;"></i> Google Analytics 4
+                </div>
+                <div class="authority-badge">
+                    <i class="fa-solid fa-magnifying-glass-chart" style="color: #FF642D;"></i> Semrush
+                </div>
+                <div class="authority-badge">
+                    <i class="fa-solid fa-bolt" style="color: #0062FF;"></i> Ahrefs
+                </div>
+                <div class="authority-badge">
+                    <i class="fa-brands fa-shopify" style="color: #95BF47;"></i> Shopify &amp; WP
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- SEO AUTHORITY SECTION - Best SEO Expert in Bangladesh -->
 <section class="section digi-seo-expert-section" style="background-color: #ffffff; padding: 65px 0; border-bottom: 1px solid #e2e8f0;">

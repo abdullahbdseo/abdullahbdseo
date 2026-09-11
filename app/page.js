@@ -71,12 +71,21 @@ export default function HomePage() {
 
   return (
     <div className="home-page-wrapper">
-      {/* 1. HERO SECTION (Exact Digi Solution Mockup Match) */}
+      {/* 1. HERO SECTION (Ultra-Professional & High-Converting) */}
       <section className="digi-hero-section">
         <div className="container">
           <div className="digi-hero-grid">
             {/* Left Hero Content */}
             <div className="digi-hero-content">
+              {/* Top Eyebrow Badge */}
+              <div className="hero-top-badge">
+                <span className="hero-badge-dot"></span>
+                <span className="hero-badge-text">
+                  <i className="fa-solid fa-bolt" style={{ color: "#0284c7" }}></i> Top-Rated SEO Specialist in Bangladesh &bull; 6+ Years Experience
+                </span>
+                <span className="hero-badge-pill">ROI-Driven</span>
+              </div>
+
               <h1>
                 <span className="text-blue">Search</span> Engine <span className="text-blue">Optimization</span><br />
                 <strong>SEO Services in Bangladesh</strong>
@@ -86,6 +95,20 @@ export default function HomePage() {
                 All-in-one SEO and digital marketing solutions engineered to rank your website #1 on Google search results. Drive high-intent buyer traffic, generate qualified leads, and scale conversions organically.
               </p>
 
+              {/* Key Trust Highlights Strip */}
+              <div className="hero-highlights-strip">
+                <div className="hero-highlight-item">
+                  <i className="fa-solid fa-circle-check"></i> 100% White-Hat SEO
+                </div>
+                <div className="hero-highlight-item">
+                  <i className="fa-solid fa-circle-check"></i> Google Rank #1 Strategy
+                </div>
+                <div className="hero-highlight-item">
+                  <i className="fa-solid fa-circle-check"></i> Verified ROI &amp; Reports
+                </div>
+              </div>
+
+              {/* Call to Actions */}
               <div className="digi-hero-actions">
                 <Link href="/contact" className="btn btn-lg btn-blue-solid">
                   Get Started <i className="fa-solid fa-arrow-right"></i>
@@ -94,17 +117,87 @@ export default function HomePage() {
                   View Pricing Plans
                 </a>
               </div>
+
+              {/* Social Proof Review Rating */}
+              <div className="hero-trust-proof">
+                <div className="hero-rating-stars">
+                  <i className="fa-solid fa-star"></i>
+                  <i className="fa-solid fa-star"></i>
+                  <i className="fa-solid fa-star"></i>
+                  <i className="fa-solid fa-star"></i>
+                  <i className="fa-solid fa-star"></i>
+                  <span className="rating-score">4.9/5</span>
+                </div>
+                <span className="trust-divider">|</span>
+                <span className="trust-stat-text">
+                  <i className="fa-solid fa-shield-check" style={{ color: "#10b981" }}></i> Trusted by <strong>100+ Brands</strong> &amp; Clients Globally
+                </span>
+              </div>
             </div>
 
-            {/* Right Hero 3D Illustration */}
+            {/* Right Hero 3D Illustration with Floating Stat Badges */}
             <div className="digi-hero-visual">
               <div className="digi-3d-box">
+                {/* Ambient Radial Glow */}
+                <div className="hero-glow-aura"></div>
+
+                {/* Floating Badge 1: Top Left */}
+                <div className="hero-floating-card float-card-top">
+                  <div className="float-card-icon growth-icon">
+                    <i className="fa-solid fa-arrow-trend-up"></i>
+                  </div>
+                  <div className="float-card-info">
+                    <span className="float-card-num">+340%</span>
+                    <span className="float-card-lbl">Organic Traffic</span>
+                  </div>
+                </div>
+
+                {/* 3D Main Image */}
                 <img src="/images/seo_hero_3d.png" alt="SEO 3D Illustration" className="digi-3d-img" />
+
+                {/* Floating Badge 2: Bottom Right */}
+                <div className="hero-floating-card float-card-bottom">
+                  <div className="float-card-icon rank-icon">
+                    <i className="fa-solid fa-trophy"></i>
+                  </div>
+                  <div className="float-card-info">
+                    <span className="float-card-num">Rank #1</span>
+                    <span className="float-card-lbl">Google Verified</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
+
+      {/* Hero Authority & Tool Platform Strip */}
+      <div className="hero-authority-strip">
+        <div className="container">
+          <div className="authority-strip-inner">
+            <span className="authority-strip-label">
+              <i className="fa-solid fa-circle-nodes" style={{ color: "#0062d2" }}></i> Trusted SEO Framework &amp; Data:
+            </span>
+            <div className="authority-strip-logos">
+              <div className="authority-badge">
+                <i className="fa-brands fa-google" style={{ color: "#4285F4" }}></i> Search Console
+              </div>
+              <div className="authority-badge">
+                <i className="fa-solid fa-chart-pie" style={{ color: "#EA4335" }}></i> Google Analytics 4
+              </div>
+              <div className="authority-badge">
+                <i className="fa-solid fa-magnifying-glass-chart" style={{ color: "#FF642D" }}></i> Semrush
+              </div>
+              <div className="authority-badge">
+                <i className="fa-solid fa-bolt" style={{ color: "#0062FF" }}></i> Ahrefs
+              </div>
+              <div className="authority-badge">
+                <i className="fa-brands fa-shopify" style={{ color: "#95BF47" }}></i> Shopify &amp; WP
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* SEO AUTHORITY SECTION - Best SEO Expert in Bangladesh */}
       <section className="section digi-seo-expert-section" style={{ backgroundColor: "#ffffff", padding: "65px 0", borderBottom: "1px solid #e2e8f0" }}>
