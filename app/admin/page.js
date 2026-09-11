@@ -20,7 +20,7 @@ export default function AdminDashboardPage() {
   const completedOrdersCount = orders.filter(o => o.status === "completed").length;
 
   return (
-    <div className="admin-dashboard-page" style={{ display: "flex", flexDirection: "column", gap: "28px" }}>
+    <div className="admin-dashboard-page" style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
       {/* 1. HERO HEADER */}
       <div className="admin-page-header">
         <div>
@@ -40,7 +40,7 @@ export default function AdminDashboardPage() {
         </div>
       </div>
 
-      {/* 2. STATS & KPI METRIC CARDS */}
+      {/* 2. STATS & KPI METRIC CARDS (DAY / LIGHT MODE) */}
       <div className="admin-stats-row">
         {/* Total Invoiced Volume */}
         <div className="admin-stat-glass-card">
@@ -67,7 +67,7 @@ export default function AdminDashboardPage() {
           </div>
           <div className="admin-stat-value">{orders.length}</div>
           <div className="admin-stat-footer">
-            <span style={{ color: "#60a5fa", fontWeight: 700 }}>{activeOrdersCount} Active</span>
+            <span style={{ color: "#2563eb", fontWeight: 700 }}>{activeOrdersCount} Active</span>
             <span>in fulfillment queue</span>
           </div>
         </div>
@@ -82,7 +82,7 @@ export default function AdminDashboardPage() {
           </div>
           <div className="admin-stat-value">{completedOrdersCount}</div>
           <div className="admin-stat-footer">
-            <span style={{ color: "#c084fc", fontWeight: 700 }}>100%</span>
+            <span style={{ color: "#7c3aed", fontWeight: 700 }}>100%</span>
             <span>On-time milestone delivery</span>
           </div>
         </div>
@@ -97,7 +97,7 @@ export default function AdminDashboardPage() {
           </div>
           <div className="admin-stat-value">{inquiries.length}</div>
           <div className="admin-stat-footer">
-            <span style={{ color: "#fbbf24", fontWeight: 700 }}>Active</span>
+            <span style={{ color: "#d97706", fontWeight: 700 }}>Active</span>
             <span>Contact & audit leads</span>
           </div>
         </div>
@@ -105,7 +105,7 @@ export default function AdminDashboardPage() {
 
       {/* 3. QUICK ACTIONS BAR */}
       <div>
-        <div style={{ fontSize: "12px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "#64748b", marginBottom: "12px" }}>
+        <div style={{ fontSize: "12px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "#64748b", marginBottom: "10px" }}>
           Quick CMS Operations
         </div>
         <div className="admin-quick-actions">
@@ -118,7 +118,7 @@ export default function AdminDashboardPage() {
           </Link>
 
           <Link href="/admin/blogs" className="admin-action-btn">
-            <i className="fa-solid fa-newspaper" style={{ color: "#a855f7" }}></i>
+            <i className="fa-solid fa-newspaper" style={{ color: "#7c3aed" }}></i>
             <div>
               <div>Blog Articles</div>
               <div style={{ fontSize: "11px", color: "#64748b", fontWeight: "normal" }}>Publish & edit SEO posts</div>
@@ -126,7 +126,7 @@ export default function AdminDashboardPage() {
           </Link>
 
           <Link href="/admin/services" className="admin-action-btn">
-            <i className="fa-solid fa-layer-group" style={{ color: "#06b6d4" }}></i>
+            <i className="fa-solid fa-layer-group" style={{ color: "#0891b2" }}></i>
             <div>
               <div>Services & Packages</div>
               <div style={{ fontSize: "11px", color: "#64748b", fontWeight: "normal" }}>Edit deliverables & tiers</div>
@@ -134,7 +134,7 @@ export default function AdminDashboardPage() {
           </Link>
 
           <Link href="/admin/settings" className="admin-action-btn">
-            <i className="fa-solid fa-sliders" style={{ color: "#f59e0b" }}></i>
+            <i className="fa-solid fa-sliders" style={{ color: "#d97706" }}></i>
             <div>
               <div>Site & Meta Settings</div>
               <div style={{ fontSize: "11px", color: "#64748b", fontWeight: "normal" }}>Branding, Contact & Schema</div>
@@ -148,7 +148,7 @@ export default function AdminDashboardPage() {
         <div className="admin-table-header">
           <div>
             <h2 className="admin-table-title">Recent Client Deliverables & Orders</h2>
-            <p style={{ margin: "4px 0 0 0", fontSize: "13px", color: "#94a3b8" }}>
+            <p style={{ margin: "2px 0 0 0", fontSize: "12.5px", color: "#64748b" }}>
               Latest service purchases awaiting execution or completed
             </p>
           </div>
@@ -182,26 +182,26 @@ export default function AdminDashboardPage() {
                 orders.slice(0, 8).map((order) => (
                   <tr key={order.id}>
                     <td>
-                      <span style={{ fontFamily: "monospace", fontWeight: 700, color: "#ffffff" }}>
+                      <span style={{ fontFamily: "monospace", fontWeight: 700, color: "#0f172a" }}>
                         {order.order_number}
                       </span>
                     </td>
                     <td>
-                      <span style={{ fontFamily: "monospace", color: "#38bdf8", fontSize: "13px" }}>
+                      <span style={{ fontFamily: "monospace", color: "#2563eb", fontSize: "13px" }}>
                         {order.website_url}
                       </span>
                     </td>
                     <td>
-                      <div style={{ fontWeight: 600, color: "#f8fafc" }}>{order.service_title}</div>
+                      <div style={{ fontWeight: 600, color: "#0f172a" }}>{order.service_title}</div>
                       <div style={{ fontSize: "11px", color: "#64748b" }}>{order.package_name}</div>
                     </td>
                     <td>
-                      <span style={{ fontWeight: 800, color: "#ffffff", fontSize: "15px" }}>
+                      <span style={{ fontWeight: 800, color: "#0f172a", fontSize: "14px" }}>
                         ${order.total}
                       </span>
                     </td>
                     <td>
-                      <span style={{ textTransform: "uppercase", fontSize: "11px", fontWeight: 700, color: "#94a3b8" }}>
+                      <span style={{ textTransform: "uppercase", fontSize: "11px", fontWeight: 700, color: "#64748b" }}>
                         {order.payment_method}
                       </span>
                     </td>

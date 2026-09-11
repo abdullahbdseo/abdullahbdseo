@@ -76,40 +76,43 @@ export default function AdminBlogsPage() {
 
   if (loading)
     return (
-      <div className="text-slate-400 py-20 text-center">
+      <div style={{ textAlign: "center", padding: "60px 20px", color: "#64748b" }}>
         <i className="fa-solid fa-spinner fa-spin mr-2"></i>Loading blog posts...
       </div>
     );
 
   return (
-    <div className="space-y-6">
+    <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
       {/* Header */}
-      <div className="flex items-center justify-between flex-wrap gap-3">
+      <div className="admin-page-header" style={{ marginBottom: "0" }}>
         <div>
-          <h1 className="text-2xl font-bold text-white">Blog Posts</h1>
-          <p className="text-slate-400 text-sm mt-1">{posts.length} posts published</p>
+          <h1 className="admin-page-title">Blog Articles Management</h1>
+          <p className="admin-page-desc">{posts.length} published articles and ranking assets</p>
         </div>
         <button
           onClick={() => { setShowAddForm(true); setEditPost(null); }}
-          className="btn btn-primary px-5 py-2.5 rounded-lg font-semibold text-sm"
+          className="btn-admin btn-admin-primary"
         >
-          <i className="fa-solid fa-plus mr-2"></i>Add New Post
+          <i className="fa-solid fa-plus"></i>
+          <span>Add New Post</span>
         </button>
       </div>
 
-      {/* Status */}
+      {/* Status Notifications */}
       {saveMsg && (
-        <div className="bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 px-4 py-3 rounded-lg text-sm flex items-center gap-2">
-          <i className="fa-solid fa-circle-check"></i> {saveMsg}
+        <div style={{ background: "#ecfdf5", border: "1px solid #a7f3d0", color: "#059669", padding: "10px 16px", borderRadius: "8px", fontSize: "13px", display: "flex", alignItems: "center", gap: "8px" }}>
+          <i className="fa-solid fa-circle-check"></i>
+          <span>{saveMsg}</span>
         </div>
       )}
       {error && (
-        <div className="bg-amber-500/15 border border-amber-500/30 text-amber-300 px-4 py-3 rounded-lg text-sm flex items-center gap-2">
-          <i className="fa-solid fa-triangle-exclamation"></i> {error}
+        <div style={{ background: "#fff1f2", border: "1px solid #fecdd3", color: "#e11d48", padding: "10px 16px", borderRadius: "8px", fontSize: "13px", display: "flex", alignItems: "center", gap: "8px" }}>
+          <i className="fa-solid fa-triangle-exclamation"></i>
+          <span>{error}</span>
         </div>
       )}
 
-      {/* Add / Edit Form */}
+      {/* Add / Edit Form Modal or Card */}
       {(showAddForm || editPost) && (
         <BlogForm
           initial={editPost || emptyPost}
@@ -120,87 +123,107 @@ export default function AdminBlogsPage() {
         />
       )}
 
-      {/* Search */}
-      <div className="relative">
-        <i className="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
+      {/* Search Bar */}
+      <div style={{ position: "relative", width: "100%" }}>
+        <i className="fa-solid fa-magnifying-glass" style={{ position: "absolute", left: "14px", top: "50%", transform: "translateY(-50%)", color: "#94a3b8", fontSize: "14px" }}></i>
         <input
           type="text"
-          placeholder="Search posts by title or category..."
+          placeholder="Search articles by title or category..."
           value={searchQ}
           onChange={(e) => setSearchQ(e.target.value)}
-          className="w-full bg-slate-800 border border-slate-700 rounded-lg pl-10 pr-4 py-2.5 text-white text-sm focus:outline-none focus:border-primary"
+          style={{
+            width: "100%",
+            background: "#ffffff",
+            border: "1px solid #cbd5e1",
+            borderRadius: "8px",
+            padding: "10px 14px 10px 40px",
+            color: "#0f172a",
+            fontSize: "13.5px",
+            outline: "none",
+            boxSizing: "border-box"
+          }}
         />
       </div>
 
-      {/* Posts Table */}
-      <div className="bg-slate-800 border border-slate-700 rounded-xl overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-slate-300">
-            <thead className="bg-slate-900/60 text-xs uppercase text-slate-400">
+      {/* Posts Table - Compact, 100% visible without horizontal scroll */}
+      <div className="admin-table-card" style={{ marginBottom: "0" }}>
+        <div className="admin-table-container">
+          <table className="admin-data-table" style={{ width: "100%", tableLayout: "fixed" }}>
+            <thead>
               <tr>
-                <th className="px-5 py-3.5">Title</th>
-                <th className="px-5 py-3.5">Category</th>
-                <th className="px-5 py-3.5">Date</th>
-                <th className="px-5 py-3.5">SEO Description</th>
-                <th className="px-5 py-3.5 text-right">Actions</th>
+                <th style={{ width: "45%" }}>Article Title & URL</th>
+                <th style={{ width: "20%" }}>Category</th>
+                <th style={{ width: "15%" }}>Publish Date</th>
+                <th style={{ width: "20%", textAlign: "right" }}>Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-700/60">
+            <tbody>
               {filtered.map((post) => (
-                <tr key={post.id} className="hover:bg-slate-700/30 transition">
-                  <td className="px-5 py-3.5 font-medium text-white max-w-xs">
-                    <div className="truncate font-semibold">{post.title}</div>
-                    <div className="text-xs text-slate-500 font-mono mt-0.5">/blog/{post.slug}</div>
+                <tr key={post.id}>
+                  {/* Title & Slug */}
+                  <td style={{ verticalAlign: "middle" }}>
+                    <div style={{ fontWeight: 700, color: "#0f172a", fontSize: "13.5px", lineHeight: "1.3", marginBottom: "3px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={post.title}>
+                      {post.title}
+                    </div>
+                    <div style={{ fontSize: "11px", color: "#64748b", fontFamily: "monospace", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                      /blog/{post.slug}
+                    </div>
                   </td>
-                  <td className="px-5 py-3.5">
-                    <span className="bg-primary/15 text-primary text-xs px-2.5 py-1 rounded-full font-semibold">
-                      {post.category}
+
+                  {/* Category */}
+                  <td style={{ verticalAlign: "middle" }}>
+                    <span style={{ display: "inline-block", background: "#eff6ff", color: "#2563eb", border: "1px solid #dbeafe", fontSize: "11.5px", fontWeight: 700, padding: "3px 10px", borderRadius: "20px", maxWidth: "100%", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                      {post.category || "General"}
                     </span>
                   </td>
-                  <td className="px-5 py-3.5 text-slate-400 text-xs">{post.date || post.publish_date}</td>
-                  <td className="px-5 py-3.5 text-xs text-slate-400 max-w-sm">
-                    {post.meta_description ? (
-                      <div className="truncate text-emerald-400 flex items-center gap-1.5" title={post.meta_description}>
-                        <i className="fa-solid fa-circle-check text-[10px]"></i>
-                        <span>{post.meta_description}</span>
-                      </div>
-                    ) : (
-                      <div className="truncate text-slate-500 italic" title={post.summary || post.excerpt}>
-                        {post.summary || post.excerpt || "Default summary"}
-                      </div>
-                    )}
+
+                  {/* Date */}
+                  <td style={{ verticalAlign: "middle", fontSize: "12px", color: "#64748b", whiteSpace: "nowrap" }}>
+                    {post.date || post.publish_date || "2026-09-10"}
                   </td>
-                  <td className="px-5 py-3.5 text-right">
-                    <div className="flex items-center justify-end gap-2">
+
+                  {/* Direct Actions in full view without scroll */}
+                  <td style={{ verticalAlign: "middle", textAlign: "right" }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: "6px" }}>
+                      {/* View Link */}
                       <a
                         href={`/blog/${post.slug}`}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-xs text-slate-400 hover:text-white px-2 py-1 rounded hover:bg-slate-700 transition"
-                        title="View post"
+                        className="btn-admin btn-admin-outline btn-admin-sm"
+                        title="View Live Post"
+                        style={{ padding: "5px 8px" }}
                       >
-                        <i className="fa-solid fa-arrow-up-right-from-square"></i>
+                        <i className="fa-solid fa-arrow-up-right-from-square" style={{ fontSize: "12px" }}></i>
                       </a>
+
+                      {/* Edit Button */}
                       <button
                         onClick={() => { setEditPost(post); setShowAddForm(false); }}
-                        className="text-xs text-cyan-400 hover:text-white px-2 py-1 rounded hover:bg-slate-700 transition"
+                        className="btn-admin btn-admin-primary btn-admin-sm"
+                        title="Edit Post"
                       >
-                        <i className="fa-solid fa-pen-to-square mr-1"></i>Edit
+                        <i className="fa-solid fa-pen-to-square"></i>
+                        <span>Edit</span>
                       </button>
+
+                      {/* Delete Button */}
                       <button
                         onClick={() => setDeleteId(post.id)}
-                        className="text-xs text-rose-400 hover:text-white px-2 py-1 rounded hover:bg-rose-500/20 transition"
+                        className="btn-admin btn-admin-danger btn-admin-sm"
+                        title="Delete Post"
                       >
-                        <i className="fa-solid fa-trash mr-1"></i>Delete
+                        <i className="fa-solid fa-trash"></i>
                       </button>
                     </div>
                   </td>
                 </tr>
               ))}
+
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="px-5 py-10 text-center text-slate-500">
-                    No posts found.
+                  <td colSpan={4} style={{ textAlign: "center", padding: "40px", color: "#94a3b8" }}>
+                    No blog posts found. Click "+ Add New Post" to publish one.
                   </td>
                 </tr>
               )}
@@ -211,25 +234,26 @@ export default function AdminBlogsPage() {
 
       {/* Delete Confirm Modal */}
       {deleteId && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 max-w-sm w-full shadow-2xl">
-            <div className="text-center mb-5">
-              <div className="w-12 h-12 bg-rose-500/15 text-rose-400 rounded-full flex items-center justify-center mx-auto mb-3 text-xl">
+        <div style={{ position: "fixed", inset: 0, background: "rgba(15, 23, 42, 0.4)", backdropFilter: "blur(4px)", zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center", padding: "20px" }}>
+          <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "16px", padding: "24px", maxWidth: "400px", width: "100%", boxShadow: "0 20px 40px -15px rgba(0, 0, 0, 0.15)" }}>
+            <div style={{ textAlign: "center", marginBottom: "20px" }}>
+              <div style={{ width: "48px", height: "48px", background: "#fff1f2", color: "#e11d48", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 12px", fontSize: "20px" }}>
                 <i className="fa-solid fa-trash"></i>
               </div>
-              <h3 className="text-white font-bold text-lg">Delete Post?</h3>
-              <p className="text-slate-400 text-sm mt-1">This action cannot be undone.</p>
+              <h3 style={{ fontSize: "17px", fontWeight: 800, color: "#0f172a", margin: "0 0 6px 0" }}>Delete Blog Post?</h3>
+              <p style={{ fontSize: "13px", color: "#64748b", margin: 0 }}>This action cannot be undone and will remove the post.</p>
             </div>
-            <div className="flex gap-3">
-              <button onClick={() => setDeleteId(null)} className="flex-1 btn px-4 py-2.5 rounded-lg bg-slate-700 text-slate-300 hover:bg-slate-600 text-sm">
+            <div style={{ display: "flex", gap: "10px" }}>
+              <button onClick={() => setDeleteId(null)} className="btn-admin btn-admin-outline" style={{ flex: 1 }}>
                 Cancel
               </button>
               <button
                 onClick={() => handleDelete(deleteId)}
                 disabled={saving}
-                className="flex-1 btn px-4 py-2.5 rounded-lg bg-rose-500 text-white hover:bg-rose-600 text-sm font-semibold"
+                className="btn-admin btn-admin-danger"
+                style={{ flex: 1 }}
               >
-                {saving ? <i className="fa-solid fa-spinner fa-spin"></i> : "Delete"}
+                {saving ? <i className="fa-solid fa-spinner fa-spin"></i> : "Confirm Delete"}
               </button>
             </div>
           </div>
@@ -269,26 +293,27 @@ function BlogForm({ initial, onSave, onCancel, saving, isEdit }) {
   };
 
   return (
-    <div className="bg-slate-800 border border-primary/40 rounded-xl overflow-hidden shadow-lg shadow-primary/10">
-      <div className="flex items-center justify-between px-5 py-4 border-b border-slate-700 bg-slate-900/50">
-        <h2 className="font-bold text-white text-sm">
-          <i className="fa-solid fa-pen-nib mr-2 text-primary"></i>
-          {isEdit ? "Edit Blog Post & SEO" : "Add New Blog Post & SEO"}
+    <div style={{ background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "12px", overflow: "hidden", boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.08)", marginBottom: "20px" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 20px", borderBottom: "1px solid #e2e8f0", background: "#f8fafc" }}>
+        <h2 style={{ fontWeight: 800, color: "#0f172a", fontSize: "15px", margin: 0, display: "flex", alignItems: "center", gap: "8px" }}>
+          <i className="fa-solid fa-pen-nib" style={{ color: "#2563eb" }}></i>
+          <span>{isEdit ? "Edit Blog Post & SEO" : "Add New Blog Post & SEO"}</span>
         </h2>
-        <button onClick={onCancel} className="text-slate-400 hover:text-white transition text-sm">
+        <button onClick={onCancel} style={{ background: "none", border: "none", color: "#64748b", cursor: "pointer", fontSize: "16px" }}>
           <i className="fa-solid fa-xmark"></i>
         </button>
       </div>
 
-      <form onSubmit={handleSubmit} className="p-5 space-y-6">
+      <form onSubmit={handleSubmit} style={{ padding: "20px", display: "flex", flexDirection: "column", gap: "20px" }}>
         {/* Basic Info */}
         <div>
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
-            <i className="fa-solid fa-file-lines text-primary"></i> Article General Information
+          <h3 style={{ fontSize: "12px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.05em", color: "#475569", marginBottom: "12px", display: "flex", alignItems: "center", gap: "6px" }}>
+            <i className="fa-solid fa-file-lines" style={{ color: "#2563eb" }}></i>
+            <span>Article General Information</span>
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="md:col-span-2">
-              <label className="field-label">Post Title *</label>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "14px" }}>
+            <div style={{ gridColumn: "1 / -1" }}>
+              <label style={{ display: "block", fontSize: "12px", fontWeight: 700, color: "#334155", marginBottom: "6px" }}>Post Title *</label>
               <input 
                 type="text" 
                 required 
@@ -299,226 +324,113 @@ function BlogForm({ initial, onSave, onCancel, saving, isEdit }) {
                     set("meta_title", e.target.value);
                   }
                 }}
-                className="cms-input" 
+                style={{ width: "100%", background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "8px", padding: "9px 12px", fontSize: "13.5px", color: "#0f172a", outline: "none", boxSizing: "border-box" }}
                 placeholder="e.g. Complete Guide to Technical SEO in 2026" 
               />
             </div>
             <div>
-              <label className="field-label">Slug (URL)</label>
+              <label style={{ display: "block", fontSize: "12px", fontWeight: 700, color: "#334155", marginBottom: "6px" }}>Slug (URL)</label>
               <input 
                 type="text" 
                 value={form.slug} 
                 onChange={(e) => set("slug", e.target.value)}
-                className="cms-input font-mono text-xs" 
+                style={{ width: "100%", background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "8px", padding: "9px 12px", fontSize: "12.5px", fontFamily: "monospace", color: "#0f172a", outline: "none", boxSizing: "border-box" }}
                 placeholder="auto-generated from title" 
               />
             </div>
             <div>
-              <label className="field-label">Category *</label>
+              <label style={{ display: "block", fontSize: "12px", fontWeight: 700, color: "#334155", marginBottom: "6px" }}>Category *</label>
               <input 
                 type="text" 
                 required 
                 value={form.category} 
                 onChange={(e) => set("category", e.target.value)}
-                className="cms-input" 
+                style={{ width: "100%", background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "8px", padding: "9px 12px", fontSize: "13.5px", color: "#0f172a", outline: "none", boxSizing: "border-box" }}
                 placeholder="e.g. Technical SEO, AI & Search" 
               />
             </div>
             <div>
-              <label className="field-label">Publish Date</label>
+              <label style={{ display: "block", fontSize: "12px", fontWeight: 700, color: "#334155", marginBottom: "6px" }}>Publish Date</label>
               <input 
                 type="date" 
                 value={form.date || form.publish_date} 
                 onChange={(e) => { set("date", e.target.value); set("publish_date", e.target.value); }}
-                className="cms-input" 
+                style={{ width: "100%", background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "8px", padding: "9px 12px", fontSize: "13.5px", color: "#0f172a", outline: "none", boxSizing: "border-box" }}
               />
             </div>
             <div>
-              <label className="field-label">Read Time</label>
+              <label style={{ display: "block", fontSize: "12px", fontWeight: 700, color: "#334155", marginBottom: "6px" }}>Read Time</label>
               <input 
                 type="text" 
                 value={form.read_time} 
                 onChange={(e) => set("read_time", e.target.value)}
-                className="cms-input" 
+                style={{ width: "100%", background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "8px", padding: "9px 12px", fontSize: "13.5px", color: "#0f172a", outline: "none", boxSizing: "border-box" }}
                 placeholder="5 min read" 
-              />
-            </div>
-            <div>
-              <label className="field-label">Featured Image URL</label>
-              <input 
-                type="text" 
-                value={form.featured_image} 
-                onChange={(e) => { set("featured_image", e.target.value); set("image", e.target.value); }}
-                className="cms-input" 
-                placeholder="/images/blog1.jpg" 
-              />
-            </div>
-            <div>
-              <label className="field-label">Tags (comma separated)</label>
-              <input 
-                type="text" 
-                value={form.tags} 
-                onChange={(e) => set("tags", e.target.value)}
-                className="cms-input" 
-                placeholder="SEO, Technical, Google, AI" 
               />
             </div>
           </div>
         </div>
 
-        {/* SEO META SECTION */}
-        <div className="bg-slate-900/70 border border-slate-700 rounded-xl p-5 space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-2">
-              <i className="fa-solid fa-magnifying-glass-chart"></i> Search Engine Optimization (SEO &amp; Meta)
-            </h3>
-            <span className="text-[11px] text-slate-400 bg-slate-800 px-2.5 py-1 rounded-full border border-slate-700">
-              Google Snippet &amp; AI Friendly
-            </span>
-          </div>
-
-          <div className="space-y-4">
-            {/* SEO Meta Title */}
+        {/* SEO & Meta */}
+        <div style={{ borderTop: "1px solid #e2e8f0", paddingTop: "16px" }}>
+          <h3 style={{ fontSize: "12px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.05em", color: "#475569", marginBottom: "12px", display: "flex", alignItems: "center", gap: "6px" }}>
+            <i className="fa-solid fa-magnifying-glass-chart" style={{ color: "#059669" }}></i>
+            <span>Google Search & Meta Tags</span>
+          </h3>
+          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
             <div>
-              <div className="flex justify-between items-center mb-1">
-                <label className="field-label mb-0">SEO Meta Title (Title Tag)</label>
-                <span className={`text-[11px] font-mono ${metaTitleLen > 60 ? "text-amber-400" : "text-slate-400"}`}>
-                  {metaTitleLen} / 60 chars {metaTitleLen > 60 && "(may truncate in SERP)"}
-                </span>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
+                <label style={{ fontSize: "12px", fontWeight: 700, color: "#334155" }}>Meta Title</label>
+                <span style={{ fontSize: "11px", color: metaTitleLen > 60 ? "#e11d48" : "#059669", fontWeight: 700 }}>{metaTitleLen}/60 chars</span>
               </div>
               <input 
                 type="text" 
                 value={form.meta_title} 
                 onChange={(e) => set("meta_title", e.target.value)}
-                className="cms-input" 
-                placeholder="e.g. Complete Guide to Technical SEO in 2026 | Abdullah Saleh" 
+                style={{ width: "100%", background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "8px", padding: "9px 12px", fontSize: "13.5px", color: "#0f172a", outline: "none", boxSizing: "border-box" }}
+                placeholder="Meta title displayed on Google SERP" 
               />
             </div>
-
-            {/* SEO Meta Description */}
             <div>
-              <div className="flex justify-between items-center mb-1">
-                <label className="field-label mb-0 flex items-center gap-1.5">
-                  <span>SEO Meta Description</span>
-                  <span className="text-emerald-400 text-[11px] font-bold uppercase tracking-wider">(Recommended)</span>
-                </label>
-                <span className={`text-[11px] font-mono font-semibold ${
-                  metaDescLen >= 120 && metaDescLen <= 160 
-                    ? "text-emerald-400" 
-                    : metaDescLen > 160 
-                    ? "text-amber-400" 
-                    : "text-slate-400"
-                }`}>
-                  {metaDescLen} / 160 chars {metaDescLen >= 120 && metaDescLen <= 160 ? "✓ Optimal" : metaDescLen > 160 ? "⚠ Too Long" : ""}
-                </span>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
+                <label style={{ fontSize: "12px", fontWeight: 700, color: "#334155" }}>Meta Description</label>
+                <span style={{ fontSize: "11px", color: metaDescLen > 160 ? "#e11d48" : "#059669", fontWeight: 700 }}>{metaDescLen}/160 chars</span>
               </div>
               <textarea 
-                rows={3} 
+                rows={2}
                 value={form.meta_description} 
-                onChange={(e) => {
-                  set("meta_description", e.target.value);
-                  if (!form.summary) {
-                    set("summary", e.target.value);
-                  }
-                }}
-                className="cms-input resize-y" 
-                placeholder="Enter a compelling 140-160 character meta description summarizing the key insights of this article for Google and searchers..." 
+                onChange={(e) => set("meta_description", e.target.value)}
+                style={{ width: "100%", background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "8px", padding: "9px 12px", fontSize: "13.5px", color: "#0f172a", outline: "none", boxSizing: "border-box", resize: "vertical" }}
+                placeholder="Meta description for search results" 
               />
-              <p className="text-[11px] text-slate-400 mt-1">
-                This description appears under your link in Google search results. Keep it between 120–160 characters for best click-through rates.
-              </p>
-            </div>
-
-            {/* SEO Keywords */}
-            <div>
-              <label className="field-label">Target Focus Keywords (Meta Keywords)</label>
-              <input 
-                type="text" 
-                value={form.meta_keywords} 
-                onChange={(e) => set("meta_keywords", e.target.value)}
-                className="cms-input" 
-                placeholder="e.g. technical seo audit, core web vitals fix, bangladesh seo" 
-              />
-            </div>
-
-            {/* LIVE GOOGLE SERP PREVIEW BOX */}
-            <div className="mt-4 p-4 bg-slate-950 border border-slate-700/80 rounded-lg">
-              <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-2 flex items-center gap-1.5">
-                <i className="fa-brands fa-google text-blue-400"></i> Google Search Result Preview
-              </div>
-              <div className="font-sans text-left space-y-1">
-                <div className="text-xs text-slate-400 truncate flex items-center gap-1">
-                  <span>https://abdullahbdseo.com</span>
-                  <span className="text-slate-600">&rsaquo;</span>
-                  <span>blog</span>
-                  <span className="text-slate-600">&rsaquo;</span>
-                  <span className="text-slate-300 font-mono">{form.slug || "your-post-slug"}</span>
-                </div>
-                <div className="text-base text-blue-400 hover:underline font-medium truncate cursor-pointer">
-                  {form.meta_title || form.title || "Your Blog Post Title"} | Abdullah Saleh
-                </div>
-                <div className="text-xs text-slate-300 line-clamp-2 leading-relaxed">
-                  {form.meta_description || form.summary || "This is how your blog post snippet and meta description will appear to users searching on Google Search and AI answer engines..."}
-                </div>
-              </div>
             </div>
           </div>
         </div>
 
-        {/* Excerpt / Summary */}
-        <div>
-          <label className="field-label">Listing Summary / Excerpt *</label>
+        {/* Content */}
+        <div style={{ borderTop: "1px solid #e2e8f0", paddingTop: "16px" }}>
+          <label style={{ display: "block", fontSize: "12px", fontWeight: 700, color: "#334155", marginBottom: "6px" }}>Article HTML Content *</label>
           <textarea 
-            rows={2} 
-            required 
-            value={form.summary} 
-            onChange={(e) => { 
-              set("summary", e.target.value); 
-              set("excerpt", e.target.value); 
-              if (!form.meta_description) {
-                set("meta_description", e.target.value);
-              }
-            }}
-            className="cms-input resize-none" 
-            placeholder="Short 2-sentence summary shown on the blog cards & listing archive" 
-          />
-        </div>
-
-        {/* Content (HTML) */}
-        <div>
-          <label className="field-label">Article Body Content (HTML) *</label>
-          <textarea 
-            rows={12} 
-            required 
+            rows={8}
+            required
             value={form.content} 
             onChange={(e) => set("content", e.target.value)}
-            className="cms-input font-mono text-xs resize-y" 
-            placeholder="<h2>Section Title</h2><p>Write your detailed guide here...</p>" 
+            style={{ width: "100%", background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "8px", padding: "12px", fontSize: "13px", fontFamily: "monospace", color: "#0f172a", outline: "none", boxSizing: "border-box", resize: "vertical" }}
+            placeholder="<h2>Section Heading</h2><p>Write your article...</p>" 
           />
-          <p className="text-xs text-slate-500 mt-1">Write content in semantic HTML format. Use &lt;h2&gt;, &lt;h3&gt;, &lt;p&gt;, &lt;ul&gt;, &lt;strong&gt;, &lt;table&gt; tags for high topical authority.</p>
         </div>
 
-        {/* Author */}
-        <div className="border-t border-slate-700 pt-4">
-          <p className="text-xs font-bold uppercase text-slate-400 mb-3">Author Info</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="field-label">Author Name</label>
-              <input type="text" value={form.author?.name || ""} onChange={(e) => setAuthor("name", e.target.value)} className="cms-input" />
-            </div>
-            <div>
-              <label className="field-label">Author Role</label>
-              <input type="text" value={form.author?.role || ""} onChange={(e) => setAuthor("role", e.target.value)} className="cms-input" />
-            </div>
-          </div>
-        </div>
-
-        <div className="flex gap-3 justify-end pt-2">
-          <button type="button" onClick={onCancel} className="px-5 py-2.5 rounded-lg bg-slate-700 text-slate-300 hover:bg-slate-600 text-sm transition">
+        {/* Form Actions */}
+        <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px", borderTop: "1px solid #e2e8f0", paddingTop: "16px" }}>
+          <button type="button" onClick={onCancel} className="btn-admin btn-admin-outline">
             Cancel
           </button>
-          <button type="submit" disabled={saving} className="btn btn-primary px-6 py-2.5 rounded-lg text-sm font-semibold">
-            {saving ? <><i className="fa-solid fa-spinner fa-spin mr-2"></i>Saving...</> : <><i className="fa-solid fa-floppy-disk mr-2"></i>{isEdit ? "Update Post & SEO" : "Publish Post & SEO"}</>}
+          <button type="submit" disabled={saving} className="btn-admin btn-admin-primary">
+            {saving ? (
+              <><i className="fa-solid fa-spinner fa-spin"></i> Saving Article...</>
+            ) : (
+              <><i className="fa-solid fa-floppy-disk"></i> {isEdit ? "Update Article" : "Publish Article"}</>
+            )}
           </button>
         </div>
       </form>

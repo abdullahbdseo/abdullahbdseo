@@ -97,30 +97,30 @@ export default function AdminLayout({ children }) {
     return (
       <div style={{
         minHeight: "100vh",
-        background: "#090d16",
+        background: "#f8fafc",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        gap: "16px",
-        color: "#94a3b8",
+        gap: "14px",
+        color: "#64748b",
         fontFamily: "'Plus Jakarta Sans', sans-serif"
       }}>
         <div style={{
-          width: "50px",
-          height: "50px",
+          width: "48px",
+          height: "48px",
           borderRadius: "14px",
-          background: "linear-gradient(135deg, #3b82f6 0%, #6366f1 100%)",
+          background: "linear-gradient(135deg, #2563eb 0%, #4f46e5 100%)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           color: "#ffffff",
           fontSize: "20px",
-          boxShadow: "0 0 20px rgba(59, 130, 246, 0.4)"
+          boxShadow: "0 8px 20px rgba(37, 99, 235, 0.25)"
         }}>
-          <i className="fa-solid fa-lock fa-bounce"></i>
+          <i className="fa-solid fa-lock"></i>
         </div>
-        <div style={{ fontSize: "14px", fontWeight: "600", color: "#f8fafc" }}>
+        <div style={{ fontSize: "14px", fontWeight: "700", color: "#0f172a" }}>
           Verifying Administrator Session...
         </div>
       </div>
@@ -129,7 +129,7 @@ export default function AdminLayout({ children }) {
 
   return (
     <div className="admin-layout-wrapper">
-      {/* 1. SIDEBAR */}
+      {/* 1. SIDEBAR (DAY / LIGHT MODE) */}
       <aside className={`admin-sidebar-shell ${sidebarOpen ? "expanded" : "collapsed"}`}>
         {/* Brand Header */}
         <div className="admin-brand-header">
@@ -207,7 +207,7 @@ export default function AdminLayout({ children }) {
               onClick={handleLogout}
               className="admin-collapse-toggle"
               title="Sign Out"
-              style={{ width: "100%", height: "36px", color: "#f43f5e" }}
+              style={{ width: "100%", height: "36px", color: "#e11d48", background: "#fff1f2", borderColor: "#fecdd3" }}
             >
               <i className="fa-solid fa-arrow-right-from-bracket"></i>
             </button>
@@ -221,7 +221,7 @@ export default function AdminLayout({ children }) {
         <header className="admin-topbar-shell">
           <div className="admin-topbar-left">
             <div className="admin-breadcrumb">
-              <Link href="/admin" style={{ color: "#94a3b8", textDecoration: "none" }}>
+              <Link href="/admin" style={{ color: "#64748b", textDecoration: "none" }}>
                 <i className="fa-solid fa-house" style={{ fontSize: "12px" }}></i>
               </Link>
               <span>/</span>

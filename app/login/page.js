@@ -87,7 +87,7 @@ export default function LoginPage() {
         {/* DEMO / DEFAULT CREDENTIALS BADGE */}
         <div className="demo-creds-badge" onClick={handleQuickFill} title="Click to fill default admin credentials">
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <i className="fa-solid fa-key" style={{ color: "#60a5fa" }}></i>
+            <i className="fa-solid fa-key" style={{ color: "#2563eb" }}></i>
             <span>Demo: <strong>admin@seoservice.local</strong> / <strong>admin123</strong></span>
           </div>
           <button type="button" className="fill-btn">Auto Fill</button>
@@ -104,13 +104,13 @@ export default function LoginPage() {
         {/* SUCCESS NOTIFICATION */}
         {success && (
           <div style={{
-            background: "rgba(16, 185, 129, 0.15)",
-            border: "1px solid rgba(16, 185, 129, 0.35)",
-            color: "#6ee7b7",
+            background: "#ecfdf5",
+            border: "1px solid #a7f3d0",
+            color: "#059669",
             borderRadius: "10px",
             padding: "12px 16px",
             fontSize: "13px",
-            marginBottom: "20px",
+            marginBottom: "18px",
             display: "flex",
             alignItems: "center",
             gap: "10px"
@@ -164,25 +164,25 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* REMEMBER ME & FORGOT */}
+          {/* REMEMBER ME */}
           <div style={{
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            marginBottom: "20px",
+            marginBottom: "18px",
             fontSize: "12px",
-            color: "#94a3b8"
+            color: "#64748b"
           }}>
             <label style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer" }}>
               <input
                 type="checkbox"
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
-                style={{ accentColor: "#3b82f6", cursor: "pointer" }}
+                style={{ accentColor: "#2563eb", cursor: "pointer" }}
               />
               <span>Remember this session</span>
             </label>
-            <span style={{ color: "#64748b" }}>256-Bit SSL Encrypted</span>
+            <span style={{ color: "#94a3b8" }}>256-Bit Encrypted</span>
           </div>
 
           {/* SUBMIT BUTTON */}
@@ -212,25 +212,26 @@ export default function LoginPage() {
 
         {/* RETURN TO PUBLIC WEBSITE */}
         <div style={{
-          marginTop: "28px",
+          marginTop: "24px",
           textAlign: "center",
           fontSize: "13px",
           color: "#64748b",
-          borderTop: "1px solid rgba(255, 255, 255, 0.08)",
-          paddingTop: "20px"
+          borderTop: "1px solid #e2e8f0",
+          paddingTop: "16px"
         }}>
           <Link
             href="/"
             style={{
-              color: "#94a3b8",
+              color: "#64748b",
               textDecoration: "none",
               display: "inline-flex",
               alignItems: "center",
               gap: "8px",
-              transition: "color 0.2s ease"
+              fontWeight: 600,
+              transition: "color 0.15s ease"
             }}
-            onMouseOver={(e) => (e.currentTarget.style.color = "#ffffff")}
-            onMouseOut={(e) => (e.currentTarget.style.color = "#94a3b8")}
+            onMouseOver={(e) => (e.currentTarget.style.color = "#0f172a")}
+            onMouseOut={(e) => (e.currentTarget.style.color = "#64748b")}
           >
             <i className="fa-solid fa-arrow-left"></i>
             <span>Return to Public Website</span>
