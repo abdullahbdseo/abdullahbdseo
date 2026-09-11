@@ -5,10 +5,13 @@ import ClientLayout from "@/components/ClientLayout";
 import { siteSettings } from "@/lib/data";
 
 export const metadata = {
-  metadataBase: new URL("https://seoservice.local"),
+  metadataBase: new URL("https://abdullahbdseo.vercel.app"),
   title: `${siteSettings.site_name} | ${siteSettings.site_tagline}`,
   description: siteSettings.default_meta_description,
   keywords: siteSettings.default_meta_keywords,
+  verification: {
+    google: "4925bdb84133c801",
+  },
   icons: {
     icon: "/images/favicon.svg",
     apple: "/images/logo-icon.svg"
@@ -16,7 +19,7 @@ export const metadata = {
   openGraph: {
     title: `${siteSettings.site_name} | ${siteSettings.site_tagline}`,
     description: siteSettings.default_meta_description,
-    url: "https://seoservice.local",
+    url: "https://abdullahbdseo.vercel.app",
     siteName: siteSettings.site_name,
     images: [
       {
