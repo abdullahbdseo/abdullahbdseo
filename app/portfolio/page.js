@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { caseStudies } from "@/lib/data";
 
@@ -9,6 +9,24 @@ export default function PortfolioPage() {
   const [viewMode, setViewMode] = useState("carousel"); // 'carousel' | 'grid'
   const [currentSlide, setCurrentSlide] = useState(0);
   const [enlargedItem, setEnlargedItem] = useState(null);
+  const [itemsPerView, setItemsPerView] = useState(3);
+
+  useEffect(() => {
+    const updateItemsPerView = () => {
+      if (typeof window !== "undefined") {
+        if (window.innerWidth <= 768) {
+          setItemsPerView(1);
+        } else if (window.innerWidth <= 1024) {
+          setItemsPerView(2);
+        } else {
+          setItemsPerView(3);
+        }
+      }
+    };
+    updateItemsPerView();
+    window.addEventListener("resize", updateItemsPerView);
+    return () => window.removeEventListener("resize", updateItemsPerView);
+  }, []);
 
   const categories = [
     { name: "SaaS & Enterprise SEO", slug: "saas" },
@@ -23,7 +41,7 @@ export default function PortfolioPage() {
         c.slug.includes(activeCategory)
       );
 
-  const maxSlides = Math.max(0, filteredStudies.length - 1);
+  const maxSlides = Math.max(0, filteredStudies.length - itemsPerView);
 
   const handlePrev = () => {
     setCurrentSlide(prev => Math.max(0, prev - 1));
@@ -134,7 +152,7 @@ export default function PortfolioPage() {
                   <span className="gsc-live-dot"></span> Verified Results
                 </span>
                 <span className="gsc-carousel-counter">
-                  Showing <strong>{filteredStudies.length > 0 ? "1 - " + filteredStudies.length : "0"}</strong> of <strong>{filteredStudies.length}</strong> Results
+                  Showing <strong>{filteredStudies.length > 0 ? `${currentSlide + 1} - ${Math.min(filteredStudies.length, currentSlide + itemsPerView)}` : "0"}</strong> of <strong>{filteredStudies.length}</strong> Results
                 </span>
               </div>
               <div className="gsc-carousel-controls">
@@ -156,7 +174,7 @@ export default function PortfolioPage() {
                     <i className="fa-solid fa-border-all"></i> Grid
                   </button>
                 </div>
-                {viewMode === "carousel" && (
+                {viewMode === "carousel" && maxSlides > 0 && (
                   <div className="gsc-carousel-nav">
                     <button 
                       type="button" 
@@ -187,7 +205,7 @@ export default function PortfolioPage() {
             <div className="gsc-carousel-viewport">
               <div 
                 className="gsc-carousel-track" 
-                style={viewMode === "carousel" ? { transform: `translateX(-${currentSlide * 33.333}%)` } : {}}
+                style={viewMode === "carousel" ? { transform: `translateX(-${currentSlide * (itemsPerView === 1 ? 100 : itemsPerView === 2 ? 50 : 33.333)}%)` } : {}}
               >
                 {filteredStudies.map((item) => {
                   const metrics = item.metrics || {};
@@ -289,10 +307,10 @@ export default function PortfolioPage() {
             </div>
 
             {/* Bottom Pagination Dots for Carousel Mode */}
-            {viewMode === "carousel" && filteredStudies.length > 1 && (
+            {viewMode === "carousel" && maxSlides > 0 && (
               <div className="gsc-carousel-bottom-bar">
                 <div className="gsc-carousel-dots">
-                  {filteredStudies.map((_, idx) => (
+                  {Array.from({ length: maxSlides + 1 }).map((_, idx) => (
                     <button
                       key={idx}
                       type="button"
