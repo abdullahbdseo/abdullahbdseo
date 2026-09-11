@@ -27,8 +27,29 @@ export default function SingleServicePage({ params }) {
     setActiveFaq(activeFaq === idx ? null : idx);
   };
 
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": service.title,
+    "description": service.description || service.short_description,
+    "provider": {
+      "@type": "ProfessionalService",
+      "name": siteSettings.site_name,
+      "url": "https://abdullahbdseo.vercel.app"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": service.starting_price,
+      "priceCurrency": "USD"
+    }
+  };
+
   return (
     <div className="single-service-page-wrapper">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
       {/* 1. HERO HEADER SECTION */}
       <section className="digi-hero-section" style={{ padding: "60px 0 45px", textAlign: "center" }}>
         <div className="container">

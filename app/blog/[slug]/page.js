@@ -56,12 +56,12 @@ export default async function SingleBlogPostPage({ params }) {
       "name": siteSettings.site_name,
       "logo": {
         "@type": "ImageObject",
-        "url": "/images/logo.svg"
+        "url": "https://abdullahbdseo.vercel.app/images/logo.svg"
       }
     },
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": `/blog/${post.slug}`
+      "@id": `https://abdullahbdseo.vercel.app/blog/${post.slug}`
     }
   };
 
