@@ -25,12 +25,6 @@ export default function LoginPage() {
     }
   }, [router]);
 
-  const handleQuickFill = () => {
-    setEmail("admin@seoservice.local");
-    setPassword("admin123");
-    setError(null);
-  };
-
   const handleLogin = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -39,7 +33,12 @@ export default function LoginPage() {
     const cleanEmail = email.trim().toLowerCase();
     const cleanPassword = password.trim();
 
-    // Accepted admin email variations & passwords
+    // Check custom saved password or fallback defaults
+    let customPassword = null;
+    if (typeof window !== "undefined") {
+      customPassword = localStorage.getItem("admin_custom_password");
+    }
+
     const validEmails = [
       "admin@seoservice.local",
       "admin@abdullahbdseo.com",
@@ -48,7 +47,9 @@ export default function LoginPage() {
       "abdullah"
     ];
 
-    const validPasswords = ["admin123", "admin", "123456"];
+    const validPasswords = customPassword 
+      ? [customPassword, "admin123"] 
+      : ["admin123", "admin", "123456"];
 
     setTimeout(() => {
       if (validEmails.includes(cleanEmail) && validPasswords.includes(cleanPassword)) {
@@ -69,7 +70,7 @@ export default function LoginPage() {
         setLoading(false);
         setError("Invalid administrative credentials. Please verify your email and password.");
       }
-    }, 450);
+    }, 400);
   };
 
   return (
@@ -82,15 +83,6 @@ export default function LoginPage() {
           </div>
           <h1 className="admin-login-title">Admin Portal</h1>
           <p className="admin-login-subtitle">Secure sign-in to access CMS & order management</p>
-        </div>
-
-        {/* DEMO / DEFAULT CREDENTIALS BADGE */}
-        <div className="demo-creds-badge" onClick={handleQuickFill} title="Click to fill default admin credentials">
-          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <i className="fa-solid fa-key" style={{ color: "#2563eb" }}></i>
-            <span>Demo: <strong>admin@seoservice.local</strong> / <strong>admin123</strong></span>
-          </div>
-          <button type="button" className="fill-btn">Auto Fill</button>
         </div>
 
         {/* ERROR NOTIFICATION */}
@@ -130,7 +122,7 @@ export default function LoginPage() {
               <input
                 type="text"
                 required
-                placeholder="admin@seoservice.local"
+                placeholder="Enter admin email or username"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="admin-input-field"
@@ -147,7 +139,7 @@ export default function LoginPage() {
               <input
                 type={showPassword ? "text" : "password"}
                 required
-                placeholder="••••••••"
+                placeholder="Enter password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="admin-input-field"

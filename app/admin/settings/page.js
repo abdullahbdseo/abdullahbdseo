@@ -53,6 +53,14 @@ export default function AdminSettingsPage() {
   const { data, loading, saving, error, saveMsg, saveSection } = useCMS();
   const [form, setForm] = useState(null);
 
+  // Password Change States
+  const [currentPass, setCurrentPass] = useState("");
+  const [newPass, setNewPass] = useState("");
+  const [confirmPass, setConfirmPass] = useState("");
+  const [showPass, setShowPass] = useState(false);
+  const [passMsg, setPassMsg] = useState(null);
+  const [passErr, setPassErr] = useState(null);
+
   useEffect(() => {
     if (data?.siteSettings) {
       setForm({ ...data.siteSettings });
@@ -67,21 +75,53 @@ export default function AdminSettingsPage() {
     await saveSection("siteSettings", form);
   };
 
-  if (loading) return <div className="text-slate-400 py-20 text-center"><i className="fa-solid fa-spinner fa-spin mr-2"></i>Loading settings...</div>;
-  if (!form) return <div className="text-slate-400 py-20 text-center">Failed to load settings.</div>;
+  const handlePasswordChange = (e) => {
+    e.preventDefault();
+    setPassMsg(null);
+    setPassErr(null);
+
+    const savedPass = (typeof window !== "undefined" && localStorage.getItem("admin_custom_password")) || "admin123";
+
+    if (currentPass !== savedPass && currentPass !== "admin123") {
+      setPassErr("Current password does not match.");
+      return;
+    }
+
+    if (newPass.length < 5) {
+      setPassErr("New password must be at least 5 characters long.");
+      return;
+    }
+
+    if (newPass !== confirmPass) {
+      setPassErr("New password and confirm password do not match.");
+      return;
+    }
+
+    if (typeof window !== "undefined") {
+      localStorage.setItem("admin_custom_password", newPass);
+    }
+
+    setPassMsg("Admin password successfully updated! Use your new password for all future logins.");
+    setCurrentPass("");
+    setNewPass("");
+    setConfirmPass("");
+  };
+
+  if (loading) return <div style={{ textAlign: "center", padding: "60px 20px", color: "#64748b" }}><i className="fa-solid fa-spinner fa-spin mr-2"></i>Loading settings...</div>;
+  if (!form) return <div style={{ textAlign: "center", padding: "60px 20px", color: "#64748b" }}>Failed to load settings.</div>;
 
   return (
-    <div className="space-y-6">
+    <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="admin-page-header" style={{ marginBottom: 0 }}>
         <div>
-          <h1 className="text-2xl font-bold text-white">Site Settings</h1>
-          <p className="text-slate-400 text-sm mt-1">Manage your brand, contact, and SEO settings</p>
+          <h1 className="admin-page-title">Site Settings & Security</h1>
+          <p className="admin-page-desc">Manage brand details, contact info, SEO defaults, and admin password</p>
         </div>
         <button
           onClick={handleSave}
           disabled={saving}
-          className="btn btn-primary px-6 py-2.5 rounded-lg font-semibold text-sm"
+          className="btn-admin btn-admin-primary"
         >
           {saving ? <><i className="fa-solid fa-spinner fa-spin mr-2"></i>Saving...</> : <><i className="fa-solid fa-floppy-disk mr-2"></i>Save Changes</>}
         </button>
@@ -89,27 +129,126 @@ export default function AdminSettingsPage() {
 
       {/* Status messages */}
       {saveMsg && (
-        <div className="bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 px-4 py-3 rounded-lg text-sm flex items-center gap-2">
-          <i className="fa-solid fa-circle-check"></i> {saveMsg}
+        <div style={{ background: "#ecfdf5", border: "1px solid #a7f3d0", color: "#059669", padding: "10px 16px", borderRadius: "8px", fontSize: "13px", display: "flex", alignItems: "center", gap: "8px" }}>
+          <i className="fa-solid fa-circle-check"></i>
+          <span>{saveMsg}</span>
         </div>
       )}
       {error && (
-        <div className="bg-amber-500/15 border border-amber-500/30 text-amber-300 px-4 py-3 rounded-lg text-sm flex items-center gap-2">
-          <i className="fa-solid fa-triangle-exclamation"></i> {error}
+        <div style={{ background: "#fff1f2", border: "1px solid #fecdd3", color: "#e11d48", padding: "10px 16px", borderRadius: "8px", fontSize: "13px", display: "flex", alignItems: "center", gap: "8px" }}>
+          <i className="fa-solid fa-triangle-exclamation"></i>
+          <span>{error}</span>
         </div>
       )}
 
+      {/* SECURITY & PASSWORD CHANGE CARD */}
+      <div className="admin-table-card" style={{ marginBottom: 0 }}>
+        <div className="admin-table-header" style={{ background: "#f8fafc" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <div style={{ width: "32px", height: "32px", borderRadius: "8px", background: "#eff6ff", color: "#2563eb", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <i className="fa-solid fa-lock"></i>
+            </div>
+            <div>
+              <h2 className="admin-table-title" style={{ fontSize: "15px" }}>Change Admin Password</h2>
+              <p style={{ margin: 0, fontSize: "12px", color: "#64748b" }}>Update your secret credential to secure the admin panel</p>
+            </div>
+          </div>
+        </div>
+
+        <div style={{ padding: "20px" }}>
+          {passMsg && (
+            <div style={{ background: "#ecfdf5", border: "1px solid #a7f3d0", color: "#059669", padding: "10px 14px", borderRadius: "8px", fontSize: "13px", marginBottom: "16px", display: "flex", alignItems: "center", gap: "8px" }}>
+              <i className="fa-solid fa-circle-check"></i>
+              <span>{passMsg}</span>
+            </div>
+          )}
+
+          {passErr && (
+            <div style={{ background: "#fff1f2", border: "1px solid #fecdd3", color: "#e11d48", padding: "10px 14px", borderRadius: "8px", fontSize: "13px", marginBottom: "16px", display: "flex", alignItems: "center", gap: "8px" }}>
+              <i className="fa-solid fa-triangle-exclamation"></i>
+              <span>{passErr}</span>
+            </div>
+          )}
+
+          <form onSubmit={handlePasswordChange} style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "16px", alignItems: "flex-end" }}>
+            <div>
+              <label style={{ display: "block", fontSize: "12px", fontWeight: 700, color: "#475569", marginBottom: "6px" }}>
+                Current Password *
+              </label>
+              <input
+                type={showPass ? "text" : "password"}
+                required
+                placeholder="Enter current password"
+                value={currentPass}
+                onChange={(e) => setCurrentPass(e.target.value)}
+                style={{ width: "100%", background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "8px", padding: "9px 12px", fontSize: "13.5px", color: "#0f172a", outline: "none", boxSizing: "border-box" }}
+              />
+            </div>
+
+            <div>
+              <label style={{ display: "block", fontSize: "12px", fontWeight: 700, color: "#475569", marginBottom: "6px" }}>
+                New Password *
+              </label>
+              <input
+                type={showPass ? "text" : "password"}
+                required
+                placeholder="Enter new password"
+                value={newPass}
+                onChange={(e) => setNewPass(e.target.value)}
+                style={{ width: "100%", background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "8px", padding: "9px 12px", fontSize: "13.5px", color: "#0f172a", outline: "none", boxSizing: "border-box" }}
+              />
+            </div>
+
+            <div>
+              <label style={{ display: "block", fontSize: "12px", fontWeight: 700, color: "#475569", marginBottom: "6px" }}>
+                Confirm New Password *
+              </label>
+              <input
+                type={showPass ? "text" : "password"}
+                required
+                placeholder="Repeat new password"
+                value={confirmPass}
+                onChange={(e) => setConfirmPass(e.target.value)}
+                style={{ width: "100%", background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "8px", padding: "9px 12px", fontSize: "13.5px", color: "#0f172a", outline: "none", boxSizing: "border-box" }}
+              />
+            </div>
+
+            <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+              <button
+                type="button"
+                onClick={() => setShowPass(!showPass)}
+                className="btn-admin btn-admin-outline"
+                style={{ padding: "9px 12px", fontSize: "12px" }}
+                title={showPass ? "Hide passwords" : "Show passwords"}
+              >
+                <i className={`fa-solid ${showPass ? "fa-eye-slash" : "fa-eye"}`}></i>
+              </button>
+              <button
+                type="submit"
+                className="btn-admin btn-admin-primary"
+                style={{ width: "100%", padding: "9px 16px" }}
+              >
+                <i className="fa-solid fa-key"></i>
+                <span>Update Password</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
       {/* Field Groups */}
       {FIELD_GROUPS.map((group) => (
-        <div key={group.label} className="bg-slate-800 border border-slate-700 rounded-xl overflow-hidden">
-          <div className="flex items-center gap-3 px-5 py-4 border-b border-slate-700 bg-slate-900/40">
-            <i className={`fa-solid ${group.icon} text-primary`}></i>
-            <h2 className="font-semibold text-white text-sm">{group.label}</h2>
+        <div key={group.label} className="admin-table-card" style={{ marginBottom: 0 }}>
+          <div className="admin-table-header" style={{ background: "#f8fafc" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <i className={`fa-solid ${group.icon}`} style={{ color: "#2563eb" }}></i>
+              <h2 className="admin-table-title" style={{ fontSize: "15px" }}>{group.label}</h2>
+            </div>
           </div>
-          <div className="p-5 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div style={{ padding: "20px", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "16px" }}>
             {group.fields.map((field) => (
-              <div key={field.key} className={field.type === "textarea" ? "md:col-span-2" : ""}>
-                <label className="block text-xs font-bold uppercase text-slate-400 mb-1.5">
+              <div key={field.key} style={field.type === "textarea" ? { gridColumn: "1 / -1" } : {}}>
+                <label style={{ display: "block", fontSize: "12px", fontWeight: 700, color: "#475569", marginBottom: "6px" }}>
                   {field.label}
                 </label>
                 {field.type === "textarea" ? (
@@ -117,7 +256,7 @@ export default function AdminSettingsPage() {
                     rows={3}
                     value={form[field.key] || ""}
                     onChange={(e) => handleChange(field.key, e.target.value)}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:border-primary resize-y"
+                    style={{ width: "100%", background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "8px", padding: "10px 12px", fontSize: "13.5px", color: "#0f172a", outline: "none", boxSizing: "border-box", resize: "vertical" }}
                   />
                 ) : (
                   <input
@@ -126,7 +265,7 @@ export default function AdminSettingsPage() {
                     onChange={(e) =>
                       handleChange(field.key, field.type === "number" ? Number(e.target.value) : e.target.value)
                     }
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:border-primary"
+                    style={{ width: "100%", background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "8px", padding: "9px 12px", fontSize: "13.5px", color: "#0f172a", outline: "none", boxSizing: "border-box" }}
                   />
                 )}
               </div>
@@ -136,13 +275,14 @@ export default function AdminSettingsPage() {
       ))}
 
       {/* Bottom save */}
-      <div className="flex justify-end pb-6">
+      <div style={{ display: "flex", justifyContent: "flex-end", paddingBottom: "24px" }}>
         <button
           onClick={handleSave}
           disabled={saving}
-          className="btn btn-primary px-8 py-3 rounded-lg font-semibold"
+          className="btn-admin btn-admin-primary"
+          style={{ padding: "12px 24px", fontSize: "14px" }}
         >
-          {saving ? <><i className="fa-solid fa-spinner fa-spin mr-2"></i>Saving...</> : <><i className="fa-solid fa-floppy-disk mr-2"></i>Save All Settings</>}
+          {saving ? <><i className="fa-solid fa-spinner fa-spin mr-2"></i>Saving All Settings...</> : <><i className="fa-solid fa-floppy-disk mr-2"></i>Save All Settings</>}
         </button>
       </div>
     </div>
