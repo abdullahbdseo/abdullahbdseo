@@ -152,8 +152,8 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                {/* 3D Main Image */}
-                <img src="/images/seo_hero_3d.png" alt="SEO 3D Illustration" className="digi-3d-img" />
+                {/* 3D Dashboard Main Image */}
+                <img src="/images/seo_hero_analytics_dashboard.jpg" alt="SEO Growth Analytics Dashboard" className="digi-3d-img" />
 
                 {/* Floating Badge 2: Bottom Right */}
                 <div className="hero-floating-card float-card-bottom">

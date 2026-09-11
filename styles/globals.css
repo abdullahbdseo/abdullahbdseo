@@ -1224,8 +1224,8 @@ img {
 .digi-3d-box {
     position: relative;
     width: 100%;
-    max-width: 440px;
-    border-radius: var(--radius-lg);
+    max-width: 480px;
+    border-radius: 16px;
 }
 
 .hero-glow-aura {
@@ -1233,10 +1233,10 @@ img {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 380px;
-    height: 380px;
-    background: radial-gradient(circle, rgba(59, 130, 246, 0.22) 0%, rgba(99, 102, 241, 0.1) 50%, transparent 70%);
-    filter: blur(40px);
+    width: 420px;
+    height: 420px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.28) 0%, rgba(99, 102, 241, 0.14) 50%, transparent 70%);
+    filter: blur(45px);
     z-index: 0;
     pointer-events: none;
     border-radius: 50%;
@@ -1247,7 +1247,14 @@ img {
     height: auto;
     position: relative;
     z-index: 1;
-    filter: drop-shadow(0 15px 30px rgba(67, 97, 238, 0.18));
+    border-radius: 16px;
+    box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.16), 0 0 0 1px rgba(226, 232, 240, 0.8);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.digi-3d-box:hover .digi-3d-img {
+    transform: translateY(-4px);
+    box-shadow: 0 25px 55px -10px rgba(2, 132, 199, 0.25), 0 0 0 1px rgba(186, 230, 253, 0.9);
 }
 
 /* Floating Glass Cards */

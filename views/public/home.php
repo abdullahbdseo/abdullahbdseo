@@ -83,8 +83,8 @@
                         </div>
                     </div>
 
-                    <!-- 3D Main Image -->
-                    <img src="<?= asset('images/seo_hero_3d.png') ?>" alt="SEO 3D Illustration" class="digi-3d-img">
+                    <!-- 3D Dashboard Main Image -->
+                    <img src="<?= asset('images/seo_hero_analytics_dashboard.jpg') ?>" alt="SEO Growth Analytics Dashboard" class="digi-3d-img">
 
                     <!-- Floating Badge 2: Bottom Right -->
                     <div class="hero-floating-card float-card-bottom">
