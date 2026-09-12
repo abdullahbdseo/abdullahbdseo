@@ -137,15 +137,54 @@ export default function WebsiteSeoAnalyzer() {
                     {result.score}
                   </div>
                   <div className="score-details" style={{ flexGrow: 1 }}>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "8px" }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "10px" }}>
                       <h3>
                         {result.score >= 80 ? "Strong SEO Health" : result.score >= 50 ? "Moderate SEO Health - Improvements Needed" : "Critical SEO Issues Detected"}
                       </h3>
-                      <span style={{ fontSize: "0.8rem", padding: "4px 10px", borderRadius: "4px", background: "rgba(255,255,255,0.15)", color: "#ffffff", fontWeight: 700 }}>
-                        HTTP {result.statusCode}
-                      </span>
+                      <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
+                        <button
+                          type="button"
+                          onClick={() => window.print()}
+                          style={{
+                            background: "rgba(255, 255, 255, 0.2)",
+                            border: "1px solid rgba(255, 255, 255, 0.4)",
+                            color: "#ffffff",
+                            padding: "4px 12px",
+                            borderRadius: "4px",
+                            fontSize: "0.8rem",
+                            fontWeight: 700,
+                            cursor: "pointer",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "6px"
+                          }}
+                        >
+                          <i className="fa-solid fa-print"></i> Print / PDF Report
+                        </button>
+                        <Link
+                          href={`/tools/seo-audit-report-generator?url=${encodeURIComponent(result.url)}`}
+                          style={{
+                            background: "#22c55e",
+                            border: "none",
+                            color: "#ffffff",
+                            padding: "4px 12px",
+                            borderRadius: "4px",
+                            fontSize: "0.8rem",
+                            fontWeight: 700,
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "6px",
+                            textDecoration: "none"
+                          }}
+                        >
+                          <i className="fa-solid fa-file-invoice"></i> Full PDF Report
+                        </Link>
+                        <span style={{ fontSize: "0.8rem", padding: "4px 10px", borderRadius: "4px", background: "rgba(255,255,255,0.15)", color: "#ffffff", fontWeight: 700 }}>
+                          HTTP {result.statusCode}
+                        </span>
+                      </div>
                     </div>
-                    <p style={{ marginTop: "4px" }}>
+                    <p style={{ marginTop: "6px" }}>
                       Audited URL: <a href={result.url} target="_blank" rel="noopener noreferrer">{result.url}</a>
                     </p>
                   </div>

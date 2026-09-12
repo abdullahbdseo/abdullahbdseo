@@ -227,6 +227,126 @@ export default function ServicesPage() {
         </div>
       </section>
 
+      {/* 3. SERVICE COMPARISON MATRIX */}
+      <section className="section digi-comparison-section" style={{ background: "#ffffff", padding: "75px 0 85px", borderTop: "1px solid #e2e8f0" }}>
+        <div className="container" style={{ maxWidth: "1140px", margin: "0 auto", padding: "0 20px" }}>
+          <div className="digi-section-head" style={{ marginBottom: "40px", textAlign: "center" }}>
+            <span className="text-blue" style={{ fontWeight: 700, fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+              Framework Comparison
+            </span>
+            <h2 style={{ fontSize: "2.3rem", fontWeight: 800, color: "#0f172a", marginTop: "6px" }}>
+              Which SEO Strategy Fits Your Business?
+            </h2>
+            <p style={{ color: "#64748b", fontSize: "1.05rem", maxWidth: "680px", margin: "0 auto" }}>
+              Compare core deliverables, target channels, and primary ROI outcomes across our specialized SEO service frameworks.
+            </p>
+          </div>
+
+          <div style={{ overflowX: "auto", background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "8px", boxShadow: "0 4px 16px rgba(15, 23, 42, 0.04)" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", minWidth: "750px" }}>
+              <thead>
+                <tr style={{ background: "#f8fafc", borderBottom: "2px solid #e2e8f0" }}>
+                  <th style={{ padding: "18px 20px", fontSize: "0.85rem", fontWeight: 800, color: "#0f172a", textTransform: "uppercase" }}>Strategy Framework</th>
+                  <th style={{ padding: "18px 20px", fontSize: "0.85rem", fontWeight: 800, color: "#0f172a", textTransform: "uppercase" }}>Best For</th>
+                  <th style={{ padding: "18px 20px", fontSize: "0.85rem", fontWeight: 800, color: "#0f172a", textTransform: "uppercase" }}>Primary Channels</th>
+                  <th style={{ padding: "18px 20px", fontSize: "0.85rem", fontWeight: 800, color: "#0f172a", textTransform: "uppercase" }}>Key ROI Metric</th>
+                  <th style={{ padding: "18px 20px", fontSize: "0.85rem", fontWeight: 800, color: "#0f172a", textTransform: "uppercase", textAlign: "right" }}>Explore</th>
+                </tr>
+              </thead>
+              <tbody style={{ fontSize: "0.9rem", color: "#334155" }}>
+                <tr style={{ borderBottom: "1px solid #f1f5f9" }}>
+                  <td style={{ padding: "18px 20px", fontWeight: 700, color: "#0f172a" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                      <span style={{ width: "32px", height: "32px", borderRadius: "4px", background: "#eff6ff", color: "#2563eb", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.9rem" }}>
+                        <i className="fa-solid fa-map-location-dot"></i>
+                      </span>
+                      <div>
+                        <div>Local SEO</div>
+                        <span style={{ fontSize: "0.75rem", color: "#64748b", fontWeight: 500 }}>Google 3-Pack &amp; Maps</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td style={{ padding: "18px 20px" }}>Clinics, Restaurants, Retail Stores, Law Firms, City Services</td>
+                  <td style={{ padding: "18px 20px" }}><span className="badge" style={{ background: "#eff6ff", color: "#1d4ed8", padding: "4px 8px", borderRadius: "4px", fontWeight: 700, fontSize: "0.76rem" }}>Google Maps &amp; GBP</span></td>
+                  <td style={{ padding: "18px 20px", fontWeight: 700, color: "#059669" }}>Direct Phone Calls &amp; Foot Traffic</td>
+                  <td style={{ padding: "18px 20px", textAlign: "right" }}>
+                    <Link href="/services/local-seo-service-in-bangladesh" className="btn btn-sm btn-outline" style={{ fontSize: "0.8rem", padding: "6px 14px" }}>
+                      View Service <i className="fa-solid fa-arrow-right"></i>
+                    </Link>
+                  </td>
+                </tr>
+
+                <tr style={{ borderBottom: "1px solid #f1f5f9" }}>
+                  <td style={{ padding: "18px 20px", fontWeight: 700, color: "#0f172a" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                      <span style={{ width: "32px", height: "32px", borderRadius: "4px", background: "#fefce8", color: "#ca8a04", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.9rem" }}>
+                        <i className="fa-solid fa-cart-shopping"></i>
+                      </span>
+                      <div>
+                        <div>Ecommerce SEO</div>
+                        <span style={{ fontSize: "0.75rem", color: "#64748b", fontWeight: 500 }}>Category &amp; Product SERPs</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td style={{ padding: "18px 20px" }}>Shopify, WooCommerce, Magento &amp; Online Brands</td>
+                  <td style={{ padding: "18px 20px" }}><span className="badge" style={{ background: "#fefce8", color: "#854d0e", padding: "4px 8px", borderRadius: "4px", fontWeight: 700, fontSize: "0.76rem" }}>Product Schema &amp; Category SERPs</span></td>
+                  <td style={{ padding: "18px 20px", fontWeight: 700, color: "#059669" }}>Direct Store Sales &amp; Low CAC</td>
+                  <td style={{ padding: "18px 20px", textAlign: "right" }}>
+                    <Link href="/services/ecommerce-seo-service-in-bangladesh" className="btn btn-sm btn-outline" style={{ fontSize: "0.8rem", padding: "6px 14px" }}>
+                      View Service <i className="fa-solid fa-arrow-right"></i>
+                    </Link>
+                  </td>
+                </tr>
+
+                <tr style={{ borderBottom: "1px solid #f1f5f9" }}>
+                  <td style={{ padding: "18px 20px", fontWeight: 700, color: "#0f172a" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                      <span style={{ width: "32px", height: "32px", borderRadius: "4px", background: "#ecfdf5", color: "#059669", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.9rem" }}>
+                        <i className="fa-solid fa-code"></i>
+                      </span>
+                      <div>
+                        <div>Technical SEO</div>
+                        <span style={{ fontSize: "0.75rem", color: "#64748b", fontWeight: 500 }}>Core Web Vitals &amp; Crawl</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td style={{ padding: "18px 20px" }}>SaaS, High-Traffic Portals, Next.js Apps, Dropped Rankings</td>
+                  <td style={{ padding: "18px 20px" }}><span className="badge" style={{ background: "#ecfdf5", color: "#065f46", padding: "4px 8px", borderRadius: "4px", fontWeight: 700, fontSize: "0.76rem" }}>Googlebot &amp; Search Console</span></td>
+                  <td style={{ padding: "18px 20px", fontWeight: 700, color: "#059669" }}>100% Indexation &amp; 95+ PageSpeed</td>
+                  <td style={{ padding: "18px 20px", textAlign: "right" }}>
+                    <Link href="/services/technical-seo-service-in-bangladesh" className="btn btn-sm btn-outline" style={{ fontSize: "0.8rem", padding: "6px 14px" }}>
+                      View Service <i className="fa-solid fa-arrow-right"></i>
+                    </Link>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style={{ padding: "18px 20px", fontWeight: 700, color: "#0f172a" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                      <span style={{ width: "32px", height: "32px", borderRadius: "4px", background: "#faf5ff", color: "#9333ea", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.9rem" }}>
+                        <i className="fa-solid fa-robot"></i>
+                      </span>
+                      <div>
+                        <div>AI SEO &amp; AEO/GEO</div>
+                        <span style={{ fontSize: "0.75rem", color: "#64748b", fontWeight: 500 }}>AI Overviews &amp; LLM Engine</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td style={{ padding: "18px 20px" }}>Innovative Brands, B2B Tech Platforms, Thought Leaders</td>
+                  <td style={{ padding: "18px 20px" }}><span className="badge" style={{ background: "#faf5ff", color: "#6b21a8", padding: "4px 8px", borderRadius: "4px", fontWeight: 700, fontSize: "0.76rem" }}>ChatGPT, Perplexity &amp; Gemini</span></td>
+                  <td style={{ padding: "18px 20px", fontWeight: 700, color: "#059669" }}>AI Recommendation Citations</td>
+                  <td style={{ padding: "18px 20px", textAlign: "right" }}>
+                    <Link href="/services/ai-seo-service-in-bangladesh" className="btn btn-sm btn-outline" style={{ fontSize: "0.8rem", padding: "6px 14px" }}>
+                      View Service <i className="fa-solid fa-arrow-right"></i>
+                    </Link>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
       {/* Service Order Modal */}
       <ServiceOrderModal 
         isOpen={!!selectedService}
