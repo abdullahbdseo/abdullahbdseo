@@ -147,7 +147,7 @@ export default function BlogPage() {
           ) : (
             <div className="blog-posts-grid">
               {displayPosts.map((post) => (
-                <article key={post.id} className="blog-card">
+                <article key={post.slug || post.id} className="blog-card">
                   <div className="blog-card-image-wrap">
                     <Link href={`/blog/${post.slug}`}>
                       <Image 

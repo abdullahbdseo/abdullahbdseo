@@ -16,7 +16,7 @@ const TOPIC_LIBRARY = [
     slug: "answer-engine-optimization-aeo-blueprint-2026",
     category: "AI & Search Evolution",
     read_time: "8 min read",
-    featured_image: "/images/blog_ai_overviews_geo.jpg",
+    featured_image: "/images/blog_aeo_voice_search.jpg",
     summary: "Master Answer Engine Optimization (AEO). Learn how to structure conversational answer capsules, schema entity graphs, and voice query triggers to capture zero-click position zero in Google and AI engines.",
     tags: ["AEO", "Answer Engine Optimization", "Voice Search", "Featured Snippets", "AI Search", "Schema Markup"],
     subheadings: [
