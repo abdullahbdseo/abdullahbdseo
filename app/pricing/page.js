@@ -82,8 +82,54 @@ export default function PricingPage() {
     setSelectedPlan(plan);
   };
 
+  const pricingSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Abdullah Saleh Managed SEO Retainers & Subscriptions",
+    "description": "Monthly managed SEO retainers, technical audits, content clusters, and high-impact link outreach.",
+    "image": "https://abdullahbdseo.vercel.app/images/seo_hero_analytics_dashboard.jpg",
+    "brand": {
+      "@type": "Brand",
+      "name": "Abdullah Saleh SEO"
+    },
+    "offers": {
+      "@type": "AggregateOffer",
+      "priceCurrency": "USD",
+      "lowPrice": "125",
+      "highPrice": "850",
+      "offerCount": "4",
+      "offers": plans.map((plan) => ({
+        "@type": "Offer",
+        "name": `${plan.name} SEO Plan`,
+        "price": String(plan.price),
+        "priceCurrency": "USD",
+        "priceSpecification": {
+          "@type": "UnitPriceSpecification",
+          "price": String(plan.price),
+          "priceCurrency": "USD",
+          "unitText": "MONTH"
+        },
+        "description": plan.features.join(". "),
+        "url": "https://abdullahbdseo.vercel.app/pricing"
+      }))
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "reviewCount": "128",
+      "bestRating": "5",
+      "worstRating": "1"
+    }
+  };
+
   return (
     <div className="pricing-page-wrapper">
+      {/* Google Structured Data: Product, AggregateOffer & PriceSpecification */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(pricingSchema) }}
+      />
+
       {/* Hero Header */}
       <section className="digi-hero-section" style={{ padding: "55px 0 40px", textAlign: "center" }}>
         <div className="container">

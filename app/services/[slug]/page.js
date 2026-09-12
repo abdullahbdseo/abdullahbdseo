@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { services, siteSettings } from "@/lib/data";
 import ServiceOrderModal from "@/components/ServiceOrderModal";
+import ServiceProofSection from "@/components/ServiceProofSection";
 
 export default function SingleServicePage({ params }) {
   const unwrappedParams = use(params);
@@ -280,7 +281,10 @@ export default function SingleServicePage({ params }) {
         </div>
       </section>
 
-      {/* 4. SERVICE FAQ SECTION */}
+      {/* 4. VERIFIABLE CLIENT PROOF & CASE STUDIES */}
+      <ServiceProofSection />
+
+      {/* 5. SERVICE FAQ SECTION */}
       {service.faqs && service.faqs.length > 0 && (
         <section className="section" style={{ padding: "80px 0" }}>
           <div className="container" style={{ maxWidth: "860px" }}>
