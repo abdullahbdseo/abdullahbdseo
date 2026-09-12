@@ -11,6 +11,9 @@ export const metadata = {
   keywords: siteSettings.default_meta_keywords,
   verification: {
     google: "4925bdb84133c801",
+    other: {
+      "msvalidate.01": "54462B6F7851B1AB224B911E4919792C",
+    },
   },
   icons: {
     icon: "/images/favicon.svg",
