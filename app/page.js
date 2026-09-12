@@ -3,9 +3,68 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { siteSettings, services, testimonials, globalFaqs } from "@/lib/data";
+import { siteSettings, services, globalFaqs } from "@/lib/data";
 import QuoteModal from "@/components/QuoteModal";
 import ServiceOrderModal from "@/components/ServiceOrderModal";
+
+const verifiedReviews = [
+  {
+    name: "Mia Collins",
+    role: "Director, Northline Digital",
+    rating: 5,
+    quote: "He rebuilt our service funnel around conversions, not vanity metrics. More qualified enquiries and far less manual follow-up.",
+    avatar: "M",
+  },
+  {
+    name: "Ryan Patel",
+    role: "Co-Founder, ClickPilot Studio",
+    rating: 5,
+    quote: "Fast communication and a practical automation setup. Our lead handling is now smoother and much easier to track.",
+    avatar: "R",
+  },
+  {
+    name: "Sophie Turner",
+    role: "Marketing Lead, BrightPath Solutions",
+    rating: 5,
+    quote: "The website improvements gave us a cleaner offer, stronger CTA flow, and noticeably better lead quality.",
+    avatar: "S",
+  },
+  {
+    name: "Alex Morgan",
+    role: "Owner, ScaleForge Agency",
+    rating: 5,
+    quote: "Delivered exactly what was promised automation, conversion focused pages, and reporting that shows what is actually working.",
+    avatar: "A",
+  },
+  {
+    name: "Daniel Reed",
+    role: "GrowthStack Media",
+    rating: 5,
+    quote: "Clear strategy, clean delivery, and better-quality leads within weeks. The KPI reporting made every decision easier.",
+    avatar: "D",
+  },
+  {
+    name: "Marcus Vance",
+    role: "Founder, CloudFlow SaaS",
+    rating: 5,
+    quote: "Abdullah took our SaaS platform from 4,000 monthly impressions to over 800K clicks in under 5 months. The depth of his technical audits and topic clusters is unmatched.",
+    avatar: "M",
+  },
+  {
+    name: "Sarah Jenkins",
+    role: "E-Commerce Director, Apex Retail",
+    rating: 5,
+    quote: "Our Shopify store's organic revenue grew by 320% after implementing Abdullah's e-commerce category taxonomy and schema strategies. Highly recommended!",
+    avatar: "S",
+  },
+  {
+    name: "David Kim",
+    role: "CEO, Nexus Digital Agency",
+    rating: 5,
+    quote: "Hands down the best SEO specialist we have partnered with. Transparent reporting, no fluff, and real Google Search Console ranking proof every single month.",
+    avatar: "D",
+  }
+];
 
 export default function HomePage() {
   const [isQuoteOpen, setIsQuoteOpen] = useState(false);
@@ -740,59 +799,59 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="digi-section-head" style={{ marginBottom: "40px", textAlign: "center" }}>
-            <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "#4361ee", textTransform: "uppercase", letterSpacing: "0.08em", display: "inline-block", marginBottom: "8px" }}>
-              <i className="fa-solid fa-comments" style={{ marginRight: "6px" }}></i> Client Success Stories
-            </span>
-            <h2 style={{ fontSize: "2.2rem", fontWeight: 800, color: "#0f172a" }}>What Founders &amp; Directors Say</h2>
-            <p style={{ color: "#64748b", maxWidth: "600px", margin: "10px auto 0", fontSize: "1rem" }}>
-              Real feedback from business owners and marketing executives whose traffic and organic revenue scaled with our data-backed SEO execution.
+          {/* Section: What Internet Finds About Me (Verified Reviews Marquee) */}
+          <div className="testimonial-marquee-container" style={{ textAlign: "center" }}>
+            {/* Verified Reviews Pill */}
+            <div className="verified-pill-badge">
+              <span className="pill-stars">
+                <i className="fa-solid fa-star"></i>
+                <i className="fa-solid fa-star"></i>
+                <i className="fa-solid fa-star"></i>
+                <i className="fa-solid fa-star"></i>
+                <i className="fa-solid fa-star"></i>
+              </span>
+              <span className="pill-divider"></span>
+              <span className="pill-text">Verified Reviews</span>
+            </div>
+
+            <h2 className="marquee-section-title">What Internet Finds About Me</h2>
+            <p className="marquee-section-subtitle">
+              Real feedback and client reviews from BlackHatWorld forum as a developer and marketer.
             </p>
-          </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "24px" }}>
-            {testimonials.map((t, idx) => (
-              <div 
-                key={idx} 
-                style={{ 
-                  background: "#ffffff", 
-                  border: "1px solid #e2e8f0", 
-                  borderRadius: "10px", 
-                  padding: "32px 28px", 
-                  display: "flex", 
-                  flexDirection: "column", 
-                  justifyContent: "space-between",
-                  boxShadow: "0 4px 16px rgba(0,0,0,0.04)",
-                  transition: "transform 0.2s ease, box-shadow 0.2s ease"
-                }}
-              >
-                <div>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
-                    <div style={{ color: "#f59e0b", fontSize: "0.95rem", display: "flex", gap: "3px" }}>
-                      {[...Array(t.rating || 5)].map((_, i) => (
-                        <i key={i} className="fa-solid fa-star"></i>
-                      ))}
+            {/* Marquee Viewport */}
+            <div className="marquee-viewport-mask">
+              <div className="marquee-track">
+                {[...verifiedReviews, ...verifiedReviews].map((rev, idx) => (
+                  <div key={idx} className="marquee-review-card">
+                    <div>
+                      <div className="card-stars-row" aria-label={`${rev.rating} out of 5 stars`}>
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <i
+                            key={star}
+                            className="fa-solid fa-star"
+                            style={{
+                              color: star <= rev.rating ? "#fbbf24" : "#e2e8f0",
+                              fontSize: "0.85rem",
+                            }}
+                          ></i>
+                        ))}
+                      </div>
+                      <p className="card-quote-body">
+                        &ldquo;{rev.quote}&rdquo;
+                      </p>
                     </div>
-                    <span style={{ fontSize: "0.75rem", fontWeight: 700, background: "#ecfdf5", color: "#059669", padding: "4px 10px", borderRadius: "20px", border: "1px solid #a7f3d0" }}>
-                      <i className="fa-solid fa-circle-check" style={{ marginRight: "4px" }}></i> {t.source}
-                    </span>
+                    <div className="card-bottom-row">
+                      <div>
+                        <h3 className="card-author-name">{rev.name}</h3>
+                        <p className="card-author-title">{rev.role}</p>
+                      </div>
+                      <div className="card-avatar-badge">{rev.avatar}</div>
+                    </div>
                   </div>
-                  <p style={{ color: "#334155", fontSize: "1rem", lineHeight: 1.7, fontStyle: "italic", margin: "0 0 24px" }}>
-                    &ldquo;{t.content}&rdquo;
-                  </p>
-                </div>
-
-                <div style={{ display: "flex", alignItems: "center", gap: "14px", borderTop: "1px solid #f1f5f9", paddingTop: "18px" }}>
-                  <div style={{ width: "44px", height: "44px", borderRadius: "50%", background: "linear-gradient(135deg, #4361ee, #06b6d4)", color: "#ffffff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: "1.1rem" }}>
-                    {t.name.charAt(0)}
-                  </div>
-                  <div>
-                    <h5 style={{ margin: 0, fontSize: "1rem", fontWeight: 800, color: "#0f172a" }}>{t.name}</h5>
-                    <span style={{ color: "#64748b", fontSize: "0.85rem" }}>{t.role}</span>
-                  </div>
-                </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
 
         </div>
