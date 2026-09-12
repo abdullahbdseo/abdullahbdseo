@@ -1977,21 +1977,24 @@ img {
         background: #ffffff;
         border-bottom: 2px solid var(--digi-blue);
         box-shadow: 0 20px 40px rgba(15, 23, 42, 0.15);
-        padding: 24px 28px;
+        padding: 20px 24px;
         flex-direction: column;
         align-items: flex-start;
-        gap: 14px;
+        gap: 12px;
         z-index: 9999;
+        max-height: calc(100vh - 85px);
+        overflow-y: auto;
     }
 
-    .digi-nav-links.open {
+    .digi-nav-links.open,
+    .digi-nav-links.active {
         display: flex;
         animation: navSlideDown 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .digi-nav-link {
-        font-size: 1rem;
-        padding: 6px 0;
+        font-size: 0.98rem;
+        padding: 8px 0;
         width: 100%;
         border-bottom: 1px solid #f1f5f9;
     }
@@ -2026,6 +2029,26 @@ img {
 
     .digi-hero-actions {
         justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .digi-cards-grid,
+    .digi-steps-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    .digi-pricing-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 16px;
+    }
+
+    .digi-hero-content h1 {
+        font-size: clamp(1.85rem, 5.5vw, 2.5rem);
     }
 
     .digi-cards-grid,
@@ -2034,7 +2057,18 @@ img {
     }
 
     .digi-pricing-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr;
+        max-width: 480px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .header-container {
+        height: 68px;
+    }
+
+    .digi-nav-links {
+        top: 68px;
     }
 }
 
@@ -2044,16 +2078,34 @@ img {
     }
 
     .digi-hero-content h1 {
-        font-size: 2.2rem;
+        font-size: 1.85rem;
+        line-height: 1.25;
     }
 
     .digi-hero-actions {
         flex-direction: column;
         width: 100%;
+        gap: 10px;
     }
 
     .digi-hero-actions .btn {
         width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 420px) {
+    .container {
+        padding: 0 12px;
+    }
+
+    .site-main-logo-text {
+        font-size: 1.05rem;
+    }
+
+    .site-main-logo-icon {
+        height: 32px;
+        width: 32px;
     }
 }
 
@@ -2087,7 +2139,9 @@ img {
     border-radius: 4px;
     max-width: 480px;
     width: 100%;
-    padding: 36px 28px 32px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: clamp(20px, 5vw, 36px) clamp(16px, 4vw, 28px);
     text-align: center;
     position: relative;
     box-shadow: 0 20px 50px -10px rgba(67, 97, 238, 0.25);
@@ -8001,3 +8055,51 @@ nextjs-portal,
         content: "" !important;
     }
 }
+
+/* ==========================================================================
+   MASTER RESPONSIVE & MOBILE POLISH
+   ========================================================================== */
+html,
+body {
+    max-width: 100%;
+    overflow-x: clip;
+}
+
+@supports not (overflow-x: clip) {
+    html,
+    body {
+        overflow-x: hidden;
+    }
+}
+
+/* Responsive Table Wrapper */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent long unbroken text from forcing horizontal scroll */
+h1, h2, h3, h4, h5, h6, p, span, a, li, blockquote {
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+/* Form input touch optimization for iOS Safari */
+@media (max-width: 768px) {
+    input[type="text"],
+    input[type="email"],
+    input[type="url"],
+    input[type="tel"],
+    input[type="number"],
+    input[type="password"],
+    select,
+    textarea {
+        font-size: 16px !important; /* Prevents auto-zoom on iOS */
+    }
+
+    /* Modal dialogs touch scroll responsiveness */
+    .digi-thankyou-modal-overlay {
+        padding: 12px;
+    }
+}
