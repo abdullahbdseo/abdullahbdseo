@@ -6,6 +6,12 @@ import BlogArticleEnhancer from "@/components/BlogArticleEnhancer";
 import StickyTableOfContents from "@/components/StickyTableOfContents";
 import SocialShare from "@/components/SocialShare";
 
+export async function generateStaticParams() {
+  return blogPosts.map((post) => ({
+    slug: post.slug,
+  }));
+}
+
 export async function generateMetadata({ params }) {
   const unwrappedParams = await params;
   const post = blogPosts.find((p) => p.slug === unwrappedParams.slug);
