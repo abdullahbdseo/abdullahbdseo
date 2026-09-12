@@ -78,7 +78,9 @@ export default function SinglePortfolioPage({ params }) {
             >
               <img 
                 src={imgSrc} 
-                alt={portfolio.title} 
+                alt={`${portfolio.title} - Google Search Console Performance Proof`} 
+                loading="lazy"
+                decoding="async"
                 style={{ width: "100%", maxHeight: "520px", objectFit: "contain", display: "block", margin: "0 auto" }} 
               />
               <div className="gsc-proof-overlay">

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { siteSettings, services } from "@/lib/data";
 import QuoteModal from "@/components/QuoteModal";
 import ServiceOrderModal from "@/components/ServiceOrderModal";
@@ -153,7 +154,15 @@ export default function HomePage() {
                 </div>
 
                 {/* 3D Dashboard Main Image */}
-                <img src="/images/seo_hero_analytics_dashboard.jpg" alt="SEO Growth Analytics Dashboard" className="digi-3d-img" />
+                <Image
+                  src="/images/seo_hero_analytics_dashboard.jpg"
+                  alt="SEO Growth Analytics Dashboard"
+                  width={924}
+                  height={690}
+                  priority
+                  className="digi-3d-img"
+                  style={{ width: "100%", height: "auto" }}
+                />
 
                 {/* Floating Badge 2: Bottom Right */}
                 <div className="hero-floating-card float-card-bottom">
