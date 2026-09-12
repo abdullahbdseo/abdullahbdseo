@@ -1239,7 +1239,7 @@ img {
     position: relative;
     width: 100%;
     max-width: 480px;
-    border-radius: 16px;
+    border-radius: 6px;
 }
 
 .hero-glow-aura {
@@ -1261,7 +1261,7 @@ img {
     height: auto;
     position: relative;
     z-index: 1;
-    border-radius: 16px;
+    border-radius: 6px;
     box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.16), 0 0 0 1px rgba(226, 232, 240, 0.8);
     transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
@@ -1283,7 +1283,7 @@ img {
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(219, 234, 254, 0.9);
     padding: 10px 16px;
-    border-radius: 12px;
+    border-radius: 6px;
     box-shadow: 0 14px 30px -4px rgba(15, 23, 42, 0.1), 0 4px 12px rgba(67, 97, 238, 0.08);
     transition: transform 0.3s ease;
 }
