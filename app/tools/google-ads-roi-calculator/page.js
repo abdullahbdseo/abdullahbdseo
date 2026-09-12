@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import ToolFaqAccordion from "@/components/ToolFaqAccordion";
 
 export default function GoogleAdsRoiCalculator() {
   const [adSpend, setAdSpend] = useState(2500);
@@ -244,6 +245,29 @@ export default function GoogleAdsRoiCalculator() {
               </div>
             </div>
           </div>
+
+          {/* FAQ Accordion with FAQPage Schema */}
+          <ToolFaqAccordion
+            title="Frequently Asked Questions: Google Ads ROI & Search Acquisition"
+            faqs={[
+              {
+                q: "What is the average ROI for Google Search Ads?",
+                a: "According to industry benchmarks, businesses typically make $2 in revenue for every $1 spent on Google Ads (a 200% ROI or 2x ROAS). High-intent B2B and local service businesses often achieve 4x to 8x returns when targeting transactional buyer keywords."
+              },
+              {
+                q: "What is the difference between Cost Per Lead (CPL) and Cost Per Acquisition (CPA)?",
+                a: "Cost Per Lead (CPL) is the amount spent to acquire a form inquiry, phone call, or email signup. Cost Per Acquisition (CPA) is the actual ad cost required to turn that lead into a paying customer (CPA = Ad Spend / Paying Customers)."
+              },
+              {
+                q: "How does Google Quality Score lower ad costs?",
+                a: "Quality Score (rated 1 to 10) measures ad relevance, expected CTR, and landing page experience. Higher Quality Scores earn higher ad placements at lower cost-per-click rates, reducing your total acquisition costs."
+              },
+              {
+                q: "Should I invest in Google Ads or Organic SEO?",
+                a: "The most profitable growth strategy uses both: Google Ads captures immediate high-intent search demand while Organic SEO builds lasting rankings for hundreds of commercial keywords without paying for individual clicks."
+              }
+            ]}
+          />
 
           {/* Consultation CTA Banner */}
           <div className="tool-cta-box">

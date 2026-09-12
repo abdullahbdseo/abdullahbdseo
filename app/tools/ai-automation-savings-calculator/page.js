@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import ToolFaqAccordion from "@/components/ToolFaqAccordion";
 
 export default function AiAutomationSavingsCalculator() {
   const [teamSize, setTeamSize] = useState(5);
@@ -224,6 +225,29 @@ export default function AiAutomationSavingsCalculator() {
               </div>
             </div>
           </div>
+
+          {/* FAQ Accordion with FAQPage Schema */}
+          <ToolFaqAccordion
+            title="Frequently Asked Questions: AI Automation & Payroll Efficiency"
+            faqs={[
+              {
+                q: "How does AI automation reduce business operational costs?",
+                a: "AI automation streamlines repetitive manual workflows such as lead data entry, customer support triage, programmatic content generation, SEO report compilation, and email follow-ups. This saves dozens of employee payroll hours weekly while reducing human error."
+              },
+              {
+                q: "What business processes deliver the highest ROI from AI integration?",
+                a: "High-ROI AI automation areas include automated SEO data audits, customer service AI chatbots, programmatic internal link equity routing, automated invoicing, CRM lead enrichment, and automated social & email marketing sequences."
+              },
+              {
+                q: "What is the typical payback period for implementing custom AI automation?",
+                a: "Most small to mid-sized businesses recover their initial AI implementation investment within 2 to 4 months through immediate payroll hours saved and increased lead response velocity."
+              },
+              {
+                q: "Will AI workflows require expensive ongoing software subscriptions?",
+                a: "Modern AI workflows leverage cost-effective LLM APIs (like OpenAI, Gemini, or Claude) along with lightweight webhook platforms. Monthly operational API costs for typical business automations are often under $50 to $150 per month."
+              }
+            ]}
+          />
 
           {/* Consultation CTA Banner */}
           <div className="tool-cta-box">

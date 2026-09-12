@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import ToolFaqAccordion from "@/components/ToolFaqAccordion";
 
 export default function FacebookAdsRoiCalculator() {
   const [adSpend, setAdSpend] = useState(2000);
@@ -243,6 +244,29 @@ export default function FacebookAdsRoiCalculator() {
               </div>
             </div>
           </div>
+
+          {/* FAQ Accordion with FAQPage Schema */}
+          <ToolFaqAccordion
+            title="Frequently Asked Questions: Facebook Ads ROI & E-Commerce ROAS"
+            faqs={[
+              {
+                q: "What is a good ROAS (Return on Ad Spend) for Facebook Ads?",
+                a: "A good ROAS typically ranges between 300% (3x) and 500% (5x) for e-commerce brands, depending on profit margins and average order value (AOV). If your product gross margins are high (e.g. 70%+), a 2.5x ROAS can still generate healthy net profits."
+              },
+              {
+                q: "How does Cost Per Click (CPC) and Click-Through Rate (CTR) affect ROAS?",
+                a: "Higher CTR decreases your effective Cost Per Click because Meta rewards engaging ad creatives with higher relevancy scores. Lower CPC means more prospective buyers land on your site for the same ad budget, directly improving your return on investment."
+              },
+              {
+                q: "Why should e-commerce businesses combine Facebook Ads with Organic SEO?",
+                a: "Paid ads provide immediate traffic but stop generating revenue the moment the budget pauses. Organic SEO builds a long-term search moat and brings zero-cost organic buyers, lowering your blended customer acquisition cost (CAC) and protecting business profit margins."
+              },
+              {
+                q: "How do I improve my Meta advertising conversion rate?",
+                a: "Optimize page speed (Core Web Vitals), implement frictionless 1-click checkout, display authentic customer reviews and trust badges, and ensure the landing page headline directly matches the hook used in your ad creative."
+              }
+            ]}
+          />
 
           {/* Consultation CTA Banner */}
           <div className="tool-cta-box">

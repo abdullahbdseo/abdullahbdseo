@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import ToolFaqAccordion from "@/components/ToolFaqAccordion";
 
 export default function WebsiteCostCalculator() {
   const [pageCount, setPageCount] = useState("5-10");
@@ -268,6 +269,29 @@ export default function WebsiteCostCalculator() {
               </div>
             </div>
           </div>
+
+          {/* FAQ Accordion with FAQPage Schema */}
+          <ToolFaqAccordion
+            title="Frequently Asked Questions: Website Costs & Scoping"
+            faqs={[
+              {
+                q: "How much does a professional business website cost in 2026?",
+                a: "Website costs typically range from $300 to $1,500 for standard business sites, $1,200 to $3,500 for dynamic custom platforms with CMS, and $2,500+ for enterprise e-commerce portals. Final pricing depends on page count, custom design, integrations, and SEO foundation."
+              },
+              {
+                q: "What factors influence the total website development price?",
+                a: "Key cost factors include the total number of unique templates and pages, e-commerce functionality, payment gateway integrations, custom API development, UI/UX design fidelity, speed optimization, and whether comprehensive technical SEO setup is included."
+              },
+              {
+                q: "Is built-in Technical SEO included in standard website costs?",
+                a: "Basic web development often skips advanced technical SEO. However, high-performing websites require built-in semantic HTML5, Core Web Vitals optimization, JSON-LD schema markup, XML sitemaps, and optimized metadata to generate organic search traffic immediately after launch."
+              },
+              {
+                q: "How long does it usually take to design and launch a custom website?",
+                a: "A standard 5-10 page corporate website usually takes 2 to 3 weeks from wireframe to deployment. Complex e-commerce or custom web applications with multi-tier user workflows typically require 4 to 8 weeks."
+              }
+            ]}
+          />
 
           {/* Consultation CTA Banner */}
           <div className="tool-cta-box">

@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SeoChecklistModal from "@/components/SeoChecklistModal";
 
 // Routes where Header and Footer should NOT appear
 const NO_CHROME_PATHS = ["/admin", "/login"];
@@ -23,6 +24,7 @@ export default function ClientLayout({ children }) {
       <Header />
       <main>{children}</main>
       <Footer />
+      <SeoChecklistModal />
     </>
   );
 }

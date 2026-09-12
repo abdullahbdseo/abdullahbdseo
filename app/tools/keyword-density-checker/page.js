@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import ToolFaqAccordion from "@/components/ToolFaqAccordion";
 
 export default function KeywordDensityChecker() {
   const [text, setText] = useState("");
@@ -359,6 +360,29 @@ When conducting technical SEO optimization, search engine bots prioritize sites 
               </div>
             </div>
           </div>
+
+          {/* FAQ Accordion with FAQPage Schema */}
+          <ToolFaqAccordion
+            title="Frequently Asked Questions: Keyword Density & Content SEO"
+            faqs={[
+              {
+                q: "What is the ideal keyword density for SEO in 2026?",
+                a: "In modern search algorithms (BERT, MUM, and Gemini-driven search), there is no fixed rigid keyword density rule. A natural keyword density of 1.0% to 2.5% is generally recommended. Rather than repeating exact-match keywords, focus on topical depth, semantic entities, and addressing user search intent."
+              },
+              {
+                q: "What is keyword stuffing and how does Google penalize it?",
+                a: "Keyword stuffing is the outdated practice of unnaturally repeating focus keywords in an attempt to manipulate search engine rankings. Google algorithms detect this through semantic analysis and NLP models, resulting in reduced search visibility or manual webspam penalties."
+              },
+              {
+                q: "What are N-Grams and why are 2-word/3-word phrases important?",
+                a: "N-Grams represent continuous sequences of n items from a given sample of text (such as single words, bigrams, or trigrams). Search engines use n-gram extraction to determine semantic topics, entity relationships, and conversational search phrases."
+              },
+              {
+                q: "How do I improve content readability alongside keyword density?",
+                a: "Use clear subheadings (H2, H3), bullet points, concise paragraphs (2-3 sentences), and descriptive anchor text. Ensure your primary and secondary keywords appear naturally within introductory sections, headings, and conclusion paragraphs."
+              }
+            ]}
+          />
 
           {/* Consultation CTA Banner */}
           <div className="tool-cta-box">

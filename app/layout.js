@@ -98,6 +98,73 @@ export default function RootLayout({ children }) {
           siteSettings.social_linkedin,
           siteSettings.social_twitter
         ].filter(Boolean)
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://abdullahbdseo.vercel.app/#website",
+        "url": "https://abdullahbdseo.vercel.app",
+        "name": siteSettings.site_name,
+        "description": siteSettings.default_meta_description,
+        "publisher": {
+          "@id": "https://abdullahbdseo.vercel.app/#organization"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://abdullahbdseo.vercel.app/blog?search={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "ItemList",
+        "@id": "https://abdullahbdseo.vercel.app/#siteNavigation",
+        "name": "Site Navigation",
+        "itemListElement": [
+          {
+            "@type": "SiteNavigationElement",
+            "position": 1,
+            "name": "SEO Services",
+            "description": "Enterprise and Local SEO Solutions in Bangladesh",
+            "url": "https://abdullahbdseo.vercel.app/services"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "position": 2,
+            "name": "Free SEO Tools",
+            "description": "Free Technical SEO, Auditing, and ROI Calculators",
+            "url": "https://abdullahbdseo.vercel.app/tools"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "position": 3,
+            "name": "Pricing & Packages",
+            "description": "Monthly SEO Retainers and Growth Subscriptions",
+            "url": "https://abdullahbdseo.vercel.app/pricing"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "position": 4,
+            "name": "About Abdullah Saleh",
+            "description": "Background, Experience, and Verified Client Reviews",
+            "url": "https://abdullahbdseo.vercel.app/about"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "position": 5,
+            "name": "SEO Insights Blog",
+            "description": "Actionable Guides on Technical SEO, AEO, and AI Search",
+            "url": "https://abdullahbdseo.vercel.app/blog"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "position": 6,
+            "name": "Contact & Audit Proposal",
+            "description": "Get in Touch for a Customized Website SEO Audit",
+            "url": "https://abdullahbdseo.vercel.app/contact"
+          }
+        ]
       }
     ]
   };
