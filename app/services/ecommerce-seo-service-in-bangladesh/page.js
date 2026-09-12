@@ -94,8 +94,75 @@ export default function EcommerceSeoServicePage() {
     }
   ];
 
+  const ecommerceSeoServiceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Ecommerce SEO Service in Bangladesh",
+    "description": "Enterprise ecommerce SEO services, product page optimization, category structure, and revenue scaling for Shopify, WooCommerce, and custom platforms.",
+    "provider": {
+      "@type": "ProfessionalService",
+      "name": siteSettings.site_name,
+      "url": "https://abdullahbdseo.vercel.app"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "15000",
+      "priceCurrency": "BDT"
+    }
+  };
+
+  const ecommerceBreadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://abdullahbdseo.vercel.app"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Services",
+        "item": "https://abdullahbdseo.vercel.app/services"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Ecommerce SEO Service in Bangladesh",
+        "item": "https://abdullahbdseo.vercel.app/services/ecommerce-seo-service-in-bangladesh"
+      }
+    ]
+  };
+
+  const ecommerceFaqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map((f) => ({
+      "@type": "Question",
+      "name": f.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": f.a
+      }
+    }))
+  };
+
   return (
     <div style={{ background: "#ffffff", color: "#0f172a", fontFamily: "var(--font-sans, inherit)" }}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(ecommerceSeoServiceSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(ecommerceBreadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(ecommerceFaqSchema) }}
+      />
       
       {/* 1. HERO SECTION */}
       <section style={{ background: "linear-gradient(180deg, #f0f7ff 0%, #ffffff 100%)", padding: "60px 0 50px", borderBottom: "1px solid #e2e8f0" }}>

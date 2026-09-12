@@ -19,8 +19,37 @@ export default function SinglePortfolioPage({ params }) {
   const imgSrc = portfolio.featured_image || portfolio.gsc_screenshot;
   const modalStats = (portfolio.industry || "SEO Client") + " • " + (portfolio.duration || "3 Months") + " • GSC Performance Report";
 
+  const portfolioBreadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://abdullahbdseo.vercel.app"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Portfolio",
+        "item": "https://abdullahbdseo.vercel.app/portfolio"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": portfolio.title,
+        "item": `https://abdullahbdseo.vercel.app/portfolio/${portfolio.slug}`
+      }
+    ]
+  };
+
   return (
     <div className="portfolio-detail-wrapper" style={{ minHeight: "100vh", paddingBottom: "80px" }}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(portfolioBreadcrumbSchema) }}
+      />
       {/* 1. HERO SECTION */}
       <section className="digi-hero-section" style={{ padding: "50px 0 35px" }}>
         <div className="container" style={{ maxWidth: "1000px" }}>

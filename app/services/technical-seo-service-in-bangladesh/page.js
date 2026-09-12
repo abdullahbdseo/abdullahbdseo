@@ -117,8 +117,75 @@ export default function TechnicalSeoServicePage() {
     }
   ];
 
+  const technicalSeoServiceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Technical SEO Service in Bangladesh",
+    "description": "Comprehensive technical SEO audits, Core Web Vitals remediation, crawl bottleneck fixes, and structured data engineering by Abdullah Saleh.",
+    "provider": {
+      "@type": "ProfessionalService",
+      "name": siteSettings.site_name,
+      "url": "https://abdullahbdseo.vercel.app"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "15000",
+      "priceCurrency": "BDT"
+    }
+  };
+
+  const technicalBreadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://abdullahbdseo.vercel.app"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Services",
+        "item": "https://abdullahbdseo.vercel.app/services"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Technical SEO Service in Bangladesh",
+        "item": "https://abdullahbdseo.vercel.app/services/technical-seo-service-in-bangladesh"
+      }
+    ]
+  };
+
+  const technicalFaqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map((f) => ({
+      "@type": "Question",
+      "name": f.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": f.a
+      }
+    }))
+  };
+
   return (
     <div style={{ background: "#ffffff", color: "#0f172a", fontFamily: "var(--font-sans, inherit)" }}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(technicalSeoServiceSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(technicalBreadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(technicalFaqSchema) }}
+      />
       
       {/* 1. HERO SECTION WITH LEAD AUDIT FORM */}
       <section style={{ background: "linear-gradient(180deg, #f0f7ff 0%, #ffffff 100%)", padding: "60px 0 50px", borderBottom: "1px solid #e2e8f0" }}>

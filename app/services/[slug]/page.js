@@ -44,12 +44,60 @@ export default function SingleServicePage({ params }) {
     }
   };
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://abdullahbdseo.vercel.app"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Services",
+        "item": "https://abdullahbdseo.vercel.app/services"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": service.title,
+        "item": `https://abdullahbdseo.vercel.app/services/${service.slug}`
+      }
+    ]
+  };
+
+  const faqSchema = service.faqs && service.faqs.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": service.faqs.map((f) => ({
+      "@type": "Question",
+      "name": f.question || f.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": f.answer || f.a
+      }
+    }))
+  } : null;
+
   return (
     <div className="single-service-page-wrapper">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
       {/* 1. HERO HEADER SECTION */}
       <section className="digi-hero-section" style={{ padding: "60px 0 45px", textAlign: "center" }}>
         <div className="container">

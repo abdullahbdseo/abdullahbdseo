@@ -65,12 +65,41 @@ export default async function SingleBlogPostPage({ params }) {
     }
   };
 
+  const blogBreadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://abdullahbdseo.vercel.app"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": "https://abdullahbdseo.vercel.app/blog"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": post.title,
+        "item": `https://abdullahbdseo.vercel.app/blog/${post.slug}`
+      }
+    ]
+  };
+
   return (
     <div className="single-blog-page">
       {/* Schema.org BlogPosting Structured Data */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogBreadcrumbSchema) }}
       />
       {/* ARTICLE HEADER & BREADCRUMBS */}
       <section className="article-header-section">

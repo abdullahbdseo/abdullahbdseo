@@ -135,12 +135,28 @@ const TOPIC_LIBRARY = [
 ];
 
 function generateHtmlContent(topic) {
-  const subheadingsHtml = topic.subheadings.map((sh, idx) => `
+  const internalLinks = [
+    { text: "Technical SEO Service in Bangladesh", url: "/services/technical-seo-service-in-bangladesh" },
+    { text: "Local SEO Service", url: "/services/local-seo-service-in-bangladesh" },
+    { text: "Ecommerce SEO Service", url: "/services/ecommerce-seo-service-in-bangladesh" },
+    { text: "AI SEO & GEO Optimization", url: "/services/ai-seo-service-in-bangladesh" },
+    { text: "Free Deep SEO Audit Tool", url: "/tools/deep-seo-audit" },
+    { text: "Google SERP Simulator", url: "/tools/serp-simulator" },
+    { text: "SEO Audit Report Generator", url: "/tools/seo-audit-report-generator" },
+    { text: "Monthly SEO Retainers & Pricing", url: "/pricing" }
+  ];
+
+  const subheadingsHtml = topic.subheadings.map((sh, idx) => {
+    const link1 = internalLinks[idx % internalLinks.length];
+    const link2 = internalLinks[(idx + 4) % internalLinks.length];
+
+    return `
     <h2>${idx + 1}. ${sh}</h2>
     <p>In modern organic search, <strong>${sh.toLowerCase()}</strong> is a critical pillar for sustainable visibility. By adhering to structured search principles, websites can satisfy user search intent while providing unambiguous signals to both traditional Google web crawlers and modern LLM-driven generative engines like ChatGPT Search, Perplexity AI, and Google Gemini.</p>
     
-    <p>To successfully execute this step, ensure that your technical infrastructure is validated through our <a href="/tools/http-header-checker" style="color: #2563eb; font-weight: 700;">HTTP & SSL Checker</a> and your structured data is correctly deployed using our <a href="/tools/schema-markup-generator" style="color: #2563eb; font-weight: 700;">Schema Markup Generator</a>.</p>
-  `).join("\n");
+    <p>For best results in this area, leverage our <a href="${link1.url}" style="color: #2563eb; font-weight: 700;">${link1.text}</a> to diagnose foundational bottlenecks and explore our <a href="${link2.url}" style="color: #2563eb; font-weight: 700;">${link2.text}</a> for hands-on execution and structured implementation.</p>
+  `;
+  }).join("\n");
 
   const tableRowsHtml = topic.tableRows.map(row => `
     <tr style="border-bottom: 1px solid #e2e8f0;">
@@ -179,9 +195,9 @@ function generateHtmlContent(topic) {
 
     <h2>Actionable Implementation Roadmap</h2>
     <ol style="line-height: 1.8; margin-left: 20px;">
-      <li><strong>Technical Health Audit:</strong> Verify indexability, crawl depth, and response codes across your top-converting landing pages.</li>
-      <li><strong>Structured Data Integration:</strong> Deploy compliant Schema.org JSON-LD structured data with nested entity references.</li>
-      <li><strong>Entity & Keyword Siloing:</strong> Align subheadings and supporting articles around tightly-knit commercial and informational topic clusters.</li>
+      <li><strong>Technical Health Audit:</strong> Verify indexability, crawl depth, and response codes across your top-converting landing pages using our <a href="/tools/deep-seo-audit" style="color: #2563eb; font-weight: 700;">Free SEO Audit Tool</a>.</li>
+      <li><strong>Structured Data Integration:</strong> Deploy compliant Schema.org JSON-LD structured data with nested entity references via our <a href="/tools/schema-markup-generator" style="color: #2563eb; font-weight: 700;">Schema Markup Generator</a>.</li>
+      <li><strong>Entity & Keyword Siloing:</strong> Align subheadings and supporting articles around tightly-knit commercial and informational topic clusters with expert <a href="/services/technical-seo-service-in-bangladesh" style="color: #2563eb; font-weight: 700;">Technical SEO Services</a>.</li>
       <li><strong>Continuous Measurement:</strong> Track impressions, click-through rates, and AI Overview citations inside Google Search Console.</li>
     </ol>
 

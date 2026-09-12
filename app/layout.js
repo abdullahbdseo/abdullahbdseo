@@ -33,7 +33,25 @@ export const metadata = {
       }
     ],
     type: "website"
-  }
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${siteSettings.site_name} | ${siteSettings.site_tagline}`,
+    description: siteSettings.default_meta_description,
+    images: ["/images/seo_hero_3d.png"],
+    creator: "@abdullahsaleh_seo",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({ children }) {
