@@ -39,7 +39,7 @@ export default async function SingleBlogPostPage({ params }) {
     return `<h${level}${attrs} id="${headingId}">${text}</h${level}>`;
   });
 
-  const relatedPosts = blogPosts.filter((p) => p.id !== post.id).slice(0, 3);
+  const relatedPosts = blogPosts.filter((p) => p.slug !== post.slug).slice(0, 3);
 
   const articleSchema = {
     "@context": "https://schema.org",

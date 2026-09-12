@@ -140,9 +140,15 @@ function generateHtmlContent(topic) {
     { text: "Local SEO Service", url: "/services/local-seo-service-in-bangladesh" },
     { text: "Ecommerce SEO Service", url: "/services/ecommerce-seo-service-in-bangladesh" },
     { text: "AI SEO & GEO Optimization", url: "/services/ai-seo-service-in-bangladesh" },
+    { text: "AEO Optimization Services", url: "/services/aeo-service-in-bangladesh" },
     { text: "Free Deep SEO Audit Tool", url: "/tools/deep-seo-audit" },
+    { text: "Schema Markup Generator", url: "/tools/schema-markup-generator" },
     { text: "Google SERP Simulator", url: "/tools/serp-simulator" },
-    { text: "SEO Audit Report Generator", url: "/tools/seo-audit-report-generator" },
+    { text: "HTTP & SSL Header Checker", url: "/tools/http-header-checker" },
+    { text: "Keyword Density Analyzer", url: "/tools/keyword-density-checker" },
+    { text: "Robots.txt & Sitemap Builder", url: "/tools/robots-sitemap-generator" },
+    { text: "1.18M Clicks Enterprise Case Study", url: "/portfolio/enterprise-seo-1-18m-clicks-gsc" },
+    { text: "809K Clicks Authority Case Study", url: "/portfolio/authority-portal-809k-clicks-gsc" },
     { text: "Monthly SEO Retainers & Pricing", url: "/pricing" }
   ];
 
