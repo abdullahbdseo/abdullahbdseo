@@ -236,26 +236,48 @@ export default function LocalSeoServicePage() {
     }
   ];
 
-  const reviews = [
+  const verifiedReviews = [
     {
       name: "Al Mumin",
       role: "Business Owner, Dhaka",
-      text: "I was getting visitors but no real inquiries from my website. Abdullah Saleh improved my local content and SEO structure, and the quality of traffic changed dramatically. Now I am getting real phone calls and local customer inquiries every week. His clear strategy and honest approach make him the top local SEO expert in Bangladesh."
+      rating: 5,
+      quote: "I was getting visitors but no real inquiries from my website. Abdullah Saleh improved my local content and SEO structure, and the quality of traffic changed dramatically. Now I am getting real phone calls and local customer inquiries every week.",
+      avatar: "A"
     },
     {
       name: "HRIDOY SHEIKH",
       role: "Managing Director, Retail Brand",
-      text: "Abdullah Saleh did an exceptional job improving our Google Maps ranking. His local SEO roadmap was crystal clear, and within just 60 days our shop started appearing in the Google 3-Pack for our primary keywords. Highly recommended for genuine business growth."
+      rating: 5,
+      quote: "Abdullah Saleh did an exceptional job improving our Google Maps ranking. His local SEO roadmap was crystal clear, and within just 60 days our shop started appearing in the Google 3-Pack for our primary keywords.",
+      avatar: "H"
     },
     {
       name: "Shimun A. Ilyayev, Esq.",
       role: "Managing Attorney, Shim Law Group NY",
-      text: "As a personal injury law firm in New York, local search visibility is vital to our practice. Abdullah Saleh optimized our Google Business Profile, built rock-solid citations, and fixed our technical signals. Within months, we saw 45+ keywords reach the Map Pack. Truly an exceptional local SEO specialist."
+      rating: 5,
+      quote: "As a personal injury law firm in New York, local search visibility is vital to our practice. Abdullah Saleh optimized our Google Business Profile, built rock-solid citations, and fixed our technical signals. Within months, we saw 45+ keywords reach the Map Pack.",
+      avatar: "S"
     },
     {
       name: "Mashiuzzaman Samir",
       role: "CEO, We Misc",
-      text: "Abdullah helped We Misc dominate local search with modern SEO, AEO, and GEO tactics. His deep understanding of search intent and Google Maps algorithms resulted in a 50% increase in qualified client leads within 4 months. He is dependable, transparent, and results-driven."
+      rating: 5,
+      quote: "Abdullah helped We Misc dominate local search with modern SEO, AEO, and GEO tactics. His deep understanding of search intent and Google Maps algorithms resulted in a 50% increase in qualified client leads within 4 months.",
+      avatar: "M"
+    },
+    {
+      name: "Mia Collins",
+      role: "Director, Northline Digital",
+      rating: 5,
+      quote: "He rebuilt our service funnel around conversions, not vanity metrics. More qualified enquiries and far less manual follow-up.",
+      avatar: "M"
+    },
+    {
+      name: "Marcus Vance",
+      role: "Founder, CloudFlow SaaS",
+      rating: 5,
+      quote: "Abdullah took our SaaS platform from 4,000 monthly impressions to over 800K clicks in under 5 months. The depth of his technical audits and topic clusters is unmatched.",
+      avatar: "M"
     }
   ];
 
@@ -810,60 +832,62 @@ export default function LocalSeoServicePage() {
         </div>
       </section>
 
-      {/* 6. VERIFIED CLIENT REVIEWS */}
-      <section style={{ padding: "70px 0", background: "#ffffff", borderBottom: "1px solid #e2e8f0" }}>
+      {/* 6. WHAT INTERNET FINDS ABOUT ME (VERIFIED REVIEWS MARQUEE) */}
+      <section style={{ padding: "70px 0", background: "#f8fafc", borderBottom: "1px solid #e2e8f0" }}>
         <div className="container" style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
           
-          <div style={{ textAlign: "center", maxWidth: "800px", margin: "0 auto 50px" }}>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: "#fef3c7", border: "1px solid #fde68a", padding: "4px 12px", borderRadius: "4px", fontSize: "0.82rem", fontWeight: 700, color: "#d97706", marginBottom: "12px" }}>
-              <i className="fa-solid fa-star"></i>
-              <span>5.0 GOOGLE VERIFIED REVIEWS</span>
+          <div className="testimonial-marquee-container" style={{ textAlign: "center" }}>
+            {/* Verified Reviews Pill */}
+            <div className="verified-pill-badge">
+              <span className="pill-stars">
+                <i className="fa-solid fa-star"></i>
+                <i className="fa-solid fa-star"></i>
+                <i className="fa-solid fa-star"></i>
+                <i className="fa-solid fa-star"></i>
+                <i className="fa-solid fa-star"></i>
+              </span>
+              <span className="pill-divider"></span>
+              <span className="pill-text">Verified Reviews</span>
             </div>
-            <h2 style={{ fontSize: "2.1rem", fontWeight: 800, color: "#0f172a", marginBottom: "14px" }}>
-              Real Client Reviews &amp; Success Feedback
-            </h2>
-            <p style={{ fontSize: "1rem", color: "#475569", lineHeight: 1.7, margin: 0 }}>
-              Read authentic feedback from business founders in Bangladesh, the United States, and international markets.
-            </p>
-          </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "24px" }}>
-            {reviews.map((rev, idx) => (
-              <div
-                key={idx}
-                style={{
-                  background: "#f8fafc",
-                  border: "1px solid #e2e8f0",
-                  borderRadius: "4px",
-                  padding: "28px 24px",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between"
-                }}
-              >
-                <div>
-                  <div style={{ display: "flex", gap: "3px", color: "#f59e0b", marginBottom: "14px", fontSize: "0.95rem" }}>
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
+            <h2 className="marquee-section-title">What Internet Finds About Me</h2>
+            <p className="marquee-section-subtitle">
+              Real feedback and client reviews from BlackHatWorld forum as a developer and marketer.
+            </p>
+
+            {/* Marquee Viewport */}
+            <div className="marquee-viewport-mask">
+              <div className="marquee-track">
+                {[...verifiedReviews, ...verifiedReviews].map((rev, idx) => (
+                  <div key={idx} className="marquee-review-card">
+                    <div>
+                      <div className="card-stars-row" aria-label={`${rev.rating} out of 5 stars`}>
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <i
+                            key={star}
+                            className="fa-solid fa-star"
+                            style={{
+                              color: star <= rev.rating ? "#fbbf24" : "#e2e8f0",
+                              fontSize: "0.85rem",
+                            }}
+                          ></i>
+                        ))}
+                      </div>
+                      <p className="card-quote-body">
+                        &ldquo;{rev.quote}&rdquo;
+                      </p>
+                    </div>
+                    <div className="card-bottom-row">
+                      <div>
+                        <h3 className="card-author-name">{rev.name}</h3>
+                        <p className="card-author-title">{rev.role}</p>
+                      </div>
+                      <div className="card-avatar-badge">{rev.avatar}</div>
+                    </div>
                   </div>
-                  <p style={{ fontSize: "0.94rem", color: "#334155", lineHeight: 1.7, margin: "0 0 20px", fontStyle: "italic" }}>
-                    &ldquo;{rev.text}&rdquo;
-                  </p>
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: "12px", borderTop: "1px solid #e2e8f0", paddingTop: "14px" }}>
-                  <div style={{ width: "40px", height: "40px", borderRadius: "50%", background: "#0062d2", color: "#ffffff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, fontSize: "1rem" }}>
-                    {rev.name.charAt(0)}
-                  </div>
-                  <div>
-                    <div style={{ fontSize: "0.95rem", fontWeight: 700, color: "#0f172a" }}>{rev.name}</div>
-                    <div style={{ fontSize: "0.82rem", color: "#64748b" }}>{rev.role}</div>
-                  </div>
-                </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
 
         </div>
