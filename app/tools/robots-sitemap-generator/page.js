@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import ToolFaqAccordion from "@/components/ToolFaqAccordion";
 
 export default function RobotsSitemapGenerator() {
   const [activeTab, setActiveTab] = useState("robots");
@@ -386,6 +387,29 @@ export default function RobotsSitemapGenerator() {
               </div>
             </div>
           </div>
+
+          {/* FAQ Accordion Section */}
+          <ToolFaqAccordion
+            title="Robots.txt Directives &amp; XML Sitemaps FAQ"
+            faqs={[
+              {
+                q: "What is the primary function of a robots.txt file in technical SEO?",
+                a: "The robots.txt file provides crawler directives to web search bots (like Googlebot, Bingbot, and AI crawlers). It specifies which directories, URL parameters, or private endpoints bots are disallowed from crawling, preserving crawl budget for high-value revenue pages."
+              },
+              {
+                q: "Does Disallow in robots.txt prevent a page from being indexed by Google?",
+                a: "No! A disallow directive prevents Googlebot from crawling the page, but if other websites link to that URL, Google may still index the bare URL without snippets. To guarantee a page is never indexed, use a <meta name=\"robots\" content=\"noindex\" /> tag on a crawlable page."
+              },
+              {
+                q: "Why should only 200 OK canonical URLs be included in an XML Sitemap?",
+                a: "XML sitemaps serve as an explicit indexation roadmap for search engines. Including 404 broken pages, 301 redirects, or canonicalized duplicates wastes crawl budget and sends conflicting signals to Google's ranking algorithms."
+              },
+              {
+                q: "Where should the robots.txt and sitemap.xml files be hosted on a domain?",
+                a: "Both files must reside at the root of your domain (e.g. https://yourdomain.com/robots.txt and https://yourdomain.com/sitemap.xml). You should also reference your sitemap URL directly inside your robots.txt file."
+              }
+            ]}
+          />
 
           {/* Consultation CTA Banner */}
           <div className="tool-cta-box">

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import ToolFaqAccordion from "@/components/ToolFaqAccordion";
 
 export default function SchemaMarkupGenerator() {
   const [schemaType, setSchemaType] = useState("Organization");
@@ -544,6 +545,33 @@ export default function SchemaMarkupGenerator() {
               </div>
             </div>
           </div>
+
+          {/* FAQ Accordion Section */}
+          <ToolFaqAccordion
+            title="Schema.org & JSON-LD Rich Snippets FAQ"
+            faqs={[
+              {
+                q: "What is Schema Markup and why is JSON-LD recommended by Google?",
+                a: "Schema markup is a standardized vocabulary of structured data tags added to your HTML to help search engines understand page content and entity relationships. Google explicitly recommends JSON-LD (JavaScript Object Notation for Linked Data) format because it can be placed cleanly inside the document head without altering visible page styling."
+              },
+              {
+                q: "How does Schema Markup improve organic search click-through rate (CTR)?",
+                a: "Valid schema markup enables eye-catching Rich Snippets on Google Search results—including review star ratings, FAQs, product prices, stock status, event dates, and breadcrumb trails. Pages featuring rich results consistently achieve 20% to 40% higher CTR than plain blue links."
+              },
+              {
+                q: "Where should I paste the generated JSON-LD code?",
+                a: "Paste the generated <script type=\"application/ld+json\"> snippet into the <head> or <body> section of your page HTML. In Next.js App Router, inject it using next/script or a standard script tag with dangerouslySetInnerHTML."
+              },
+              {
+                q: "How do I validate if my Schema Markup has any errors?",
+                a: "Test your structured data code using Google's official Rich Results Test tool (search.google.com/test/rich-results) and Schema.org Validator (validator.schema.org) to ensure zero warnings or critical syntax errors before publishing."
+              },
+              {
+                q: "Does Schema Markup directly help with AI Search engines like Perplexity and ChatGPT?",
+                a: "Yes! LLMs and RAG systems rely heavily on structured knowledge graphs to resolve brand, author, and service entities. Clear schema markup ensures AI models quote and cite your brand accurately."
+              }
+            ]}
+          />
 
           {/* Consultation CTA Banner */}
           <div className="tool-cta-box">

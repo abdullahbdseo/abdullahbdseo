@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import ToolFaqAccordion from "@/components/ToolFaqAccordion";
 
 export default function HttpHeaderChecker() {
   const [url, setUrl] = useState("");
@@ -285,6 +286,29 @@ export default function HttpHeaderChecker() {
               </div>
             </div>
           </div>
+
+          {/* FAQ Accordion Section */}
+          <ToolFaqAccordion
+            title="HTTP Response Headers &amp; SSL Security FAQ"
+            faqs={[
+              {
+                q: "What is the difference between a 301 Permanent Redirect and a 302 Temporary Redirect for SEO?",
+                a: "A 301 redirect passes 90% to 99% of PageRank link equity from the old URL to the new destination and instructs search engines to index the new URL permanently. A 302 redirect indicates a temporary move, meaning Google retains the old URL in its index and will not pass full link equity."
+              },
+              {
+                q: "Why are redirect chains harmful to crawl budget and Core Web Vitals?",
+                a: "A redirect chain (e.g. Page A -> Page B -> Page C) forces Googlebot and visitors to wait for multiple round-trip server requests. This inflates Time to First Byte (TTFB), slows Largest Contentful Paint (LCP), and causes Googlebot to abandon deep crawls."
+              },
+              {
+                q: "What are essential HTTP security headers for modern websites?",
+                a: "Key security headers include Strict-Transport-Security (HSTS) to enforce HTTPS connections, X-Frame-Options to prevent clickjacking, X-Content-Type-Options to block MIME-type sniffing, and Content-Security-Policy (CSP) to defend against cross-site scripting (XSS)."
+              },
+              {
+                q: "How does server compression (Gzip or Brotli) affect SEO rankings?",
+                a: "Serving text assets (HTML, CSS, JavaScript) with Brotli or Gzip compression reduces payload sizes by up to 70%, dramatically speeding up page rendering and ensuring compliance with Google's Core Web Vitals speed thresholds."
+              }
+            ]}
+          />
 
           {/* Consultation CTA Banner */}
           <div className="tool-cta-box">

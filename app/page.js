@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { siteSettings, services } from "@/lib/data";
+import { siteSettings, services, testimonials, globalFaqs } from "@/lib/data";
 import QuoteModal from "@/components/QuoteModal";
 import ServiceOrderModal from "@/components/ServiceOrderModal";
 
@@ -11,6 +11,7 @@ export default function HomePage() {
   const [isQuoteOpen, setIsQuoteOpen] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
   const [selectedPackage, setSelectedPackage] = useState(null);
+  const [openFaq, setOpenFaq] = useState(0);
 
   const [contactForm, setContactForm] = useState({
     name: "",
@@ -691,6 +692,187 @@ export default function HomePage() {
       </section>
 
 
+
+      {/* 6. TRUST BADGES & VERIFIED CLIENT TESTIMONIALS */}
+      <section className="section digi-testimonials-section" style={{ background: "#f8fafc", padding: "80px 0", borderTop: "1px solid #e2e8f0", borderBottom: "1px solid #e2e8f0" }}>
+        <div className="container">
+          
+          {/* Trust Highlights Bar */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "16px", marginBottom: "60px" }}>
+            <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "20px 24px", display: "flex", alignItems: "center", gap: "16px", boxShadow: "0 2px 8px rgba(0,0,0,0.03)" }}>
+              <div style={{ width: "48px", height: "48px", borderRadius: "8px", background: "#eff6ff", color: "#2563eb", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.3rem", flexShrink: 0 }}>
+                <i className="fa-solid fa-shield-halved"></i>
+              </div>
+              <div>
+                <div style={{ fontWeight: 800, color: "#0f172a", fontSize: "1.05rem" }}>100% White-Hat</div>
+                <div style={{ color: "#64748b", fontSize: "0.85rem" }}>Zero Penalty Guarantee</div>
+              </div>
+            </div>
+
+            <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "20px 24px", display: "flex", alignItems: "center", gap: "16px", boxShadow: "0 2px 8px rgba(0,0,0,0.03)" }}>
+              <div style={{ width: "48px", height: "48px", borderRadius: "8px", background: "#fefce8", color: "#ca8a04", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.3rem", flexShrink: 0 }}>
+                <i className="fa-solid fa-star"></i>
+              </div>
+              <div>
+                <div style={{ fontWeight: 800, color: "#0f172a", fontSize: "1.05rem" }}>4.9 / 5.0 Rating</div>
+                <div style={{ color: "#64748b", fontSize: "0.85rem" }}>128+ Verified Reviews</div>
+              </div>
+            </div>
+
+            <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "20px 24px", display: "flex", alignItems: "center", gap: "16px", boxShadow: "0 2px 8px rgba(0,0,0,0.03)" }}>
+              <div style={{ width: "48px", height: "48px", borderRadius: "8px", background: "#ecfdf5", color: "#059669", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.3rem", flexShrink: 0 }}>
+                <i className="fa-solid fa-chart-line"></i>
+              </div>
+              <div>
+                <div style={{ fontWeight: 800, color: "#0f172a", fontSize: "1.05rem" }}>100+ Brands Scaled</div>
+                <div style={{ color: "#64748b", fontSize: "0.85rem" }}>USA, UK, AU &amp; Global</div>
+              </div>
+            </div>
+
+            <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "20px 24px", display: "flex", alignItems: "center", gap: "16px", boxShadow: "0 2px 8px rgba(0,0,0,0.03)" }}>
+              <div style={{ width: "48px", height: "48px", borderRadius: "8px", background: "#faf5ff", color: "#9333ea", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.3rem", flexShrink: 0 }}>
+                <i className="fa-solid fa-headset"></i>
+              </div>
+              <div>
+                <div style={{ fontWeight: 800, color: "#0f172a", fontSize: "1.05rem" }}>24/7 Support</div>
+                <div style={{ color: "#64748b", fontSize: "0.85rem" }}>Dedicated Growth Lead</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="digi-section-head" style={{ marginBottom: "40px", textAlign: "center" }}>
+            <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "#4361ee", textTransform: "uppercase", letterSpacing: "0.08em", display: "inline-block", marginBottom: "8px" }}>
+              <i className="fa-solid fa-comments" style={{ marginRight: "6px" }}></i> Client Success Stories
+            </span>
+            <h2 style={{ fontSize: "2.2rem", fontWeight: 800, color: "#0f172a" }}>What Founders &amp; Directors Say</h2>
+            <p style={{ color: "#64748b", maxWidth: "600px", margin: "10px auto 0", fontSize: "1rem" }}>
+              Real feedback from business owners and marketing executives whose traffic and organic revenue scaled with our data-backed SEO execution.
+            </p>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "24px" }}>
+            {testimonials.map((t, idx) => (
+              <div 
+                key={idx} 
+                style={{ 
+                  background: "#ffffff", 
+                  border: "1px solid #e2e8f0", 
+                  borderRadius: "10px", 
+                  padding: "32px 28px", 
+                  display: "flex", 
+                  flexDirection: "column", 
+                  justifyContent: "space-between",
+                  boxShadow: "0 4px 16px rgba(0,0,0,0.04)",
+                  transition: "transform 0.2s ease, box-shadow 0.2s ease"
+                }}
+              >
+                <div>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
+                    <div style={{ color: "#f59e0b", fontSize: "0.95rem", display: "flex", gap: "3px" }}>
+                      {[...Array(t.rating || 5)].map((_, i) => (
+                        <i key={i} className="fa-solid fa-star"></i>
+                      ))}
+                    </div>
+                    <span style={{ fontSize: "0.75rem", fontWeight: 700, background: "#ecfdf5", color: "#059669", padding: "4px 10px", borderRadius: "20px", border: "1px solid #a7f3d0" }}>
+                      <i className="fa-solid fa-circle-check" style={{ marginRight: "4px" }}></i> {t.source}
+                    </span>
+                  </div>
+                  <p style={{ color: "#334155", fontSize: "1rem", lineHeight: 1.7, fontStyle: "italic", margin: "0 0 24px" }}>
+                    &ldquo;{t.content}&rdquo;
+                  </p>
+                </div>
+
+                <div style={{ display: "flex", alignItems: "center", gap: "14px", borderTop: "1px solid #f1f5f9", paddingTop: "18px" }}>
+                  <div style={{ width: "44px", height: "44px", borderRadius: "50%", background: "linear-gradient(135deg, #4361ee, #06b6d4)", color: "#ffffff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: "1.1rem" }}>
+                    {t.name.charAt(0)}
+                  </div>
+                  <div>
+                    <h5 style={{ margin: 0, fontSize: "1rem", fontWeight: 800, color: "#0f172a" }}>{t.name}</h5>
+                    <span style={{ color: "#64748b", fontSize: "0.85rem" }}>{t.role}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* 7. HOMEPAGE GLOBAL FAQ ACCORDION (WITH FAQPAGE SCHEMA) */}
+      <section className="section digi-faq-section" style={{ background: "#ffffff", padding: "80px 0" }}>
+        <div className="container" style={{ maxWidth: "900px" }}>
+          <div className="digi-section-head" style={{ marginBottom: "40px", textAlign: "center" }}>
+            <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "#4361ee", textTransform: "uppercase", letterSpacing: "0.08em", display: "inline-block", marginBottom: "8px" }}>
+              <i className="fa-solid fa-circle-question" style={{ marginRight: "6px" }}></i> Common Questions
+            </span>
+            <h2 style={{ fontSize: "2.2rem", fontWeight: 800, color: "#0f172a" }}>Frequently Asked Questions</h2>
+            <p style={{ color: "#64748b", maxWidth: "600px", margin: "10px auto 0", fontSize: "1rem" }}>
+              Clear answers to the most common questions about our technical audits, AI search frameworks, pricing, and timelines.
+            </p>
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+            {globalFaqs.map((faq, idx) => {
+              const isOpen = openFaq === idx;
+              return (
+                <div
+                  key={idx}
+                  style={{
+                    background: "#ffffff",
+                    border: isOpen ? "1.5px solid #4361ee" : "1px solid #e2e8f0",
+                    borderRadius: "8px",
+                    overflow: "hidden",
+                    transition: "all 0.2s ease",
+                    boxShadow: isOpen ? "0 4px 14px rgba(67, 97, 238, 0.08)" : "0 1px 3px rgba(0,0,0,0.02)",
+                  }}
+                >
+                  <button
+                    type="button"
+                    onClick={() => setOpenFaq(isOpen ? -1 : idx)}
+                    style={{
+                      width: "100%",
+                      padding: "18px 22px",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      background: isOpen ? "#f8fafc" : "#ffffff",
+                      border: "none",
+                      cursor: "pointer",
+                      textAlign: "left",
+                      gap: "14px",
+                    }}
+                  >
+                    <span style={{ fontSize: "1.05rem", fontWeight: 700, color: isOpen ? "#4361ee" : "#0f172a" }}>
+                      {faq.q}
+                    </span>
+                    <i
+                      className={`fa-solid ${isOpen ? "fa-chevron-up" : "fa-chevron-down"}`}
+                      style={{ color: isOpen ? "#4361ee" : "#94a3b8", fontSize: "0.9rem", flexShrink: 0 }}
+                    ></i>
+                  </button>
+
+                  {isOpen && (
+                    <div style={{ padding: "18px 22px 22px", color: "#475569", fontSize: "0.98rem", lineHeight: 1.75, borderTop: "1px solid #f1f5f9" }}>
+                      {faq.a}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Additional Help CTA */}
+          <div style={{ marginTop: "40px", textAlign: "center", background: "#eff6ff", border: "1px solid #bfdbfe", borderRadius: "8px", padding: "24px" }}>
+            <h4 style={{ margin: "0 0 8px", color: "#1e3a8a", fontSize: "1.15rem" }}>Have a specific question about your website?</h4>
+            <p style={{ margin: "0 0 16px", color: "#475569", fontSize: "0.92rem" }}>
+              Reach out directly for a personalized 1-on-1 discussion regarding your organic search goals.
+            </p>
+            <Link href="/contact" className="btn btn-primary btn-sm">
+              Contact Abdullah Directly <i className="fa-solid fa-arrow-right" style={{ marginLeft: "6px" }}></i>
+            </Link>
+          </div>
+        </div>
+      </section>
 
       {/* Interactive Modals */}
       <QuoteModal 

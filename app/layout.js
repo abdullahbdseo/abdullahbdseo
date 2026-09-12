@@ -9,6 +9,9 @@ export const metadata = {
   title: `${siteSettings.site_name} | ${siteSettings.site_tagline}`,
   description: siteSettings.default_meta_description,
   keywords: siteSettings.default_meta_keywords,
+  alternates: {
+    canonical: "/",
+  },
   verification: {
     google: "4925bdb84133c801",
     other: {

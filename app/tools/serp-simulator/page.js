@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import ToolFaqAccordion from "@/components/ToolFaqAccordion";
 
 export default function SerpSimulator() {
   const [title, setTitle] = useState("Enterprise SEO Services & Organic Growth Strategy | Digi Solution");
@@ -320,6 +321,29 @@ export default function SerpSimulator() {
               </div>
             </div>
           </div>
+
+          {/* FAQ Accordion Section */}
+          <ToolFaqAccordion
+            title="Google SERP Snippet &amp; CTR Optimization FAQ"
+            faqs={[
+              {
+                q: "What is the recommended title tag length in characters and pixels for Google?",
+                a: "Google displays title tags up to approximately 580 to 600 pixels in width on desktop and about 500 to 550 pixels on mobile. This generally translates to 50 to 60 characters. Titles exceeding this limit will be truncated with an ellipsis (...)."
+              },
+              {
+                q: "How long should a meta description be for maximum click-through rate?",
+                a: "The ideal meta description length is 120 to 155 characters (up to ~960 pixels on desktop and ~680 pixels on mobile). A compelling meta description should include your primary keyword, clear value proposition, and an active call-to-action (CTA)."
+              },
+              {
+                q: "Why does Google sometimes rewrite my title or meta description in search results?",
+                a: "Google dynamically generates snippet titles and descriptions if it determines the existing tags do not accurately reflect the page content or directly answer the user's specific query. Writing query-relevant, concise tags minimizes the chance of Google rewriting them."
+              },
+              {
+                q: "How does SERP snippet optimization impact organic search rankings?",
+                a: "While meta descriptions are not a direct ranking factor, a high Click-Through Rate (CTR) signals to Google that your result satisfies user intent. Higher CTR drives more organic traffic and improves conversion volume without requiring higher raw positions."
+              }
+            ]}
+          />
 
           {/* Consultation CTA Banner */}
           <div className="tool-cta-box">

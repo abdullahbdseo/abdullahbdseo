@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react';
 import SocialShare from '@/components/SocialShare';
+import ToolFaqAccordion from '@/components/ToolFaqAccordion';
 
 // ── helpers ────────────────────────────────────────────────────────────────
 const scoreColor = s => s >= 80 ? '#059669' : s >= 50 ? '#d97706' : '#dc2626';
@@ -670,6 +671,35 @@ export default function DeepSEOAuditPage() {
           </div>
         </div>
       )}
+
+      {/* FAQ Accordion Section */}
+      <div style={{ maxWidth: 1120, margin: '0 auto', padding: '0 16px' }}>
+        <ToolFaqAccordion
+          title="Website SEO Audit &amp; Technical Health FAQ"
+          faqs={[
+            {
+              q: "What does this Deep SEO Audit tool check on my webpage?",
+              a: "Our Deep SEO Audit analyzes over 26+ key on-page, technical, social, and architectural signals—including title tag length, meta description quality, H1–H4 heading hierarchy, canonical configuration, robots indexing directives, noindex tags, image alt text coverage, internal and external link counts, Open Graph tags, and Schema.org JSON-LD structured data."
+            },
+            {
+              q: "How are the SEO health scores calculated?",
+              a: "Scores are weighted across 5 critical search dimensions: On-Page Optimization (30%), Technical SEO & Indexability (30%), Schema & Structured Data (15%), Link Structure (15%), and Social Open Graph Tags (10%). Scores 80+ are rated Good, 50–79 Needs Improvement, and below 50 Poor."
+            },
+            {
+              q: "Why is a missing canonical tag or incorrect robots directive dangerous for ranking?",
+              a: "A missing or incorrect canonical tag can cause search engines to split link equity across duplicate URLs. Accidental noindex tags or blocked robots directives prevent search engines from indexing your high-converting content altogether."
+            },
+            {
+              q: "Can I export and share the full audit report with my developer or team?",
+              a: "Yes! Click 'Download Excel Report (.xlsx)' to instantly export a comprehensive 8-tab workbook containing an executive summary, prioritized critical issue tickets, full image inventories, and an actionable developer roadmap."
+            },
+            {
+              q: "How frequently should I run a deep SEO audit on my website?",
+              a: "We recommend running a technical audit at least once a month, as well as immediately after any CMS updates, plugin changes, theme redesigns, or large content migrations."
+            }
+          ]}
+        />
+      </div>
 
       {/* Social Share Bar */}
       <div style={{ maxWidth: 1120, margin: '0 auto 40px', padding: '0 16px' }}>
