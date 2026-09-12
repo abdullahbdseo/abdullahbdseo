@@ -92,7 +92,7 @@ PHASE 5: AI-DRIVEN SEARCH, AEO & GEO (GENERATIVE ENGINE OPTIMIZATION)
 =====================================================
 Need professional execution or forensic technical audit?
 Schedule a consultation: https://abdullahbdseo.vercel.app/contact
-Email: abdullahbd.seo@gmail.com | Phone: +880 1881-229202
+Email: abdullahbd.seo@gmail.com
 =====================================================`;
 
     const blob = new Blob([checklistContent], { type: "text/plain;charset=utf-8" });
