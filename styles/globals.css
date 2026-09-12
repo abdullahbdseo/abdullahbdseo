@@ -7955,3 +7955,49 @@ nextjs-portal,
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
+
+/* ==========================================================================
+   EXECUTIVE PRINT & PDF GENERATION STYLES
+   ========================================================================== */
+@media print {
+    body {
+        background: #ffffff !important;
+        color: #0f172a !important;
+        font-size: 10.5pt !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    header, footer, nav, .header-wrapper, .site-footer, .digi-header,
+    .no-print, .social-share-widget, .hero-floating-card,
+    .floating-badge, .chat-widget {
+        display: none !important;
+    }
+
+    .container {
+        max-width: 100% !important;
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .card, .audit-card, .table-responsive {
+        box-shadow: none !important;
+        border: 1px solid #cbd5e1 !important;
+        page-break-inside: avoid;
+    }
+
+    h1, h2, h3, h4, h5 {
+        page-break-after: avoid;
+        color: #0f172a !important;
+    }
+
+    a {
+        text-decoration: none !important;
+        color: inherit !important;
+    }
+
+    a[href^="http"]:after {
+        content: "" !important;
+    }
+}

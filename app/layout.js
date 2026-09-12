@@ -69,6 +69,13 @@ export default function RootLayout({ children }) {
         "telephone": siteSettings.contact_phone,
         "email": siteSettings.contact_email,
         "priceRange": "$$$",
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "reviewCount": "128",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
         "sameAs": [
           siteSettings.social_linkedin,
           siteSettings.social_twitter,

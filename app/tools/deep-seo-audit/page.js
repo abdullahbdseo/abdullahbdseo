@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
+import SocialShare from '@/components/SocialShare';
 
 // ── helpers ────────────────────────────────────────────────────────────────
 const scoreColor = s => s >= 80 ? '#059669' : s >= 50 ? '#d97706' : '#dc2626';
@@ -458,12 +459,16 @@ export default function DeepSEOAuditPage() {
               <div>
                 <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-secondary,#6b7280)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 3 }}>Audited URL</div>
                 <a href={results.url} target="_blank" rel="noopener noreferrer" style={{ color: '#059669', fontWeight: 600, fontSize: 15, wordBreak: 'break-all' }}>{results.url}</a>
-                <div style={{ fontSize: 12, color: '#9ca3af', marginTop: 3 }}>{results.auditedAt}</div>
+              <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                <button onClick={() => window.print()}
+                  style={{ padding: '11px 20px', background: '#f8fafc', color: '#1e293b', border: '1.5px solid #cbd5e1', borderRadius: 6, fontWeight: 700, fontSize: 14, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, whiteSpace: 'nowrap' }}>
+                  <i className="fa-solid fa-file-pdf" style={{ color: '#dc2626' }}></i> Print / Save PDF
+                </button>
+                <button onClick={downloadExcel}
+                  style={{ padding: '11px 22px', background: 'linear-gradient(135deg,#059669,#0f766e)', color: '#fff', border: 'none', borderRadius: 6, fontWeight: 800, fontSize: 14, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, boxShadow: '0 3px 12px rgba(5,150,105,0.25)', whiteSpace: 'nowrap' }}>
+                  <i className="fa-solid fa-file-excel"></i> Download Excel Report (.xlsx)
+                </button>
               </div>
-              <button onClick={downloadExcel}
-                style={{ padding: '11px 22px', background: 'linear-gradient(135deg,#059669,#0f766e)', color: '#fff', border: 'none', borderRadius: 6, fontWeight: 800, fontSize: 14, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, boxShadow: '0 3px 12px rgba(5,150,105,0.25)', whiteSpace: 'nowrap' }}>
-                <i className="fa-solid fa-file-excel"></i> Download Excel Report (.xlsx)
-              </button>
             </div>
 
             {/* Score circles */}
@@ -664,6 +669,11 @@ export default function DeepSEOAuditPage() {
           </div>
         </div>
       )}
+
+      {/* Social Share Bar */}
+      <div style={{ maxWidth: 1120, margin: '0 auto 40px', padding: '0 16px' }}>
+        <SocialShare title="Free Instant Deep SEO Audit Tool by Abdullah" />
+      </div>
     </div>
   );
 }

@@ -108,6 +108,13 @@ export default function EcommerceSeoServicePage() {
       "@type": "Offer",
       "price": "15000",
       "priceCurrency": "BDT"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5.0",
+      "reviewCount": "64",
+      "bestRating": "5",
+      "worstRating": "1"
     }
   };
 

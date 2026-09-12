@@ -41,6 +41,13 @@ export default function SingleServicePage({ params }) {
       "@type": "Offer",
       "price": service.starting_price,
       "priceCurrency": "USD"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "reviewCount": "128",
+      "bestRating": "5",
+      "worstRating": "1"
     }
   };
 

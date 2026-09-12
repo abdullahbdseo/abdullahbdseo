@@ -2,6 +2,9 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { blogPosts, siteSettings } from "@/lib/data";
+import BlogArticleEnhancer from "@/components/BlogArticleEnhancer";
+import StickyTableOfContents from "@/components/StickyTableOfContents";
+import SocialShare from "@/components/SocialShare";
 
 export async function generateMetadata({ params }) {
   const unwrappedParams = await params;
@@ -147,27 +150,7 @@ export default async function SingleBlogPostPage({ params }) {
             
             {/* LEFT SIDEBAR: Table of Contents & Info */}
             <aside className="article-sidebar-toc">
-              {headings.length > 0 && (
-                <div className="article-toc-box">
-                  <div className="article-toc-header">
-                    <i className="fa-solid fa-list-ul" style={{ color: "#4361ee" }}></i>
-                    <span>Table of Contents</span>
-                  </div>
-                  <ul className="article-toc-list">
-                    {headings.map((h, i) => (
-                      <li key={i}>
-                        <a 
-                          href={`#${h.id}`} 
-                          className={`article-toc-link ${h.level === 3 ? "level-3" : ""}`}
-                        >
-                          <i className={`fa-solid ${h.level === 3 ? "fa-angle-right" : "fa-hashtag"}`}></i>
-                          <span>{h.text}</span>
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+              <StickyTableOfContents headings={headings} />
 
               {/* Quick Article Stats */}
               <div className="article-toc-box" style={{ padding: "16px 20px" }}>
@@ -207,6 +190,8 @@ export default async function SingleBlogPostPage({ params }) {
 
             {/* RIGHT COLUMN: Main Article Body */}
             <div className="article-main-content" style={{ minWidth: 0 }}>
+              <BlogArticleEnhancer title={post.title} headings={headings} />
+
               <div className="article-summary-box">
                 <h4 className="summary-title"><i className="fa-solid fa-lightbulb" style={{ color: "#10b981" }}></i> Key Takeaway</h4>
                 <p>{post.summary || post.excerpt}</p>
@@ -216,6 +201,9 @@ export default async function SingleBlogPostPage({ params }) {
                 className="article-prose-body"
                 dangerouslySetInnerHTML={{ __html: processedContent }}
               />
+
+              {/* Bottom Social Share */}
+              <SocialShare title={post.title} />
 
               {/* TAGS */}
               {post.tags && post.tags.length > 0 && (
