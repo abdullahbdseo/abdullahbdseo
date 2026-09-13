@@ -91,12 +91,12 @@ export default function AdminDashboardPage() {
     try {
       // Optimistically remove from state immediately
       setOrders((prev) => prev.filter((o) => o.id !== id && o.order_number !== id));
+      setDeleteId(null);
       const res = await fetch(`/api/admin/orders?id=${id}`, {
         method: "DELETE",
       });
       if (res.ok) {
         notify("Order deleted successfully.");
-        setDeleteId(null);
         refreshData();
       } else {
         alert("Failed to delete order");
@@ -464,7 +464,7 @@ export default function AdminDashboardPage() {
       )}
 
       {/* 6. DELETE CONFIRMATION MODAL */}
-      {deleteId && (
+      {deleteId !== null && (
         <div
           style={{
             position: "fixed",

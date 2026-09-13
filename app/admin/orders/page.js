@@ -71,12 +71,12 @@ export default function AdminOrdersPage() {
   const handleDeleteOrder = async (id) => {
     try {
       setOrders((prev) => prev.filter((o) => o.id !== id && o.order_number !== id));
+      setDeleteId(null);
       const res = await fetch(`/api/admin/orders?id=${id}`, {
         method: "DELETE",
       });
       if (res.ok) {
         notify("Order deleted successfully.");
-        setDeleteId(null);
         fetchOrders();
       } else {
         alert("Failed to delete order");
@@ -390,7 +390,7 @@ export default function AdminOrdersPage() {
       )}
 
       {/* 5. DELETE CONFIRMATION MODAL */}
-      {deleteId && (
+      {deleteId !== null && (
         <div
           style={{
             position: "fixed",

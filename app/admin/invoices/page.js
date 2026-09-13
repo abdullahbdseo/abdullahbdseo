@@ -490,7 +490,7 @@ export default function AdminInvoicesPage() {
       )}
 
       {/* DELETE INVOICE MODAL */}
-      {deleteId && (
+      {deleteId !== null && (
         <div
           style={{
             position: "fixed",

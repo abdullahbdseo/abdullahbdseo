@@ -2,7 +2,6 @@
 
 import { use, useEffect, useState } from "react";
 import Image from "next/image";
-import { DB } from "@/lib/db";
 import { siteSettings } from "@/lib/data";
 
 export default function SingleInvoicePage({ params }) {
@@ -11,26 +10,41 @@ export default function SingleInvoicePage({ params }) {
   const [invoice, setInvoice] = useState(null);
 
   useEffect(() => {
-    const inv = DB.getInvoices().find(i => String(i.id) === String(invoiceId) || i.invoice_number === invoiceId);
-    if (inv) {
-      setInvoice(inv);
-    } else {
-      // Fallback demo invoice
+    async function loadInvoice() {
+      try {
+        const res = await fetch("/api/admin/invoices");
+        if (res.ok) {
+          const data = await res.json();
+          const inv = (data.invoices || []).find(
+            (i) => String(i.id) === String(invoiceId) || i.invoice_number === invoiceId
+          );
+          if (inv) {
+            setInvoice(inv);
+            return;
+          }
+        }
+      } catch (e) {
+        console.error("Error loading invoice:", e);
+      }
+
+      // Fallback
       setInvoice({
         id: invoiceId,
-        invoice_number: `INV-20260905-${String(invoiceId).padStart(3, '0')}`,
+        invoice_number: `INV-20260905-${String(invoiceId).padStart(3, "0")}`,
         order_number: `ORD-20260905-${invoiceId}`,
         client_name: "Valued Enterprise Client",
         client_email: "billing@clientcompany.com",
         service_title: "Technical SEO Audit & Growth Strategy",
         package_name: "Standard Audit Package",
-        total: 650.00,
-        subtotal: 650.00,
+        total: 650.0,
+        subtotal: 650.0,
         payment_method: "Direct Agreement",
         status: "paid",
-        created_at: new Date().toISOString()
+        created_at: new Date().toISOString(),
       });
     }
+
+    loadInvoice();
   }, [invoiceId]);
 
   if (!invoice) return null;
