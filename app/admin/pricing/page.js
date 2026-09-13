@@ -47,39 +47,123 @@ export default function AdminPricingPage() {
     setDeleteIdx(null);
   };
 
-  if (loading)
+  if (loading) {
     return (
-      <div className="text-slate-400 py-20 text-center">
-        <i className="fa-solid fa-spinner fa-spin mr-2"></i>Loading pricing plans...
+      <div style={{ textAlign: "center", padding: "80px 20px", color: "#64748b" }}>
+        <i className="fa-solid fa-spinner fa-spin" style={{ marginRight: "10px", fontSize: "24px" }}></i>
+        <span>Loading pricing plans...</span>
       </div>
     );
+  }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between flex-wrap gap-3">
+    <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+      {/* 1. HEADER */}
+      <div className="admin-page-header">
         <div>
-          <h1 className="text-2xl font-bold text-white">Pricing Plans</h1>
-          <p className="text-slate-400 text-sm mt-1">{plans.length} plans configured</p>
+          <h1 className="admin-page-title">Pricing & Retainer Packages</h1>
+          <p className="admin-page-desc">
+            Manage your monthly SEO retainer tiers, pricing levels, and package feature checklists
+          </p>
         </div>
-        <button
-          onClick={() => { setShowAdd(true); setEditIdx(null); }}
-          className="btn btn-primary px-5 py-2.5 rounded-lg font-semibold text-sm"
-        >
-          <i className="fa-solid fa-plus mr-2"></i>Add Plan
-        </button>
+
+        <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+          <button
+            onClick={() => { setShowAdd(true); setEditIdx(null); }}
+            className="btn-admin btn-admin-primary"
+          >
+            <i className="fa-solid fa-plus"></i>
+            <span>Add Pricing Plan</span>
+          </button>
+        </div>
       </div>
 
       {saveMsg && (
-        <div className="bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 px-4 py-3 rounded-lg text-sm flex items-center gap-2">
-          <i className="fa-solid fa-circle-check"></i> {saveMsg}
-        </div>
-      )}
-      {error && (
-        <div className="bg-amber-500/15 border border-amber-500/30 text-amber-300 px-4 py-3 rounded-lg text-sm flex items-center gap-2">
-          <i className="fa-solid fa-triangle-exclamation"></i> {error}
+        <div
+          style={{
+            background: "#ecfdf5",
+            border: "1px solid #6ee7b7",
+            color: "#065f46",
+            padding: "12px 18px",
+            borderRadius: "10px",
+            fontWeight: 600,
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+          }}
+        >
+          <i className="fa-solid fa-circle-check"></i>
+          <span>{saveMsg}</span>
         </div>
       )}
 
+      {error && (
+        <div
+          style={{
+            background: "#fef2f2",
+            border: "1px solid #fecaca",
+            color: "#991b1b",
+            padding: "12px 18px",
+            borderRadius: "10px",
+            fontWeight: 600,
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+          }}
+        >
+          <i className="fa-solid fa-triangle-exclamation"></i>
+          <span>{error}</span>
+        </div>
+      )}
+
+      {/* 2. STATS ROW */}
+      <div className="admin-stats-row">
+        <div className="admin-stat-glass-card">
+          <div className="admin-stat-top">
+            <span className="admin-stat-label">Configured Plans</span>
+            <div className="admin-stat-icon-wrap icon-blue">
+              <i className="fa-solid fa-tags"></i>
+            </div>
+          </div>
+          <div className="admin-stat-value">{plans.length}</div>
+          <div className="admin-stat-footer">
+            <span style={{ color: "#2563eb", fontWeight: 700 }}>Retainer Tiers</span>
+          </div>
+        </div>
+
+        <div className="admin-stat-glass-card">
+          <div className="admin-stat-top">
+            <span className="admin-stat-label">Most Popular Tier</span>
+            <div className="admin-stat-icon-wrap icon-amber">
+              <i className="fa-solid fa-crown"></i>
+            </div>
+          </div>
+          <div className="admin-stat-value" style={{ fontSize: "20px" }}>
+            {plans.find((p) => p.is_popular)?.name || "None"}
+          </div>
+          <div className="admin-stat-footer">
+            <span style={{ color: "#d97706", fontWeight: 700 }}>Highlighted Package</span>
+          </div>
+        </div>
+
+        <div className="admin-stat-glass-card">
+          <div className="admin-stat-top">
+            <span className="admin-stat-label">Monthly Range</span>
+            <div className="admin-stat-icon-wrap icon-emerald">
+              <i className="fa-solid fa-money-bill-wave"></i>
+            </div>
+          </div>
+          <div className="admin-stat-value">
+            ${Math.min(...plans.map((p) => p.price || 0)) || 299} - $
+            {Math.max(...plans.map((p) => p.price || 0)) || 1499}
+          </div>
+          <div className="admin-stat-footer">
+            <span style={{ color: "#059669", fontWeight: 700 }}>Active price range</span>
+          </div>
+        </div>
+      </div>
+
+      {/* 3. ADD PLAN FORM */}
       {showAdd && (
         <PlanForm
           initial={emptyPlan}
@@ -90,10 +174,11 @@ export default function AdminPricingPage() {
         />
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+      {/* 4. PLANS GRID */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "20px" }}>
         {plans.map((plan, idx) => (
           editIdx === idx ? (
-            <div key={plan.id || idx} className="md:col-span-2 xl:col-span-3">
+            <div key={plan.id || idx} style={{ gridColumn: "1 / -1" }}>
               <PlanForm
                 initial={plan}
                 onSave={(form) => handleUpdate(form, idx)}
@@ -103,33 +188,80 @@ export default function AdminPricingPage() {
               />
             </div>
           ) : (
-            <div key={plan.id || idx} className={`bg-slate-800 border rounded-xl p-5 space-y-4 ${plan.is_popular ? "border-primary shadow-lg shadow-primary/15" : "border-slate-700"}`}>
+            <div
+              key={plan.id || idx}
+              style={{
+                background: "#ffffff",
+                borderRadius: "16px",
+                border: plan.is_popular ? "2px solid #2563eb" : "1px solid #e2e8f0",
+                boxShadow: plan.is_popular ? "0 10px 25px -5px rgba(37, 99, 235, 0.15)" : "0 4px 6px -1px rgba(0, 0, 0, 0.05)",
+                padding: "24px",
+                display: "flex",
+                flexDirection: "column",
+                gap: "16px",
+                position: "relative",
+              }}
+            >
               {plan.is_popular && (
-                <div className="text-xs bg-primary text-white font-bold px-3 py-1 rounded-full w-fit">⭐ Most Popular</div>
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "-12px",
+                    right: "20px",
+                    background: "#2563eb",
+                    color: "#ffffff",
+                    fontSize: "11px",
+                    fontWeight: 800,
+                    padding: "3px 10px",
+                    borderRadius: "20px",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.5px",
+                  }}
+                >
+                  ⭐ Most Popular
+                </div>
               )}
+
               <div>
-                <h3 className="font-bold text-white text-lg">{plan.name}</h3>
-                <p className="text-slate-400 text-xs mt-1">{plan.tagline}</p>
+                <h3 style={{ margin: 0, fontSize: "18px", fontWeight: 800, color: "#0f172a" }}>{plan.name}</h3>
+                <p style={{ margin: "4px 0 0 0", fontSize: "12.5px", color: "#64748b" }}>{plan.tagline}</p>
               </div>
-              <div className="text-3xl font-bold text-white">
-                ${plan.price}<span className="text-base text-slate-400 font-normal">{plan.billing_cycle}</span>
+
+              <div style={{ display: "flex", alignItems: "baseline", gap: "4px" }}>
+                <span style={{ fontSize: "28px", fontWeight: 800, color: "#0f172a" }}>${plan.price}</span>
+                <span style={{ fontSize: "14px", color: "#64748b", fontWeight: 500 }}>{plan.billing_cycle}</span>
               </div>
-              <ul className="space-y-1.5">
-                {(plan.features || []).map((f, i) => (
-                  <li key={i} className="text-xs text-slate-300 flex items-start gap-2">
-                    <i className="fa-solid fa-check text-emerald-400 mt-0.5 shrink-0"></i>
-                    {f}
-                  </li>
-                ))}
-              </ul>
-              <div className="flex gap-2 pt-2 border-t border-slate-700">
-                <button onClick={() => { setEditIdx(idx); setShowAdd(false); }}
-                  className="flex-1 text-xs text-cyan-400 hover:text-white px-3 py-2 rounded hover:bg-slate-700 transition">
-                  <i className="fa-solid fa-pen-to-square mr-1"></i>Edit
+
+              <div style={{ borderTop: "1px solid #f1f5f9", paddingTop: "14px", flex: 1 }}>
+                <div style={{ fontSize: "12px", fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", marginBottom: "10px" }}>
+                  Included Features ({plan.features?.length || 0})
+                </div>
+                <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: "8px" }}>
+                  {(plan.features || []).map((f, i) => (
+                    <li key={i} style={{ fontSize: "13px", color: "#334155", display: "flex", alignItems: "flex-start", gap: "8px" }}>
+                      <i className="fa-solid fa-circle-check" style={{ color: "#10b981", marginTop: "3px", fontSize: "12px", flexShrink: 0 }}></i>
+                      <span>{f}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div style={{ display: "flex", gap: "8px", borderTop: "1px solid #f1f5f9", paddingTop: "14px" }}>
+                <button
+                  onClick={() => { setEditIdx(idx); setShowAdd(false); }}
+                  className="btn-admin btn-admin-outline"
+                  style={{ flex: 1, justifyContent: "center", color: "#2563eb" }}
+                >
+                  <i className="fa-solid fa-pen-to-square"></i>
+                  <span>Edit Plan</span>
                 </button>
-                <button onClick={() => setDeleteIdx(idx)}
-                  className="flex-1 text-xs text-rose-400 hover:text-white px-3 py-2 rounded hover:bg-rose-500/20 transition">
-                  <i className="fa-solid fa-trash mr-1"></i>Delete
+                <button
+                  onClick={() => setDeleteIdx(idx)}
+                  className="btn-admin btn-admin-outline"
+                  style={{ flex: 1, justifyContent: "center", color: "#ef4444" }}
+                >
+                  <i className="fa-solid fa-trash"></i>
+                  <span>Delete</span>
                 </button>
               </div>
             </div>
@@ -137,20 +269,80 @@ export default function AdminPricingPage() {
         ))}
       </div>
 
+      {/* 5. DELETE MODAL */}
       {deleteIdx !== null && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 max-w-sm w-full shadow-2xl">
-            <div className="text-center mb-5">
-              <div className="w-12 h-12 bg-rose-500/15 text-rose-400 rounded-full flex items-center justify-center mx-auto mb-3 text-xl">
-                <i className="fa-solid fa-trash"></i>
-              </div>
-              <h3 className="text-white font-bold">Delete Plan?</h3>
-              <p className="text-slate-400 text-sm mt-1">This cannot be undone.</p>
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: "rgba(15, 23, 42, 0.6)",
+            backdropFilter: "blur(4px)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 9999,
+            padding: "20px",
+          }}
+        >
+          <div
+            style={{
+              background: "#ffffff",
+              borderRadius: "16px",
+              padding: "24px",
+              maxWidth: "420px",
+              width: "100%",
+              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+              border: "1px solid #e2e8f0",
+              textAlign: "center",
+            }}
+          >
+            <div
+              style={{
+                width: "48px",
+                height: "48px",
+                borderRadius: "50%",
+                background: "#fef2f2",
+                color: "#ef4444",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "20px",
+                margin: "0 auto 16px auto",
+              }}
+            >
+              <i className="fa-solid fa-trash"></i>
             </div>
-            <div className="flex gap-3">
-              <button onClick={() => setDeleteIdx(null)} className="flex-1 px-4 py-2.5 rounded-lg bg-slate-700 text-slate-300 hover:bg-slate-600 text-sm">Cancel</button>
-              <button onClick={() => handleDelete(deleteIdx)} disabled={saving} className="flex-1 px-4 py-2.5 rounded-lg bg-rose-500 text-white hover:bg-rose-600 text-sm font-semibold">
-                {saving ? <i className="fa-solid fa-spinner fa-spin"></i> : "Delete"}
+            <h3 style={{ margin: "0 0 8px 0", fontSize: "17px", color: "#0f172a", fontWeight: 800 }}>
+              Delete Pricing Plan "{plans[deleteIdx]?.name}"?
+            </h3>
+            <p style={{ margin: "0 0 20px 0", fontSize: "13px", color: "#64748b", lineHeight: 1.5 }}>
+              This will remove this retainer package from your pricing tables.
+            </p>
+            <div style={{ display: "flex", justifyContent: "center", gap: "10px" }}>
+              <button
+                onClick={() => setDeleteIdx(null)}
+                className="btn-admin btn-admin-outline"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => handleDelete(deleteIdx)}
+                disabled={saving}
+                style={{
+                  background: "#ef4444",
+                  color: "#ffffff",
+                  border: "none",
+                  padding: "9px 18px",
+                  borderRadius: "8px",
+                  fontWeight: 700,
+                  fontSize: "13.5px",
+                  cursor: "pointer",
+                }}
+              >
+                {saving ? "Deleting..." : "Yes, Delete"}
               </button>
             </div>
           </div>
@@ -173,52 +365,191 @@ function PlanForm({ initial, onSave, onCancel, saving, isEdit }) {
   const removeFeature = (i) => set("features", form.features.filter((_, idx) => idx !== i));
 
   return (
-    <div className="bg-slate-800 border border-primary/40 rounded-xl overflow-hidden">
-      <div className="flex items-center justify-between px-5 py-4 border-b border-slate-700 bg-slate-900/50">
-        <h2 className="font-bold text-white text-sm">
-          <i className="fa-solid fa-tags mr-2 text-primary"></i>
-          {isEdit ? "Edit Plan" : "Add New Plan"}
+    <div
+      style={{
+        background: "#ffffff",
+        borderRadius: "16px",
+        border: "1px solid #cbd5e1",
+        boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.05)",
+        overflow: "hidden",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "16px 20px",
+          borderBottom: "1px solid #e2e8f0",
+          background: "#f8fafc",
+        }}
+      >
+        <h2 style={{ margin: 0, fontSize: "15px", fontWeight: 800, color: "#0f172a", display: "flex", alignItems: "center", gap: "8px" }}>
+          <i className="fa-solid fa-tags" style={{ color: "#2563eb" }}></i>
+          <span>{isEdit ? "Edit Pricing Plan" : "Add New Pricing Plan"}</span>
         </h2>
-        <button onClick={onCancel} className="text-slate-400 hover:text-white text-sm"><i className="fa-solid fa-xmark"></i></button>
+        <button
+          onClick={onCancel}
+          style={{
+            background: "none",
+            border: "none",
+            fontSize: "16px",
+            color: "#64748b",
+            cursor: "pointer",
+          }}
+        >
+          <i className="fa-solid fa-xmark"></i>
+        </button>
       </div>
-      <form onSubmit={(e) => { e.preventDefault(); onSave(form); }} className="p-5 space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          onSave(form);
+        }}
+        style={{ padding: "20px", display: "flex", flexDirection: "column", gap: "16px" }}
+      >
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "14px" }}>
           <div>
-            <label className="field-label">Plan Name *</label>
-            <input type="text" required value={form.name} onChange={(e) => set("name", e.target.value)} className="cms-input" />
+            <label style={{ display: "block", fontSize: "12.5px", fontWeight: 700, color: "#334155", marginBottom: "6px" }}>
+              Plan Name *
+            </label>
+            <input
+              type="text"
+              required
+              value={form.name}
+              onChange={(e) => set("name", e.target.value)}
+              placeholder="e.g. Growth SEO"
+              style={{
+                width: "100%",
+                padding: "9px 12px",
+                borderRadius: "8px",
+                border: "1px solid #cbd5e1",
+                fontSize: "13.5px",
+              }}
+            />
           </div>
+
           <div>
-            <label className="field-label">Price (USD) *</label>
-            <input type="number" required min={0} value={form.price} onChange={(e) => set("price", Number(e.target.value))} className="cms-input" />
+            <label style={{ display: "block", fontSize: "12.5px", fontWeight: 700, color: "#334155", marginBottom: "6px" }}>
+              Price ($ USD) *
+            </label>
+            <input
+              type="number"
+              required
+              min={0}
+              value={form.price}
+              onChange={(e) => set("price", Number(e.target.value))}
+              style={{
+                width: "100%",
+                padding: "9px 12px",
+                borderRadius: "8px",
+                border: "1px solid #cbd5e1",
+                fontSize: "13.5px",
+              }}
+            />
           </div>
-          <div className="md:col-span-2">
-            <label className="field-label">Tagline</label>
-            <input type="text" value={form.tagline} onChange={(e) => set("tagline", e.target.value)} className="cms-input" />
+
+          <div style={{ gridColumn: "1 / -1" }}>
+            <label style={{ display: "block", fontSize: "12.5px", fontWeight: 700, color: "#334155", marginBottom: "6px" }}>
+              Tagline / Subtitle
+            </label>
+            <input
+              type="text"
+              value={form.tagline}
+              onChange={(e) => set("tagline", e.target.value)}
+              placeholder="Ideal for growing businesses looking for full-funnel organic search dominance"
+              style={{
+                width: "100%",
+                padding: "9px 12px",
+                borderRadius: "8px",
+                border: "1px solid #cbd5e1",
+                fontSize: "13.5px",
+              }}
+            />
           </div>
+
           <div>
-            <label className="field-label">Billing Cycle</label>
-            <input type="text" value={form.billing_cycle} onChange={(e) => set("billing_cycle", e.target.value)} className="cms-input" placeholder="/month or one-time" />
+            <label style={{ display: "block", fontSize: "12.5px", fontWeight: 700, color: "#334155", marginBottom: "6px" }}>
+              Billing Cycle
+            </label>
+            <input
+              type="text"
+              value={form.billing_cycle}
+              onChange={(e) => set("billing_cycle", e.target.value)}
+              placeholder="/month or one-time"
+              style={{
+                width: "100%",
+                padding: "9px 12px",
+                borderRadius: "8px",
+                border: "1px solid #cbd5e1",
+                fontSize: "13.5px",
+              }}
+            />
           </div>
-          <div className="flex items-center gap-3 pt-6">
-            <input type="checkbox" id="popular" checked={!!form.is_popular} onChange={(e) => set("is_popular", e.target.checked)} className="w-4 h-4 accent-primary" />
-            <label htmlFor="popular" className="text-sm text-slate-300">Mark as Most Popular</label>
+
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", paddingTop: "26px" }}>
+            <input
+              type="checkbox"
+              id="popular"
+              checked={!!form.is_popular}
+              onChange={(e) => set("is_popular", e.target.checked)}
+              style={{ width: "16px", height: "16px", cursor: "pointer" }}
+            />
+            <label htmlFor="popular" style={{ fontSize: "13.5px", fontWeight: 600, color: "#334155", cursor: "pointer" }}>
+              ⭐ Mark as Most Popular Tier
+            </label>
           </div>
         </div>
 
         <div>
-          <div className="flex items-center justify-between mb-2">
-            <label className="field-label mb-0">Features</label>
-            <button type="button" onClick={addFeature} className="text-xs text-primary hover:text-white transition">
-              <i className="fa-solid fa-plus mr-1"></i>Add Feature
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "8px" }}>
+            <label style={{ fontSize: "12.5px", fontWeight: 700, color: "#334155", margin: 0 }}>
+              Included Features ({form.features.length})
+            </label>
+            <button
+              type="button"
+              onClick={addFeature}
+              className="btn-admin btn-admin-outline btn-admin-sm"
+              style={{ color: "#2563eb" }}
+            >
+              <i className="fa-solid fa-plus"></i>
+              <span>Add Feature</span>
             </button>
           </div>
-          <div className="space-y-2">
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             {form.features.map((f, i) => (
-              <div key={i} className="flex gap-2">
-                <input type="text" value={f} onChange={(e) => updateFeature(i, e.target.value)}
-                  className="cms-input flex-1" placeholder={`Feature ${i + 1}`} />
-                <button type="button" onClick={() => removeFeature(i)}
-                  className="w-9 h-9 shrink-0 rounded-lg bg-rose-500/15 text-rose-400 hover:bg-rose-500/30 transition text-xs">
+              <div key={i} style={{ display: "flex", gap: "8px" }}>
+                <input
+                  type="text"
+                  value={f}
+                  onChange={(e) => updateFeature(i, e.target.value)}
+                  placeholder={`Feature bullet item #${i + 1}`}
+                  style={{
+                    flex: 1,
+                    padding: "8px 12px",
+                    borderRadius: "8px",
+                    border: "1px solid #cbd5e1",
+                    fontSize: "13px",
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => removeFeature(i)}
+                  style={{
+                    width: "36px",
+                    height: "36px",
+                    borderRadius: "8px",
+                    border: "1px solid #fecaca",
+                    background: "#fef2f2",
+                    color: "#ef4444",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
                   <i className="fa-solid fa-xmark"></i>
                 </button>
               </div>
@@ -226,10 +557,21 @@ function PlanForm({ initial, onSave, onCancel, saving, isEdit }) {
           </div>
         </div>
 
-        <div className="flex gap-3 justify-end">
-          <button type="button" onClick={onCancel} className="px-5 py-2.5 rounded-lg bg-slate-700 text-slate-300 hover:bg-slate-600 text-sm">Cancel</button>
-          <button type="submit" disabled={saving} className="btn btn-primary px-6 py-2.5 rounded-lg text-sm font-semibold">
-            {saving ? <><i className="fa-solid fa-spinner fa-spin mr-2"></i>Saving...</> : <><i className="fa-solid fa-floppy-disk mr-2"></i>{isEdit ? "Update Plan" : "Add Plan"}</>}
+        <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end", marginTop: "10px" }}>
+          <button
+            type="button"
+            onClick={onCancel}
+            className="btn-admin btn-admin-outline"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            disabled={saving}
+            className="btn-admin btn-admin-primary"
+          >
+            <i className="fa-solid fa-floppy-disk"></i>
+            <span>{saving ? "Saving..." : isEdit ? "Update Plan" : "Add Plan"}</span>
           </button>
         </div>
       </form>

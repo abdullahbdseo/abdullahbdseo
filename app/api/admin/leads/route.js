@@ -18,24 +18,24 @@ export async function GET(request) {
 export async function PATCH(request) {
   try {
     const body = await request.json();
-    const { type, id, status } = body;
+    const { type, id, ...updateData } = body;
 
-    if (!id || !status) {
-      return NextResponse.json({ success: false, error: "Missing id or status" }, { status: 400 });
+    if (!id) {
+      return NextResponse.json({ success: false, error: "Missing id" }, { status: 400 });
     }
 
     if (type === "lead") {
-      const updated = DB.updateLeadStatus(id, status);
+      const updated = DB.updateLead(id, updateData);
       DB.addAuditLog({
-        action: "lead_status_updated",
-        description: `Lead #${id} status updated to ${status}`
+        action: "lead_updated",
+        description: `Lead #${id} was updated`
       });
       return NextResponse.json({ success: true, item: updated });
     } else {
-      const updated = DB.updateInquiryStatus(id, status);
+      const updated = DB.updateInquiry(id, updateData);
       DB.addAuditLog({
-        action: "inquiry_status_updated",
-        description: `Inquiry #${id} status updated to ${status}`
+        action: "inquiry_updated",
+        description: `Inquiry #${id} was updated`
       });
       return NextResponse.json({ success: true, item: updated });
     }

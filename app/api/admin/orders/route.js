@@ -10,14 +10,51 @@ export async function GET() {
   }
 }
 
+export async function POST(req) {
+  try {
+    const data = await req.json();
+    const newOrder = DB.createOrder(data);
+    DB.addAuditLog({
+      action: "order_created",
+      description: `New order ${newOrder.order_number} created manually by Admin`
+    });
+    return NextResponse.json({ success: true, order: newOrder });
+  } catch (error) {
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+  }
+}
+
 export async function PATCH(req) {
   try {
-    const { id, status } = await req.json();
-    if (!id || !status) {
-      return NextResponse.json({ success: false, error: "ID and Status required" }, { status: 400 });
+    const data = await req.json();
+    const { id } = data;
+    if (!id) {
+      return NextResponse.json({ success: false, error: "Order ID required" }, { status: 400 });
     }
-    const updated = DB.updateOrderStatus(id, status);
+    const updated = DB.updateOrder(id, data);
+    DB.addAuditLog({
+      action: "order_updated",
+      description: `Order #${id} (${updated?.order_number || ""}) was updated by Admin`
+    });
     return NextResponse.json({ success: true, order: updated });
+  } catch (error) {
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+  }
+}
+
+export async function DELETE(req) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+    if (!id) {
+      return NextResponse.json({ success: false, error: "Order ID required" }, { status: 400 });
+    }
+    DB.deleteOrder(id);
+    DB.addAuditLog({
+      action: "order_deleted",
+      description: `Order #${id} was deleted by Admin`
+    });
+    return NextResponse.json({ success: true });
   } catch (error) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }

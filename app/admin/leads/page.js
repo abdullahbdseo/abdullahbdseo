@@ -11,6 +11,10 @@ export default function AdminLeadsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [selectedItem, setSelectedItem] = useState(null);
+  const [editingItem, setEditingItem] = useState(null);
+  const [deletingItem, setDeletingItem] = useState(null);
+  const [editFormData, setEditFormData] = useState({});
+  const [submitting, setSubmitting] = useState(false);
   const [feedbackMsg, setFeedbackMsg] = useState("");
 
   const fetchData = async () => {
@@ -57,22 +61,100 @@ export default function AdminLeadsPage() {
     }
   };
 
-  const handleDelete = async (type, id) => {
-    if (!confirm("Are you sure you want to delete this record?")) return;
+  const openEditModal = (item, type) => {
+    let dateStr = "";
+    if (item.created_at) {
+      const d = new Date(item.created_at);
+      if (!isNaN(d.getTime())) {
+        dateStr = d.toISOString().slice(0, 16);
+      }
+    }
+
+    setEditingItem({ ...item, itemType: type });
+    setEditFormData({
+      name: item.name || "",
+      email: item.email || item.contact_email || "",
+      phone: item.phone || item.contact_phone || "",
+      website_url: item.website_url || "",
+      service_interested: item.service_interested || "",
+      budget: item.budget || "",
+      source_tool: item.source_tool || "",
+      status: item.status || "new",
+      created_at: dateStr || new Date().toISOString().slice(0, 16),
+      message: item.message || "",
+    });
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    if (!editingItem) return;
+    setSubmitting(true);
+
     try {
-      const res = await fetch(`/api/admin/leads?id=${id}&type=${type}`, {
+      const payload = {
+        type: editingItem.itemType,
+        id: editingItem.id,
+        status: editFormData.status,
+        created_at: new Date(editFormData.created_at).toISOString(),
+        website_url: editFormData.website_url,
+      };
+
+      if (editingItem.itemType === "inquiry") {
+        payload.name = editFormData.name;
+        payload.email = editFormData.email;
+        payload.phone = editFormData.phone;
+        payload.service_interested = editFormData.service_interested;
+        payload.budget = editFormData.budget;
+        payload.message = editFormData.message;
+      } else {
+        payload.source_tool = editFormData.source_tool;
+        payload.contact_email = editFormData.email;
+        payload.contact_phone = editFormData.phone;
+      }
+
+      const res = await fetch("/api/admin/leads", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        showNotification("Lead details and date updated successfully.");
+        setEditingItem(null);
+        fetchData();
+      } else {
+        alert(data.error || "Failed to update record");
+      }
+    } catch (err) {
+      alert("Error updating record");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const confirmDelete = async () => {
+    if (!deletingItem) return;
+    setSubmitting(true);
+    try {
+      const res = await fetch(`/api/admin/leads?id=${deletingItem.id}&type=${deletingItem.itemType}`, {
         method: "DELETE",
       });
       const data = await res.json();
       if (data.success) {
-        showNotification("Lead deleted successfully.");
-        fetchData();
-        if (selectedItem && selectedItem.id === id) {
+        showNotification("Record deleted successfully.");
+        setDeletingItem(null);
+        if (selectedItem && selectedItem.id === deletingItem.id) {
           setSelectedItem(null);
         }
+        fetchData();
+      } else {
+        alert(data.error || "Failed to delete");
       }
     } catch (err) {
       alert("Failed to delete record");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -459,7 +541,8 @@ export default function AdminLeadsPage() {
                       )}
 
                       <td>
-                        <span style={{ fontSize: "12px", color: "#64748b" }}>
+                        <span style={{ fontSize: "12px", color: "#64748b", display: "flex", alignItems: "center", gap: "5px" }}>
+                          <i className="fa-regular fa-calendar" style={{ fontSize: "11px", color: "#94a3b8" }}></i>
                           {item.created_at ? new Date(item.created_at).toLocaleDateString() : "Recent"}
                         </span>
                       </td>
@@ -511,12 +594,21 @@ export default function AdminLeadsPage() {
                             <i className="fa-solid fa-eye"></i>
                           </button>
 
+                          <button
+                            onClick={() => openEditModal(item, itemType)}
+                            title="Edit Record & Date"
+                            className="btn-admin btn-admin-outline btn-admin-sm"
+                            style={{ padding: "5px 9px", color: "#2563eb" }}
+                          >
+                            <i className="fa-solid fa-pen-to-square"></i>
+                          </button>
+
                           {email && (
                             <a
                               href={`mailto:${email}?subject=SEO%20Proposal%20Follow-up%20-%20Abdullah%20Saleh`}
                               title="Send Email"
                               className="btn-admin btn-admin-outline btn-admin-sm"
-                              style={{ padding: "5px 9px", color: "#2563eb" }}
+                              style={{ padding: "5px 9px", color: "#0284c7" }}
                             >
                               <i className="fa-solid fa-envelope"></i>
                             </a>
@@ -536,7 +628,7 @@ export default function AdminLeadsPage() {
                           )}
 
                           <button
-                            onClick={() => handleDelete(itemType, item.id)}
+                            onClick={() => setDeletingItem({ ...item, itemType })}
                             title="Delete Record"
                             className="btn-admin btn-admin-outline btn-admin-sm"
                             style={{ padding: "5px 9px", color: "#ef4444" }}
@@ -659,6 +751,15 @@ export default function AdminLeadsPage() {
                 </div>
               )}
 
+              {selectedItem.created_at && (
+                <div>
+                  <span style={{ color: "#64748b", fontWeight: 600 }}>Received At: </span>
+                  <span style={{ fontWeight: 600, color: "#0f172a" }}>
+                    {new Date(selectedItem.created_at).toLocaleString()}
+                  </span>
+                </div>
+              )}
+
               {selectedItem.message && (
                 <div style={{ marginTop: "6px" }}>
                   <div style={{ color: "#64748b", fontWeight: 600, marginBottom: "4px" }}>Message / Request Note:</div>
@@ -691,6 +792,369 @@ export default function AdminLeadsPage() {
                   <span>Reply via Email</span>
                 </a>
               )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 6. MODAL POPUP FOR EDIT & DATE UPDATE */}
+      {editingItem && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: "rgba(15, 23, 42, 0.6)",
+            backdropFilter: "blur(4px)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 9999,
+            padding: "20px",
+          }}
+        >
+          <div
+            style={{
+              background: "#ffffff",
+              borderRadius: "16px",
+              padding: "28px",
+              maxWidth: "600px",
+              width: "100%",
+              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+              border: "1px solid #e2e8f0",
+              maxHeight: "90vh",
+              overflowY: "auto",
+            }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+              <div>
+                <h3 style={{ margin: 0, fontSize: "18px", color: "#0f172a", fontWeight: 800 }}>
+                  Edit {editingItem.itemType === "inquiry" ? "Inquiry" : "Lead"} Details
+                </h3>
+                <p style={{ margin: "3px 0 0 0", fontSize: "12.5px", color: "#64748b" }}>
+                  Update contact information, date, and status
+                </p>
+              </div>
+              <button
+                onClick={() => setEditingItem(null)}
+                style={{
+                  background: "#f1f5f9",
+                  border: "none",
+                  borderRadius: "50%",
+                  width: "32px",
+                  height: "32px",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "#64748b",
+                }}
+              >
+                <i className="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+
+            <form onSubmit={handleEditSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+              {editingItem.itemType === "inquiry" ? (
+                <div>
+                  <label style={{ display: "block", fontSize: "12.5px", fontWeight: 700, color: "#334155", marginBottom: "6px" }}>
+                    Client Name
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={editFormData.name}
+                    onChange={(e) => setEditFormData({ ...editFormData, name: e.target.value })}
+                    style={{
+                      width: "100%",
+                      padding: "9px 12px",
+                      borderRadius: "8px",
+                      border: "1px solid #cbd5e1",
+                      fontSize: "13.5px",
+                    }}
+                  />
+                </div>
+              ) : (
+                <div>
+                  <label style={{ display: "block", fontSize: "12.5px", fontWeight: 700, color: "#334155", marginBottom: "6px" }}>
+                    Source Tool
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={editFormData.source_tool}
+                    onChange={(e) => setEditFormData({ ...editFormData, source_tool: e.target.value })}
+                    style={{
+                      width: "100%",
+                      padding: "9px 12px",
+                      borderRadius: "8px",
+                      border: "1px solid #cbd5e1",
+                      fontSize: "13.5px",
+                    }}
+                  />
+                </div>
+              )}
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                <div>
+                  <label style={{ display: "block", fontSize: "12.5px", fontWeight: 700, color: "#334155", marginBottom: "6px" }}>
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    value={editFormData.email}
+                    onChange={(e) => setEditFormData({ ...editFormData, email: e.target.value })}
+                    style={{
+                      width: "100%",
+                      padding: "9px 12px",
+                      borderRadius: "8px",
+                      border: "1px solid #cbd5e1",
+                      fontSize: "13.5px",
+                    }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: "block", fontSize: "12.5px", fontWeight: 700, color: "#334155", marginBottom: "6px" }}>
+                    Phone
+                  </label>
+                  <input
+                    type="text"
+                    value={editFormData.phone}
+                    onChange={(e) => setEditFormData({ ...editFormData, phone: e.target.value })}
+                    style={{
+                      width: "100%",
+                      padding: "9px 12px",
+                      borderRadius: "8px",
+                      border: "1px solid #cbd5e1",
+                      fontSize: "13.5px",
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label style={{ display: "block", fontSize: "12.5px", fontWeight: 700, color: "#334155", marginBottom: "6px" }}>
+                  Website URL
+                </label>
+                <input
+                  type="text"
+                  value={editFormData.website_url}
+                  onChange={(e) => setEditFormData({ ...editFormData, website_url: e.target.value })}
+                  style={{
+                    width: "100%",
+                    padding: "9px 12px",
+                    borderRadius: "8px",
+                    border: "1px solid #cbd5e1",
+                    fontSize: "13.5px",
+                  }}
+                />
+              </div>
+
+              {/* DATE EDITING */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                <div>
+                  <label style={{ display: "block", fontSize: "12.5px", fontWeight: 700, color: "#334155", marginBottom: "6px" }}>
+                    Created / Received Date 📅
+                  </label>
+                  <input
+                    type="datetime-local"
+                    required
+                    value={editFormData.created_at}
+                    onChange={(e) => setEditFormData({ ...editFormData, created_at: e.target.value })}
+                    style={{
+                      width: "100%",
+                      padding: "9px 12px",
+                      borderRadius: "8px",
+                      border: "1px solid #cbd5e1",
+                      fontSize: "13.5px",
+                      background: "#f8fafc",
+                    }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: "block", fontSize: "12.5px", fontWeight: 700, color: "#334155", marginBottom: "6px" }}>
+                    Status
+                  </label>
+                  <select
+                    value={editFormData.status}
+                    onChange={(e) => setEditFormData({ ...editFormData, status: e.target.value })}
+                    style={{
+                      width: "100%",
+                      padding: "9px 12px",
+                      borderRadius: "8px",
+                      border: "1px solid #cbd5e1",
+                      fontSize: "13.5px",
+                      background: "#ffffff",
+                    }}
+                  >
+                    <option value="new">🟡 New / Unread</option>
+                    <option value="contacted">🔵 Contacted</option>
+                    <option value="converted">🟢 Converted</option>
+                    <option value="archived">⚪ Archived</option>
+                  </select>
+                </div>
+              </div>
+
+              {editingItem.itemType === "inquiry" && (
+                <>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                    <div>
+                      <label style={{ display: "block", fontSize: "12.5px", fontWeight: 700, color: "#334155", marginBottom: "6px" }}>
+                        Service of Interest
+                      </label>
+                      <input
+                        type="text"
+                        value={editFormData.service_interested}
+                        onChange={(e) => setEditFormData({ ...editFormData, service_interested: e.target.value })}
+                        style={{
+                          width: "100%",
+                          padding: "9px 12px",
+                          borderRadius: "8px",
+                          border: "1px solid #cbd5e1",
+                          fontSize: "13.5px",
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ display: "block", fontSize: "12.5px", fontWeight: 700, color: "#334155", marginBottom: "6px" }}>
+                        Budget
+                      </label>
+                      <input
+                        type="text"
+                        value={editFormData.budget}
+                        onChange={(e) => setEditFormData({ ...editFormData, budget: e.target.value })}
+                        style={{
+                          width: "100%",
+                          padding: "9px 12px",
+                          borderRadius: "8px",
+                          border: "1px solid #cbd5e1",
+                          fontSize: "13.5px",
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label style={{ display: "block", fontSize: "12.5px", fontWeight: 700, color: "#334155", marginBottom: "6px" }}>
+                      Message / Note
+                    </label>
+                    <textarea
+                      rows={3}
+                      value={editFormData.message}
+                      onChange={(e) => setEditFormData({ ...editFormData, message: e.target.value })}
+                      style={{
+                        width: "100%",
+                        padding: "9px 12px",
+                        borderRadius: "8px",
+                        border: "1px solid #cbd5e1",
+                        fontSize: "13.5px",
+                        resize: "vertical",
+                      }}
+                    />
+                  </div>
+                </>
+              )}
+
+              <div style={{ marginTop: "12px", display: "flex", justifyContent: "flex-end", gap: "10px" }}>
+                <button
+                  type="button"
+                  onClick={() => setEditingItem(null)}
+                  className="btn-admin btn-admin-outline"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="btn-admin btn-admin-primary"
+                >
+                  <i className="fa-solid fa-check"></i>
+                  <span>{submitting ? "Saving..." : "Save Changes"}</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* 7. DELETE CONFIRMATION MODAL */}
+      {deletingItem && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: "rgba(15, 23, 42, 0.6)",
+            backdropFilter: "blur(4px)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 9999,
+            padding: "20px",
+          }}
+        >
+          <div
+            style={{
+              background: "#ffffff",
+              borderRadius: "16px",
+              padding: "24px",
+              maxWidth: "440px",
+              width: "100%",
+              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+              border: "1px solid #e2e8f0",
+              textAlign: "center",
+            }}
+          >
+            <div
+              style={{
+                width: "48px",
+                height: "48px",
+                borderRadius: "50%",
+                background: "#fef2f2",
+                color: "#ef4444",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "20px",
+                margin: "0 auto 16px auto",
+              }}
+            >
+              <i className="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <h3 style={{ margin: "0 0 8px 0", fontSize: "17px", color: "#0f172a", fontWeight: 800 }}>
+              Delete Record #{deletingItem.id}?
+            </h3>
+            <p style={{ margin: "0 0 20px 0", fontSize: "13px", color: "#64748b", lineHeight: 1.5 }}>
+              Are you sure you want to delete this {deletingItem.itemType}? This action cannot be undone.
+            </p>
+            <div style={{ display: "flex", justifyContent: "center", gap: "10px" }}>
+              <button
+                onClick={() => setDeletingItem(null)}
+                className="btn-admin btn-admin-outline"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                disabled={submitting}
+                style={{
+                  background: "#ef4444",
+                  color: "#ffffff",
+                  border: "none",
+                  padding: "9px 18px",
+                  borderRadius: "8px",
+                  fontWeight: 700,
+                  fontSize: "13.5px",
+                  cursor: "pointer",
+                }}
+              >
+                {submitting ? "Deleting..." : "Yes, Delete"}
+              </button>
             </div>
           </div>
         </div>
