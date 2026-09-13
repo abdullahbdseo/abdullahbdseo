@@ -54,7 +54,7 @@ export default async function SingleBlogPostPage({ params }) {
     "description": post.meta_description || post.summary || post.excerpt,
     "image": post.featured_image || post.image,
     "datePublished": post.publish_date || post.date,
-    "dateModified": post.publish_date || post.date,
+    "dateModified": post.dateModified || post.publish_date || post.date,
     "author": {
       "@type": "Person",
       "name": post.author?.name || siteSettings.expert_name,
@@ -126,10 +126,11 @@ export default async function SingleBlogPostPage({ params }) {
             <div className="sub-badge">{post.category}</div>
             <h1 className="article-title">{post.title}</h1>
             
-            <div className="article-meta-line" style={{ justifyContent: "center" }}>
-              <span><i className="fa-regular fa-calendar" style={{ color: "#4361ee" }}></i> {post.publish_date || post.date}</span>
-              <span><i className="fa-regular fa-clock" style={{ color: "#10b981" }}></i> {post.read_time || "6 min read"}</span>
-              <span><i className="fa-solid fa-user-pen" style={{ color: "#f59e0b" }}></i> By {post.author?.name || siteSettings.expert_name}</span>
+            <div className="article-meta-line" style={{ justifyContent: "center", flexWrap: "wrap", gap: "14px" }}>
+              <span><i className="fa-regular fa-calendar" style={{ color: "#4361ee" }}></i> Published: {post.publish_date || post.date}</span>
+              <span><i className="fa-solid fa-arrows-rotate" style={{ color: "#10b981" }}></i> Updated: {post.dateModified || post.publish_date || post.date}</span>
+              <span><i className="fa-regular fa-clock" style={{ color: "#f59e0b" }}></i> {post.read_time || "6 min read"}</span>
+              <span><i className="fa-solid fa-user-pen" style={{ color: "#7c3aed" }}></i> By {post.author?.name || siteSettings.expert_name}</span>
             </div>
           </div>
         </div>
@@ -173,8 +174,8 @@ export default async function SingleBlogPostPage({ params }) {
                     <strong style={{ color: "#0f172a" }}>{post.read_time || "6 min read"}</strong>
                   </div>
                   <div style={{ display: "flex", justifyContent: "space-between" }}>
-                    <span>Updated:</span>
-                    <strong style={{ color: "#0f172a" }}>{post.publish_date || post.date}</strong>
+                    <span>Status:</span>
+                    <strong style={{ color: "#059669" }}>✓ Verified Fresh</strong>
                   </div>
                 </div>
               </div>
@@ -207,6 +208,56 @@ export default async function SingleBlogPostPage({ params }) {
                 className="article-prose-body"
                 dangerouslySetInnerHTML={{ __html: processedContent }}
               />
+
+              {/* STRATEGIC INTERNAL LINKS & CONVERSION SILO */}
+              <div style={{
+                background: "linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%)",
+                border: "1px solid #bfdbfe",
+                borderRadius: "14px",
+                padding: "24px",
+                margin: "34px 0",
+                boxShadow: "0 4px 15px rgba(37, 99, 235, 0.05)"
+              }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
+                  <i className="fa-solid fa-compass" style={{ color: "#2563eb", fontSize: "18px" }}></i>
+                  <h4 style={{ margin: 0, fontSize: "16px", fontWeight: 800, color: "#0f172a" }}>
+                    Recommended Next Steps & Technical Resources
+                  </h4>
+                </div>
+                <p style={{ fontSize: "13.5px", color: "#475569", margin: "0 0 16px 0", lineHeight: "1.5" }}>
+                  Put this strategy into action for your website with our battle-tested diagnostic tools and specialized enterprise SEO services:
+                </p>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "10px" }}>
+                  <Link href="/tools/deep-seo-audit" style={{ textDecoration: "none", background: "#ffffff", padding: "12px 14px", borderRadius: "8px", border: "1px solid #e2e8f0", display: "flex", alignItems: "center", gap: "10px" }}>
+                    <i className="fa-solid fa-magnifying-glass-chart" style={{ color: "#2563eb", fontSize: "16px" }}></i>
+                    <div>
+                      <div style={{ fontSize: "13px", fontWeight: 700, color: "#0f172a" }}>Free Deep SEO Audit</div>
+                      <div style={{ fontSize: "11px", color: "#64748b" }}>Scan 230+ technical factors</div>
+                    </div>
+                  </Link>
+                  <Link href="/services/technical-seo-service-in-bangladesh" style={{ textDecoration: "none", background: "#ffffff", padding: "12px 14px", borderRadius: "8px", border: "1px solid #e2e8f0", display: "flex", alignItems: "center", gap: "10px" }}>
+                    <i className="fa-solid fa-gears" style={{ color: "#059669", fontSize: "16px" }}></i>
+                    <div>
+                      <div style={{ fontSize: "13px", fontWeight: 700, color: "#0f172a" }}>Technical SEO Service</div>
+                      <div style={{ fontSize: "11px", color: "#64748b" }}>Fix crawl & speed blockers</div>
+                    </div>
+                  </Link>
+                  <Link href="/pricing" style={{ textDecoration: "none", background: "#ffffff", padding: "12px 14px", borderRadius: "8px", border: "1px solid #e2e8f0", display: "flex", alignItems: "center", gap: "10px" }}>
+                    <i className="fa-solid fa-tags" style={{ color: "#7c3aed", fontSize: "16px" }}></i>
+                    <div>
+                      <div style={{ fontSize: "13px", fontWeight: 700, color: "#0f172a" }}>Monthly Growth Retainers</div>
+                      <div style={{ fontSize: "11px", color: "#64748b" }}>View transparent packages</div>
+                    </div>
+                  </Link>
+                  <Link href="/contact" style={{ textDecoration: "none", background: "#2563eb", color: "#ffffff", padding: "12px 14px", borderRadius: "8px", display: "flex", alignItems: "center", gap: "10px" }}>
+                    <i className="fa-solid fa-rocket" style={{ color: "#ffffff", fontSize: "16px" }}></i>
+                    <div>
+                      <div style={{ fontSize: "13px", fontWeight: 700, color: "#ffffff" }}>Book Free Consultation</div>
+                      <div style={{ fontSize: "11px", color: "#bfdbfe" }}>1-on-1 strategy call</div>
+                    </div>
+                  </Link>
+                </div>
+              </div>
 
               {/* Bottom Social Share */}
               <SocialShare title={post.title} />

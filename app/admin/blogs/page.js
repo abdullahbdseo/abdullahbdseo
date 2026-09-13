@@ -131,6 +131,24 @@ export default function AdminBlogsPage() {
     await handleSavePosts(updated);
   };
 
+  const [refreshing, setRefreshing] = useState(false);
+  const handleAutoRefresh = async () => {
+    if (!confirm("This will update all blog post modification timestamps to current date, signaling freshness to Googlebot. Continue?")) return;
+    setRefreshing(true);
+    try {
+      const res = await fetch("/api/admin/blogs/refresh", { method: "POST" });
+      const json = await res.json();
+      if (json.success) {
+        alert(json.message);
+        refetch();
+      }
+    } catch (e) {
+      alert("Refresh failed");
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
   if (loading) {
     return (
       <div style={{ textAlign: "center", padding: "60px 20px", color: "#64748b" }}>
@@ -151,6 +169,15 @@ export default function AdminBlogsPage() {
           </p>
         </div>
         <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+          <button
+            onClick={handleAutoRefresh}
+            disabled={refreshing}
+            className="btn-admin btn-admin-outline"
+            title="Update all modification timestamps for Google Freshness algorithm"
+          >
+            <i className={`fa-solid ${refreshing ? "fa-spinner fa-spin" : "fa-wand-magic-sparkles"}`} style={{ color: "#7c3aed" }}></i>
+            <span>{refreshing ? "Refreshing..." : "Auto-Refresh Old Posts"}</span>
+          </button>
           <button onClick={() => refetch()} className="btn-admin btn-admin-outline" title="Refresh from database">
             <i className="fa-solid fa-rotate"></i>
             <span>Refresh</span>
