@@ -12,7 +12,7 @@ export default function AdminInvoicesPage() {
 
   const fetchInvoices = async () => {
     try {
-      const res = await fetch("/api/admin/invoices");
+      const res = await fetch(`/api/admin/invoices?_t=${Date.now()}`, { cache: "no-store" });
       if (res.ok) {
         const data = await res.json();
         if (data.invoices) setInvoices(data.invoices);

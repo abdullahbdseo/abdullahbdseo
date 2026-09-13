@@ -15,10 +15,11 @@ export default function AdminDashboardPage() {
 
   const refreshData = async () => {
     try {
+      const t = Date.now();
       const [oRes, lRes, iRes] = await Promise.all([
-        fetch("/api/admin/orders"),
-        fetch("/api/admin/leads"),
-        fetch("/api/admin/invoices"),
+        fetch(`/api/admin/orders?_t=${t}`, { cache: "no-store" }),
+        fetch(`/api/admin/leads?_t=${t}`, { cache: "no-store" }),
+        fetch(`/api/admin/invoices?_t=${t}`, { cache: "no-store" }),
       ]);
       if (oRes.ok) {
         const oData = await oRes.json();
