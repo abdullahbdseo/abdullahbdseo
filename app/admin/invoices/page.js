@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { DB } from "@/lib/db";
 
 export default function AdminInvoicesPage() {
   const [invoices, setInvoices] = useState([]);
@@ -11,8 +10,16 @@ export default function AdminInvoicesPage() {
   const [deleteId, setDeleteId] = useState(null);
   const [saveMsg, setSaveMsg] = useState("");
 
-  const fetchInvoices = () => {
-    setInvoices(DB.getInvoices());
+  const fetchInvoices = async () => {
+    try {
+      const res = await fetch("/api/admin/invoices");
+      if (res.ok) {
+        const data = await res.json();
+        if (data.invoices) setInvoices(data.invoices);
+      }
+    } catch (e) {
+      console.error("Error fetching invoices:", e);
+    }
   };
 
   useEffect(() => {
@@ -43,16 +50,21 @@ export default function AdminInvoicesPage() {
 
   const handleDeleteInvoice = async (id) => {
     try {
+      setInvoices((prev) => prev.filter((inv) => inv.id !== id && inv.order_id !== id));
       const res = await fetch(`/api/admin/invoices?id=${id}`, {
         method: "DELETE",
       });
       if (res.ok) {
         notify("Invoice deleted successfully.");
-        fetchInvoices();
         setDeleteId(null);
+        fetchInvoices();
+      } else {
+        alert("Failed to delete invoice");
+        fetchInvoices();
       }
     } catch (e) {
       alert("Error deleting invoice");
+      fetchInvoices();
     }
   };
 

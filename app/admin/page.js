@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { DB } from "@/lib/db";
 
 export default function AdminDashboardPage() {
   const [orders, setOrders] = useState([]);
@@ -14,10 +13,28 @@ export default function AdminDashboardPage() {
   const [saveMsg, setSaveMsg] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  const refreshData = () => {
-    setOrders([...DB.getOrders()]);
-    setInquiries([...DB.getInquiries()]);
-    setInvoices([...DB.getInvoices()]);
+  const refreshData = async () => {
+    try {
+      const [oRes, lRes, iRes] = await Promise.all([
+        fetch("/api/admin/orders"),
+        fetch("/api/admin/leads"),
+        fetch("/api/admin/invoices"),
+      ]);
+      if (oRes.ok) {
+        const oData = await oRes.json();
+        if (oData.orders) setOrders(oData.orders);
+      }
+      if (lRes.ok) {
+        const lData = await lRes.json();
+        if (lData.inquiries) setInquiries(lData.inquiries);
+      }
+      if (iRes.ok) {
+        const iData = await iRes.json();
+        if (iData.invoices) setInvoices(iData.invoices);
+      }
+    } catch (e) {
+      console.error("Error refreshing data:", e);
+    }
   };
 
   useEffect(() => {
@@ -72,18 +89,22 @@ export default function AdminDashboardPage() {
   const handleDeleteOrder = async (id) => {
     setSubmitting(true);
     try {
+      // Optimistically remove from state immediately
+      setOrders((prev) => prev.filter((o) => o.id !== id && o.order_number !== id));
       const res = await fetch(`/api/admin/orders?id=${id}`, {
         method: "DELETE",
       });
       if (res.ok) {
         notify("Order deleted successfully.");
-        refreshData();
         setDeleteId(null);
+        refreshData();
       } else {
         alert("Failed to delete order");
+        refreshData();
       }
     } catch (e) {
       alert("Error deleting order");
+      refreshData();
     } finally {
       setSubmitting(false);
     }

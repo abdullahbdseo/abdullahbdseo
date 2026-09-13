@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { DB } from "@/lib/db";
 
 export default function AdminOrdersPage() {
   const [orders, setOrders] = useState([]);
@@ -13,8 +12,16 @@ export default function AdminOrdersPage() {
   const [deleteId, setDeleteId] = useState(null);
   const [saveMsg, setSaveMsg] = useState("");
 
-  const fetchOrders = () => {
-    setOrders([...DB.getOrders()]);
+  const fetchOrders = async () => {
+    try {
+      const res = await fetch("/api/admin/orders");
+      if (res.ok) {
+        const data = await res.json();
+        if (data.orders) setOrders(data.orders);
+      }
+    } catch (e) {
+      console.error("Error fetching orders:", e);
+    }
   };
 
   useEffect(() => {
@@ -63,16 +70,21 @@ export default function AdminOrdersPage() {
 
   const handleDeleteOrder = async (id) => {
     try {
+      setOrders((prev) => prev.filter((o) => o.id !== id && o.order_number !== id));
       const res = await fetch(`/api/admin/orders?id=${id}`, {
         method: "DELETE",
       });
       if (res.ok) {
         notify("Order deleted successfully.");
-        fetchOrders();
         setDeleteId(null);
+        fetchOrders();
+      } else {
+        alert("Failed to delete order");
+        fetchOrders();
       }
     } catch (e) {
       alert("Error deleting order");
+      fetchOrders();
     }
   };
 
