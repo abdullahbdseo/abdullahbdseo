@@ -26,6 +26,8 @@ const navGroups = [
     items: [
       { href: "/admin/blogs", label: "Blog Posts", icon: "fa-newspaper" },
       { href: "/admin/services", label: "Services & Packages", icon: "fa-layer-group" },
+      { href: "/admin/portfolio", label: "Portfolio & Proof", icon: "fa-trophy" },
+      { href: "/admin/testimonials", label: "Client Reviews", icon: "fa-comments" },
       { href: "/admin/pricing", label: "Pricing Tables", icon: "fa-tags" },
       { href: "/admin/faqs", label: "FAQs Manager", icon: "fa-circle-question" },
       { href: "/admin/tools", label: "Free SEO Tools", icon: "fa-screwdriver-wrench" },

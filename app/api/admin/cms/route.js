@@ -21,10 +21,13 @@ function readCMSData() {
     siteSettings: {},
     serviceCategories: [],
     services: [],
+    caseStudies: [],
+    testimonials: [],
     blogPosts: [],
     faqs: [],
     processSteps: [],
     pricingPlans: [],
+    pricingRetainers: [],
     freeTools: [],
   };
 }
@@ -44,6 +47,9 @@ function rebuildDataJs(data) {
     ["siteSettings", data.siteSettings],
     ["serviceCategories", data.serviceCategories],
     ["services", data.services],
+    ["pricingRetainers", data.pricingRetainers || data.pricingPlans],
+    ["caseStudies", data.caseStudies],
+    ["testimonials", data.testimonials],
     ["blogPosts", data.blogPosts],
     ["faqs", data.faqs],
     ["processSteps", data.processSteps],

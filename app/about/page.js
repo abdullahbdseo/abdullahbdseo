@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { siteSettings } from "@/lib/data";
+import { siteSettings, testimonials } from "@/lib/data";
 
-const verifiedReviews = [
+const fallbackReviews = [
   {
     name: "Mia Collins",
     role: "Director, Northline Digital",
@@ -236,8 +236,10 @@ export default function AboutPage() {
                 {/* Marquee Viewport */}
                 <div className="marquee-viewport-mask">
                   <div className="marquee-track">
-                    {[...verifiedReviews, ...verifiedReviews].map((rev, idx) => (
-                      <div key={idx} className="marquee-review-card">
+                    {(() => {
+                      const reviewsList = (testimonials && testimonials.length > 0) ? testimonials : fallbackReviews;
+                      return [...reviewsList, ...reviewsList].map((rev, idx) => (
+                        <div key={idx} className="marquee-review-card">
                         <div>
                           <div className="card-stars-row" aria-label={`${rev.rating} out of 5 stars`}>
                             {[1, 2, 3, 4, 5].map((star) => (
@@ -263,7 +265,8 @@ export default function AboutPage() {
                           <div className="card-avatar-badge">{rev.avatar}</div>
                         </div>
                       </div>
-                    ))}
+                    ));
+                  })()}
                   </div>
                 </div>
               </div>

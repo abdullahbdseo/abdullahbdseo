@@ -47,6 +47,19 @@ const FIELD_GROUPS = [
       { key: "default_meta_keywords", label: "Default Meta Keywords", type: "textarea" },
     ],
   },
+  {
+    label: "bKash & Crypto Payments",
+    icon: "fa-wallet",
+    fields: [
+      { key: "bkash_number", label: "bKash Account Number", type: "text" },
+      { key: "bkash_type", label: "bKash Account Type (e.g. Personal / Merchant)", type: "text" },
+      { key: "bkash_rate", label: "Exchange Rate (1 USD to BDT)", type: "number" },
+      { key: "usdt_trc20_address", label: "USDT (TRC-20) Deposit Address", type: "text" },
+      { key: "btc_address", label: "Bitcoin (BTC) Deposit Address", type: "text" },
+      { key: "eth_address", label: "Ethereum (ETH) Deposit Address", type: "text" },
+      { key: "bkash_instructions", label: "bKash Checkout Instructions", type: "textarea" },
+    ],
+  },
 ];
 
 export default function AdminSettingsPage() {

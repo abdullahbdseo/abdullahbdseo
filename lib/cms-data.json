@@ -995,5 +995,189 @@
       "bg": "#ffe4e6",
       "category": "Calculators & ROI"
     }
+  ],
+  "caseStudies": [
+    {
+      "id": 7,
+      "title": "Enterprise SEO Domination: Scaling to 1.18M Organic Clicks & 92.4% CTR",
+      "slug": "enterprise-seo-1-18m-clicks-gsc",
+      "client_name": "Global Digital Solutions",
+      "website_url": "https://example-globaldigital.com",
+      "industry": "Enterprise Technology / SaaS",
+      "category_name": "SaaS & Enterprise SEO",
+      "featured_image": "/images/portfolio/proof_gsc_1_18m_scale.jpg",
+      "summary": "Engineered high-intent search structure and technical optimization delivering 1.18 Million organic clicks with an unprecedented 92.4% click-through rate and #1 average position on Google Search Console.",
+      "challenge": "The client had significant traffic potential but was held back by deep site architecture flaws, internal link cannibalization, and suboptimal snippet CTR across major commercial keywords.",
+      "strategy": "Conducted an exhaustive 230-point technical crawl audit, rebuilt the internal silo hierarchy, deployed custom Product and FAQ JSON-LD schemas, and rewrote title/meta hooks to maximize search snippet click appeal.",
+      "implementation": [
+        "Resolved 450+ canonical anomalies and duplicate URL parameters.",
+        "Implemented automated breadcrumb and FAQ rich snippets.",
+        "Built 40+ topic cluster pillar pages linking to core commercial hubs.",
+        "Scaled high-tier contextual backlinks from DA 60+ industry portals."
+      ],
+      "results": "Achieved 1.18 Million organic clicks and 1.28 Million impressions over a 3-month performance window with a remarkable 92.4% CTR and sustained #1 average position.",
+      "metrics": {
+        "total_clicks": "1.18M",
+        "total_impressions": "1.28M",
+        "avg_ctr": "92.4%",
+        "avg_position": "1.0"
+      },
+      "duration": "3 Months"
+    },
+    {
+      "id": 8,
+      "title": "High-CTR Authority Portal: 809K Organic Clicks with Rank #1 Stability",
+      "slug": "authority-portal-809k-clicks-gsc",
+      "client_name": "Authority Web Services",
+      "website_url": "https://example-authorityportal.com",
+      "industry": "High-Traffic Web Platform",
+      "category_name": "SaaS & Enterprise SEO",
+      "featured_image": "/images/portfolio/proof_gsc_809k_clicks.jpg",
+      "summary": "Comprehensive technical SEO overhaul and rich snippets strategy generating 809,000+ organic clicks and 872,000 impressions with 92.8% CTR and #1 average ranking.",
+      "challenge": "High bounce rates and cannibalization between multiple overlapping service offerings prevented the domain from achieving peak rankings.",
+      "strategy": "Consolidated competing URLs with clean 301 redirects, rebuilt topic clusters around exact intent queries, and optimized above-the-fold content hierarchy.",
+      "implementation": [
+        "Deployed comprehensive Schema.org structured data.",
+        "Overhauled internal linking anchor equity distribution.",
+        "Pruned low-quality legacy URLs to concentrate crawl budget.",
+        "Optimized Core Web Vitals (LCP < 1.2s, INP < 100ms)."
+      ],
+      "results": "Delivered 809K total clicks, 872K impressions, 92.8% average CTR, and rock-solid #1 average position across primary target queries.",
+      "metrics": {
+        "total_clicks": "809K",
+        "total_impressions": "872K",
+        "avg_ctr": "92.8%",
+        "avg_position": "1.0"
+      },
+      "duration": "3 Months"
+    },
+    {
+      "id": 9,
+      "title": "Australian E-Commerce Brand: 85.1K Impressions Growth Surge",
+      "slug": "australia-ecommerce-organic-boost",
+      "client_name": "Australian National Brand (.com.au)",
+      "website_url": "https://example-australia-store.com.au",
+      "industry": "E-Commerce / Australia Retail",
+      "category_name": "E-Commerce SEO",
+      "featured_image": "/images/portfolio/proof_gsc_australia_growth.jpg",
+      "summary": "Rapid organic impressions surge to 85.1K impressions and 1.14K clicks across national Australian buyer search queries, moving rankings from page 2 directly into Top Tier.",
+      "challenge": "Stagnant rankings stuck on pages 2-3 of Google Australia with low search visibility against entrenched legacy retailers.",
+      "strategy": "Targeted high-converting Australian geo-intent keywords, resolved collection page crawl bloat, and earned high-tier AU domain backlinks.",
+      "implementation": [
+        "Optimized 60+ collection and product category pages.",
+        "Deployed Merchant and Offer schema for Google Shopping and organic rich badges.",
+        "Improved mobile page speed by 58% and fixed layout shifts.",
+        "Acquired 15+ Australian niche-relevant editorial links."
+      ],
+      "results": "Organic impressions surged to 85.1K with 1,140+ targeted buyer clicks, climbing steadily up the ranks to average position 15.1 with multiple Page 1 breakouts.",
+      "metrics": {
+        "total_clicks": "1.14K",
+        "total_impressions": "85.1K",
+        "avg_ctr": "1.3%",
+        "avg_position": "15.1"
+      },
+      "duration": "3 Months"
+    },
+    {
+      "id": 10,
+      "title": "Fast-Track 28-Day Growth Sprint: 30.2K Impressions for Australian Brand",
+      "slug": "australia-rapid-sprint-30k-impressions",
+      "client_name": "Australian Commerce Hub (.com.au)",
+      "website_url": "https://example-australia-apex.com.au",
+      "industry": "Australian E-Commerce (.com.au)",
+      "category_name": "E-Commerce SEO",
+      "featured_image": "/images/portfolio/proof_gsc_ecommerce_boost.jpg",
+      "summary": "Rapid 28-day growth sprint delivering 30,200 impressions and solid position gains across competitive commercial queries in record time.",
+      "challenge": "Newly launched store sections were experiencing slow Googlebot discovery and indexation delays on important commercial product offerings.",
+      "strategy": "Submitted optimized XML sitemaps via GSC API, fixed crawl errors, deployed semantic content headers with direct intent match, and executed targeted indexing signals.",
+      "implementation": [
+        "Indexed 100% of key product & category URLs within 72 hours.",
+        "Structured transactional buyer intent landing pages.",
+        "Implemented localized NAP consistency and structured business schema.",
+        "Launched rapid outreach for niche relevant signals."
+      ],
+      "results": "Attained 30.2K impressions and 363 high-intent clicks within just 28 days, achieving an average position of 13.6 with rapid upward momentum.",
+      "metrics": {
+        "total_clicks": "363",
+        "total_impressions": "30.2K",
+        "avg_ctr": "1.2%",
+        "avg_position": "13.6"
+      },
+      "duration": "28 Days"
+    }
+  ],
+  "testimonials": [
+    {
+      "id": 1,
+      "name": "Mia Collins",
+      "role": "Director, Northline Digital",
+      "rating": 5,
+      "quote": "He rebuilt our service funnel around conversions, not vanity metrics. More qualified enquiries and far less manual follow-up.",
+      "avatar": "M",
+      "image": ""
+    },
+    {
+      "id": 2,
+      "name": "Ryan Patel",
+      "role": "Co-Founder, ClickPilot Studio",
+      "rating": 5,
+      "quote": "Fast communication and a practical automation setup. Our lead handling is now smoother and much easier to track.",
+      "avatar": "R",
+      "image": ""
+    },
+    {
+      "id": 3,
+      "name": "Sophie Turner",
+      "role": "Marketing Lead, BrightPath Solutions",
+      "rating": 5,
+      "quote": "The website improvements gave us a cleaner offer, stronger CTA flow, and noticeably better lead quality.",
+      "avatar": "S",
+      "image": ""
+    },
+    {
+      "id": 4,
+      "name": "Alex Morgan",
+      "role": "Owner, ScaleForge Agency",
+      "rating": 5,
+      "quote": "Delivered exactly what was promised: automation, conversion focused pages, and reporting that shows what is actually working.",
+      "avatar": "A",
+      "image": ""
+    },
+    {
+      "id": 5,
+      "name": "Daniel Reed",
+      "role": "GrowthStack Media",
+      "rating": 5,
+      "quote": "Clear strategy, clean delivery, and better-quality leads within weeks. The KPI reporting made every decision easier.",
+      "avatar": "D",
+      "image": ""
+    },
+    {
+      "id": 6,
+      "name": "Marcus Vance",
+      "role": "Founder, CloudFlow SaaS",
+      "rating": 5,
+      "quote": "Abdullah took our SaaS platform from 4,000 monthly impressions to over 800K clicks in under 5 months. The depth of his technical audits and topic clusters is unmatched.",
+      "avatar": "M",
+      "image": ""
+    },
+    {
+      "id": 7,
+      "name": "Sarah Jenkins",
+      "role": "E-Commerce Director, Apex Retail",
+      "rating": 5,
+      "quote": "Our Shopify store organic revenue grew by 320% after implementing Abdullah e-commerce category taxonomy and schema strategies. Highly recommended!",
+      "avatar": "S",
+      "image": ""
+    },
+    {
+      "id": 8,
+      "name": "David Kim",
+      "role": "CEO, Nexus Digital Agency",
+      "rating": 5,
+      "quote": "Hands down the best SEO specialist we have partnered with. Transparent reporting, no fluff, and real Google Search Console ranking proof every single month.",
+      "avatar": "D",
+      "image": ""
+    }
   ]
 }
