@@ -51,6 +51,7 @@ export const metadata = {
     images: ["/images/seo_hero_3d.png"],
     creator: "@abdullahsaleh_seo",
   },
+  manifest: "/manifest.webmanifest",
   robots: {
     index: true,
     follow: true,
@@ -69,16 +70,48 @@ export default function RootLayout({ children }) {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "ProfessionalService",
+        "@type": ["ProfessionalService", "Organization", "LocalBusiness"],
         "@id": "https://abdullahbdseo.vercel.app/#organization",
         "name": siteSettings.site_name,
+        "alternateName": ["Abdullah BD SEO", "Best SEO Expert in Bangladesh", "Abdullah Saleh SEO"],
         "url": "https://abdullahbdseo.vercel.app",
         "logo": "https://abdullahbdseo.vercel.app/images/logo.svg",
         "image": "https://abdullahbdseo.vercel.app/images/abdullah.jpg",
         "description": siteSettings.default_meta_description,
-        "telephone": siteSettings.contact_phone,
-        "email": siteSettings.contact_email,
+        "telephone": siteSettings.contact_phone || "+8801670769816",
+        "email": siteSettings.contact_email || "abdullahbd.seo@gmail.com",
         "priceRange": "$$$",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Mirpur DOHS / Gulshan",
+          "addressLocality": "Dhaka",
+          "addressRegion": "Dhaka Division",
+          "postalCode": "1216",
+          "addressCountry": "BD"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 23.8103,
+          "longitude": 90.4125
+        },
+        "areaServed": [
+          { "@type": "Country", "name": "Bangladesh" },
+          { "@type": "Country", "name": "United States" },
+          { "@type": "Country", "name": "United Kingdom" },
+          { "@type": "Country", "name": "Canada" },
+          { "@type": "Country", "name": "Australia" },
+          { "@type": "Country", "name": "United Arab Emirates" }
+        ],
+        "knowsAbout": [
+          "Search Engine Optimization (SEO)",
+          "Technical SEO Auditing",
+          "Generative Engine Optimization (GEO)",
+          "Answer Engine Optimization (AEO)",
+          "Core Web Vitals Optimization",
+          "Local Map Pack SEO",
+          "Ecommerce SEO & Shopify Strategy",
+          "Semantic Keyword Clustering & Topic Silos"
+        ],
         "aggregateRating": {
           "@type": "AggregateRating",
           "ratingValue": "4.9",
@@ -101,9 +134,23 @@ export default function RootLayout({ children }) {
         "description": siteSettings.expert_bio,
         "url": "https://abdullahbdseo.vercel.app",
         "image": "https://abdullahbdseo.vercel.app/images/abdullah.jpg",
+        "gender": "Male",
+        "nationality": "Bangladeshi",
+        "worksFor": {
+          "@id": "https://abdullahbdseo.vercel.app/#organization"
+        },
+        "knowsAbout": [
+          "Search Engine Optimization",
+          "AI Search & LLM Retrieval",
+          "Technical SEO Engineering",
+          "Google Search Console & Analytics",
+          "E-Commerce Organic Scaling"
+        ],
         "sameAs": [
           siteSettings.social_linkedin,
-          siteSettings.social_twitter
+          siteSettings.social_twitter,
+          siteSettings.social_github,
+          siteSettings.social_youtube
         ].filter(Boolean)
       },
       {
