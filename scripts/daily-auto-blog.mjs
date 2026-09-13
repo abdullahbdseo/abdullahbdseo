@@ -301,6 +301,7 @@ export function runDailyBlogEngine() {
     throw new Error("Could not find 'export const blogPosts = [' in lib/data.js");
   }
 
+  // Update lib/data.js
   dataJsContent = dataJsContent.replace(
     replaceTarget,
     `${replaceTarget}\n${newPostObject}`
@@ -308,6 +309,43 @@ export function runDailyBlogEngine() {
 
   fs.writeFileSync(dataJsPath, dataJsContent, "utf-8");
   console.log(`[Daily Blog Engine] Successfully added "${selectedTopic.title}" to lib/data.js!`);
+
+  // Also synchronize lib/cms-data.json so Admin CMS immediately has it
+  const cmsJsonPath = path.join(__dirname, "..", "lib", "cms-data.json");
+  if (fs.existsSync(cmsJsonPath)) {
+    try {
+      const cmsJson = JSON.parse(fs.readFileSync(cmsJsonPath, "utf-8"));
+      if (Array.isArray(cmsJson.blogPosts)) {
+        const fullPostObj = {
+          id: Date.now(),
+          title: selectedTopic.title,
+          slug: selectedTopic.slug,
+          category: selectedTopic.category,
+          publish_date: todayStr,
+          date: todayStr,
+          read_time: selectedTopic.read_time,
+          featured_image: selectedTopic.featured_image,
+          image: selectedTopic.featured_image,
+          summary: selectedTopic.summary,
+          excerpt: selectedTopic.summary,
+          tags: selectedTopic.tags,
+          author: {
+            name: "Abdullah Saleh",
+            role: "Lead SEO Strategist & AI Search Architect",
+            bio: "Abdullah Saleh is an Organic Business Growth Specialist and Technical SEO Expert helping global brands achieve #1 Google rankings.",
+            avatar: "/images/abdullah.jpg"
+          },
+          content: generateHtmlContent(selectedTopic)
+        };
+        cmsJson.blogPosts.unshift(fullPostObj);
+        fs.writeFileSync(cmsJsonPath, JSON.stringify(cmsJson, null, 2), "utf-8");
+        console.log(`[Daily Blog Engine] Synchronized post with lib/cms-data.json!`);
+      }
+    } catch (e) {
+      console.warn("Could not sync cms-data.json:", e.message);
+    }
+  }
+
   return { success: true, post: selectedTopic };
 }
 

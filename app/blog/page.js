@@ -11,10 +11,10 @@ export default function BlogPage() {
 
   const categories = [
     { id: "all", name: "All Topics" },
-    { id: "AI & Search Evolution", name: "AI & Search Evolution" },
-    { id: "Technical SEO", name: "Technical SEO" },
-    { id: "Keyword Research", name: "Keyword Research" },
-    { id: "E-Commerce SEO", name: "E-Commerce SEO" }
+    ...Array.from(new Set(blogPosts.map((p) => p.category).filter(Boolean))).map((cat) => ({
+      id: cat,
+      name: cat,
+    })),
   ];
 
   const filteredPosts = blogPosts.filter((post) => {
