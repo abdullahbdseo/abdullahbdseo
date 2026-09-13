@@ -19,8 +19,15 @@ export const metadata = {
     },
   },
   icons: {
-    icon: "/images/favicon.svg",
-    apple: "/images/logo-icon.svg"
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/images/favicon.png", type: "image/png", sizes: "192x192" },
+      { url: "/images/favicon.svg", type: "image/svg+xml" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: [
+      { url: "/images/logo-icon.png", sizes: "180x180", type: "image/png" },
+    ],
   },
   openGraph: {
     title: `${siteSettings.site_name} | ${siteSettings.site_tagline}`,
@@ -104,6 +111,7 @@ export default function RootLayout({ children }) {
         "@id": "https://abdullahbdseo.vercel.app/#website",
         "url": "https://abdullahbdseo.vercel.app",
         "name": siteSettings.site_name,
+        "alternateName": ["Abdullah BD SEO", "Abdullah Saleh SEO", "abdullahbdseo"],
         "description": siteSettings.default_meta_description,
         "publisher": {
           "@id": "https://abdullahbdseo.vercel.app/#organization"
@@ -172,6 +180,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/images/favicon.png" type="image/png" sizes="192x192" />
+        <link rel="apple-touch-icon" href="/images/logo-icon.png" sizes="180x180" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link

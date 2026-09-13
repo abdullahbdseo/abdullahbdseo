@@ -10,6 +10,15 @@ const navGroups = [
     label: "Overview",
     items: [
       { href: "/admin", label: "Dashboard", icon: "fa-chart-pie", exact: true },
+      { href: "/admin/analytics", label: "Analytics & Logs", icon: "fa-chart-line" },
+    ],
+  },
+  {
+    label: "Leads & Orders",
+    items: [
+      { href: "/admin/leads", label: "Leads & Inquiries", icon: "fa-envelope-open-text" },
+      { href: "/admin/orders", label: "Client Orders", icon: "fa-cart-shopping" },
+      { href: "/admin/invoices", label: "Invoices & Billing", icon: "fa-file-invoice-dollar" },
     ],
   },
   {
@@ -20,13 +29,6 @@ const navGroups = [
       { href: "/admin/pricing", label: "Pricing Tables", icon: "fa-tags" },
       { href: "/admin/faqs", label: "FAQs Manager", icon: "fa-circle-question" },
       { href: "/admin/tools", label: "Free SEO Tools", icon: "fa-screwdriver-wrench" },
-    ],
-  },
-  {
-    label: "Orders & Finance",
-    items: [
-      { href: "/admin/orders", label: "Client Orders", icon: "fa-cart-shopping" },
-      { href: "/admin/invoices", label: "Invoices & Billing", icon: "fa-file-invoice-dollar" },
     ],
   },
   {

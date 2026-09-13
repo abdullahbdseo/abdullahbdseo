@@ -29,13 +29,17 @@ export default function AdminDashboardPage() {
         </div>
 
         <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-          <Link href="/admin/orders" className="btn-admin btn-admin-primary">
-            <i className="fa-solid fa-cart-shopping"></i>
-            <span>Manage Orders</span>
+          <Link href="/admin/leads" className="btn-admin btn-admin-primary">
+            <i className="fa-solid fa-envelope-open-text"></i>
+            <span>Inbound Leads</span>
           </Link>
-          <Link href="/admin/blogs" className="btn-admin btn-admin-outline">
-            <i className="fa-solid fa-pen-to-square"></i>
-            <span>New Blog</span>
+          <Link href="/admin/orders" className="btn-admin btn-admin-outline">
+            <i className="fa-solid fa-cart-shopping"></i>
+            <span>Client Orders</span>
+          </Link>
+          <Link href="/admin/analytics" className="btn-admin btn-admin-outline">
+            <i className="fa-solid fa-chart-line"></i>
+            <span>Analytics</span>
           </Link>
         </div>
       </div>
@@ -88,9 +92,9 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Inbound Inquiries */}
-        <div className="admin-stat-glass-card">
+        <Link href="/admin/leads" className="admin-stat-glass-card" style={{ textDecoration: "none" }}>
           <div className="admin-stat-top">
-            <span className="admin-stat-label">Consultations</span>
+            <span className="admin-stat-label">Consultations & Leads</span>
             <div className="admin-stat-icon-wrap icon-amber">
               <i className="fa-solid fa-envelope-open-text"></i>
             </div>
@@ -98,9 +102,9 @@ export default function AdminDashboardPage() {
           <div className="admin-stat-value">{inquiries.length}</div>
           <div className="admin-stat-footer">
             <span style={{ color: "#d97706", fontWeight: 700 }}>Active</span>
-            <span>Contact & audit leads</span>
+            <span>Click to manage leads &rarr;</span>
           </div>
-        </div>
+        </Link>
       </div>
 
       {/* 3. QUICK ACTIONS BAR */}
@@ -109,6 +113,14 @@ export default function AdminDashboardPage() {
           Quick CMS Operations
         </div>
         <div className="admin-quick-actions">
+          <Link href="/admin/leads" className="admin-action-btn">
+            <i className="fa-solid fa-envelope-open-text" style={{ color: "#2563eb" }}></i>
+            <div>
+              <div>Leads & Inquiries</div>
+              <div style={{ fontSize: "11px", color: "#64748b", fontWeight: "normal" }}>WhatsApp, follow-ups & CSV</div>
+            </div>
+          </Link>
+
           <Link href="/admin/orders" className="admin-action-btn">
             <i className="fa-solid fa-list-check"></i>
             <div>
@@ -125,19 +137,11 @@ export default function AdminDashboardPage() {
             </div>
           </Link>
 
-          <Link href="/admin/services" className="admin-action-btn">
-            <i className="fa-solid fa-layer-group" style={{ color: "#0891b2" }}></i>
+          <Link href="/admin/analytics" className="admin-action-btn">
+            <i className="fa-solid fa-chart-line" style={{ color: "#059669" }}></i>
             <div>
-              <div>Services & Packages</div>
-              <div style={{ fontSize: "11px", color: "#64748b", fontWeight: "normal" }}>Edit deliverables & tiers</div>
-            </div>
-          </Link>
-
-          <Link href="/admin/settings" className="admin-action-btn">
-            <i className="fa-solid fa-sliders" style={{ color: "#d97706" }}></i>
-            <div>
-              <div>Site & Meta Settings</div>
-              <div style={{ fontSize: "11px", color: "#64748b", fontWeight: "normal" }}>Branding, Contact & Schema</div>
+              <div>SEO Tools Analytics</div>
+              <div style={{ fontSize: "11px", color: "#64748b", fontWeight: "normal" }}>Tool runs & audit trail</div>
             </div>
           </Link>
         </div>
