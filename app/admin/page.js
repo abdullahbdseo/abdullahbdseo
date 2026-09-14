@@ -423,7 +423,11 @@ export default function AdminDashboardPage() {
                         </Link>
 
                         <button
-                          onClick={() => setDeleteId(order.id)}
+                          onClick={() => {
+                            if (window.confirm(`Are you sure you want to permanently delete order ${order.order_number}?`)) {
+                              handleDeleteOrder(order.id);
+                            }
+                          }}
                           title="Delete Order"
                           className="btn-admin btn-admin-outline btn-admin-sm"
                           style={{ padding: "5px 9px", color: "#ef4444" }}
