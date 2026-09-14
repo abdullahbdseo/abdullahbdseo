@@ -3,9 +3,12 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { blogPosts, siteSettings } from "@/lib/data";
+import { blogPosts as staticBlogPosts, siteSettings as staticSiteSettings } from "@/lib/data";
+import { useLiveCMS } from "@/lib/useLiveCMS";
 
 export default function BlogPage() {
+  const blogPosts = useLiveCMS("blogPosts", staticBlogPosts) || staticBlogPosts;
+  const siteSettings = useLiveCMS("siteSettings", staticSiteSettings) || staticSiteSettings;
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
 

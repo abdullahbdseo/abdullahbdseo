@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { siteSettings, testimonials } from "@/lib/data";
+import { siteSettings as staticSiteSettings, testimonials as staticTestimonials } from "@/lib/data";
+import { useLiveCMS } from "@/lib/useLiveCMS";
 
 const fallbackReviews = [
   {
@@ -42,6 +43,9 @@ const fallbackReviews = [
 ];
 
 export default function AboutPage() {
+  const siteSettings = useLiveCMS("siteSettings", staticSiteSettings) || staticSiteSettings;
+  const testimonials = useLiveCMS("testimonials", staticTestimonials) || staticTestimonials;
+
   return (
     <div className="about-page-wrapper">
       <div className="container" style={{ maxWidth: "1240px", margin: "0 auto", padding: "0 20px" }}>

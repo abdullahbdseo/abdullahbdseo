@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { siteSettings, services, globalFaqs, testimonials } from "@/lib/data";
+import { siteSettings as staticSettings, services as staticServices, globalFaqs as staticFaqs, testimonials as staticTestimonials } from "@/lib/data";
+import { useLiveCMS } from "@/lib/useLiveCMS";
 import QuoteModal from "@/components/QuoteModal";
 import ServiceOrderModal from "@/components/ServiceOrderModal";
 
@@ -67,6 +68,11 @@ const fallbackReviews = [
 ];
 
 export default function HomePage() {
+  const siteSettings = useLiveCMS("siteSettings", staticSettings) || staticSettings;
+  const services = useLiveCMS("services", staticServices) || staticServices;
+  const globalFaqs = useLiveCMS("faqs", staticFaqs) || staticFaqs;
+  const testimonials = useLiveCMS("testimonials", staticTestimonials) || staticTestimonials;
+
   const [isQuoteOpen, setIsQuoteOpen] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
   const [selectedPackage, setSelectedPackage] = useState(null);

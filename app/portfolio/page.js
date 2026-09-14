@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { caseStudies } from "@/lib/data";
+import { caseStudies as staticCaseStudies } from "@/lib/data";
+import { useLiveCMS } from "@/lib/useLiveCMS";
 
 export default function PortfolioPage() {
+  const caseStudies = useLiveCMS("caseStudies", staticCaseStudies) || staticCaseStudies;
   const [activeCategory, setActiveCategory] = useState("all");
   const [viewMode, setViewMode] = useState("carousel"); // 'carousel' | 'grid'
   const [currentSlide, setCurrentSlide] = useState(0);

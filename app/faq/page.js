@@ -2,9 +2,12 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
-import { faqs, siteSettings } from "@/lib/data";
+import { faqs as staticFaqs, siteSettings as staticSiteSettings } from "@/lib/data";
+import { useLiveCMS } from "@/lib/useLiveCMS";
 
 export default function FaqPage() {
+  const faqs = useLiveCMS("faqs", staticFaqs) || staticFaqs;
+  const siteSettings = useLiveCMS("siteSettings", staticSiteSettings) || staticSiteSettings;
   const [searchTerm, setSearchTerm] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
   const [activeFaq, setActiveFaq] = useState(1); // open first FAQ by default for great UX

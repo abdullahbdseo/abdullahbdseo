@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { services } from "@/lib/data";
+import { services as staticServices } from "@/lib/data";
+import { useLiveCMS } from "@/lib/useLiveCMS";
 import ServiceOrderModal from "@/components/ServiceOrderModal";
 
 export default function ServicesPage() {
+  const services = useLiveCMS("services", staticServices) || staticServices;
   const [selectedService, setSelectedService] = useState(null);
   const [selectedPackage, setSelectedPackage] = useState(null);
 

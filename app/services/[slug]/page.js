@@ -3,13 +3,16 @@
 import { use, useState } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { services, siteSettings } from "@/lib/data";
+import { services as staticServices, siteSettings as staticSiteSettings } from "@/lib/data";
+import { useLiveCMS } from "@/lib/useLiveCMS";
 import ServiceOrderModal from "@/components/ServiceOrderModal";
 import ServiceProofSection from "@/components/ServiceProofSection";
 
 export default function SingleServicePage({ params }) {
   const unwrappedParams = use(params);
-  const service = services.find((s) => s.slug === unwrappedParams.slug);
+  const liveServices = useLiveCMS("services", staticServices) || staticServices;
+  const siteSettings = useLiveCMS("siteSettings", staticSiteSettings) || staticSiteSettings;
+  const service = liveServices.find((s) => s.slug === unwrappedParams.slug) || staticServices.find((s) => s.slug === unwrappedParams.slug);
 
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
