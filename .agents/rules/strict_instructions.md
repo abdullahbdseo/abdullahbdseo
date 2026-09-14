@@ -1,7 +1,7 @@
 ---
 trigger: always_on
 ---
-# Coding & Execution Rules
+# Policy: ZERO-TOUCH-PROTOCOL (Strict Zero-Modification Rules)
 
 - **Zero Unrequested Changes**: Do not change, edit, modify, or alter any part of the website, code, styles, pages, layout, or database unless explicitly asked and directly instructed by the user.
 - **Do not add any extra code or scripts at any time.**
