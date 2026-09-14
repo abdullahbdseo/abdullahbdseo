@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
+import { db, isFirebaseConfigured } from "@/lib/firebase";
+import { doc, getDoc, setDoc, getDocs, collection } from "firebase/firestore";
 
 const CMS_JSON_FILE = path.join(process.cwd(), "lib", "cms-data.json");
 const DATA_JS_FILE = path.join(process.cwd(), "lib", "data.js");
@@ -76,7 +78,6 @@ function serializeJS(val, depth) {
   if (typeof val === "number") return String(val);
 
   if (typeof val === "string") {
-    // Use template literal for strings with newlines or HTML tags
     if (val.includes("\n") || val.includes("<") || val.includes(">") || val.includes('"')) {
       const escaped = val.replace(/\\/g, "\\\\").replace(/`/g, "\\`").replace(/\$\{/g, "\\${");
       return `\`${escaped}\``;
@@ -100,21 +101,41 @@ function serializeJS(val, depth) {
   return JSON.stringify(val);
 }
 
-// GET: Return CMS data as JSON
+// GET: Return CMS data from Firestore (if configured) or local file
 export async function GET(request) {
   if (!checkAuth(request)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   try {
-    const data = readCMSData();
-    return NextResponse.json({ success: true, data });
+    let localData = readCMSData();
+
+    // Check Cloud Firestore if configured
+    if (isFirebaseConfigured() && db) {
+      try {
+        const querySnapshot = await getDocs(collection(db, "cms_content"));
+        if (!querySnapshot.empty) {
+          const cloudData = { ...localData };
+          querySnapshot.forEach((docSnap) => {
+            const docData = docSnap.data();
+            if (docData && docData.value !== undefined) {
+              cloudData[docSnap.id] = docData.value;
+            }
+          });
+          return NextResponse.json({ success: true, data: cloudData, source: "firestore" });
+        }
+      } catch (fbErr) {
+        console.warn("Firestore fetch error, falling back to local:", fbErr.message);
+      }
+    }
+
+    return NextResponse.json({ success: true, data: localData, source: "local" });
   } catch (err) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
 
-// POST: Update a section in CMS data and write back to both JSON + data.js
+// POST: Update a section in CMS data (Cloud Firestore + local files)
 export async function POST(request) {
   if (!checkAuth(request)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -132,14 +153,34 @@ export async function POST(request) {
       Object.assign(currentData, body.data);
     }
 
-    // Write JSON file (primary store)
+    // 1. Write to Firebase Cloud Firestore if configured
+    let savedToCloud = false;
+    if (isFirebaseConfigured() && db) {
+      try {
+        if (section && value !== undefined) {
+          const docRef = doc(db, "cms_content", section);
+          await setDoc(docRef, { value, updatedAt: new Date().toISOString() });
+          savedToCloud = true;
+        } else if (body.data) {
+          for (const key of Object.keys(body.data)) {
+            const docRef = doc(db, "cms_content", key);
+            await setDoc(docRef, { value: body.data[key], updatedAt: new Date().toISOString() });
+          }
+          savedToCloud = true;
+        }
+      } catch (fbErr) {
+        console.warn("Firestore save error:", fbErr.message);
+      }
+    }
+
+    // 2. Write JSON file (local disk)
     try {
       writeCMSData(currentData);
     } catch (fsErr) {
       console.warn("Could not update cms-data.json on disk (e.g. read-only serverless):", fsErr.message);
     }
 
-    // Also try to rebuild data.js (best effort)
+    // 3. Rebuild data.js (best effort)
     try {
       const newDataJs = rebuildDataJs(currentData);
       fs.writeFileSync(DATA_JS_FILE, newDataJs, "utf-8");
@@ -149,7 +190,8 @@ export async function POST(request) {
 
     return NextResponse.json({
       success: true,
-      message: `${section || "Data"} updated and saved successfully!`,
+      message: `${section || "Data"} updated and saved successfully!${savedToCloud ? " (Synced to Firestore)" : ""}`,
+      cloudSynced: savedToCloud,
     });
   } catch (err) {
     return NextResponse.json({ error: err.message }, { status: 500 });

@@ -10,6 +10,7 @@
     "auto-blog": "node scripts/daily-auto-blog.mjs"
   },
   "dependencies": {
+    "firebase": "^12.19.0",
     "next": "^15.1.0",
     "nodemailer": "^10.0.3",
     "react": "^19.0.0",
