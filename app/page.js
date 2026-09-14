@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
-import { siteSettings as staticSettings, services as staticServices, globalFaqs as staticFaqs, testimonials as staticTestimonials } from "@/lib/data";
+import { siteSettings as staticSettings, services as staticServices, faqs as staticFaqs, globalFaqs as staticGlobalFaqs, testimonials as staticTestimonials } from "@/lib/data";
 import { useLiveCMS } from "@/lib/useLiveCMS";
 import QuoteModal from "@/components/QuoteModal";
 import ServiceOrderModal from "@/components/ServiceOrderModal";
@@ -70,7 +69,8 @@ const fallbackReviews = [
 export default function HomePage() {
   const siteSettings = useLiveCMS("siteSettings", staticSettings) || staticSettings;
   const services = useLiveCMS("services", staticServices) || staticServices;
-  const globalFaqs = useLiveCMS("faqs", staticFaqs) || staticFaqs;
+  const rawFaqs = useLiveCMS("faqs", staticFaqs) || staticFaqs || staticGlobalFaqs;
+  const globalFaqs = (Array.isArray(rawFaqs) && rawFaqs.length > 0) ? rawFaqs : (staticFaqs || staticGlobalFaqs || []);
   const testimonials = useLiveCMS("testimonials", staticTestimonials) || staticTestimonials;
 
   const [isQuoteOpen, setIsQuoteOpen] = useState(false);
@@ -887,11 +887,13 @@ export default function HomePage() {
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-            {globalFaqs.map((faq, idx) => {
+            {globalFaqs.slice(0, 8).map((faq, idx) => {
               const isOpen = openFaq === idx;
+              const questionText = faq.question || faq.q || "";
+              const answerText = faq.answer || faq.a || "";
               return (
                 <div
-                  key={idx}
+                  key={faq.id || idx}
                   style={{
                     background: "#ffffff",
                     border: isOpen ? "1.5px solid #4361ee" : "1px solid #e2e8f0",
@@ -918,7 +920,7 @@ export default function HomePage() {
                     }}
                   >
                     <span style={{ fontSize: "1.05rem", fontWeight: 700, color: isOpen ? "#4361ee" : "#0f172a" }}>
-                      {faq.q}
+                      {questionText}
                     </span>
                     <i
                       className={`fa-solid ${isOpen ? "fa-chevron-up" : "fa-chevron-down"}`}
@@ -928,7 +930,7 @@ export default function HomePage() {
 
                   {isOpen && (
                     <div style={{ padding: "18px 22px 22px", color: "#475569", fontSize: "0.98rem", lineHeight: 1.75, borderTop: "1px solid #f1f5f9" }}>
-                      {faq.a}
+                      {answerText}
                     </div>
                   )}
                 </div>
