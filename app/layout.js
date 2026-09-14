@@ -20,9 +20,9 @@ export const metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon.ico", sizes: "48x48", type: "image/x-icon" },
       { url: "/images/favicon.png", type: "image/png", sizes: "192x192" },
-      { url: "/images/favicon.svg", type: "image/svg+xml" },
+      { url: "/images/favicon.svg", type: "image/svg+xml", sizes: "any" },
     ],
     shortcut: "/favicon.ico",
     apple: [
