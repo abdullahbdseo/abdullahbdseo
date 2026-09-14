@@ -6,7 +6,7 @@ export const revalidate = 0;
 
 export async function GET() {
   try {
-    const orders = DB.getOrders();
+    const orders = await DB.getOrders();
     return NextResponse.json({ success: true, orders });
   } catch (error) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
@@ -16,8 +16,8 @@ export async function GET() {
 export async function POST(req) {
   try {
     const data = await req.json();
-    const newOrder = DB.createOrder(data);
-    DB.addAuditLog({
+    const newOrder = await DB.createOrder(data);
+    await DB.addAuditLog({
       action: "order_created",
       description: `New order ${newOrder.order_number} created manually by Admin`
     });
@@ -34,8 +34,8 @@ export async function PATCH(req) {
     if (!id) {
       return NextResponse.json({ success: false, error: "Order ID required" }, { status: 400 });
     }
-    const updated = DB.updateOrder(id, data);
-    DB.addAuditLog({
+    const updated = await DB.updateOrder(id, data);
+    await DB.addAuditLog({
       action: "order_updated",
       description: `Order #${id} (${updated?.order_number || ""}) was updated by Admin`
     });
@@ -52,8 +52,8 @@ export async function DELETE(req) {
     if (!id) {
       return NextResponse.json({ success: false, error: "Order ID required" }, { status: 400 });
     }
-    DB.deleteOrder(id);
-    DB.addAuditLog({
+    await DB.deleteOrder(id);
+    await DB.addAuditLog({
       action: "order_deleted",
       description: `Order #${id} was deleted by Admin`
     });

@@ -6,8 +6,8 @@ export const revalidate = 0;
 
 export async function GET(request) {
   try {
-    const inquiries = DB.getInquiries();
-    const leads = DB.getLeads();
+    const inquiries = await DB.getInquiries();
+    const leads = await DB.getLeads();
     return NextResponse.json({
       success: true,
       inquiries,
@@ -28,15 +28,15 @@ export async function PATCH(request) {
     }
 
     if (type === "lead") {
-      const updated = DB.updateLead(id, updateData);
-      DB.addAuditLog({
+      const updated = await DB.updateLead(id, updateData);
+      await DB.addAuditLog({
         action: "lead_updated",
         description: `Lead #${id} was updated`
       });
       return NextResponse.json({ success: true, item: updated });
     } else {
-      const updated = DB.updateInquiry(id, updateData);
-      DB.addAuditLog({
+      const updated = await DB.updateInquiry(id, updateData);
+      await DB.addAuditLog({
         action: "inquiry_updated",
         description: `Inquiry #${id} was updated`
       });
@@ -58,14 +58,14 @@ export async function DELETE(request) {
     }
 
     if (type === "lead") {
-      DB.deleteLead(id);
-      DB.addAuditLog({
+      await DB.deleteLead(id);
+      await DB.addAuditLog({
         action: "lead_deleted",
         description: `Lead #${id} was deleted`
       });
     } else {
-      DB.deleteInquiry(id);
-      DB.addAuditLog({
+      await DB.deleteInquiry(id);
+      await DB.addAuditLog({
         action: "inquiry_deleted",
         description: `Inquiry #${id} was deleted`
       });

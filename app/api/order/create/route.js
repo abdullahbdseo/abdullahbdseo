@@ -13,7 +13,7 @@ export async function POST(req) {
       }, { status: 400 });
     }
 
-    const newOrder = DB.createOrder({
+    const newOrder = await DB.createOrder({
       service_id: data.service_id || null,
       service_title: data.service_title || "Custom SEO Deliverable",
       package_name: data.package_name || "Custom Scope",
@@ -32,7 +32,7 @@ export async function POST(req) {
     });
 
     // Also record in inquiries table for unified admin tracking
-    DB.createInquiry({
+    await DB.createInquiry({
       name: data.client_name,
       email: data.client_email,
       phone: data.client_phone || data.phone || "",

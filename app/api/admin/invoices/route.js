@@ -6,7 +6,7 @@ export const revalidate = 0;
 
 export async function GET() {
   try {
-    const invoices = DB.getInvoices();
+    const invoices = await DB.getInvoices();
     return NextResponse.json({ success: true, invoices });
   } catch (error) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
@@ -33,8 +33,8 @@ export async function PATCH(req) {
       if (status === "paid") updateData.status = "completed";
     }
 
-    const updated = DB.updateOrder(id, updateData);
-    DB.addAuditLog({
+    const updated = await DB.updateOrder(id, updateData);
+    await DB.addAuditLog({
       action: "invoice_updated",
       description: `Invoice #${id} was updated by Admin`
     });
@@ -52,8 +52,8 @@ export async function DELETE(req) {
     if (!id) {
       return NextResponse.json({ success: false, error: "Invoice ID required" }, { status: 400 });
     }
-    DB.deleteOrder(id);
-    DB.addAuditLog({
+    await DB.deleteOrder(id);
+    await DB.addAuditLog({
       action: "invoice_deleted",
       description: `Invoice #${id} was deleted by Admin`
     });

@@ -3,10 +3,10 @@ import { DB } from "@/lib/db";
 
 export async function GET() {
   try {
-    const orders = DB.getOrders();
-    const inquiries = DB.getInquiries();
-    const leads = DB.getLeads();
-    const auditLogs = DB.getAuditLogs();
+    const orders = await DB.getOrders();
+    const inquiries = await DB.getInquiries();
+    const leads = await DB.getLeads();
+    const auditLogs = await DB.getAuditLogs();
 
     const totalRevenue = orders.reduce((sum, o) => sum + (o.total || 0), 0);
     const completedOrders = orders.filter(o => o.status === "completed").length;

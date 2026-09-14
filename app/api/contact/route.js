@@ -9,7 +9,7 @@ export async function POST(req) {
       return NextResponse.json({ success: false, error: "Name and Email are required" }, { status: 400 });
     }
 
-    const inquiry = DB.createInquiry({
+    const inquiry = await DB.createInquiry({
       name: data.name,
       email: data.email,
       phone: data.phone || "",
