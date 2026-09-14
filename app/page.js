@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { siteSettings as staticSettings, services as staticServices, faqs as staticFaqs, globalFaqs as staticGlobalFaqs, testimonials as staticTestimonials } from "@/lib/data";
 import { useLiveCMS } from "@/lib/useLiveCMS";
 import QuoteModal from "@/components/QuoteModal";
