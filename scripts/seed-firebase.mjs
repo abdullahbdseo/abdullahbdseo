@@ -10,8 +10,23 @@ import { getFirestore, doc, setDoc } from "firebase/firestore";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const cmsJsonPath = path.join(__dirname, "..", "lib", "cms-data.json");
+const envLocalPath = path.join(__dirname, "..", ".env.local");
 
-// Read Firebase config from environment or .env.local
+// Load .env.local into process.env if available
+if (fs.existsSync(envLocalPath)) {
+  const envContent = fs.readFileSync(envLocalPath, "utf-8");
+  envContent.split("\n").forEach((line) => {
+    const trimmed = line.trim();
+    if (trimmed && !trimmed.startsWith("#")) {
+      const [key, ...valParts] = trimmed.split("=");
+      if (key && valParts.length > 0) {
+        process.env[key.trim()] = valParts.join("=").trim();
+      }
+    }
+  });
+}
+
+// Read Firebase config from environment
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
