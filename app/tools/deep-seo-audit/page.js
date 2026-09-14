@@ -370,12 +370,38 @@ export default function DeepSEOAuditPage() {
       await new Promise(r => setTimeout(r, 250 + Math.random() * 200));
     }
     try {
-      const resp = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(target)}`);
-      if (!resp.ok) throw new Error('Could not reach the URL. Make sure it is publicly accessible.');
-      const data = await resp.json();
+      let pageHtml = "";
+      // 1. Try server-side internal API proxy
+      try {
+        const resp = await fetch('/api/tools/seo-analyze', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: target })
+        });
+        const data = await resp.json();
+        if (resp.ok && data.html) {
+          pageHtml = data.html;
+        } else if (data.error) {
+          throw new Error(data.error);
+        }
+      } catch (serverErr) {
+        // 2. Fallback to external proxy if server route is unreachable
+        const fallbackResp = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(target)}`);
+        if (fallbackResp.ok) {
+          const fbData = await fallbackResp.json();
+          pageHtml = fbData.contents || '';
+        } else {
+          throw new Error(serverErr.message || 'Could not reach the URL. Make sure it is publicly accessible.');
+        }
+      }
+
+      if (!pageHtml) {
+        throw new Error('Could not retrieve HTML content for the requested website.');
+      }
+
       setProgressLabel('Finalizing report…'); setProgress(96);
       await new Promise(r => setTimeout(r, 300));
-      const audit = analyzeHTML(data.contents || '', target);
+      const audit = analyzeHTML(pageHtml, target);
       setResults(audit); setProgress(100); setProgressLabel('Done!');
     } catch (err) {
       setError(err.message || 'Failed to audit. The site may block external requests.');

@@ -16,17 +16,24 @@ export async function POST(req) {
     let html = "";
     let statusCode = 200;
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 12000);
       const response = await fetch(targetUrl, {
+        signal: controller.signal,
+        redirect: "follow",
         headers: {
-          "User-Agent": "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+          "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+          "Accept-Language": "en-US,en;q=0.9"
         }
       });
+      clearTimeout(timeoutId);
       statusCode = response.status;
       html = await response.text();
     } catch (e) {
       return NextResponse.json({
         success: false,
-        error: `Could not fetch page HTML: ${e.message}`
+        error: `Could not fetch page: ${e.message}`
       }, { status: 502 });
     }
 
@@ -140,7 +147,8 @@ export async function POST(req) {
         image: ogImageMatch ? ogImageMatch[1] : null
       },
       issues,
-      passed
+      passed,
+      html
     });
   } catch (error) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
