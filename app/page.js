@@ -269,6 +269,9 @@ export default function HomePage() {
               <div className="authority-badge">
                 <i className="fa-brands fa-shopify" style={{ color: "#95BF47" }}></i> Shopify &amp; WP
               </div>
+              <div className="authority-badge">
+                <i className="fa-brands fa-wix" style={{ color: "#0C6EFC" }}></i> Wix
+              </div>
             </div>
           </div>
         </div>
