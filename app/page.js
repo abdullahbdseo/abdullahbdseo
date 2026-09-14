@@ -824,34 +824,38 @@ export default function HomePage() {
               <div className="marquee-track">
                 {(() => {
                   const reviewsList = (testimonials && testimonials.length > 0) ? testimonials : fallbackReviews;
-                  return [...reviewsList, ...reviewsList].map((rev, idx) => (
-                    <div key={idx} className="marquee-review-card">
-                      <div>
-                        <div className="card-stars-row" aria-label={`${rev.rating} out of 5 stars`}>
-                          {[1, 2, 3, 4, 5].map((star) => (
-                            <i
-                              key={star}
-                              className="fa-solid fa-star"
-                              style={{
-                                color: star <= rev.rating ? "#fbbf24" : "#e2e8f0",
-                                fontSize: "0.85rem",
-                              }}
-                            ></i>
-                          ))}
-                        </div>
-                        <p className="card-quote-body">
-                          &ldquo;{rev.quote}&rdquo;
-                        </p>
-                      </div>
-                      <div className="card-bottom-row">
+                  return [...reviewsList, ...reviewsList].map((rev, idx) => {
+                    const reviewQuote = rev.content || rev.quote || rev.text || "";
+                    const authorAvatar = rev.avatar || (rev.name ? rev.name.charAt(0) : "★");
+                    return (
+                      <div key={idx} className="marquee-review-card">
                         <div>
-                          <h3 className="card-author-name">{rev.name}</h3>
-                          <p className="card-author-title">{rev.role}</p>
+                          <div className="card-stars-row" aria-label={`${rev.rating || 5} out of 5 stars`}>
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <i
+                                key={star}
+                                className="fa-solid fa-star"
+                                style={{
+                                  color: star <= (rev.rating || 5) ? "#fbbf24" : "#e2e8f0",
+                                  fontSize: "0.85rem",
+                                }}
+                              ></i>
+                            ))}
+                          </div>
+                          <p className="card-quote-body">
+                            &ldquo;{reviewQuote}&rdquo;
+                          </p>
                         </div>
-                        <div className="card-avatar-badge">{rev.avatar || rev.name?.charAt(0) || "A"}</div>
+                        <div className="card-bottom-row">
+                          <div>
+                            <h3 className="card-author-name">{rev.name}</h3>
+                            <p className="card-author-title">{rev.role}</p>
+                          </div>
+                          <div className="card-avatar-badge">{authorAvatar}</div>
+                        </div>
                       </div>
-                    </div>
-                  ));
+                    );
+                  });
                 })()}
               </div>
             </div>
