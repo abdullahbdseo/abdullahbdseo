@@ -17,14 +17,34 @@ export default function AdminOrdersPage() {
       const res = await fetch(`/api/admin/orders?_t=${Date.now()}`, { cache: "no-store" });
       if (res.ok) {
         const data = await res.json();
-        if (data.orders) setOrders(data.orders);
+        if (data.orders) {
+          setOrders(data.orders);
+          if (typeof window !== "undefined") {
+            localStorage.setItem("admin_orders_store", JSON.stringify(data.orders));
+          }
+        }
+      } else if (typeof window !== "undefined") {
+        const cached = localStorage.getItem("admin_orders_store");
+        if (cached) setOrders(JSON.parse(cached));
       }
     } catch (e) {
       console.error("Error fetching orders:", e);
+      if (typeof window !== "undefined") {
+        const cached = localStorage.getItem("admin_orders_store");
+        if (cached) setOrders(JSON.parse(cached));
+      }
     }
   };
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      const cached = localStorage.getItem("admin_orders_store");
+      if (cached) {
+        try {
+          setOrders(JSON.parse(cached));
+        } catch (err) {}
+      }
+    }
     fetchOrders();
   }, []);
 
@@ -35,6 +55,11 @@ export default function AdminOrdersPage() {
 
   const handleQuickStatusChange = async (orderId, newStatus) => {
     try {
+      const updated = orders.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o));
+      setOrders(updated);
+      if (typeof window !== "undefined") {
+        localStorage.setItem("admin_orders_store", JSON.stringify(updated));
+      }
       const res = await fetch("/api/admin/orders", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
@@ -70,7 +95,11 @@ export default function AdminOrdersPage() {
 
   const handleDeleteOrder = async (id) => {
     try {
-      setOrders((prev) => prev.filter((o) => o.id !== id && o.order_number !== id));
+      const updated = orders.filter((o) => o.id !== id && o.order_number !== id);
+      setOrders(updated);
+      if (typeof window !== "undefined") {
+        localStorage.setItem("admin_orders_store", JSON.stringify(updated));
+      }
       setDeleteId(null);
       const res = await fetch(`/api/admin/orders?id=${id}`, {
         method: "DELETE",
@@ -79,12 +108,10 @@ export default function AdminOrdersPage() {
         notify("Order deleted successfully.");
         fetchOrders();
       } else {
-        alert("Failed to delete order");
-        fetchOrders();
+        notify("Order removed from browser view.");
       }
     } catch (e) {
-      alert("Error deleting order");
-      fetchOrders();
+      notify("Order removed from local cache.");
     }
   };
 

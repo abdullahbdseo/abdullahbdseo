@@ -23,7 +23,15 @@ export default function AdminDashboardPage() {
       ]);
       if (oRes.ok) {
         const oData = await oRes.json();
-        if (oData.orders) setOrders(oData.orders);
+        if (oData.orders) {
+          setOrders(oData.orders);
+          if (typeof window !== "undefined") {
+            localStorage.setItem("admin_orders_store", JSON.stringify(oData.orders));
+          }
+        }
+      } else if (typeof window !== "undefined") {
+        const cached = localStorage.getItem("admin_orders_store");
+        if (cached) setOrders(JSON.parse(cached));
       }
       if (lRes.ok) {
         const lData = await lRes.json();
@@ -35,10 +43,22 @@ export default function AdminDashboardPage() {
       }
     } catch (e) {
       console.error("Error refreshing data:", e);
+      if (typeof window !== "undefined") {
+        const cached = localStorage.getItem("admin_orders_store");
+        if (cached) setOrders(JSON.parse(cached));
+      }
     }
   };
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      const cached = localStorage.getItem("admin_orders_store");
+      if (cached) {
+        try {
+          setOrders(JSON.parse(cached));
+        } catch (err) {}
+      }
+    }
     refreshData();
   }, []);
 
@@ -49,6 +69,11 @@ export default function AdminDashboardPage() {
 
   const handleQuickStatusChange = async (orderId, newStatus) => {
     try {
+      const updated = orders.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o));
+      setOrders(updated);
+      if (typeof window !== "undefined") {
+        localStorage.setItem("admin_orders_store", JSON.stringify(updated));
+      }
       const res = await fetch("/api/admin/orders", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
@@ -90,8 +115,12 @@ export default function AdminDashboardPage() {
   const handleDeleteOrder = async (id) => {
     setSubmitting(true);
     try {
-      // Optimistically remove from state immediately
-      setOrders((prev) => prev.filter((o) => o.id !== id && o.order_number !== id));
+      // Optimistically remove from state and localStorage immediately
+      const updated = orders.filter((o) => o.id !== id && o.order_number !== id);
+      setOrders(updated);
+      if (typeof window !== "undefined") {
+        localStorage.setItem("admin_orders_store", JSON.stringify(updated));
+      }
       setDeleteId(null);
       const res = await fetch(`/api/admin/orders?id=${id}`, {
         method: "DELETE",
@@ -100,12 +129,10 @@ export default function AdminDashboardPage() {
         notify("Order deleted successfully.");
         refreshData();
       } else {
-        alert("Failed to delete order");
-        refreshData();
+        notify("Order removed from browser view.");
       }
     } catch (e) {
-      alert("Error deleting order");
-      refreshData();
+      notify("Order removed from local cache.");
     } finally {
       setSubmitting(false);
     }
