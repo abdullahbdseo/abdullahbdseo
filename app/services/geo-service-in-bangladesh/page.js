@@ -992,52 +992,164 @@ export default function GeoServicePage() {
       </section>
 
       {/* 10. BOTTOM CTA BANNER */}
-      <section style={{ background: "linear-gradient(135deg, #0062d2 0%, #004bb5 100%)", padding: "60px 0", color: "#ffffff" }}>
-        <div className="container" style={{ maxWidth: "1000px", margin: "0 auto", padding: "0 20px", textAlign: "center" }}>
-          <h2 style={{ fontSize: "2.3rem", fontWeight: 800, marginBottom: "16px", letterSpacing: "-0.01em" }}>
-            Ready to Dominate Conversational Search with GEO?
-          </h2>
-          <p style={{ fontSize: "1.05rem", color: "#dbeafe", lineHeight: 1.7, maxWidth: "750px", margin: "0 auto 30px" }}>
-            Ensure your brand is the definitive recommendation when customers ask ChatGPT, Perplexity, Gemini, and Claude for services in your industry.
-          </p>
-          <div style={{ display: "flex", justifyContent: "center", gap: "16px", flexWrap: "wrap" }}>
-            <a
-              href="https://wa.me/8801670769816"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                background: "#059669",
-                color: "#ffffff",
-                padding: "14px 30px",
-                borderRadius: "6px",
-                fontSize: "1rem",
-                fontWeight: 700,
-                textDecoration: "none",
+      <section style={{ padding: "80px 0", background: "#f8fafc", borderTop: "1px solid #e2e8f0" }}>
+        <div className="container" style={{ maxWidth: "1080px", margin: "0 auto", padding: "0 20px" }}>
+          <div style={{
+            background: "linear-gradient(135deg, #0b1329 0%, #1e293b 50%, #0f172a 100%)",
+            borderRadius: "20px",
+            border: "1px solid rgba(255, 255, 255, 0.12)",
+            padding: "50px 36px",
+            position: "relative",
+            overflow: "hidden",
+            boxShadow: "0 20px 50px -10px rgba(15, 23, 42, 0.4)",
+            textAlign: "center"
+          }}>
+            {/* Ambient Background Glows */}
+            <div style={{
+              position: "absolute",
+              top: "-80px",
+              right: "-80px",
+              width: "260px",
+              height: "260px",
+              borderRadius: "50%",
+              background: "rgba(59, 130, 246, 0.2)",
+              filter: "blur(60px)",
+              pointerEvents: "none"
+            }}></div>
+            <div style={{
+              position: "absolute",
+              bottom: "-80px",
+              left: "-80px",
+              width: "260px",
+              height: "260px",
+              borderRadius: "50%",
+              background: "rgba(16, 185, 129, 0.15)",
+              filter: "blur(60px)",
+              pointerEvents: "none"
+            }}></div>
+
+            {/* Content Wrap */}
+            <div style={{ position: "relative", zIndex: 1, maxWidth: "780px", margin: "0 auto" }}>
+              {/* Eyebrow Badge */}
+              <div style={{
                 display: "inline-flex",
                 alignItems: "center",
                 gap: "8px",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.15)"
-              }}
-            >
-              <i className="fa-brands fa-whatsapp"></i> Chat on WhatsApp Now
-            </a>
-            <Link
-              href="/contact"
-              style={{
-                background: "#ffffff",
-                color: "#0062d2",
-                padding: "14px 30px",
-                borderRadius: "6px",
-                fontSize: "1rem",
+                background: "rgba(59, 130, 246, 0.15)",
+                border: "1px solid rgba(96, 165, 250, 0.3)",
+                padding: "6px 16px",
+                borderRadius: "50px",
+                fontSize: "0.85rem",
                 fontWeight: 700,
-                textDecoration: "none",
-                display: "inline-flex",
+                color: "#93c5fd",
+                marginBottom: "20px",
+                letterSpacing: "0.02em"
+              }}>
+                <i className="fa-solid fa-sparkles" style={{ color: "#60a5fa" }}></i>
+                <span>Generative Engine Optimization (GEO)</span>
+              </div>
+
+              {/* Title */}
+              <h2 style={{
+                fontSize: "clamp(1.9rem, 3.5vw, 2.6rem)",
+                fontWeight: 900,
+                color: "#ffffff",
+                lineHeight: 1.25,
+                marginBottom: "16px",
+                letterSpacing: "-0.02em"
+              }}>
+                Ready to Dominate Conversational Search with <span style={{
+                  background: "linear-gradient(90deg, #60a5fa 0%, #38bdf8 50%, #34d399 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent"
+                }}>GEO Strategies?</span>
+              </h2>
+
+              {/* Description */}
+              <p style={{
+                fontSize: "1.05rem",
+                color: "#cbd5e1",
+                lineHeight: 1.7,
+                maxWidth: "680px",
+                margin: "0 auto 32px"
+              }}>
+                Ensure your brand is the definitive top recommendation when prospective clients ask ChatGPT, Perplexity, Gemini, and Claude for premier services in your industry.
+              </p>
+
+              {/* Action Buttons */}
+              <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "16px", flexWrap: "wrap", marginBottom: "28px" }}>
+                <a
+                  href="https://wa.me/8801670769816"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                    color: "#ffffff",
+                    padding: "14px 28px",
+                    borderRadius: "8px",
+                    fontSize: "0.98rem",
+                    fontWeight: 700,
+                    textDecoration: "none",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "9px",
+                    boxShadow: "0 6px 20px rgba(16, 185, 129, 0.35)",
+                    transition: "transform 0.2s ease"
+                  }}
+                >
+                  <i className="fa-brands fa-whatsapp" style={{ fontSize: "1.2rem" }}></i>
+                  <span>Chat on WhatsApp Now</span>
+                </a>
+
+                <Link
+                  href="/contact"
+                  style={{
+                    background: "#ffffff",
+                    color: "#0f172a",
+                    padding: "14px 28px",
+                    borderRadius: "8px",
+                    fontSize: "0.98rem",
+                    fontWeight: 700,
+                    textDecoration: "none",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "9px",
+                    boxShadow: "0 4px 16px rgba(0, 0, 0, 0.1)",
+                    border: "1px solid #e2e8f0",
+                    transition: "transform 0.2s ease"
+                  }}
+                >
+                  <i className="fa-solid fa-calendar-check" style={{ color: "#2563eb" }}></i>
+                  <span>Book Free Consultation</span>
+                </Link>
+              </div>
+
+              {/* Trust Badges Bar */}
+              <div style={{
+                display: "flex",
+                justifyContent: "center",
                 alignItems: "center",
-                gap: "8px"
-              }}
-            >
-              <i className="fa-solid fa-calendar-check"></i> Book Consultation
-            </Link>
+                gap: "24px",
+                flexWrap: "wrap",
+                paddingTop: "20px",
+                borderTop: "1px solid rgba(255, 255, 255, 0.1)",
+                fontSize: "0.85rem",
+                color: "#94a3b8"
+              }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                  <i className="fa-solid fa-bolt" style={{ color: "#fbbf24" }}></i>
+                  <span>15-Minute Response Time</span>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                  <i className="fa-solid fa-shield-halved" style={{ color: "#10b981" }}></i>
+                  <span>Brand Entity Knowledge Graph</span>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                  <i className="fa-solid fa-award" style={{ color: "#60a5fa" }}></i>
+                  <span>LLM Citation Authority</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

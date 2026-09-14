@@ -762,22 +762,164 @@ export default function EcommerceSeoServicePage() {
       </section>
 
       {/* 8. FINAL CTA BANNER */}
-      <section style={{ padding: "70px 0", background: "linear-gradient(135deg, #0062d2 0%, #004bb5 100%)", color: "#ffffff", textAlign: "center" }}>
-        <div className="container" style={{ maxWidth: "800px", margin: "0 auto", padding: "0 20px" }}>
-          <h2 style={{ fontSize: "2.3rem", fontWeight: 800, color: "#ffffff", marginBottom: "14px", lineHeight: 1.25 }}>
-            Ready to Triple Your Online Store Sales?
-          </h2>
-          <p style={{ fontSize: "1.05rem", color: "rgba(255,255,255,0.9)", lineHeight: 1.7, marginBottom: "28px" }}>
-            Get a free comprehensive technical and keyword gap audit of your ecommerce store. Let’s build a sustainable organic growth engine for your brand.
-          </p>
-          <div style={{ display: "flex", justifyContent: "center", gap: "16px", flexWrap: "wrap" }}>
-            <Link href="/contact" className="btn btn-lg" style={{ background: "#ffffff", color: "#0062d2", fontWeight: 700, borderRadius: "4px", padding: "14px 30px", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "8px" }}>
-              Request Free Store Audit <i className="fa-solid fa-arrow-right"></i>
-            </Link>
-            <a href="https://wa.me/8801670769816" target="_blank" rel="noopener noreferrer" className="btn btn-lg" style={{ background: "#059669", color: "#ffffff", fontWeight: 700, borderRadius: "4px", padding: "14px 28px", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "8px" }}>
-              <i className="fa-brands fa-whatsapp" style={{ fontSize: "1.2rem" }}></i>
-              Chat on WhatsApp
-            </a>
+      <section style={{ padding: "80px 0", background: "#f8fafc", borderTop: "1px solid #e2e8f0" }}>
+        <div className="container" style={{ maxWidth: "1080px", margin: "0 auto", padding: "0 20px" }}>
+          <div style={{
+            background: "linear-gradient(135deg, #0b1329 0%, #1e293b 50%, #0f172a 100%)",
+            borderRadius: "20px",
+            border: "1px solid rgba(255, 255, 255, 0.12)",
+            padding: "50px 36px",
+            position: "relative",
+            overflow: "hidden",
+            boxShadow: "0 20px 50px -10px rgba(15, 23, 42, 0.4)",
+            textAlign: "center"
+          }}>
+            {/* Ambient Background Glows */}
+            <div style={{
+              position: "absolute",
+              top: "-80px",
+              right: "-80px",
+              width: "260px",
+              height: "260px",
+              borderRadius: "50%",
+              background: "rgba(59, 130, 246, 0.2)",
+              filter: "blur(60px)",
+              pointerEvents: "none"
+            }}></div>
+            <div style={{
+              position: "absolute",
+              bottom: "-80px",
+              left: "-80px",
+              width: "260px",
+              height: "260px",
+              borderRadius: "50%",
+              background: "rgba(16, 185, 129, 0.15)",
+              filter: "blur(60px)",
+              pointerEvents: "none"
+            }}></div>
+
+            {/* Content Wrap */}
+            <div style={{ position: "relative", zIndex: 1, maxWidth: "780px", margin: "0 auto" }}>
+              {/* Eyebrow Badge */}
+              <div style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                background: "rgba(59, 130, 246, 0.15)",
+                border: "1px solid rgba(96, 165, 250, 0.3)",
+                padding: "6px 16px",
+                borderRadius: "50px",
+                fontSize: "0.85rem",
+                fontWeight: 700,
+                color: "#93c5fd",
+                marginBottom: "20px",
+                letterSpacing: "0.02em"
+              }}>
+                <i className="fa-solid fa-cart-shopping" style={{ color: "#60a5fa" }}></i>
+                <span>E-Commerce Revenue Compounding Architecture</span>
+              </div>
+
+              {/* Title */}
+              <h2 style={{
+                fontSize: "clamp(1.9rem, 3.5vw, 2.6rem)",
+                fontWeight: 900,
+                color: "#ffffff",
+                lineHeight: 1.25,
+                marginBottom: "16px",
+                letterSpacing: "-0.02em"
+              }}>
+                Ready to Scale Your Online Store <span style={{
+                  background: "linear-gradient(90deg, #60a5fa 0%, #38bdf8 50%, #34d399 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent"
+                }}>Organic Revenue?</span>
+              </h2>
+
+              {/* Description */}
+              <p style={{
+                fontSize: "1.05rem",
+                color: "#cbd5e1",
+                lineHeight: 1.7,
+                maxWidth: "680px",
+                margin: "0 auto 32px"
+              }}>
+                Get a free comprehensive technical and keyword gap audit of your ecommerce store. Let’s build a compounding, high-ROAS organic growth engine for your Shopify or WooCommerce brand.
+              </p>
+
+              {/* Action Buttons */}
+              <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "16px", flexWrap: "wrap", marginBottom: "28px" }}>
+                <a
+                  href="https://wa.me/8801670769816"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                    color: "#ffffff",
+                    padding: "14px 28px",
+                    borderRadius: "8px",
+                    fontSize: "0.98rem",
+                    fontWeight: 700,
+                    textDecoration: "none",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "9px",
+                    boxShadow: "0 6px 20px rgba(16, 185, 129, 0.35)",
+                    transition: "transform 0.2s ease"
+                  }}
+                >
+                  <i className="fa-brands fa-whatsapp" style={{ fontSize: "1.2rem" }}></i>
+                  <span>Chat on WhatsApp Now</span>
+                </a>
+
+                <Link
+                  href="/contact"
+                  style={{
+                    background: "#ffffff",
+                    color: "#0f172a",
+                    padding: "14px 28px",
+                    borderRadius: "8px",
+                    fontSize: "0.98rem",
+                    fontWeight: 700,
+                    textDecoration: "none",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "9px",
+                    boxShadow: "0 4px 16px rgba(0, 0, 0, 0.1)",
+                    border: "1px solid #e2e8f0",
+                    transition: "transform 0.2s ease"
+                  }}
+                >
+                  <i className="fa-solid fa-calendar-check" style={{ color: "#2563eb" }}></i>
+                  <span>Request Free Store Audit</span>
+                </Link>
+              </div>
+
+              {/* Trust Badges Bar */}
+              <div style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "24px",
+                flexWrap: "wrap",
+                paddingTop: "20px",
+                borderTop: "1px solid rgba(255, 255, 255, 0.1)",
+                fontSize: "0.85rem",
+                color: "#94a3b8"
+              }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                  <i className="fa-solid fa-bolt" style={{ color: "#fbbf24" }}></i>
+                  <span>15-Minute Response Time</span>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                  <i className="fa-solid fa-shield-halved" style={{ color: "#10b981" }}></i>
+                  <span>Shopify &amp; WooCommerce Masters</span>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                  <i className="fa-solid fa-award" style={{ color: "#60a5fa" }}></i>
+                  <span>Product &amp; Category Schema Expert</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
