@@ -28,10 +28,11 @@ export default function AdminTestimonialsPage() {
 
   const filtered = reviews.filter((r) => {
     const q = searchQ.toLowerCase();
+    const text = (r.quote || r.content || "").toLowerCase();
     const matchesSearch =
       r.name?.toLowerCase().includes(q) ||
       r.role?.toLowerCase().includes(q) ||
-      r.quote?.toLowerCase().includes(q);
+      text.includes(q);
     const matchesRating = ratingFilter === "all" || String(r.rating) === ratingFilter;
     return matchesSearch && matchesRating;
   });
@@ -308,7 +309,7 @@ export default function AdminTestimonialsPage() {
                   fontStyle: "italic",
                 }}
               >
-                "{r.quote}"
+                "{r.quote || r.content}"
               </p>
             </div>
 
@@ -434,7 +435,11 @@ export default function AdminTestimonialsPage() {
 }
 
 function TestimonialForm({ initial, onSave, onCancel, saving, isEdit }) {
-  const [form, setForm] = useState({ ...initial });
+  const [form, setForm] = useState({
+    ...initial,
+    quote: initial?.quote || initial?.content || "",
+    avatar: initial?.avatar || (initial?.name ? initial.name.charAt(0).toUpperCase() : "A")
+  });
   const set = (k, v) => setForm((p) => ({ ...p, [k]: v }));
 
   return (
