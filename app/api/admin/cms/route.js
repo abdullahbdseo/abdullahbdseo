@@ -133,7 +133,11 @@ export async function POST(request) {
     }
 
     // Write JSON file (primary store)
-    writeCMSData(currentData);
+    try {
+      writeCMSData(currentData);
+    } catch (fsErr) {
+      console.warn("Could not update cms-data.json on disk (e.g. read-only serverless):", fsErr.message);
+    }
 
     // Also try to rebuild data.js (best effort)
     try {
