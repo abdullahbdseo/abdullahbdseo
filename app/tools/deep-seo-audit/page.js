@@ -424,39 +424,45 @@ export default function DeepSEOAuditPage() {
     <div style={{ minHeight: '100vh', background: 'var(--bg-primary,#f9fafb)', fontFamily: "Inter,'Segoe UI',system-ui,sans-serif" }}>
 
       {/* ── HERO ── */}
-      <div style={{ background: 'linear-gradient(135deg,#064e3b 0%,#065f46 50%,#0f766e 100%)', padding: '56px 20px 52px', textAlign: 'center' }}>
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(255,255,255,0.13)', border: '1px solid rgba(255,255,255,0.22)', borderRadius: 6, padding: '6px 16px', marginBottom: 18 }}>
-          <i className="fa-solid fa-file-spreadsheet" style={{ color: '#6ee7b7', fontSize: 13 }}></i>
-          <span style={{ color: '#a7f3d0', fontSize: 12, fontWeight: 700, letterSpacing: 0.6 }}>Deep SEO Audit · 26+ Point Inspection · 8-Sheet Excel Export</span>
+      <div style={{ background: 'linear-gradient(135deg, #0b1329 0%, #1e293b 50%, #0f172a 100%)', padding: '56px 20px 52px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+        {/* Ambient Glows */}
+        <div style={{ position: 'absolute', top: '-60px', right: '-60px', width: '220px', height: '220px', borderRadius: '50%', background: 'rgba(59, 130, 246, 0.18)', filter: 'blur(50px)', pointerEvents: 'none' }}></div>
+        <div style={{ position: 'absolute', bottom: '-60px', left: '-60px', width: '220px', height: '220px', borderRadius: '50%', background: 'rgba(96, 165, 250, 0.12)', filter: 'blur(50px)', pointerEvents: 'none' }}></div>
+
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(59, 130, 246, 0.15)', border: '1px solid rgba(96, 165, 250, 0.3)', borderRadius: 50, padding: '6px 18px', marginBottom: 18 }}>
+            <i className="fa-solid fa-file-spreadsheet" style={{ color: '#60a5fa', fontSize: 13 }}></i>
+            <span style={{ color: '#93c5fd', fontSize: 12, fontWeight: 700, letterSpacing: 0.6 }}>Deep SEO Audit · 26+ Point Inspection · 8-Sheet Excel Export</span>
+          </div>
+          <h1 style={{ fontSize: 'clamp(26px,5vw,48px)', fontWeight: 900, color: '#fff', margin: '0 0 14px', letterSpacing: -1, lineHeight: 1.2 }}>
+            Audit Any Website &amp; Download
+            <br />
+            <span style={{ background: 'linear-gradient(90deg, #60a5fa 0%, #38bdf8 50%, #818cf8 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+              Professional Excel Report
+            </span>
+          </h1>
+          <p style={{ color: '#cbd5e1', fontSize: 16, maxWidth: 620, margin: '0 auto', lineHeight: 1.7 }}>
+            Exhaustive technical &amp; on-page SEO inspection with instant scores, issue diagnosis, and a client-ready 8-sheet Excel workbook with complete image URLs.
+          </p>
         </div>
-        <h1 style={{ fontSize: 'clamp(26px,5vw,50px)', fontWeight: 900, color: '#fff', margin: '0 0 14px', letterSpacing: -1, lineHeight: 1.15 }}>
-          Audit Any Website &amp; Download
-          <br />
-          <span style={{ background: 'linear-gradient(90deg,#34d399,#14b8a6,#60a5fa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-            Professional Excel Report
-          </span>
-        </h1>
-        <p style={{ color: '#a7f3d0', fontSize: 16, maxWidth: 600, margin: '0 auto', lineHeight: 1.7 }}>
-          Exhaustive technical &amp; on-page SEO inspection with instant scores, issue diagnosis, and a client-ready 8-sheet Excel workbook with complete image URLs.
-        </p>
       </div>
 
       {/* ── INPUT CARD ── */}
-      <div style={{ maxWidth: 760, margin: '-26px auto 0', padding: '0 16px' }}>
-        <div style={{ background: 'var(--card-bg,#fff)', border: '1px solid var(--border-color,#e5e7eb)', borderRadius: 8, padding: '32px', boxShadow: '0 8px 40px rgba(0,0,0,0.12)' }}>
+      <div style={{ maxWidth: 760, margin: '-26px auto 0', padding: '0 16px', position: 'relative', zIndex: 2 }}>
+        <div style={{ background: 'var(--card-bg,#fff)', border: '1px solid var(--border-color,#e5e7eb)', borderRadius: 10, padding: '32px', boxShadow: '0 12px 40px rgba(0,0,0,0.1)' }}>
           <form onSubmit={runAudit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
             <label style={{ fontSize: 11, fontWeight: 800, color: 'var(--text-secondary,#6b7280)', textTransform: 'uppercase', letterSpacing: 1 }}>Enter Website URL to Audit</label>
             <div style={{ position: 'relative' }}>
-              <i className="fa-solid fa-globe" style={{ position: 'absolute', left: 13, top: '50%', transform: 'translateY(-50%)', color: '#9ca3af', fontSize: 15, pointerEvents: 'none' }}></i>
+              <i className="fa-solid fa-globe" style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: '#94a3b8', fontSize: 16, pointerEvents: 'none' }}></i>
               <input
                 type="text" value={url} onChange={e => setUrl(e.target.value)}
                 placeholder="https://example.com" disabled={loading}
-                style={{ width: '100%', boxSizing: 'border-box', paddingLeft: 42, paddingRight: 16, paddingTop: 14, paddingBottom: 14, fontSize: 16, border: '1.5px solid var(--border-color,#d1d5db)', borderRadius: 6, background: 'var(--input-bg,#f9fafb)', color: 'var(--text-primary,#111827)', outline: 'none', opacity: loading ? 0.6 : 1, transition: 'border-color 0.2s' }}
-                onFocus={e => e.target.style.borderColor = '#059669'} onBlur={e => e.target.style.borderColor = 'var(--border-color,#d1d5db)'}
+                style={{ width: '100%', boxSizing: 'border-box', paddingLeft: 42, paddingRight: 16, paddingTop: 14, paddingBottom: 14, fontSize: 16, border: '1.5px solid var(--border-color,#d1d5db)', borderRadius: 8, background: 'var(--input-bg,#f9fafb)', color: 'var(--text-primary,#111827)', outline: 'none', opacity: loading ? 0.6 : 1, transition: 'border-color 0.2s' }}
+                onFocus={e => e.target.style.borderColor = '#2563eb'} onBlur={e => e.target.style.borderColor = 'var(--border-color,#d1d5db)'}
               />
             </div>
             <button type="submit" disabled={loading || !url.trim()}
-              style={{ width: '100%', padding: 15, background: loading ? '#9ca3af' : 'linear-gradient(135deg,#059669,#0f766e)', color: '#fff', border: 'none', borderRadius: 6, fontSize: 16, fontWeight: 800, cursor: loading ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, boxShadow: loading ? 'none' : '0 4px 20px rgba(5,150,105,0.35)', transition: 'all 0.2s' }}>
+              style={{ width: '100%', padding: 15, background: loading ? '#9ca3af' : 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)', color: '#fff', border: 'none', borderRadius: 8, fontSize: 16, fontWeight: 800, cursor: loading ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, boxShadow: loading ? 'none' : '0 6px 20px rgba(37,99,235,0.3)', transition: 'all 0.2s' }}>
               {loading ? <><i className="fa-solid fa-spinner fa-spin"></i><span>Auditing…</span></> : <><i className="fa-solid fa-magnifying-glass-chart"></i><span>Start Deep SEO Audit</span></>}
             </button>
           </form>
@@ -465,14 +471,14 @@ export default function DeepSEOAuditPage() {
             <div style={{ marginTop: 22 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 7 }}>
                 <span style={{ fontSize: 13, color: 'var(--text-secondary,#6b7280)', fontStyle: 'italic' }}>{progressLabel}</span>
-                <span style={{ fontSize: 13, fontWeight: 800, color: '#059669' }}>{progress}%</span>
+                <span style={{ fontSize: 13, fontWeight: 800, color: '#2563eb' }}>{progress}%</span>
               </div>
               <div style={{ height: 7, background: 'var(--border-color,#e5e7eb)', borderRadius: 4, overflow: 'hidden' }}>
-                <div style={{ height: '100%', width: `${progress}%`, background: 'linear-gradient(90deg,#059669,#14b8a6)', borderRadius: 4, transition: 'width 0.35s ease' }} />
+                <div style={{ height: '100%', width: `${progress}%`, background: 'linear-gradient(90deg, #2563eb, #38bdf8)', borderRadius: 4, transition: 'width 0.35s ease' }} />
               </div>
             </div>
           )}
-          {error && <div style={{ marginTop: 18, padding: '12px 16px', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 6, color: '#dc2626', fontSize: 14 }}><i className="fa-solid fa-triangle-exclamation" style={{ marginRight: 8 }}></i>{error}</div>}
+          {error && <div style={{ marginTop: 18, padding: '12px 16px', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 8, color: '#dc2626', fontSize: 14 }}><i className="fa-solid fa-triangle-exclamation" style={{ marginRight: 8 }}></i>{error}</div>}
         </div>
       </div>
 
@@ -481,19 +487,19 @@ export default function DeepSEOAuditPage() {
         <div style={{ maxWidth: 1120, margin: '36px auto', padding: '0 16px 60px' }}>
 
           {/* Score bar */}
-          <div style={{ background: 'var(--card-bg,#fff)', border: '1px solid var(--border-color,#e5e7eb)', borderRadius: 8, padding: '24px 28px', marginBottom: 20, boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
+          <div style={{ background: 'var(--card-bg,#fff)', border: '1px solid var(--border-color,#e5e7eb)', borderRadius: 10, padding: '24px 28px', marginBottom: 20, boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 20, alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
               <div>
                 <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-secondary,#6b7280)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 3 }}>Audited URL</div>
-                <a href={results.url} target="_blank" rel="noopener noreferrer" style={{ color: '#059669', fontWeight: 600, fontSize: 15, wordBreak: 'break-all' }}>{results.url}</a>
+                <a href={results.url} target="_blank" rel="noopener noreferrer" style={{ color: '#2563eb', fontWeight: 600, fontSize: 15, wordBreak: 'break-all' }}>{results.url}</a>
               </div>
               <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
                 <button onClick={() => window.print()}
-                  style={{ padding: '11px 20px', background: '#f8fafc', color: '#1e293b', border: '1.5px solid #cbd5e1', borderRadius: 6, fontWeight: 700, fontSize: 14, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, whiteSpace: 'nowrap' }}>
+                  style={{ padding: '11px 20px', background: '#f8fafc', color: '#1e293b', border: '1.5px solid #cbd5e1', borderRadius: 8, fontWeight: 700, fontSize: 14, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, whiteSpace: 'nowrap' }}>
                   <i className="fa-solid fa-file-pdf" style={{ color: '#dc2626' }}></i> Print / Save PDF
                 </button>
                 <button onClick={downloadExcel}
-                  style={{ padding: '11px 22px', background: 'linear-gradient(135deg,#059669,#0f766e)', color: '#fff', border: 'none', borderRadius: 6, fontWeight: 800, fontSize: 14, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, boxShadow: '0 3px 12px rgba(5,150,105,0.25)', whiteSpace: 'nowrap' }}>
+                  style={{ padding: '11px 22px', background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)', color: '#fff', border: 'none', borderRadius: 8, fontWeight: 800, fontSize: 14, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, boxShadow: '0 4px 14px rgba(37,99,235,0.25)', whiteSpace: 'nowrap' }}>
                   <i className="fa-solid fa-file-excel"></i> Download Excel Report (.xlsx)
                 </button>
               </div>
@@ -536,7 +542,7 @@ export default function DeepSEOAuditPage() {
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 14 }}>
             {SHEETS.map(s => (
               <button key={s.id} onClick={() => setActiveSheet(s.id)}
-                style={{ padding: '8px 14px', borderRadius: 6, border: '1.5px solid', fontSize: 13, fontWeight: 700, cursor: 'pointer', transition: 'all 0.15s', borderColor: activeSheet === s.id ? '#059669' : 'var(--border-color,#e5e7eb)', background: activeSheet === s.id ? '#059669' : 'var(--card-bg,#fff)', color: activeSheet === s.id ? '#fff' : 'var(--text-secondary,#6b7280)' }}>
+                style={{ padding: '8px 14px', borderRadius: 8, border: '1.5px solid', fontSize: 13, fontWeight: 700, cursor: 'pointer', transition: 'all 0.15s', borderColor: activeSheet === s.id ? '#2563eb' : 'var(--border-color,#e5e7eb)', background: activeSheet === s.id ? '#2563eb' : 'var(--card-bg,#fff)', color: activeSheet === s.id ? '#fff' : 'var(--text-secondary,#6b7280)' }}>
                 {s.label}
               </button>
             ))}
