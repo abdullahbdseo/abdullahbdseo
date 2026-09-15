@@ -246,6 +246,7 @@ $currentUri = rtrim($cleanPath, '/') ?: '/';
                 <div class="digi-footer-col">
                     <h4>Free SEO Tools</h4>
                     <ul class="digi-footer-links">
+                        <li><a href="<?= url('/high-da-backlinks') ?>" style="color: #38bdf8; font-weight: 700;">High DA Backlinks ⭐</a></li>
                         <li><a href="<?= url('/tools/schema-markup-generator') ?>">Schema Markup Generator</a></li>
                         <li><a href="<?= url('/tools/serp-simulator') ?>">SERP Simulator & Previewer</a></li>
                         <li><a href="<?= url('/tools/robots-sitemap-generator') ?>">Robots.txt & Sitemap Builder</a></li>
@@ -270,6 +271,8 @@ $currentUri = rtrim($cleanPath, '/') ?: '/';
             <div class="digi-footer-bottom">
                 <div>&copy; <?= date('Y') ?> <strong><?= e(setting('expert_name', setting('site_name', 'Abdullah Saleh'))) ?></strong>. All rights reserved.</div>
                 <div class="digi-footer-legal">
+                    <a href="<?= url('/high-da-backlinks') ?>" style="color: #38bdf8; font-weight: 600;">High DA Backlinks</a>
+                    <span>&bull;</span>
                     <a href="<?= url('/tools') ?>">All Free Tools</a>
                     <span>&bull;</span>
                     <a href="<?= url('/privacy-policy') ?>">Privacy Policy</a>

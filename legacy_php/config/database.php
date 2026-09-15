@@ -1,7 +1,8 @@
 <?php
 // config/database.php - PDO Database Connection Singleton
 
-class Database {
+if (!class_exists('Database')) {
+    class Database {
     private static ?Database $instance = null;
     private ?PDO $pdo = null;
 
@@ -32,4 +33,5 @@ class Database {
 
     // Prevent cloning
     private function __clone() {}
+}
 }

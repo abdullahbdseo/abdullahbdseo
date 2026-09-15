@@ -1,4 +1,5 @@
 import { services, caseStudies, blogPosts } from "@/lib/data";
+import { backlinkPosts } from "@/lib/backlinks-data";
 
 export default function sitemap() {
   const baseUrl = "https://abdullahbdseo.vercel.app";
@@ -18,6 +19,7 @@ export default function sitemap() {
     "/refund-policy",
     "/terms",
     "/tools",
+    "/high-da-backlinks",
     "/tools/deep-seo-audit",
     "/tools/website-seo-analyzer",
     "/tools/seo-audit-report-generator",
@@ -68,10 +70,20 @@ export default function sitemap() {
     priority: 0.8,
   }));
 
+  // Dynamic High DA Backlink Resource Guides
+  const backlinkRoutes = (backlinkPosts || []).map((post) => ({
+    url: `${baseUrl}/high-da-backlinks/${post.slug}`,
+    lastModified: now,
+    changeFrequency: "weekly",
+    priority: 0.85,
+  }));
+
   return [
     ...staticRoutes,
     ...serviceRoutes,
     ...portfolioRoutes,
     ...blogRoutes,
+    ...backlinkRoutes,
   ];
 }
+

@@ -68,7 +68,7 @@ export default function Header() {
                     <i className="fa-solid fa-magnifying-glass-chart" style={{ color: "#2563eb", marginRight: "4px" }}></i> SEO &amp; Technical
                   </span>
                   {seoTools.map((t) => (
-                    <Link key={t.slug} href={`/tools/${t.slug}`} className="dropdown-item">
+                    <Link key={t.slug} href={t.customPath || `/tools/${t.slug}`} className="dropdown-item">
                       <div className="dropdown-item-icon" style={{ background: t.bg, color: t.color }}>
                         <i className={`fa-solid ${t.icon}`}></i>
                       </div>

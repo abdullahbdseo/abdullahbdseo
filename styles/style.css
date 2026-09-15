@@ -1731,7 +1731,7 @@ img {
    7. NEWSLETTER RIBBON
    ========================================================================== */
 .digi-newsletter-ribbon {
-    background: linear-gradient(90deg, #4361ee 0%, #3b82f6 100%);
+    background: #3d65ee;
     color: #ffffff;
     padding: 36px 0;
 }
@@ -1772,7 +1772,7 @@ img {
    8. SITE FOOTER
    ========================================================================== */
 .digi-footer {
-    background: #4361ee;
+    background: #4169F0;
     color: #ffffff;
     padding: 65px 0 26px;
     position: relative;

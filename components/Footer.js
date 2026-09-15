@@ -115,9 +115,14 @@ export default function Footer() {
             <div className="digi-footer-col">
               <h4>Free SEO Tools</h4>
               <ul className="digi-footer-links">
-                {freeTools.slice(0, 6).map((tool) => (
+                <li>
+                  <Link href="/high-da-backlinks" style={{ color: "#38bdf8", fontWeight: 700 }}>
+                    High DA Backlinks ⭐
+                  </Link>
+                </li>
+                {freeTools.filter(t => t.slug !== "high-da-backlinks").slice(0, 5).map((tool) => (
                   <li key={tool.slug}>
-                    <Link href={`/tools/${tool.slug}`}>{tool.title}</Link>
+                    <Link href={tool.customPath || `/tools/${tool.slug}`}>{tool.title}</Link>
                   </li>
                 ))}
                 <li>
@@ -143,6 +148,8 @@ export default function Footer() {
           <div className="digi-footer-bottom">
             <div>&copy; {currentYear} <strong>{siteSettings.expert_name}</strong>. All rights reserved.</div>
             <div className="digi-footer-legal">
+              <Link href="/high-da-backlinks" style={{ color: "#38bdf8", fontWeight: 600 }}>High DA Backlinks</Link>
+              <span>&bull;</span>
               <Link href="/tools">All Free Tools</Link>
               <span>&bull;</span>
               <Link href="/privacy-policy">Privacy Policy</Link>

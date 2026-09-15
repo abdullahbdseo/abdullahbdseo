@@ -1,42 +1,42 @@
 <?php
 // index.php - Front Controller & Application Entrypoint
 
-require_once __DIR__ . '/config/config.php';
-require_once __DIR__ . '/core/App.php';
-require_once __DIR__ . '/core/Controller.php';
+require_once __DIR__ . '/legacy_php/config/config.php';
+require_once __DIR__ . '/legacy_php/core/App.php';
+require_once __DIR__ . '/legacy_php/core/Controller.php';
 
 // Services
-require_once __DIR__ . '/app/Services/SeoService.php';
-require_once __DIR__ . '/app/Services/NowPaymentsService.php';
-require_once __DIR__ . '/app/Services/BkashPaymentService.php';
-require_once __DIR__ . '/app/Services/CryptoPaymentService.php';
+require_once __DIR__ . '/legacy_php/app/Services/SeoService.php';
+require_once __DIR__ . '/legacy_php/app/Services/NowPaymentsService.php';
+require_once __DIR__ . '/legacy_php/app/Services/BkashPaymentService.php';
+require_once __DIR__ . '/legacy_php/app/Services/CryptoPaymentService.php';
 
 // Controllers
-require_once __DIR__ . '/app/Controllers/HomeController.php';
-require_once __DIR__ . '/app/Controllers/ServiceController.php';
-require_once __DIR__ . '/app/Controllers/PortfolioController.php';
-require_once __DIR__ . '/app/Controllers/BlogController.php';
-require_once __DIR__ . '/app/Controllers/ContactController.php';
-require_once __DIR__ . '/app/Controllers/AuthController.php';
-require_once __DIR__ . '/app/Controllers/OrderController.php';
-require_once __DIR__ . '/app/Controllers/SitemapController.php';
-require_once __DIR__ . '/app/Controllers/ToolController.php';
+require_once __DIR__ . '/legacy_php/app/Controllers/HomeController.php';
+require_once __DIR__ . '/legacy_php/app/Controllers/ServiceController.php';
+require_once __DIR__ . '/legacy_php/app/Controllers/PortfolioController.php';
+require_once __DIR__ . '/legacy_php/app/Controllers/BlogController.php';
+require_once __DIR__ . '/legacy_php/app/Controllers/ContactController.php';
+require_once __DIR__ . '/legacy_php/app/Controllers/AuthController.php';
+require_once __DIR__ . '/legacy_php/app/Controllers/OrderController.php';
+require_once __DIR__ . '/legacy_php/app/Controllers/SitemapController.php';
+require_once __DIR__ . '/legacy_php/app/Controllers/ToolController.php';
 
 // Admin Controllers
-require_once __DIR__ . '/app/Controllers/Admin/AdminDashboardController.php';
-require_once __DIR__ . '/app/Controllers/Admin/AdminServiceController.php';
-require_once __DIR__ . '/app/Controllers/Admin/AdminOrderController.php';
-require_once __DIR__ . '/app/Controllers/Admin/AdminPaymentController.php';
-require_once __DIR__ . '/app/Controllers/Admin/AdminInvoiceController.php';
-require_once __DIR__ . '/app/Controllers/Admin/AdminClientController.php';
-require_once __DIR__ . '/app/Controllers/Admin/AdminPortfolioController.php';
-require_once __DIR__ . '/app/Controllers/Admin/AdminBlogController.php';
-require_once __DIR__ . '/app/Controllers/Admin/AdminCmsController.php';
-require_once __DIR__ . '/app/Controllers/Admin/AdminMediaController.php';
-require_once __DIR__ . '/app/Controllers/Admin/AdminSettingsController.php';
-require_once __DIR__ . '/app/Controllers/Admin/AdminSupportController.php';
-require_once __DIR__ . '/app/Controllers/Admin/AdminInquiryController.php';
-require_once __DIR__ . '/app/Controllers/Admin/AdminSeoController.php';
+require_once __DIR__ . '/legacy_php/app/Controllers/Admin/AdminDashboardController.php';
+require_once __DIR__ . '/legacy_php/app/Controllers/Admin/AdminServiceController.php';
+require_once __DIR__ . '/legacy_php/app/Controllers/Admin/AdminOrderController.php';
+require_once __DIR__ . '/legacy_php/app/Controllers/Admin/AdminPaymentController.php';
+require_once __DIR__ . '/legacy_php/app/Controllers/Admin/AdminInvoiceController.php';
+require_once __DIR__ . '/legacy_php/app/Controllers/Admin/AdminClientController.php';
+require_once __DIR__ . '/legacy_php/app/Controllers/Admin/AdminPortfolioController.php';
+require_once __DIR__ . '/legacy_php/app/Controllers/Admin/AdminBlogController.php';
+require_once __DIR__ . '/legacy_php/app/Controllers/Admin/AdminCmsController.php';
+require_once __DIR__ . '/legacy_php/app/Controllers/Admin/AdminMediaController.php';
+require_once __DIR__ . '/legacy_php/app/Controllers/Admin/AdminSettingsController.php';
+require_once __DIR__ . '/legacy_php/app/Controllers/Admin/AdminSupportController.php';
+require_once __DIR__ . '/legacy_php/app/Controllers/Admin/AdminInquiryController.php';
+require_once __DIR__ . '/legacy_php/app/Controllers/Admin/AdminSeoController.php';
 
 $app = new App();
 
@@ -64,6 +64,9 @@ $app->get('/refund-policy', [HomeController::class, 'refundPolicy']);
 
 // Interactive Marketing & SEO Tools Suite
 $app->get('/tools', [HomeController::class, 'toolsHub']);
+$app->get('/high-da-backlinks', [ToolController::class, 'highDaBacklinks']);
+$app->get('/high-da-backlinks/{slug}', [ToolController::class, 'highDaBacklinkSingle']);
+
 
 // 1. Website Cost Calculator
 $app->get('/tools/website-cost-calculator', [HomeController::class, 'costCalculator']);

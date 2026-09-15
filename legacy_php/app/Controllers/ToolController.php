@@ -5,6 +5,22 @@ require_once __DIR__ . '/../Models/ContactInquiry.php';
 
 class ToolController extends Controller {
 
+    public function highDaBacklinks(): void {
+        $this->render('public/tools/high_da_backlinks', [
+            'pageTitle' => '150+ Best High DA Backlink Sites List (2026 Updated) | ' . setting('site_name', 'Abdullah Saleh'),
+            'metaDescription' => 'Curated database of verified High DA and DR backlink sites for Web 2.0, Profile Creation, Social Bookmarking, Citations, and Document Sharing.'
+        ]);
+    }
+
+    public function highDaBacklinkSingle(string $slug = ''): void {
+        $this->render('public/tools/high_da_backlinks', [
+            'pageTitle' => ucwords(str_replace('-', ' ', $slug)) . ' | ' . setting('site_name', 'Abdullah Saleh'),
+            'metaDescription' => 'Detailed strategy guide and verified directory of high DA backlink sources for ' . htmlspecialchars($slug),
+            'singleSlug' => $slug
+        ]);
+    }
+
+
     public function schemaGenerator(): void {
         $this->render('public/tools/schema_generator', [
             'pageTitle' => 'Free Schema Markup (JSON-LD) Generator | ' . setting('site_name', 'MD Abdullah SEO'),
