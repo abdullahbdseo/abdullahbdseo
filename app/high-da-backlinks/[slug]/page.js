@@ -16,6 +16,8 @@ export default function SingleBacklinkPage() {
 
   const [tableSearch, setTableSearch] = useState("");
   const [copiedUrl, setCopiedUrl] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(50);
 
   if (!post) {
     // If not found in memory, try fallback or return notFound
@@ -30,13 +32,36 @@ export default function SingleBacklinkPage() {
     );
   }
 
-  const filteredSites = post.sites.filter(
-    (s) =>
-      tableSearch.trim() === "" ||
-      s.name.toLowerCase().includes(tableSearch.toLowerCase()) ||
-      s.url.toLowerCase().includes(tableSearch.toLowerCase()) ||
-      (s.country && s.country.toLowerCase().includes(tableSearch.toLowerCase()))
-  );
+  const filteredSites = useMemo(() => {
+    return post.sites.filter(
+      (s) =>
+        tableSearch.trim() === "" ||
+        s.name.toLowerCase().includes(tableSearch.toLowerCase()) ||
+        s.url.toLowerCase().includes(tableSearch.toLowerCase()) ||
+        (s.country && s.country.toLowerCase().includes(tableSearch.toLowerCase()))
+    );
+  }, [post.sites, tableSearch]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredSites.length / pageSize));
+  
+  // Safe current page clamp
+  const safeCurrentPage = Math.min(currentPage, totalPages);
+
+  const paginatedSites = useMemo(() => {
+    if (pageSize >= 9999) return filteredSites;
+    const start = (safeCurrentPage - 1) * pageSize;
+    return filteredSites.slice(start, start + pageSize);
+  }, [filteredSites, safeCurrentPage, pageSize]);
+
+  const handleSearchChange = (e) => {
+    setTableSearch(e.target.value);
+    setCurrentPage(1);
+  };
+
+  const handlePageSizeChange = (e) => {
+    setPageSize(Number(e.target.value));
+    setCurrentPage(1);
+  };
 
   const handleCopy = (url) => {
     if (navigator.clipboard) {
@@ -247,22 +272,47 @@ export default function SingleBacklinkPage() {
                   </span>
                 </div>
 
-                <div style={{ position: "relative", minWidth: "260px" }}>
-                  <i className="fa-solid fa-magnifying-glass" style={{ position: "absolute", left: "14px", top: "50%", transform: "translateY(-50%)", color: "#94a3b8" }}></i>
-                  <input
-                    type="text"
-                    placeholder="Search platform name or URL..."
-                    value={tableSearch}
-                    onChange={(e) => setTableSearch(e.target.value)}
-                    style={{
-                      width: "100%",
-                      padding: "8px 14px 8px 36px",
-                      borderRadius: "6px",
-                      border: "1px solid #cbd5e1",
-                      fontSize: "0.88rem",
-                      outline: "none"
-                    }}
-                  />
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.82rem", color: "#64748b" }}>
+                    <span>Show:</span>
+                    <select
+                      value={pageSize}
+                      onChange={handlePageSizeChange}
+                      style={{
+                        padding: "6px 10px",
+                        borderRadius: "6px",
+                        border: "1px solid #cbd5e1",
+                        fontSize: "0.85rem",
+                        color: "#0f172a",
+                        background: "#ffffff",
+                        outline: "none",
+                        cursor: "pointer"
+                      }}
+                    >
+                      <option value={25}>25 per page</option>
+                      <option value={50}>50 per page</option>
+                      <option value={100}>100 per page</option>
+                      <option value={99999}>Show All</option>
+                    </select>
+                  </div>
+
+                  <div style={{ position: "relative", minWidth: "240px" }}>
+                    <i className="fa-solid fa-magnifying-glass" style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)", color: "#94a3b8" }}></i>
+                    <input
+                      type="text"
+                      placeholder="Search platform name or URL..."
+                      value={tableSearch}
+                      onChange={handleSearchChange}
+                      style={{
+                        width: "100%",
+                        padding: "8px 14px 8px 34px",
+                        borderRadius: "6px",
+                        border: "1px solid #cbd5e1",
+                        fontSize: "0.88rem",
+                        outline: "none"
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
 
@@ -271,95 +321,192 @@ export default function SingleBacklinkPage() {
                 <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "0.92rem" }}>
                   <thead>
                     <tr style={{ background: "#f8fafc", borderBottom: "2px solid #e2e8f0", color: "#475569" }}>
+                      <th style={{ padding: "14px 14px", fontWeight: 700, width: "60px", textAlign: "center" }}>#</th>
                       <th style={{ padding: "14px 18px", fontWeight: 700 }}>Platform / Site</th>
                       <th style={{ padding: "14px 12px", fontWeight: 700, textAlign: "center" }}>DA Score</th>
                       <th style={{ padding: "14px 12px", fontWeight: 700, textAlign: "center" }}>Link Type</th>
-                      <th style={{ padding: "14px 12px", fontWeight: 700, textAlign: "center" }}>Approval</th>
                       <th style={{ padding: "14px 18px", fontWeight: 700, textAlign: "right" }}>Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredSites.map((site, idx) => (
-                      <tr key={idx} style={{ borderBottom: "1px solid #f1f5f9" }}>
-                        <td style={{ padding: "14px 18px" }}>
-                          <strong style={{ color: "#0f172a", display: "block" }}>{site.name}</strong>
-                          <span style={{ fontSize: "0.8rem", color: "#64748b" }}>{site.url.replace("https://", "")}</span>
-                        </td>
-                        <td style={{ padding: "14px 12px", textAlign: "center" }}>
-                          <span style={{
-                            display: "inline-block",
-                            padding: "3px 8px",
-                            borderRadius: "4px",
-                            background: site.da >= 90 ? "#ecfdf5" : "#eff6ff",
-                            color: site.da >= 90 ? "#059669" : "#4361ee",
-                            fontWeight: 800,
-                            fontSize: "0.85rem"
-                          }}>
-                            DA {site.da}
-                          </span>
-                        </td>
-                        <td style={{ padding: "14px 12px", textAlign: "center" }}>
-                          <span style={{
-                            padding: "3px 8px",
-                            borderRadius: "4px",
-                            fontSize: "0.78rem",
-                            fontWeight: 700,
-                            background: site.type.includes("DoFollow") ? "#dcfce7" : "#f1f5f9",
-                            color: site.type.includes("DoFollow") ? "#15803d" : "#475569"
-                          }}>
-                            {site.type}
-                          </span>
-                        </td>
-                        <td style={{ padding: "14px 12px", textAlign: "center", color: "#64748b", fontSize: "0.85rem" }}>
-                          <i className="fa-solid fa-bolt" style={{ color: "#f59e0b", marginRight: "4px" }}></i>
-                          {site.approval}
-                        </td>
-                        <td style={{ padding: "14px 18px", textAlign: "right" }}>
-                          <div style={{ display: "inline-flex", gap: "6px" }}>
-                            <button
-                              type="button"
-                              onClick={() => handleCopy(site.url)}
-                              title="Copy URL"
-                              style={{
-                                padding: "6px 9px",
-                                background: copiedUrl === site.url ? "#ecfdf5" : "#f1f5f9",
-                                border: "1px solid #cbd5e1",
-                                borderRadius: "4px",
-                                color: copiedUrl === site.url ? "#059669" : "#475569",
-                                cursor: "pointer",
-                                fontSize: "0.8rem"
-                              }}
-                            >
-                              <i className={`fa-solid ${copiedUrl === site.url ? "fa-check" : "fa-copy"}`}></i>
-                            </button>
-                            <a
-                              href={site.url}
-                              target="_blank"
-                              rel="nofollow noopener noreferrer"
-                              style={{
-                                padding: "6px 12px",
-                                background: "#eff6ff",
-                                border: "1px solid #bfdbfe",
-                                borderRadius: "4px",
-                                color: "#4361ee",
-                                textDecoration: "none",
-                                fontSize: "0.82rem",
-                                fontWeight: 700,
-                                display: "inline-flex",
-                                alignItems: "center",
-                                gap: "4px"
-                              }}
-                            >
-                              <span>Visit</span>
-                              <i className="fa-solid fa-arrow-up-right-from-square" style={{ fontSize: "0.7rem" }}></i>
-                            </a>
-                          </div>
+                    {paginatedSites.length === 0 ? (
+                      <tr>
+                        <td colSpan={5} style={{ padding: "40px 20px", textAlign: "center", color: "#64748b" }}>
+                          <i className="fa-solid fa-magnifying-glass" style={{ fontSize: "1.5rem", marginBottom: "8px", display: "block", color: "#cbd5e1" }}></i>
+                          No platforms found matching "<strong>{tableSearch}</strong>".
                         </td>
                       </tr>
-                    ))}
+                    ) : (
+                      paginatedSites.map((site, idx) => (
+                        <tr key={idx} style={{ borderBottom: "1px solid #f1f5f9" }}>
+                          <td style={{ padding: "14px 14px", textAlign: "center", fontWeight: 700, color: "#64748b", fontSize: "0.85rem" }}>
+                            {(safeCurrentPage - 1) * (pageSize >= 99999 ? 0 : pageSize) + idx + 1}
+                          </td>
+                          <td style={{ padding: "14px 18px" }}>
+                            <strong style={{ color: "#0f172a", display: "block" }}>{site.name}</strong>
+                            <span style={{ fontSize: "0.8rem", color: "#64748b" }}>{site.url.replace("https://", "")}</span>
+                          </td>
+                          <td style={{ padding: "14px 12px", textAlign: "center" }}>
+                            <span style={{
+                              display: "inline-block",
+                              padding: "3px 8px",
+                              borderRadius: "4px",
+                              background: site.da >= 90 ? "#ecfdf5" : "#eff6ff",
+                              color: site.da >= 90 ? "#059669" : "#4361ee",
+                              fontWeight: 800,
+                              fontSize: "0.85rem"
+                            }}>
+                              DA {site.da}
+                            </span>
+                          </td>
+                          <td style={{ padding: "14px 12px", textAlign: "center" }}>
+                            <span style={{
+                              padding: "3px 8px",
+                              borderRadius: "4px",
+                              fontSize: "0.78rem",
+                              fontWeight: 700,
+                              background: site.type.includes("DoFollow") ? "#dcfce7" : "#f1f5f9",
+                              color: site.type.includes("DoFollow") ? "#15803d" : "#475569"
+                            }}>
+                              {site.type}
+                            </span>
+                          </td>
+                          <td style={{ padding: "14px 18px", textAlign: "right" }}>
+                            <div style={{ display: "inline-flex", gap: "6px" }}>
+                              <button
+                                type="button"
+                                onClick={() => handleCopy(site.url)}
+                                title="Copy URL"
+                                style={{
+                                  padding: "6px 9px",
+                                  background: copiedUrl === site.url ? "#ecfdf5" : "#f1f5f9",
+                                  border: "1px solid #cbd5e1",
+                                  borderRadius: "4px",
+                                  color: copiedUrl === site.url ? "#059669" : "#475569",
+                                  cursor: "pointer",
+                                  fontSize: "0.8rem"
+                                }}
+                              >
+                                <i className={`fa-solid ${copiedUrl === site.url ? "fa-check" : "fa-copy"}`}></i>
+                              </button>
+                              <a
+                                href={site.url}
+                                target="_blank"
+                                rel="nofollow noopener noreferrer"
+                                style={{
+                                  padding: "6px 12px",
+                                  background: "#eff6ff",
+                                  border: "1px solid #bfdbfe",
+                                  borderRadius: "4px",
+                                  color: "#4361ee",
+                                  textDecoration: "none",
+                                  fontSize: "0.82rem",
+                                  fontWeight: 700,
+                                  display: "inline-flex",
+                                  alignItems: "center",
+                                  gap: "4px"
+                                }}
+                              >
+                                <span>Visit</span>
+                                <i className="fa-solid fa-arrow-up-right-from-square" style={{ fontSize: "0.7rem" }}></i>
+                              </a>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    )}
                   </tbody>
                 </table>
               </div>
+
+              {/* Table Pagination Bar */}
+              {totalPages > 1 && pageSize < 99999 && (
+                <div style={{
+                  padding: "16px 24px",
+                  background: "#f8fafc",
+                  borderTop: "1px solid #e2e8f0",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  gap: "12px"
+                }}>
+                  <span style={{ fontSize: "0.85rem", color: "#64748b" }}>
+                    Showing Page <strong>{safeCurrentPage}</strong> of <strong>{totalPages}</strong> ({filteredSites.length} items)
+                  </span>
+
+                  <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                    <button
+                      type="button"
+                      disabled={safeCurrentPage <= 1}
+                      onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                      style={{
+                        padding: "6px 12px",
+                        borderRadius: "4px",
+                        border: "1px solid #cbd5e1",
+                        background: safeCurrentPage <= 1 ? "#f1f5f9" : "#ffffff",
+                        color: safeCurrentPage <= 1 ? "#94a3b8" : "#0f172a",
+                        cursor: safeCurrentPage <= 1 ? "not-allowed" : "pointer",
+                        fontSize: "0.84rem",
+                        fontWeight: 600
+                      }}
+                    >
+                      <i className="fa-solid fa-chevron-left" style={{ marginRight: "4px" }}></i> Prev
+                    </button>
+
+                    {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                      let pageNum;
+                      if (totalPages <= 5) {
+                        pageNum = i + 1;
+                      } else if (safeCurrentPage <= 3) {
+                        pageNum = i + 1;
+                      } else if (safeCurrentPage >= totalPages - 2) {
+                        pageNum = totalPages - 4 + i;
+                      } else {
+                        pageNum = safeCurrentPage - 2 + i;
+                      }
+
+                      return (
+                        <button
+                          key={pageNum}
+                          type="button"
+                          onClick={() => setCurrentPage(pageNum)}
+                          style={{
+                            padding: "6px 12px",
+                            borderRadius: "4px",
+                            border: pageNum === safeCurrentPage ? "1px solid #4361ee" : "1px solid #cbd5e1",
+                            background: pageNum === safeCurrentPage ? "#4361ee" : "#ffffff",
+                            color: pageNum === safeCurrentPage ? "#ffffff" : "#0f172a",
+                            cursor: "pointer",
+                            fontSize: "0.84rem",
+                            fontWeight: pageNum === safeCurrentPage ? 700 : 500
+                          }}
+                        >
+                          {pageNum}
+                        </button>
+                      );
+                    })}
+
+                    <button
+                      type="button"
+                      disabled={safeCurrentPage >= totalPages}
+                      onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                      style={{
+                        padding: "6px 12px",
+                        borderRadius: "4px",
+                        border: "1px solid #cbd5e1",
+                        background: safeCurrentPage >= totalPages ? "#f1f5f9" : "#ffffff",
+                        color: safeCurrentPage >= totalPages ? "#94a3b8" : "#0f172a",
+                        cursor: safeCurrentPage >= totalPages ? "not-allowed" : "pointer",
+                        fontSize: "0.84rem",
+                        fontWeight: 600
+                      }}
+                    >
+                      Next <i className="fa-solid fa-chevron-right" style={{ marginLeft: "4px" }}></i>
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* RELATED GUIDES */}

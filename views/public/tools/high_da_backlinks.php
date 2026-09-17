@@ -96,10 +96,10 @@
                 <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
                     <thead>
                         <tr style="border-bottom: 2px solid #e2e8f0; color: #64748b;">
+                            <th style="padding: 14px 10px; font-weight: 700; width: 45px; text-align: center;">#</th>
                             <th style="padding: 14px 10px; font-weight: 700;">Platform / Site</th>
                             <th style="padding: 14px 10px; font-weight: 700; text-align: center;">DA Score</th>
                             <th style="padding: 14px 10px; font-weight: 700; text-align: center;">Link Type</th>
-                            <th style="padding: 14px 10px; font-weight: 700; text-align: center;">Approval</th>
                             <th style="padding: 14px 10px; font-weight: 700; text-align: right;">Action</th>
                         </tr>
                     </thead>
@@ -316,8 +316,11 @@ function renderModalTable() {
     const tbody = document.getElementById("modalTableBody");
     const sites = currentActivePost.sites.filter(s => filter === "" || s.name.toLowerCase().includes(filter) || s.url.toLowerCase().includes(filter));
 
-    tbody.innerHTML = sites.map(s => `
+    tbody.innerHTML = sites.map((s, idx) => `
         <tr style="border-bottom: 1px solid #f1f5f9;">
+            <td style="padding: 14px 10px; text-align: center; font-weight: 700; color: #64748b; font-size: 0.85rem;">
+                ${idx + 1}
+            </td>
             <td style="padding: 14px 10px;">
                 <strong style="color: #0f172a; display: block;">${s.name}</strong>
                 <span style="font-size: 0.8rem; color: #64748b;">${s.url.replace('https://', '')}</span>
@@ -327,9 +330,6 @@ function renderModalTable() {
             </td>
             <td style="padding: 14px 10px; text-align: center;">
                 <span style="padding: 3px 8px; border-radius: 4px; font-size: 0.78rem; font-weight: 700; background: ${s.type === 'DoFollow' ? '#dcfce7' : '#f1f5f9'}; color: ${s.type === 'DoFollow' ? '#15803d' : '#475569'};">${s.type}</span>
-            </td>
-            <td style="padding: 14px 10px; text-align: center; color: #64748b; font-size: 0.85rem;">
-                <i class="fa-solid fa-bolt" style="color: #f59e0b; margin-right: 4px;"></i>${s.approval}
             </td>
             <td style="padding: 14px 10px; text-align: right;">
                 <div style="display: inline-flex; gap: 6px;">
