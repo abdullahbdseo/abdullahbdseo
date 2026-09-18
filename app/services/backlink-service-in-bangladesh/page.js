@@ -178,11 +178,11 @@ export default function BacklinkServicePage() {
 
   const packages = [
     {
-      name: "Starter Authority",
+      name: "Starter",
       bdtPrice: "৳15,000",
       usdPrice: "$125",
-      badge: "Foundation Pack",
-      desc: "Perfect for new websites or local businesses needing foundational domain trust and clean brand entity links.",
+      period: "/month",
+      badges: ["Audit", "10 Links", "Profile DA 80+"],
       features: [
         "10 High DA Profile Creation Links (DA 80+)",
         "3 Contextual Editorial Guest Posts (DR 40+)",
@@ -195,11 +195,11 @@ export default function BacklinkServicePage() {
       isPopular: false
     },
     {
-      name: "Growth Accelerator",
+      name: "Standard",
       bdtPrice: "৳30,000",
       usdPrice: "$250",
-      badge: "Most Popular 🔥",
-      desc: "Engineered for growing businesses and e-commerce stores wanting to dominate page 1 for competitive keywords.",
+      period: "/month",
+      badges: ["25 Links", "Guest Post", "DR 60+"],
       features: [
         "25 High DA Brand Entity Profile Links (DA 85+)",
         "8 Contextual Editorial Guest Posts (DR 50-70+)",
@@ -213,11 +213,11 @@ export default function BacklinkServicePage() {
       isPopular: true
     },
     {
-      name: "Authority Domination",
+      name: "Growth",
       bdtPrice: "৳55,000",
       usdPrice: "$450",
-      badge: "Market Leader",
-      desc: "Comprehensive monthly link-building campaign for hyper-competitive niches, enterprise brands, and global markets.",
+      period: "/month",
+      badges: ["50+ Links", "PR Outreach", "Scale"],
       features: [
         "50+ Tier-1 Multi-Platform Authority Links",
         "18 Premium Editorial Guest Posts (DR 60-85+)",
@@ -226,7 +226,25 @@ export default function BacklinkServicePage() {
         "Infographic & Data Visual Syndication",
         "Full Toxic Link Audit & Disavow File Setup",
         "Dedicated Senior Link Building Strategist",
-        "Weekly Strategy Debrief Calls via WhatsApp/Meet"
+        "Bi-Weekly Strategy Calls via WhatsApp/Meet"
+      ],
+      isPopular: false
+    },
+    {
+      name: "Enterprise",
+      bdtPrice: "৳95,000",
+      usdPrice: "$850",
+      period: "/month",
+      badges: ["Unlimited", "Custom PR", "VIP"],
+      features: [
+        "100+ High DR Tier-1 Authority Backlinks",
+        "35+ Major Editorial Publications & Press Releases",
+        "8+ High-Trust .EDU / .GOV Institutional Mentions",
+        "Custom HARO & Digital PR Pitching Desk",
+        "Competitor Link Intersect & Complete Moat Building",
+        "Custom High-Impact Infographic & Video Distribution",
+        "24/7 Priority WhatsApp & Direct Phone Support",
+        "Dedicated Senior SEO Growth Director"
       ],
       isPopular: false
     }
@@ -511,22 +529,22 @@ export default function BacklinkServicePage() {
                   href={`https://wa.me/${siteSettings.whatsapp_number.replace(/[^0-9]/g, "")}?text=${encodeURIComponent("Hello Abdullah! I am interested in your High DA Backlink Service in Bangladesh. Please share packages and a free backlink audit.")}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn btn-primary"
+                  className="btn"
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
                     gap: "8px",
-                    background: "#0062d2",
+                    background: "#059669",
                     color: "#ffffff",
                     padding: "14px 28px",
                     borderRadius: "4px",
                     fontWeight: 700,
                     fontSize: "0.98rem",
                     textDecoration: "none",
-                    boxShadow: "0 4px 12px rgba(0, 98, 210, 0.25)"
+                    boxShadow: "0 4px 15px rgba(5, 150, 105, 0.3)"
                   }}
                 >
-                  <i className="fa-brands fa-whatsapp" style={{ fontSize: "1.1rem" }}></i>
+                  <i className="fa-brands fa-whatsapp" style={{ fontSize: "1.2rem" }}></i>
                   <span>WhatsApp Free Consultation</span>
                 </a>
 
@@ -998,7 +1016,7 @@ export default function BacklinkServicePage() {
       </section>
 
       {/* 7. TRANSPARENT PRICING PACKAGES */}
-      <section id="pricing-packages" style={{ padding: "75px 0", background: "#f8fafc", borderBottom: "1px solid #e2e8f0" }}>
+      <section id="pricing-packages" className="section digi-pricing-section" style={{ padding: "75px 0", background: "#f8fafc", borderBottom: "1px solid #e2e8f0" }}>
         <div className="container" style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
           <div className="text-center" style={{ maxWidth: "700px", margin: "0 auto 45px" }}>
             <span style={{ color: "#0062d2", fontWeight: 700, fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>
@@ -1012,88 +1030,38 @@ export default function BacklinkServicePage() {
             </p>
           </div>
 
-          <div className="row gy-4 align-items-stretch">
-            {packages.map((pkg, idx) => (
-              <div key={idx} className="col-lg-4">
-                <div style={{
-                  background: "#ffffff",
-                  borderRadius: "8px",
-                  padding: "32px 26px",
-                  border: pkg.isPopular ? "2px solid #0062d2" : "1px solid #e2e8f0",
-                  position: "relative",
-                  height: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  boxShadow: pkg.isPopular ? "0 10px 30px rgba(0, 98, 210, 0.12)" : "0 2px 10px rgba(15, 23, 42, 0.03)"
-                }}>
-                  {pkg.isPopular && (
-                    <div style={{
-                      position: "absolute",
-                      top: "-12px",
-                      left: "50%",
-                      transform: "translateX(-50%)",
-                      background: "#0062d2",
-                      color: "#ffffff",
-                      padding: "3px 14px",
-                      borderRadius: "4px",
-                      fontSize: "0.75rem",
-                      fontWeight: 700,
-                      textTransform: "uppercase",
-                      letterSpacing: "0.5px"
-                    }}>
-                      Most Recommended
-                    </div>
-                  )}
-
-                  <div>
-                    <h3 style={{ fontSize: "1.3rem", fontWeight: 800, color: "#0f172a", marginBottom: "4px" }}>
-                      {pkg.name}
-                    </h3>
-                    <p style={{ fontSize: "0.85rem", color: "#64748b", marginBottom: "18px" }}>
-                      {pkg.desc}
-                    </p>
-
-                    <div style={{ marginBottom: "22px", display: "flex", alignItems: "baseline", gap: "8px" }}>
-                      <span style={{ fontSize: "2.3rem", fontWeight: 900, color: "#0062d2" }}>
-                        {pkg.bdtPrice}
-                      </span>
-                      <span style={{ fontSize: "0.95rem", color: "#64748b", fontWeight: 600 }}>
-                        / {pkg.usdPrice} USD
-                      </span>
-                    </div>
-
-                    <ul style={{ listStyle: "none", padding: 0, margin: "0 0 26px" }}>
-                      {pkg.features.map((feat, fIdx) => (
-                        <li key={fIdx} style={{ display: "flex", gap: "10px", marginBottom: "11px", fontSize: "0.88rem", color: "#334155" }}>
-                          <i className="fa-solid fa-check" style={{ color: "#0062d2", marginTop: "3px" }}></i>
-                          <span>{feat}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
+          <div className="digi-pricing-grid">
+            {packages.map((pkg) => (
+              <div key={pkg.name} className={`digi-pricing-card${pkg.isPopular ? " featured" : ""}`}>
+                <div className="pricing-card-header">
+                  <h4>{pkg.name}</h4>
+                  <div className="pricing-card-price">{pkg.usdPrice}<span>{pkg.period}</span></div>
+                </div>
+                <div className="pricing-card-badges">
+                  {pkg.badges.map((b) => <span key={b}>{b}</span>)}
+                </div>
+                <ul className="pricing-card-features">
+                  {pkg.features.map((feat) => (
+                    <li key={feat}><i className="fa-solid fa-check"></i> {feat}</li>
+                  ))}
+                </ul>
+                <div className="pricing-card-footer">
                   <a
-                    href={`https://wa.me/${siteSettings.whatsapp_number.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(`Hello Abdullah! I want to order the "${pkg.name}" (${pkg.bdtPrice}) backlink package. Please share payment instructions and onboarding details.`)}`}
+                    href={`https://wa.me/${siteSettings.whatsapp_number.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(`Hello Abdullah! I want to order the "${pkg.name}" (${pkg.usdPrice} / ${pkg.bdtPrice}) backlink package. Please share payment instructions and onboarding details.`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
+                    className="btn btn-aqua-solid btn-block"
                     style={{
-                      display: "block",
-                      width: "100%",
-                      textAlign: "center",
-                      padding: "13px",
-                      background: pkg.isPopular ? "#0062d2" : "#ffffff",
-                      color: pkg.isPopular ? "#ffffff" : "#0062d2",
-                      borderRadius: "4px",
-                      fontWeight: 700,
-                      fontSize: "0.95rem",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "8px",
                       textDecoration: "none",
-                      border: pkg.isPopular ? "none" : "1px solid #0062d2",
-                      boxShadow: pkg.isPopular ? "0 4px 12px rgba(0, 98, 210, 0.25)" : "none"
+                      width: "100%"
                     }}
                   >
-                    <i className="fa-brands fa-whatsapp" style={{ marginRight: "6px" }}></i>
-                    Order {pkg.name}
+                    <span>Get Started</span>
+                    <i className="fa-solid fa-arrow-right"></i>
                   </a>
                 </div>
               </div>
@@ -1390,19 +1358,19 @@ export default function BacklinkServicePage() {
               href={`https://wa.me/${siteSettings.whatsapp_number.replace(/[^0-9]/g, "")}?text=${encodeURIComponent("Hello Abdullah! I want to start building High DA backlinks for my website. Let's discuss.")}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn btn-primary"
+              className="btn"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
                 gap: "8px",
-                background: "#0062d2",
+                background: "#059669",
                 color: "#ffffff",
                 padding: "14px 32px",
                 borderRadius: "4px",
                 fontWeight: 700,
                 fontSize: "1rem",
                 textDecoration: "none",
-                boxShadow: "0 4px 12px rgba(0, 98, 210, 0.25)"
+                boxShadow: "0 4px 15px rgba(5, 150, 105, 0.3)"
               }}
             >
               <i className="fa-brands fa-whatsapp" style={{ fontSize: "1.2rem" }}></i>
