@@ -67,13 +67,18 @@ function buildXlsx(sheets) {
   ];
 
   const localHeaders = []; const centralDir = []; let offset = 0;
+  // DOS date/time: 2024-01-01 00:00:00 → time=0x0000, date=0x5821
+  const dosTime = u16(0x0000);
+  const dosDate = u16(0x5821);
   for (const [name, content] of files) {
     const nameBytes = enc(name); const dataBytes = enc(content); const crc = crc32(dataBytes.buffer);
     const sig = new Uint8Array([0x50, 0x4B, 0x03, 0x04]);
-    const localHeader = concat(sig, u16(20), u16(0), u16(0), u32(crc), u32(dataBytes.length), u32(dataBytes.length), u16(nameBytes.length), u16(0), nameBytes, dataBytes);
+    // Local file header: sig(4) + version(2) + flags(2) + method(2) + time(2) + date(2) + crc(4) + cSize(4) + uSize(4) + nameLen(2) + extraLen(2) + name + data
+    const localHeader = concat(sig, u16(20), u16(0), u16(0), dosTime, dosDate, u32(crc), u32(dataBytes.length), u32(dataBytes.length), u16(nameBytes.length), u16(0), nameBytes, dataBytes);
     localHeaders.push(localHeader);
     const cdSig = new Uint8Array([0x50, 0x4B, 0x01, 0x02]);
-    const cd = concat(cdSig, u16(20), u16(20), u16(0), u16(0), u32(crc), u32(dataBytes.length), u32(dataBytes.length), u16(nameBytes.length), u16(0), u16(0), u16(0), u16(0), u32(0), u32(offset), nameBytes);
+    // Central dir: sig(4) + vMade(2) + vNeeded(2) + flags(2) + method(2) + time(2) + date(2) + crc(4) + cSize(4) + uSize(4) + nameLen(2) + extraLen(2) + commentLen(2) + diskStart(2) + intAttr(2) + extAttr(4) + offset(4) + name
+    const cd = concat(cdSig, u16(20), u16(20), u16(0), u16(0), dosTime, dosDate, u32(crc), u32(dataBytes.length), u32(dataBytes.length), u16(nameBytes.length), u16(0), u16(0), u16(0), u16(0), u32(0), u32(offset), nameBytes);
     centralDir.push(cd);
     offset += localHeader.length;
   }
