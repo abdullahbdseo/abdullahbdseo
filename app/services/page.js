@@ -322,7 +322,7 @@ export default function ServicesPage() {
                   </td>
                 </tr>
 
-                <tr>
+                <tr style={{ borderBottom: "1px solid #f1f5f9" }}>
                   <td style={{ padding: "18px 20px", fontWeight: 700, color: "#0f172a" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                       <span style={{ width: "32px", height: "32px", borderRadius: "4px", background: "#faf5ff", color: "#9333ea", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.9rem" }}>
@@ -339,6 +339,28 @@ export default function ServicesPage() {
                   <td style={{ padding: "18px 20px", fontWeight: 700, color: "#059669" }}>AI Recommendation Citations</td>
                   <td style={{ padding: "18px 20px", textAlign: "right" }}>
                     <Link href="/services/ai-seo-service-in-bangladesh" className="btn btn-sm btn-outline" style={{ fontSize: "0.8rem", padding: "6px 14px" }}>
+                      View Service <i className="fa-solid fa-arrow-right"></i>
+                    </Link>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style={{ padding: "18px 20px", fontWeight: 700, color: "#0f172a" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                      <span style={{ width: "32px", height: "32px", borderRadius: "4px", background: "#eff6ff", color: "#3b82f6", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.9rem" }}>
+                        <i className="fa-solid fa-link"></i>
+                      </span>
+                      <div>
+                        <div>Backlink Service</div>
+                        <span style={{ fontSize: "0.75rem", color: "#64748b", fontWeight: 500 }}>High DA &amp; Digital PR</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td style={{ padding: "18px 20px" }}>Competitive Niches, Established Websites, Outranking Giants</td>
+                  <td style={{ padding: "18px 20px" }}><span className="badge" style={{ background: "#eff6ff", color: "#1d4ed8", padding: "4px 8px", borderRadius: "4px", fontWeight: 700, fontSize: "0.76rem" }}>DR 50-90+ Editorial Sites</span></td>
+                  <td style={{ padding: "18px 20px", fontWeight: 700, color: "#059669" }}>PageRank &amp; #1 Organic Rank</td>
+                  <td style={{ padding: "18px 20px", textAlign: "right" }}>
+                    <Link href="/services/backlink-service-in-bangladesh" className="btn btn-sm btn-outline" style={{ fontSize: "0.8rem", padding: "6px 14px" }}>
                       View Service <i className="fa-solid fa-arrow-right"></i>
                     </Link>
                   </td>

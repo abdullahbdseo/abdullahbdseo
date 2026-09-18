@@ -183,7 +183,7 @@ export default function HighDaBacklinksPage() {
 
             <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
               <Link
-                href="/contact"
+                href="/services/backlink-service-in-bangladesh"
                 style={{
                   padding: "14px 28px",
                   background: "#ffffff",
@@ -198,11 +198,11 @@ export default function HighDaBacklinksPage() {
                   gap: "8px"
                 }}
               >
-                <span>Get Custom Link Plan</span>
+                <span>Hire Backlink Expert</span>
                 <i className="fa-solid fa-arrow-right"></i>
               </Link>
               <Link
-                href="/services"
+                href="/services/backlink-service-in-bangladesh#pricing-packages"
                 style={{
                   padding: "14px 24px",
                   background: "rgba(255, 255, 255, 0.15)",
@@ -214,7 +214,7 @@ export default function HighDaBacklinksPage() {
                   textDecoration: "none"
                 }}
               >
-                View SEO Packages
+                View Backlink Packages
               </Link>
             </div>
           </div>
