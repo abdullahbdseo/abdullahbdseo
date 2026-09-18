@@ -74,33 +74,45 @@ export default function BacklinkServicePage() {
   const benefits = [
     {
       icon: "fa-arrow-trend-up",
-      title: "Explosive Domain Authority Growth",
-      desc: "Safely skyrocket your website's Moz Domain Authority (DA) and Ahrefs Domain Rating (DR) to outrank legacy competitors in ultra-competitive niches."
+      badge: "+150% DR Lift",
+      title: "Explosive Domain Authority",
+      desc: "Safely skyrocket your website's Moz DA and Ahrefs DR to outrank legacy competitors in competitive niches.",
+      tag: "Compounding PageRank Equity"
     },
     {
       icon: "fa-shield-halved",
-      title: "100% White-Hat & Penalty-Proof",
-      desc: "Zero PBNs, zero spam scripts, zero link farms. Every backlink is hand-placed on verified real-traffic websites following Google Webmaster Guidelines."
+      badge: "0% Penalty Risk",
+      title: "100% White-Hat & Safe",
+      desc: "Zero PBNs or link farms. Every link is hand-placed on verified real-traffic sites following Google Webmaster guidelines.",
+      tag: "Manual Editorial Outreach"
     },
     {
       icon: "fa-bullseye",
-      title: "Targeted Contextual Relevance",
-      desc: "Links are embedded organically inside high-quality, niche-relevant articles matching your specific business industry and buyer search intent."
+      badge: "100% Niche Match",
+      title: "Contextual Relevance",
+      desc: "Links are embedded organically inside high-quality, niche-relevant articles matching your buyer search intent.",
+      tag: "Natural Anchor Distribution"
     },
     {
       icon: "fa-brain",
-      title: "AI Search & Knowledge Graph Trust",
-      desc: "Brand entity mentions and high-authority co-citations train AI search models (Google AI Overviews, ChatGPT Search, Perplexity) to cite your website as an expert source."
+      badge: "AI Overview Ready",
+      title: "AI Search & Entity Trust",
+      desc: "Brand entity mentions and authority co-citations train AI models (ChatGPT, Gemini, Perplexity) to cite your website.",
+      tag: "Knowledge Graph Integration"
     },
     {
       icon: "fa-users-viewfinder",
-      title: "High-Converting Referral Traffic",
-      desc: "Quality backlinks placed on high-traffic publisher sites deliver real prospective customers and qualified leads directly to your conversion pages."
+      badge: "Buyer-Ready Leads",
+      title: "Targeted Referral Traffic",
+      desc: "Quality backlinks placed on high-traffic publisher sites deliver real prospective customers directly to your money pages.",
+      tag: "Qualified Inbound Clicks"
     },
     {
       icon: "fa-file-lines",
-      title: "Transparent Live Excel Reports",
-      desc: "Full transparency with detailed reports including live URLs, DR/DA scores, anchor texts, organic traffic metrics, and indexation guarantees."
+      badge: "100% Verified",
+      title: "Live Transparent Reports",
+      desc: "Full transparency with detailed Google Sheets including live URLs, DR/DA metrics, anchor texts, and indexation status.",
+      tag: "Permanent DoFollow Links"
     }
   ];
 
@@ -850,51 +862,96 @@ export default function BacklinkServicePage() {
         </div>
       </section>
 
-      {/* 4. CORE BENEFITS */}
-      <section style={{ padding: "75px 0", background: "#ffffff", borderBottom: "1px solid #e2e8f0" }}>
+      {/* 4. CORE BENEFITS (Small Box Design) */}
+      <section style={{ padding: "70px 0", background: "#ffffff", borderBottom: "1px solid #e2e8f0" }}>
         <div className="container" style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
-          <div className="text-center" style={{ maxWidth: "720px", margin: "0 auto 45px" }}>
-            <span style={{ color: "#0062d2", fontWeight: 700, fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+          <div className="text-center" style={{ maxWidth: "760px", margin: "0 auto 40px" }}>
+            <span style={{ 
+              display: "inline-block",
+              background: "#eff6ff",
+              color: "#0062d2",
+              padding: "4px 14px",
+              borderRadius: "999px",
+              fontSize: "0.8rem",
+              fontWeight: 700,
+              letterSpacing: "0.04em",
+              textTransform: "uppercase",
+              border: "1px solid #dbeafe",
+              marginBottom: "10px"
+            }}>
               Measurable SEO Advantages
             </span>
-            <h2 style={{ fontSize: "2.2rem", fontWeight: 800, color: "#0f172a", margin: "8px 0" }}>
+            <h2 style={{ fontSize: "2.15rem", fontWeight: 800, color: "#0f172a", margin: "4px 0 10px", letterSpacing: "-0.02em" }}>
               How High-Authority Backlinks Transform Your Organic Growth
             </h2>
-            <p style={{ color: "#64748b", fontSize: "1.02rem" }}>
+            <p style={{ color: "#64748b", fontSize: "0.98rem", margin: 0 }}>
               Strategic link acquisition built to elevate search rankings, referral revenues, and brand authority simultaneously.
             </p>
           </div>
 
-          <div className="row gy-4">
+          <div className="row g-3 g-lg-4">
             {benefits.map((b, idx) => (
               <div key={idx} className="col-md-6 col-lg-4">
                 <div style={{
-                  background: "#f8fafc",
-                  borderRadius: "8px",
-                  padding: "28px",
+                  background: "#ffffff",
+                  borderRadius: "10px",
+                  padding: "22px 20px",
                   height: "100%",
-                  border: "1px solid #e2e8f0"
+                  border: "1px solid #e2e8f0",
+                  boxShadow: "0 2px 8px rgba(15, 23, 42, 0.03)",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between"
                 }}>
+                  <div>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px" }}>
+                      <div style={{
+                        width: "40px",
+                        height: "40px",
+                        borderRadius: "8px",
+                        background: "#eff6ff",
+                        color: "#0062d2",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: "1.05rem",
+                        border: "1px solid #dbeafe"
+                      }}>
+                        <i className={`fa-solid ${b.icon}`}></i>
+                      </div>
+                      <span style={{
+                        background: "#f1f5f9",
+                        color: "#0062d2",
+                        fontSize: "0.72rem",
+                        fontWeight: 700,
+                        padding: "3px 10px",
+                        borderRadius: "999px",
+                        border: "1px solid #e2e8f0"
+                      }}>
+                        {b.badge}
+                      </span>
+                    </div>
+                    <h3 style={{ fontSize: "1.05rem", fontWeight: 800, color: "#0f172a", marginBottom: "8px", letterSpacing: "-0.01em" }}>
+                      {b.title}
+                    </h3>
+                    <p style={{ fontSize: "0.875rem", color: "#475569", lineHeight: 1.55, margin: 0 }}>
+                      {b.desc}
+                    </p>
+                  </div>
                   <div style={{
-                    width: "48px",
-                    height: "48px",
-                    borderRadius: "6px",
-                    background: "#eff6ff",
-                    color: "#0062d2",
+                    marginTop: "14px",
+                    paddingTop: "12px",
+                    borderTop: "1px dashed #e2e8f0",
                     display: "flex",
                     alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "1.2rem",
-                    marginBottom: "16px"
+                    gap: "6px",
+                    fontSize: "0.76rem",
+                    fontWeight: 600,
+                    color: "#059669"
                   }}>
-                    <i className={`fa-solid ${b.icon}`}></i>
+                    <i className="fa-solid fa-circle-check" style={{ fontSize: "0.82rem", color: "#059669" }}></i>
+                    <span>{b.tag}</span>
                   </div>
-                  <h3 style={{ fontSize: "1.15rem", fontWeight: 800, color: "#0f172a", marginBottom: "10px" }}>
-                    {b.title}
-                  </h3>
-                  <p style={{ fontSize: "0.92rem", color: "#64748b", lineHeight: 1.6, margin: 0 }}>
-                    {b.desc}
-                  </p>
                 </div>
               </div>
             ))}
