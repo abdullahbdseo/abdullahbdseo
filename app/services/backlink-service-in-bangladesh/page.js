@@ -1221,7 +1221,7 @@ export default function BacklinkServicePage() {
                     href={`https://wa.me/${siteSettings.whatsapp_number.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(`Hello Abdullah! I want to order the "${pkg.name}" (${pkg.usdPrice} / ${pkg.bdtPrice}) backlink package. Please share payment instructions and onboarding details.`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn btn-aqua-solid btn-block"
+                    className={`btn ${pkg.isPopular ? "btn-royal" : "btn-aqua-solid"} btn-block`}
                     style={{
                       display: "flex",
                       alignItems: "center",
