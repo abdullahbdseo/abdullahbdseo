@@ -119,33 +119,45 @@ export default function BacklinkServicePage() {
   const processSteps = [
     {
       step: "01",
-      title: "Backlink Audit & Competitor Gap Analysis",
-      desc: "We analyze your existing link profile, identify toxic spam links to disavow, and reverse-engineer your top 3 ranking competitors' backlink profiles."
+      icon: "fa-magnifying-glass-chart",
+      title: "Backlink Audit & Competitor Gap",
+      desc: "Comprehensive profile audit to identify toxic links, disavow spam, and pinpoint high-DR gaps from top 3 ranking competitors.",
+      tag: "Audit & Gap Matrix"
     },
     {
       step: "02",
-      title: "Prospecting & High DR Site Vetting",
-      desc: "We identify real-traffic, niche-relevant websites with DR 40–90+, zero algorithmic penalties, and spam scores strictly under 2%."
+      icon: "fa-filter",
+      title: "Prospecting & High-DR Vetting",
+      desc: "Screening publisher sites across 7 strict quality filters: DR 40–90+, verified organic human traffic, and <2% spam score.",
+      tag: "DR 40-90+ Whitelist"
     },
     {
       step: "03",
-      title: "High-Quality Content Creation",
-      desc: "Our native SEO copywriters craft original 1,000+ word informative articles with naturally embedded contextual anchors and semantic keywords."
+      icon: "fa-pen-nib",
+      title: "Handwritten Editorial Content",
+      desc: "Our native SEO copywriters craft 1,000+ word original articles with naturally embedded contextual anchors and semantic keywords.",
+      tag: "1,000+ Word Editorial"
     },
     {
       step: "04",
-      title: "Manual Pitching & Editorial Outreach",
-      desc: "We conduct 100% personalized manual email outreach to verified webmasters and editors to secure permanent contextual backlinks."
+      icon: "fa-paper-plane",
+      title: "Manual Webmaster Outreach",
+      desc: "100% personalized manual email outreach to verified webmasters and chief editors for permanent, authentic contextual link placement.",
+      tag: "Real Editorial Inclusions"
     },
     {
       step: "05",
-      title: "Tier-2 Indexation Acceleration",
-      desc: "We ping and drip-feed all published live links through Google-compliant indexing networks to ensure fast indexing within 7 to 14 days."
+      icon: "fa-bolt",
+      title: "Tier-2 Indexation Pings",
+      desc: "Drip-feeding and pinging all live published URLs through Google-compliant indexing networks for fast indexation within 7 to 14 days.",
+      tag: "Fast Indexation"
     },
     {
       step: "06",
+      icon: "fa-chart-line",
       title: "Live Reporting & Rank Tracking",
-      desc: "You receive a complete live Google Sheet report with all verified URLs and monthly ranking progression tracking in Google Search Console."
+      desc: "Transparent live Google Sheet with all URLs, DR metrics, and live ranking progress tracking in Google Search Console.",
+      tag: "Live Google Sheet"
     }
   ];
 
@@ -541,19 +553,12 @@ export default function BacklinkServicePage() {
                   href={`https://wa.me/${siteSettings.whatsapp_number.replace(/[^0-9]/g, "")}?text=${encodeURIComponent("Hello Abdullah! I am interested in your High DA Backlink Service in Bangladesh. Please share packages and a free backlink audit.")}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn"
+                  className="btn btn-glossy-green"
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
                     gap: "8px",
-                    background: "#059669",
-                    color: "#ffffff",
-                    padding: "14px 28px",
-                    borderRadius: "4px",
-                    fontWeight: 700,
-                    fontSize: "0.98rem",
-                    textDecoration: "none",
-                    boxShadow: "0 4px 15px rgba(5, 150, 105, 0.3)"
+                    textDecoration: "none"
                   }}
                 >
                   <i className="fa-brands fa-whatsapp" style={{ fontSize: "1.2rem" }}></i>
@@ -757,20 +762,25 @@ export default function BacklinkServicePage() {
       {/* 2. STATS HIGHLIGHT STRIP */}
       <section style={{ background: "#ffffff", borderBottom: "1px solid #e2e8f0", padding: "28px 0" }}>
         <div className="container" style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
-          <div className="row text-center gy-3">
-            <div className="col-6 col-md-3">
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+            gap: "20px",
+            textAlign: "center"
+          }}>
+            <div>
               <div style={{ fontSize: "2rem", fontWeight: 800, color: "#0062d2" }}>DA 85+</div>
               <div style={{ fontSize: "0.86rem", color: "#64748b", fontWeight: 600 }}>Average Domain Authority</div>
             </div>
-            <div className="col-6 col-md-3">
+            <div>
               <div style={{ fontSize: "2rem", fontWeight: 800, color: "#059669" }}>100%</div>
               <div style={{ fontSize: "0.86rem", color: "#64748b", fontWeight: 600 }}>Manual White-Hat Outreach</div>
             </div>
-            <div className="col-6 col-md-3">
+            <div>
               <div style={{ fontSize: "2rem", fontWeight: 800, color: "#d97706" }}>0% Spam</div>
               <div style={{ fontSize: "0.86rem", color: "#64748b", fontWeight: 600 }}>PBN &amp; Bot-Free Guarantee</div>
             </div>
-            <div className="col-6 col-md-3">
+            <div>
               <div style={{ fontSize: "2rem", fontWeight: 800, color: "#0062d2" }}>100+</div>
               <div style={{ fontSize: "0.86rem", color: "#64748b", fontWeight: 600 }}>Satisfied Brands Ranked #1</div>
             </div>
@@ -779,14 +789,26 @@ export default function BacklinkServicePage() {
       </section>
 
       {/* 3. COMPREHENSIVE OVERVIEW & 7 QUALITY FILTERS */}
-      <section style={{ padding: "75px 0", background: "#f8fafc", borderBottom: "1px solid #e2e8f0" }}>
+      <section style={{ padding: "70px 0", background: "#f8fafc", borderBottom: "1px solid #e2e8f0" }}>
         <div className="container" style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
           <div className="row align-items-center">
             <div className="col-lg-6">
-              <span style={{ color: "#0062d2", fontWeight: 700, fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-                The Engine of Search Authority
+              <span style={{ 
+                display: "inline-block",
+                background: "#eff6ff",
+                color: "#0062d2",
+                padding: "4px 14px",
+                borderRadius: "999px",
+                fontSize: "0.8rem",
+                fontWeight: 700,
+                letterSpacing: "0.04em",
+                textTransform: "uppercase",
+                border: "1px solid #dbeafe",
+                marginBottom: "10px"
+              }}>
+                Search Authority Engine
               </span>
-              <h2 style={{ fontSize: "2.2rem", fontWeight: 800, color: "#0f172a", margin: "10px 0 18px", lineHeight: 1.25 }}>
+              <h2 style={{ fontSize: "2.15rem", fontWeight: 800, color: "#0f172a", margin: "4px 0 16px", lineHeight: 1.25, letterSpacing: "-0.02em" }}>
                 Why High DA Backlinks are Mandatory to Win in Bangladesh Search
               </h2>
               <p style={{ fontSize: "1.02rem", lineHeight: 1.75, color: "#334155", marginBottom: "16px" }}>
@@ -889,69 +911,73 @@ export default function BacklinkServicePage() {
             </p>
           </div>
 
-          <div className="row g-3 g-lg-4">
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+            gap: "20px"
+          }}>
             {benefits.map((b, idx) => (
-              <div key={idx} className="col-md-6 col-lg-4">
-                <div style={{
+              <div
+                key={idx}
+                style={{
                   background: "#ffffff",
                   borderRadius: "10px",
                   padding: "22px 20px",
-                  height: "100%",
                   border: "1px solid #e2e8f0",
                   boxShadow: "0 2px 8px rgba(15, 23, 42, 0.03)",
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-between"
-                }}>
-                  <div>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px" }}>
-                      <div style={{
-                        width: "40px",
-                        height: "40px",
-                        borderRadius: "8px",
-                        background: "#eff6ff",
-                        color: "#0062d2",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontSize: "1.05rem",
-                        border: "1px solid #dbeafe"
-                      }}>
-                        <i className={`fa-solid ${b.icon}`}></i>
-                      </div>
-                      <span style={{
-                        background: "#f1f5f9",
-                        color: "#0062d2",
-                        fontSize: "0.72rem",
-                        fontWeight: 700,
-                        padding: "3px 10px",
-                        borderRadius: "999px",
-                        border: "1px solid #e2e8f0"
-                      }}>
-                        {b.badge}
-                      </span>
+                }}
+              >
+                <div>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px" }}>
+                    <div style={{
+                      width: "40px",
+                      height: "40px",
+                      borderRadius: "8px",
+                      background: "#eff6ff",
+                      color: "#0062d2",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "1.05rem",
+                      border: "1px solid #dbeafe"
+                    }}>
+                      <i className={`fa-solid ${b.icon}`}></i>
                     </div>
-                    <h3 style={{ fontSize: "1.05rem", fontWeight: 800, color: "#0f172a", marginBottom: "8px", letterSpacing: "-0.01em" }}>
-                      {b.title}
-                    </h3>
-                    <p style={{ fontSize: "0.875rem", color: "#475569", lineHeight: 1.55, margin: 0 }}>
-                      {b.desc}
-                    </p>
+                    <span style={{
+                      background: "#f1f5f9",
+                      color: "#0062d2",
+                      fontSize: "0.72rem",
+                      fontWeight: 700,
+                      padding: "3px 10px",
+                      borderRadius: "999px",
+                      border: "1px solid #e2e8f0"
+                    }}>
+                      {b.badge}
+                    </span>
                   </div>
-                  <div style={{
-                    marginTop: "14px",
-                    paddingTop: "12px",
-                    borderTop: "1px dashed #e2e8f0",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "6px",
-                    fontSize: "0.76rem",
-                    fontWeight: 600,
-                    color: "#059669"
-                  }}>
-                    <i className="fa-solid fa-circle-check" style={{ fontSize: "0.82rem", color: "#059669" }}></i>
-                    <span>{b.tag}</span>
-                  </div>
+                  <h3 style={{ fontSize: "1.05rem", fontWeight: 800, color: "#0f172a", marginBottom: "8px", letterSpacing: "-0.01em" }}>
+                    {b.title}
+                  </h3>
+                  <p style={{ fontSize: "0.875rem", color: "#475569", lineHeight: 1.55, margin: 0 }}>
+                    {b.desc}
+                  </p>
+                </div>
+                <div style={{
+                  marginTop: "14px",
+                  paddingTop: "12px",
+                  borderTop: "1px dashed #e2e8f0",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  fontSize: "0.76rem",
+                  fontWeight: 600,
+                  color: "#059669"
+                }}>
+                  <i className="fa-solid fa-circle-check" style={{ fontSize: "0.82rem", color: "#059669" }}></i>
+                  <span>{b.tag}</span>
                 </div>
               </div>
             ))}
@@ -959,61 +985,84 @@ export default function BacklinkServicePage() {
         </div>
       </section>
 
-      {/* 5. BACKLINK CHANNELS ARSENAL */}
-      <section style={{ padding: "75px 0", background: "#f8fafc", borderBottom: "1px solid #e2e8f0" }}>
+      {/* 5. BACKLINK CHANNELS ARSENAL (Minimal Box Card Design) */}
+      <section style={{ padding: "70px 0", background: "#f8fafc", borderBottom: "1px solid #e2e8f0" }}>
         <div className="container" style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
-          <div className="text-center" style={{ maxWidth: "700px", margin: "0 auto 45px" }}>
-            <span style={{ color: "#0062d2", fontWeight: 700, fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-              Diverse Link Building Arsenal
+          <div className="text-center" style={{ maxWidth: "720px", margin: "0 auto 40px" }}>
+            <span style={{ 
+              display: "inline-block",
+              background: "#eff6ff",
+              color: "#0062d2",
+              padding: "4px 14px",
+              borderRadius: "999px",
+              fontSize: "0.8rem",
+              fontWeight: 700,
+              letterSpacing: "0.04em",
+              textTransform: "uppercase",
+              border: "1px solid #dbeafe",
+              marginBottom: "10px"
+            }}>
+              Link Ecosystem
             </span>
-            <h2 style={{ fontSize: "2.2rem", fontWeight: 800, color: "#0f172a", margin: "8px 0" }}>
+            <h2 style={{ fontSize: "2.15rem", fontWeight: 800, color: "#0f172a", margin: "4px 0 10px", letterSpacing: "-0.02em" }}>
               Backlink Channels We Build For Your Website
             </h2>
-            <p style={{ color: "#64748b", fontSize: "1.02rem" }}>
-              A balanced, multi-tier backlink ecosystem engineered for natural velocity and total algorithm compliance.
+            <p style={{ color: "#64748b", fontSize: "0.98rem", margin: 0 }}>
+              A balanced, multi-tier backlink arsenal engineered for natural link velocity and absolute algorithm safety.
             </p>
           </div>
 
-          <div className="row gy-4">
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+            gap: "20px"
+          }}>
             {backlinkTypesIncluded.map((t, idx) => (
-              <div key={idx} className="col-md-6 col-lg-4">
-                <div style={{
+              <div
+                key={idx}
+                style={{
                   background: "#ffffff",
-                  borderRadius: "8px",
-                  padding: "26px",
-                  height: "100%",
+                  borderRadius: "10px",
+                  padding: "22px 20px",
                   border: "1px solid #e2e8f0",
-                  boxShadow: "0 2px 10px rgba(15, 23, 42, 0.03)"
-                }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "14px" }}>
+                  boxShadow: "0 2px 8px rgba(15, 23, 42, 0.03)",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between"
+                }}
+              >
+                <div>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px" }}>
                     <div style={{
-                      width: "44px",
-                      height: "44px",
-                      borderRadius: "6px",
+                      width: "40px",
+                      height: "40px",
+                      borderRadius: "8px",
                       background: "#eff6ff",
                       color: "#0062d2",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      fontSize: "1.15rem"
+                      fontSize: "1.05rem",
+                      border: "1px solid #dbeafe"
                     }}>
                       <i className={`fa-solid ${t.icon}`}></i>
                     </div>
                     <span style={{
-                      background: "#eff6ff",
+                      background: "#f1f5f9",
                       color: "#0062d2",
-                      fontSize: "0.75rem",
+                      fontSize: "0.72rem",
                       fontWeight: 700,
-                      padding: "4px 8px",
-                      borderRadius: "4px"
+                      padding: "3px 10px",
+                      borderRadius: "999px",
+                      border: "1px solid #e2e8f0"
                     }}>
                       {t.badge}
                     </span>
                   </div>
-                  <h3 style={{ fontSize: "1.1rem", fontWeight: 800, color: "#0f172a", marginBottom: "8px" }}>
+                  <h3 style={{ fontSize: "1.05rem", fontWeight: 800, color: "#0f172a", marginBottom: "8px", letterSpacing: "-0.01em" }}>
                     {t.title}
                   </h3>
-                  <p style={{ fontSize: "0.88rem", color: "#64748b", lineHeight: 1.6, margin: 0 }}>
+                  <p style={{ fontSize: "0.875rem", color: "#475569", lineHeight: 1.55, margin: 0 }}>
                     {t.desc}
                   </p>
                 </div>
@@ -1023,48 +1072,101 @@ export default function BacklinkServicePage() {
         </div>
       </section>
 
-      {/* 6. 6-STAGE EXECUTION BLUEPRINT */}
-      <section style={{ padding: "75px 0", background: "#ffffff", borderBottom: "1px solid #e2e8f0" }}>
+      {/* 6. 6-STAGE EXECUTION BLUEPRINT (Minimal Box Card Design) */}
+      <section style={{ padding: "70px 0", background: "#ffffff", borderBottom: "1px solid #e2e8f0" }}>
         <div className="container" style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
-          <div className="text-center" style={{ maxWidth: "700px", margin: "0 auto 45px" }}>
-            <span style={{ color: "#0062d2", fontWeight: 700, fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-              Methodical Execution
+          <div className="text-center" style={{ maxWidth: "720px", margin: "0 auto 40px" }}>
+            <span style={{ 
+              display: "inline-block",
+              background: "#eff6ff",
+              color: "#0062d2",
+              padding: "4px 14px",
+              borderRadius: "999px",
+              fontSize: "0.8rem",
+              fontWeight: 700,
+              letterSpacing: "0.04em",
+              textTransform: "uppercase",
+              border: "1px solid #dbeafe",
+              marginBottom: "10px"
+            }}>
+              Execution Process
             </span>
-            <h2 style={{ fontSize: "2.2rem", fontWeight: 800, color: "#0f172a", margin: "8px 0" }}>
+            <h2 style={{ fontSize: "2.15rem", fontWeight: 800, color: "#0f172a", margin: "4px 0 10px", letterSpacing: "-0.02em" }}>
               Our 6-Stage White-Hat Link Building Blueprint
             </h2>
-            <p style={{ color: "#64748b", fontSize: "1.02rem" }}>
-              How we take your website from zero link authority to industry-dominating search rankings.
+            <p style={{ color: "#64748b", fontSize: "0.98rem", margin: 0 }}>
+              A systematic, manual workflow engineered to turn zero link authority into sustainable top-tier Google rankings.
             </p>
           </div>
 
-          <div className="row gy-4">
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+            gap: "20px"
+          }}>
             {processSteps.map((s, idx) => (
-              <div key={idx} className="col-md-6 col-lg-4">
-                <div style={{
-                  background: "#f8fafc",
-                  borderRadius: "8px",
-                  padding: "28px",
-                  height: "100%",
+              <div
+                key={idx}
+                style={{
+                  background: "#ffffff",
+                  borderRadius: "10px",
+                  padding: "22px 20px",
                   border: "1px solid #e2e8f0",
-                  position: "relative"
-                }}>
-                  <div style={{
-                    fontSize: "2.2rem",
-                    fontWeight: 900,
-                    color: "rgba(0, 98, 210, 0.15)",
-                    position: "absolute",
-                    top: "16px",
-                    right: "20px"
-                  }}>
-                    {s.step}
+                  boxShadow: "0 2px 8px rgba(15, 23, 42, 0.03)",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between"
+                }}
+              >
+                <div>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px" }}>
+                    <div style={{
+                      width: "40px",
+                      height: "40px",
+                      borderRadius: "8px",
+                      background: "#eff6ff",
+                      color: "#0062d2",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "1.05rem",
+                      border: "1px solid #dbeafe"
+                    }}>
+                      <i className={`fa-solid ${s.icon}`}></i>
+                    </div>
+                    <span style={{
+                      background: "#f1f5f9",
+                      color: "#0062d2",
+                      fontSize: "0.74rem",
+                      fontWeight: 800,
+                      padding: "3px 10px",
+                      borderRadius: "999px",
+                      border: "1px solid #e2e8f0",
+                      letterSpacing: "0.02em"
+                    }}>
+                      STAGE {s.step}
+                    </span>
                   </div>
-                  <h3 style={{ fontSize: "1.12rem", fontWeight: 800, color: "#0f172a", marginBottom: "10px", maxWidth: "80%" }}>
+                  <h3 style={{ fontSize: "1.05rem", fontWeight: 800, color: "#0f172a", marginBottom: "8px", letterSpacing: "-0.01em" }}>
                     {s.title}
                   </h3>
-                  <p style={{ fontSize: "0.9rem", color: "#64748b", lineHeight: 1.6, margin: 0 }}>
+                  <p style={{ fontSize: "0.875rem", color: "#475569", lineHeight: 1.55, margin: 0 }}>
                     {s.desc}
                   </p>
+                </div>
+                <div style={{
+                  marginTop: "14px",
+                  paddingTop: "12px",
+                  borderTop: "1px dashed #e2e8f0",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  fontSize: "0.76rem",
+                  fontWeight: 600,
+                  color: "#059669"
+                }}>
+                  <i className="fa-solid fa-circle-check" style={{ fontSize: "0.82rem", color: "#059669" }}></i>
+                  <span>{s.tag}</span>
                 </div>
               </div>
             ))}
@@ -1073,16 +1175,28 @@ export default function BacklinkServicePage() {
       </section>
 
       {/* 7. TRANSPARENT PRICING PACKAGES */}
-      <section id="pricing-packages" className="section digi-pricing-section" style={{ padding: "75px 0", background: "#f8fafc", borderBottom: "1px solid #e2e8f0" }}>
+      <section id="pricing-packages" className="section digi-pricing-section" style={{ padding: "70px 0", background: "#f8fafc", borderBottom: "1px solid #e2e8f0" }}>
         <div className="container" style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
-          <div className="text-center" style={{ maxWidth: "700px", margin: "0 auto 45px" }}>
-            <span style={{ color: "#0062d2", fontWeight: 700, fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+          <div className="text-center" style={{ maxWidth: "720px", margin: "0 auto 40px" }}>
+            <span style={{ 
+              display: "inline-block",
+              background: "#eff6ff",
+              color: "#0062d2",
+              padding: "4px 14px",
+              borderRadius: "999px",
+              fontSize: "0.8rem",
+              fontWeight: 700,
+              letterSpacing: "0.04em",
+              textTransform: "uppercase",
+              border: "1px solid #dbeafe",
+              marginBottom: "10px"
+            }}>
               Transparent Investment
             </span>
-            <h2 style={{ fontSize: "2.3rem", fontWeight: 800, color: "#0f172a", margin: "8px 0" }}>
+            <h2 style={{ fontSize: "2.15rem", fontWeight: 800, color: "#0f172a", margin: "4px 0 10px", letterSpacing: "-0.02em" }}>
               High DA Backlink Packages &amp; Pricing in Bangladesh
             </h2>
-            <p style={{ color: "#64748b", fontSize: "1.02rem" }}>
+            <p style={{ color: "#64748b", fontSize: "0.98rem", margin: 0 }}>
               100% white-hat manual outreach, transparent live reporting, and permanent link equity.
             </p>
           </div>
@@ -1128,36 +1242,48 @@ export default function BacklinkServicePage() {
       </section>
 
       {/* 8. COMPARISON TABLE */}
-      <section style={{ padding: "75px 0", background: "#ffffff", borderBottom: "1px solid #e2e8f0" }}>
+      <section style={{ padding: "70px 0", background: "#ffffff", borderBottom: "1px solid #e2e8f0" }}>
         <div className="container" style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
-          <div className="text-center" style={{ maxWidth: "700px", margin: "0 auto 45px" }}>
-            <span style={{ color: "#0062d2", fontWeight: 700, fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+          <div className="text-center" style={{ maxWidth: "720px", margin: "0 auto 40px" }}>
+            <span style={{ 
+              display: "inline-block",
+              background: "#eff6ff",
+              color: "#0062d2",
+              padding: "4px 14px",
+              borderRadius: "999px",
+              fontSize: "0.8rem",
+              fontWeight: 700,
+              letterSpacing: "0.04em",
+              textTransform: "uppercase",
+              border: "1px solid #dbeafe",
+              marginBottom: "10px"
+            }}>
               Quality Comparison
             </span>
-            <h2 style={{ fontSize: "2.2rem", fontWeight: 800, color: "#0f172a", margin: "8px 0" }}>
+            <h2 style={{ fontSize: "2.15rem", fontWeight: 800, color: "#0f172a", margin: "4px 0 10px", letterSpacing: "-0.02em" }}>
               Manual White-Hat Outreach vs. Cheap Automated PBNs
             </h2>
-            <p style={{ color: "#64748b", fontSize: "1.02rem" }}>
+            <p style={{ color: "#64748b", fontSize: "0.98rem", margin: 0 }}>
               Why cutting corners with cheap backlink packages will destroy your website&apos;s organic rankings.
             </p>
           </div>
 
           <div style={{
             background: "#ffffff",
-            borderRadius: "8px",
+            borderRadius: "10px",
             overflow: "hidden",
-            boxShadow: "0 4px 20px rgba(15, 23, 42, 0.05)",
+            boxShadow: "0 2px 8px rgba(15, 23, 42, 0.03)",
             border: "1px solid #e2e8f0"
           }}>
             <div style={{ overflowX: "auto" }}>
-              <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "0.93rem" }}>
+              <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "0.92rem" }}>
                 <thead>
-                  <tr style={{ background: "#f8fafc", borderBottom: "2px solid #e2e8f0" }}>
-                    <th style={{ padding: "16px 20px", fontWeight: 800, color: "#0f172a", width: "30%" }}>Quality Dimension</th>
-                    <th style={{ padding: "16px 20px", fontWeight: 800, color: "#0062d2", background: "#eff6ff", width: "35%" }}>
+                  <tr style={{ background: "#f8fafc", borderBottom: "1px solid #e2e8f0" }}>
+                    <th style={{ padding: "14px 18px", fontWeight: 800, color: "#0f172a", width: "30%" }}>Quality Dimension</th>
+                    <th style={{ padding: "14px 18px", fontWeight: 800, color: "#0062d2", background: "#eff6ff", width: "35%" }}>
                       <i className="fa-solid fa-crown" style={{ marginRight: "6px" }}></i> Abdullah BD SEO White-Hat
                     </th>
-                    <th style={{ padding: "16px 20px", fontWeight: 800, color: "#64748b", width: "35%" }}>
+                    <th style={{ padding: "14px 18px", fontWeight: 800, color: "#64748b", width: "35%" }}>
                       Cheap Spam Agencies &amp; Bots
                     </th>
                   </tr>
@@ -1165,12 +1291,12 @@ export default function BacklinkServicePage() {
                 <tbody>
                   {comparisonData.map((row, idx) => (
                     <tr key={idx} style={{ borderBottom: "1px solid #f1f5f9", background: idx % 2 === 0 ? "#ffffff" : "#f8fafc" }}>
-                      <td style={{ padding: "15px 20px", fontWeight: 700, color: "#0f172a" }}>{row.feature}</td>
-                      <td style={{ padding: "15px 20px", color: "#059669", fontWeight: 600, background: idx % 2 === 0 ? "#f0fdf4" : "#ecfdf5" }}>
+                      <td style={{ padding: "14px 18px", fontWeight: 700, color: "#0f172a" }}>{row.feature}</td>
+                      <td style={{ padding: "14px 18px", color: "#059669", fontWeight: 600, background: idx % 2 === 0 ? "#f0fdf4" : "#ecfdf5" }}>
                         <i className="fa-solid fa-circle-check" style={{ marginRight: "8px" }}></i>
                         {row.ourService}
                       </td>
-                      <td style={{ padding: "15px 20px", color: "#dc2626" }}>
+                      <td style={{ padding: "14px 18px", color: "#dc2626" }}>
                         <i className="fa-solid fa-circle-xmark" style={{ marginRight: "8px" }}></i>
                         {row.cheapSpam}
                       </td>
@@ -1184,65 +1310,81 @@ export default function BacklinkServicePage() {
       </section>
 
       {/* 9. REAL CLIENT CASE STUDIES */}
-      <section style={{ padding: "75px 0", background: "#f8fafc", borderBottom: "1px solid #e2e8f0" }}>
+      <section style={{ padding: "70px 0", background: "#f8fafc", borderBottom: "1px solid #e2e8f0" }}>
         <div className="container" style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
-          <div className="text-center" style={{ maxWidth: "700px", margin: "0 auto 45px" }}>
-            <span style={{ color: "#0062d2", fontWeight: 700, fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-              Proven Case Studies
+          <div className="text-center" style={{ maxWidth: "720px", margin: "0 auto 40px" }}>
+            <span style={{ 
+              display: "inline-block",
+              background: "#eff6ff",
+              color: "#0062d2",
+              padding: "4px 14px",
+              borderRadius: "999px",
+              fontSize: "0.8rem",
+              fontWeight: 700,
+              letterSpacing: "0.04em",
+              textTransform: "uppercase",
+              border: "1px solid #dbeafe",
+              marginBottom: "10px"
+            }}>
+              Proven Track Record
             </span>
-            <h2 style={{ fontSize: "2.2rem", fontWeight: 800, color: "#0f172a", margin: "8px 0" }}>
+            <h2 style={{ fontSize: "2.15rem", fontWeight: 800, color: "#0f172a", margin: "4px 0 10px", letterSpacing: "-0.02em" }}>
               Real Organic Authority &amp; Revenue Results
             </h2>
-            <p style={{ color: "#64748b", fontSize: "1.02rem" }}>
+            <p style={{ color: "#64748b", fontSize: "0.98rem", margin: 0 }}>
               Explore how our link building strategy helped businesses rank #1 and scale commercial leads.
             </p>
           </div>
 
-          <div className="row gy-4">
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+            gap: "20px"
+          }}>
             {caseStudies.map((cs, idx) => (
-              <div key={idx} className="col-lg-4">
-                <div style={{
+              <div
+                key={idx}
+                style={{
                   background: "#ffffff",
-                  borderRadius: "8px",
-                  padding: "28px",
-                  height: "100%",
+                  borderRadius: "10px",
+                  padding: "22px 20px",
                   border: "1px solid #e2e8f0",
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-between",
-                  boxShadow: "0 2px 10px rgba(15, 23, 42, 0.03)"
-                }}>
-                  <div>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
-                      <h3 style={{ fontSize: "1.25rem", fontWeight: 800, color: "#0f172a", margin: 0 }}>
-                        {cs.brand}
-                      </h3>
-                      <span style={{ fontSize: "0.75rem", background: "#eff6ff", color: "#0062d2", fontWeight: 700, padding: "3px 8px", borderRadius: "4px" }}>
-                        {cs.location}
-                      </span>
-                    </div>
-                    <div style={{ fontSize: "0.84rem", color: "#64748b", fontWeight: 600, marginBottom: "16px" }}>
-                      {cs.industry}
-                    </div>
-
-                    <div style={{ background: "#f8fafc", padding: "14px", borderRadius: "6px", marginBottom: "16px", border: "1px solid #e2e8f0" }}>
-                      <div style={{ fontSize: "0.8rem", fontWeight: 800, color: "#0062d2", textTransform: "uppercase", marginBottom: "8px" }}>
-                        Key Results:
-                      </div>
-                      <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-                        {cs.results.map((r, rIdx) => (
-                          <li key={rIdx} style={{ fontSize: "0.85rem", fontWeight: 700, color: "#059669", marginBottom: "6px", display: "flex", alignItems: "center", gap: "6px" }}>
-                            <i className="fa-solid fa-arrow-trend-up"></i>
-                            <span>{r}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <p style={{ fontSize: "0.88rem", color: "#475569", lineHeight: 1.6, margin: 0 }}>
-                      {cs.summary}
-                    </p>
+                  boxShadow: "0 2px 8px rgba(15, 23, 42, 0.03)"
+                }}
+              >
+                <div>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
+                    <h3 style={{ fontSize: "1.12rem", fontWeight: 800, color: "#0f172a", margin: 0 }}>
+                      {cs.brand}
+                    </h3>
+                    <span style={{ fontSize: "0.74rem", background: "#eff6ff", color: "#0062d2", fontWeight: 700, padding: "3px 8px", borderRadius: "4px", border: "1px solid #dbeafe" }}>
+                      {cs.location}
+                    </span>
                   </div>
+                  <div style={{ fontSize: "0.82rem", color: "#64748b", fontWeight: 600, marginBottom: "14px" }}>
+                    {cs.industry}
+                  </div>
+
+                  <div style={{ background: "#f8fafc", padding: "12px 14px", borderRadius: "6px", marginBottom: "14px", border: "1px solid #e2e8f0" }}>
+                    <div style={{ fontSize: "0.76rem", fontWeight: 800, color: "#0062d2", textTransform: "uppercase", marginBottom: "6px", letterSpacing: "0.03em" }}>
+                      Key Results:
+                    </div>
+                    <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+                      {cs.results.map((r, rIdx) => (
+                        <li key={rIdx} style={{ fontSize: "0.83rem", fontWeight: 700, color: "#059669", marginBottom: "4px", display: "flex", alignItems: "center", gap: "6px" }}>
+                          <i className="fa-solid fa-arrow-trend-up" style={{ fontSize: "0.78rem" }}></i>
+                          <span>{r}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <p style={{ fontSize: "0.865rem", color: "#475569", lineHeight: 1.55, margin: 0 }}>
+                    {cs.summary}
+                  </p>
                 </div>
               </div>
             ))}
@@ -1251,68 +1393,85 @@ export default function BacklinkServicePage() {
       </section>
 
       {/* 10. CLIENT TESTIMONIALS */}
-      <section style={{ padding: "75px 0", background: "#ffffff", borderBottom: "1px solid #e2e8f0" }}>
+      <section style={{ padding: "70px 0", background: "#ffffff", borderBottom: "1px solid #e2e8f0" }}>
         <div className="container" style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
-          <div className="text-center" style={{ maxWidth: "700px", margin: "0 auto 45px" }}>
-            <span style={{ color: "#0062d2", fontWeight: 700, fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+          <div className="text-center" style={{ maxWidth: "720px", margin: "0 auto 40px" }}>
+            <span style={{ 
+              display: "inline-block",
+              background: "#eff6ff",
+              color: "#0062d2",
+              padding: "4px 14px",
+              borderRadius: "999px",
+              fontSize: "0.8rem",
+              fontWeight: 700,
+              letterSpacing: "0.04em",
+              textTransform: "uppercase",
+              border: "1px solid #dbeafe",
+              marginBottom: "10px"
+            }}>
               Client Feedback
             </span>
-            <h2 style={{ fontSize: "2.2rem", fontWeight: 800, color: "#0f172a", margin: "8px 0" }}>
+            <h2 style={{ fontSize: "2.15rem", fontWeight: 800, color: "#0f172a", margin: "4px 0 10px", letterSpacing: "-0.02em" }}>
               What Business Owners Say About Our Link Building
             </h2>
-            <p style={{ color: "#64748b", fontSize: "1.02rem" }}>
+            <p style={{ color: "#64748b", fontSize: "0.98rem", margin: 0 }}>
               Real organic ranking growth delivered to businesses in Bangladesh and worldwide.
             </p>
           </div>
 
-          <div className="row gy-4">
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+            gap: "20px"
+          }}>
             {testimonials.map((t, idx) => (
-              <div key={idx} className="col-lg-4">
-                <div style={{
-                  background: "#f8fafc",
-                  borderRadius: "8px",
-                  padding: "28px",
-                  height: "100%",
+              <div
+                key={idx}
+                style={{
+                  background: "#ffffff",
+                  borderRadius: "10px",
+                  padding: "22px 20px",
                   border: "1px solid #e2e8f0",
                   display: "flex",
                   flexDirection: "column",
-                  justifyContent: "space-between"
-                }}>
-                  <div>
-                    <div style={{ color: "#f59e0b", fontSize: "0.9rem", marginBottom: "14px" }}>
-                      <i className="fa-solid fa-star"></i>
-                      <i className="fa-solid fa-star"></i>
-                      <i className="fa-solid fa-star"></i>
-                      <i className="fa-solid fa-star"></i>
-                      <i className="fa-solid fa-star"></i>
-                    </div>
-                    <p style={{ fontSize: "0.92rem", color: "#334155", lineHeight: 1.65, fontStyle: "italic", marginBottom: "18px" }}>
-                      &ldquo;{t.quote}&rdquo;
-                    </p>
+                  justifyContent: "space-between",
+                  boxShadow: "0 2px 8px rgba(15, 23, 42, 0.03)"
+                }}
+              >
+                <div>
+                  <div style={{ color: "#f59e0b", fontSize: "0.82rem", marginBottom: "12px" }}>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
                   </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: "12px", borderTop: "1px solid #e2e8f0", paddingTop: "14px" }}>
-                    <div style={{
-                      width: "40px",
-                      height: "40px",
-                      borderRadius: "50%",
-                      background: "#0062d2",
-                      color: "#ffffff",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontWeight: 800,
-                      fontSize: "0.95rem"
-                    }}>
-                      {t.name.charAt(0)}
-                    </div>
-                    <div>
-                      <h4 style={{ fontSize: "0.92rem", fontWeight: 800, color: "#0f172a", margin: 0 }}>
-                        {t.name}
-                      </h4>
-                      <p style={{ fontSize: "0.78rem", color: "#64748b", margin: 0 }}>
-                        {t.role} - {t.company}
-                      </p>
-                    </div>
+                  <p style={{ fontSize: "0.88rem", color: "#334155", lineHeight: 1.6, fontStyle: "italic", marginBottom: "16px" }}>
+                    &ldquo;{t.quote}&rdquo;
+                  </p>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", borderTop: "1px dashed #e2e8f0", paddingTop: "12px" }}>
+                  <div style={{
+                    width: "36px",
+                    height: "36px",
+                    borderRadius: "50%",
+                    background: "#0062d2",
+                    color: "#ffffff",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontWeight: 800,
+                    fontSize: "0.88rem"
+                  }}>
+                    {t.name.charAt(0)}
+                  </div>
+                  <div>
+                    <h4 style={{ fontSize: "0.88rem", fontWeight: 800, color: "#0f172a", margin: 0 }}>
+                      {t.name}
+                    </h4>
+                    <p style={{ fontSize: "0.75rem", color: "#64748b", margin: 0 }}>
+                      {t.role} &bull; {t.company}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -1322,36 +1481,49 @@ export default function BacklinkServicePage() {
       </section>
 
       {/* 11. FAQ ACCORDION */}
-      <section style={{ padding: "75px 0", background: "#f8fafc", borderBottom: "1px solid #e2e8f0" }}>
+      <section style={{ padding: "70px 0", background: "#f8fafc", borderBottom: "1px solid #e2e8f0" }}>
         <div className="container" style={{ maxWidth: "860px", margin: "0 auto", padding: "0 20px" }}>
-          <div className="text-center" style={{ marginBottom: "45px" }}>
-            <span style={{ color: "#0062d2", fontWeight: 700, fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+          <div className="text-center" style={{ marginBottom: "40px" }}>
+            <span style={{ 
+              display: "inline-block",
+              background: "#eff6ff",
+              color: "#0062d2",
+              padding: "4px 14px",
+              borderRadius: "999px",
+              fontSize: "0.8rem",
+              fontWeight: 700,
+              letterSpacing: "0.04em",
+              textTransform: "uppercase",
+              border: "1px solid #dbeafe",
+              marginBottom: "10px"
+            }}>
               Common Questions
             </span>
-            <h2 style={{ fontSize: "2.2rem", fontWeight: 800, color: "#0f172a", margin: "8px 0" }}>
+            <h2 style={{ fontSize: "2.15rem", fontWeight: 800, color: "#0f172a", margin: "4px 0 10px", letterSpacing: "-0.02em" }}>
               Frequently Asked Questions About Backlinks
             </h2>
-            <p style={{ color: "#64748b", fontSize: "1.02rem" }}>
+            <p style={{ color: "#64748b", fontSize: "0.98rem", margin: 0 }}>
               Everything you need to know about our link building process, timelines, and guarantees.
             </p>
           </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
             {faqs.map((faq, idx) => (
               <div
                 key={idx}
                 style={{
                   background: "#ffffff",
-                  borderRadius: "6px",
+                  borderRadius: "8px",
                   border: "1px solid #e2e8f0",
-                  overflow: "hidden"
+                  overflow: "hidden",
+                  boxShadow: "0 1px 4px rgba(15, 23, 42, 0.02)"
                 }}
               >
                 <button
                   onClick={() => toggleFaq(idx)}
                   style={{
                     width: "100%",
-                    padding: "18px 22px",
+                    padding: "16px 20px",
                     background: "transparent",
                     border: "none",
                     textAlign: "left",
@@ -1359,7 +1531,7 @@ export default function BacklinkServicePage() {
                     justifyContent: "space-between",
                     alignItems: "center",
                     cursor: "pointer",
-                    fontSize: "1rem",
+                    fontSize: "0.96rem",
                     fontWeight: 700,
                     color: activeFaq === idx ? "#0062d2" : "#0f172a"
                   }}
@@ -1367,11 +1539,11 @@ export default function BacklinkServicePage() {
                   <span>{faq.q}</span>
                   <i
                     className={`fa-solid ${activeFaq === idx ? "fa-minus" : "fa-plus"}`}
-                    style={{ color: activeFaq === idx ? "#0062d2" : "#94a3b8", fontSize: "0.85rem", marginLeft: "12px" }}
+                    style={{ color: activeFaq === idx ? "#0062d2" : "#94a3b8", fontSize: "0.82rem", marginLeft: "12px" }}
                   ></i>
                 </button>
                 {activeFaq === idx && (
-                  <div style={{ padding: "0 22px 18px", color: "#475569", fontSize: "0.93rem", lineHeight: 1.7, borderTop: "1px solid #f1f5f9", paddingTop: "12px" }}>
+                  <div style={{ padding: "0 20px 16px", color: "#475569", fontSize: "0.9rem", lineHeight: 1.65, borderTop: "1px solid #f1f5f9", paddingTop: "12px" }}>
                     {faq.a}
                   </div>
                 )}
@@ -1415,19 +1587,14 @@ export default function BacklinkServicePage() {
               href={`https://wa.me/${siteSettings.whatsapp_number.replace(/[^0-9]/g, "")}?text=${encodeURIComponent("Hello Abdullah! I want to start building High DA backlinks for my website. Let's discuss.")}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn"
+              className="btn btn-glossy-green"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
                 gap: "8px",
-                background: "#059669",
-                color: "#ffffff",
-                padding: "14px 32px",
-                borderRadius: "4px",
-                fontWeight: 700,
-                fontSize: "1rem",
                 textDecoration: "none",
-                boxShadow: "0 4px 15px rgba(5, 150, 105, 0.3)"
+                padding: "14px 32px",
+                fontSize: "1rem"
               }}
             >
               <i className="fa-brands fa-whatsapp" style={{ fontSize: "1.2rem" }}></i>
