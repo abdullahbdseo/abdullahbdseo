@@ -14,8 +14,8 @@ export default function ToolsHubPage() {
       icon: "fa-solid fa-magnifying-glass-chart",
       iconBg: "#ecfdf5",
       iconColor: "#059669",
-      badge: "26+ Point Audit",
-      desc: "Perform a full 26+ point technical & on-page SEO inspection. Get instant grades, critical issue diagnosis, and a downloadable CSV audit report."
+      badge: "70+ Point Audit",
+      desc: "Perform a forensic 70+ point technical & on-page SEO inspection. Get instant grades, critical issue diagnosis, and a downloadable 12-sheet Excel audit report."
     },
     {
       title: "Google SERP Simulator",

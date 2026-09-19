@@ -1,8 +1,8 @@
 import { siteSettings } from "@/lib/data";
 
 export const metadata = {
-  title: `Free Deep SEO Audit Tool — 70+ Real Checks & 12-Sheet Report | ${siteSettings.site_name}`,
-  description: `Forensic 70+ checkpoint SEO audit: On-Page, Technical, Performance, Security Headers, Social/OG Tags, Accessibility, robots.txt, sitemap.xml, CMS detection, and prioritized action roadmap with instant Excel export.`,
+  title: `Free Deep SEO Audit Tool — 70+ Real Checks & Report | ${siteSettings.site_name}`,
+  description: `Free 70+ checkpoint deep SEO audit: On-Page, Technical, Performance, Security, Social Tags, Accessibility, robots.txt, sitemap.xml, CMS detection & Excel export.`,
   alternates: {
     canonical: "/tools/deep-seo-audit",
   },

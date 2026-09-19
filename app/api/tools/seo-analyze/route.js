@@ -565,9 +565,6 @@ export async function POST(req) {
         snippet: robotsTxt.content.substring(0, 500),
       },
       sitemap: sitemapXml,
-
-      // Raw HTML for client-side DOMParser fallback analysis
-      html,
     });
   } catch (error) {
     return NextResponse.json(
