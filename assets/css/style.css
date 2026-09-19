@@ -1003,10 +1003,29 @@ img {
     box-shadow: 0 4px 14px rgba(67, 97, 238, 0.3);
 }
 
-.btn-aqua-solid {
-    background-color: var(--digi-aqua);
-    color: #ffffff;
-    font-weight: 700;
+.btn-aqua-solid,
+.digi-pricing-card .pricing-card-footer .btn-aqua-solid,
+.digi-pricing-card.featured .pricing-card-footer .btn-aqua-solid {
+    background-color: #00D2D3 !important;
+    background: #00D2D3 !important;
+    color: #0f172a !important;
+    font-weight: 700 !important;
+    border: 1px solid #00D2D3 !important;
+    border-radius: 8px;
+    padding: 12px 22px;
+    box-shadow: 0 4px 14px rgba(0, 210, 211, 0.4) !important;
+    text-shadow: none !important;
+}
+
+.btn-aqua-solid:hover,
+.digi-pricing-card .pricing-card-footer .btn-aqua-solid:hover,
+.digi-pricing-card.featured .pricing-card-footer .btn-aqua-solid:hover {
+    background-color: #00e5e6 !important;
+    background: #00e5e6 !important;
+    color: #0f172a !important;
+    border-color: #00e5e6 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 210, 211, 0.55) !important;
 }
 
 .btn-aqua-solid:hover {

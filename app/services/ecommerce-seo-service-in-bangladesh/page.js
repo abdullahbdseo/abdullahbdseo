@@ -584,14 +584,15 @@ export default function EcommerceSeoServicePage() {
                   href="/contact" 
                   className="btn btn-lg" 
                   style={{ 
-                    background: pkg.isPopular ? "#0062d2" : "#f1f5f9", 
-                    color: pkg.isPopular ? "#ffffff" : "#0f172a", 
+                    background: "#00D2D3", 
+                    color: "#0f172a", 
                     fontWeight: 700, 
-                    borderRadius: "4px", 
+                    borderRadius: "6px", 
                     padding: "12px 20px", 
                     textAlign: "center", 
                     textDecoration: "none",
-                    border: pkg.isPopular ? "none" : "1px solid #cbd5e1"
+                    border: "1px solid #00D2D3",
+                    boxShadow: "0 4px 14px rgba(0, 210, 211, 0.35)"
                   }}
                 >
                   Choose {pkg.name}

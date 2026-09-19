@@ -1004,6 +1004,35 @@ img {
 }
 
 .btn-aqua-solid,
+.digi-pricing-card .pricing-card-footer .btn-aqua-solid,
+.digi-pricing-card.featured .pricing-card-footer .btn-aqua-solid {
+    background-color: #00D2D3 !important;
+    background: #00D2D3 !important;
+    color: #0f172a !important;
+    font-weight: 700 !important;
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+    border: 1px solid #00D2D3 !important;
+    border-radius: 8px;
+    padding: 12px 22px;
+    box-shadow: 0 4px 14px rgba(0, 210, 211, 0.4) !important;
+    text-shadow: none !important;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-aqua-solid:hover,
+.digi-pricing-card .pricing-card-footer .btn-aqua-solid:hover,
+.digi-pricing-card.featured .pricing-card-footer .btn-aqua-solid:hover {
+    background-color: #00e5e6 !important;
+    background: #00e5e6 !important;
+    color: #0f172a !important;
+    border-color: #00e5e6 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 210, 211, 0.55) !important;
+}
+
 .btn-glossy-blue {
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.32) 0%, rgba(255, 255, 255, 0.06) 50%, rgba(0, 0, 0, 0.08) 51%, rgba(0, 0, 0, 0.18) 100%), linear-gradient(135deg, #1d4ed8 0%, #2563eb 50%, #3b82f6 100%);
     color: #ffffff !important;
@@ -1021,7 +1050,6 @@ img {
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.btn-aqua-solid:hover,
 .btn-glossy-blue:hover {
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.12) 50%, rgba(0, 0, 0, 0.04) 51%, rgba(0, 0, 0, 0.14) 100%), linear-gradient(135deg, #1e40af 0%, #1d4ed8 50%, #2563eb 100%);
     color: #ffffff !important;
@@ -1029,8 +1057,7 @@ img {
     box-shadow: 0 8px 24px rgba(37, 99, 235, 0.48), inset 0 1px 2px rgba(255, 255, 255, 0.95), inset 0 -1px 2px rgba(0, 0, 0, 0.25);
 }
 
-.btn-glossy-green,
-.digi-pricing-card.featured .pricing-card-footer .btn-aqua-solid {
+.btn-glossy-green {
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.32) 0%, rgba(255, 255, 255, 0.06) 50%, rgba(0, 0, 0, 0.08) 51%, rgba(0, 0, 0, 0.18) 100%), linear-gradient(135deg, #059669 0%, #10b981 50%, #047857 100%);
     color: #ffffff !important;
     font-weight: 700;
@@ -1047,8 +1074,7 @@ img {
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.btn-glossy-green:hover,
-.digi-pricing-card.featured .pricing-card-footer .btn-aqua-solid:hover {
+.btn-glossy-green:hover {
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.12) 50%, rgba(0, 0, 0, 0.04) 51%, rgba(0, 0, 0, 0.14) 100%), linear-gradient(135deg, #047857 0%, #059669 50%, #10b981 100%);
     color: #ffffff !important;
     transform: translateY(-2px);

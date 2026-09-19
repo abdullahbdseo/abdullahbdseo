@@ -820,8 +820,8 @@ export default function LocalSeoServicePage() {
                   href="https://wa.me/8801670769816"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={pkg.isPopular ? "btn btn-primary" : "btn btn-outline"}
-                  style={{ width: "100%", textAlign: "center", padding: "12px", borderRadius: "6px", fontWeight: 700 }}
+                  className="btn btn-aqua-solid"
+                  style={{ width: "100%", textAlign: "center", padding: "12px", borderRadius: "6px", fontWeight: 700, textDecoration: "none" }}
                 >
                   Choose {pkg.name.split(" ")[0]} Plan
                 </a>
