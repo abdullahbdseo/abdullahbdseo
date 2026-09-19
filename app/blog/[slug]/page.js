@@ -330,14 +330,18 @@ export default async function SingleBlogPostPage({ params }) {
                   <div className="blog-card-body">
                     <div className="blog-meta-line">
                       <span><i className="fa-regular fa-calendar" style={{ color: "#4361ee" }}></i> {relPost.publish_date || relPost.date}</span>
-                      <span><i className="fa-regular fa-clock" style={{ color: "#10b981" }}></i> {relPost.read_time || "5 min"}</span>
+                      <span><i className="fa-regular fa-clock" style={{ color: "#10b981" }}></i> {relPost.read_time || "5 min read"}</span>
                     </div>
 
                     <h3 className="blog-card-title">
                       <Link href={`/blog/${relPost.slug}`}>{relPost.title}</Link>
                     </h3>
 
-                    <p className="blog-card-excerpt">{relPost.summary || relPost.excerpt}</p>
+                    <p className="blog-card-excerpt">
+                      {((relPost.summary || relPost.excerpt || relPost.meta_description || "").replace(/<[^>]+>/g, "").trim()).length <= 120 
+                        ? (relPost.summary || relPost.excerpt || relPost.meta_description || "") 
+                        : (relPost.summary || relPost.excerpt || relPost.meta_description || "").replace(/<[^>]+>/g, "").trim().substring(0, 117).trim() + "..."}
+                    </p>
 
                     <div className="blog-card-footer">
                       <div className="blog-author-info">

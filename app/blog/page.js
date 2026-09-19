@@ -6,6 +6,13 @@ import Link from "next/link";
 import { blogPosts as staticBlogPosts, siteSettings as staticSiteSettings } from "@/lib/data";
 import { useLiveCMS } from "@/lib/useLiveCMS";
 
+function formatExcerpt(text, limit = 120) {
+  if (!text) return "";
+  const cleaned = text.replace(/<[^>]+>/g, "").trim();
+  if (cleaned.length <= limit) return cleaned;
+  return cleaned.substring(0, limit - 3).trim() + "...";
+}
+
 export default function BlogPage() {
   const blogPosts = useLiveCMS("blogPosts", staticBlogPosts) || staticBlogPosts;
   const siteSettings = useLiveCMS("siteSettings", staticSiteSettings) || staticSiteSettings;
@@ -24,7 +31,7 @@ export default function BlogPage() {
     const matchesCat = selectedCategory === "all" || post.category === selectedCategory;
     const matchesSearch = 
       post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (post.summary && post.summary.toLowerCase().includes(searchQuery.toLowerCase())) ||
       (post.tags && post.tags.some(t => t.toLowerCase().includes(searchQuery.toLowerCase())));
     return matchesCat && matchesSearch;
   });
@@ -102,7 +109,7 @@ export default function BlogPage() {
                   <Link href={`/blog/${featuredPost.slug}`}>{featuredPost.title}</Link>
                 </h2>
 
-                <p className="blog-featured-excerpt">{featuredPost.summary}</p>
+                <p className="blog-featured-excerpt">{formatExcerpt(featuredPost.summary || featuredPost.excerpt || featuredPost.meta_description, 160)}</p>
 
                 <div className="blog-card-footer" style={{ borderTop: "none", paddingTop: 0 }}>
                   <div className="blog-author-info">
@@ -166,15 +173,15 @@ export default function BlogPage() {
 
                   <div className="blog-card-body">
                     <div className="blog-meta-line">
-                      <span><i className="fa-regular fa-calendar" style={{ color: "#4361ee" }}></i> {post.publish_date}</span>
-                      <span><i className="fa-regular fa-clock" style={{ color: "#10b981" }}></i> {post.read_time}</span>
+                      <span><i className="fa-regular fa-calendar" style={{ color: "#4361ee" }}></i> {post.publish_date || post.date}</span>
+                      <span><i className="fa-regular fa-clock" style={{ color: "#10b981" }}></i> {post.read_time || "5 min read"}</span>
                     </div>
 
                     <h3 className="blog-card-title">
                       <Link href={`/blog/${post.slug}`}>{post.title}</Link>
                     </h3>
 
-                    <p className="blog-card-excerpt">{post.summary}</p>
+                    <p className="blog-card-excerpt">{formatExcerpt(post.summary || post.excerpt || post.meta_description, 120)}</p>
 
                     <div className="blog-card-footer">
                       <div className="blog-author-info">
