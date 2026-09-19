@@ -125,7 +125,7 @@ export default async function SingleBlogPostPage({ params }) {
           <div style={{ textAlign: "center", maxWidth: "920px", margin: "0 auto" }}>
             <div className="sub-badge">{post.category}</div>
             <h1 className="article-title">{post.title}</h1>
-            
+
             <div className="article-meta-line" style={{ justifyContent: "center", flexWrap: "wrap", gap: "14px" }}>
               <span><i className="fa-regular fa-calendar" style={{ color: "#4361ee" }}></i> Published: {post.publish_date || post.date}</span>
               <span><i className="fa-solid fa-arrows-rotate" style={{ color: "#10b981" }}></i> Updated: {post.dateModified || post.publish_date || post.date}</span>
@@ -139,11 +139,11 @@ export default async function SingleBlogPostPage({ params }) {
       {/* ARTICLE HERO IMAGE */}
       <div className="container" style={{ maxWidth: "1240px", marginBottom: "40px" }}>
         <div className="article-featured-image-box">
-          <Image 
-            src={post.featured_image || post.image} 
-            alt={post.title} 
-            width={1240} 
-            height={620} 
+          <Image
+            src={post.featured_image || post.image}
+            alt={post.title}
+            width={1240}
+            height={620}
             className="article-featured-img"
             priority
           />
@@ -154,7 +154,7 @@ export default async function SingleBlogPostPage({ params }) {
       <section style={{ paddingBottom: "70px" }}>
         <div className="container" style={{ maxWidth: "1240px" }}>
           <div className="article-layout-grid">
-            
+
             {/* LEFT SIDEBAR: Table of Contents & Info */}
             <aside className="article-sidebar-toc">
               <StickyTableOfContents headings={headings} />
@@ -185,8 +185,8 @@ export default async function SingleBlogPostPage({ params }) {
                 <i className="fa-solid fa-rocket" style={{ fontSize: "1.8rem", color: "#4361ee", marginBottom: "8px", display: "block" }}></i>
                 <h5>Scale Your Organic Traffic</h5>
                 <p>Get a custom technical &amp; AI search strategy tailored for your website.</p>
-                <Link 
-                  href="/contact" 
+                <Link
+                  href="/contact"
                   className="btn btn-primary btn-sm"
                   style={{ width: "100%", justifyContent: "center" }}
                 >
@@ -204,7 +204,7 @@ export default async function SingleBlogPostPage({ params }) {
                 <p>{post.summary || post.excerpt}</p>
               </div>
 
-              <div 
+              <div
                 className="article-prose-body"
                 dangerouslySetInnerHTML={{ __html: processedContent }}
               />
@@ -274,11 +274,11 @@ export default async function SingleBlogPostPage({ params }) {
 
               {/* AUTHOR BIO CARD */}
               <div className="article-author-card">
-                <Image 
-                  src={post.author?.avatar || siteSettings.profile_photo} 
-                  alt={post.author?.name || siteSettings.expert_name} 
-                  width={80} 
-                  height={80} 
+                <Image
+                  src={post.author?.avatar || siteSettings.profile_photo}
+                  alt={post.author?.name || siteSettings.expert_name}
+                  width={80}
+                  height={80}
                   className="author-bio-avatar"
                 />
                 <div className="author-bio-info">
@@ -316,11 +316,11 @@ export default async function SingleBlogPostPage({ params }) {
                 <article key={relPost.id} className="blog-card">
                   <div className="blog-card-image-wrap">
                     <Link href={`/blog/${relPost.slug}`}>
-                      <Image 
-                        src={relPost.featured_image || relPost.image} 
-                        alt={relPost.title} 
-                        width={500} 
-                        height={280} 
+                      <Image
+                        src={relPost.featured_image || relPost.image}
+                        alt={relPost.title}
+                        width={500}
+                        height={280}
                         className="blog-card-img"
                       />
                     </Link>
@@ -330,26 +330,22 @@ export default async function SingleBlogPostPage({ params }) {
                   <div className="blog-card-body">
                     <div className="blog-meta-line">
                       <span><i className="fa-regular fa-calendar" style={{ color: "#4361ee" }}></i> {relPost.publish_date || relPost.date}</span>
-                      <span><i className="fa-regular fa-clock" style={{ color: "#10b981" }}></i> {relPost.read_time || "5 min read"}</span>
+                      <span><i className="fa-regular fa-clock" style={{ color: "#10b981" }}></i> {relPost.read_time || "5 min"}</span>
                     </div>
 
                     <h3 className="blog-card-title">
                       <Link href={`/blog/${relPost.slug}`}>{relPost.title}</Link>
                     </h3>
 
-                    <p className="blog-card-excerpt">
-                      {((relPost.summary || relPost.excerpt || relPost.meta_description || "").replace(/<[^>]+>/g, "").trim()).length <= 120 
-                        ? (relPost.summary || relPost.excerpt || relPost.meta_description || "") 
-                        : (relPost.summary || relPost.excerpt || relPost.meta_description || "").replace(/<[^>]+>/g, "").trim().substring(0, 117).trim() + "..."}
-                    </p>
+                    <p className="blog-card-excerpt">{relPost.summary || relPost.excerpt}</p>
 
                     <div className="blog-card-footer">
                       <div className="blog-author-info">
-                        <Image 
-                          src={relPost.author?.avatar || siteSettings.profile_photo} 
-                          alt={relPost.author?.name || siteSettings.expert_name} 
-                          width={28} 
-                          height={28} 
+                        <Image
+                          src={relPost.author?.avatar || siteSettings.profile_photo}
+                          alt={relPost.author?.name || siteSettings.expert_name}
+                          width={28}
+                          height={28}
                           className="author-mini-avatar"
                         />
                         <span className="author-mini-name">{relPost.author?.name || siteSettings.expert_name}</span>

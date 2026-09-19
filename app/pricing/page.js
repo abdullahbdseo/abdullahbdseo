@@ -267,9 +267,9 @@ export default function PricingPage() {
                   ))}
                 </ul>
                 <div className="pricing-card-footer">
-                  <button 
-                    type="button" 
-                    onClick={() => handleOpenPlan(plan)} 
+                  <button
+                    type="button"
+                    onClick={() => handleOpenPlan(plan)}
                     className="btn btn-aqua-solid btn-block"
                     style={{
                       display: "flex",
@@ -295,7 +295,7 @@ export default function PricingPage() {
       <section style={{ padding: "65px 0 80px", background: "#f8fafc", borderTop: "1px solid #e2e8f0", borderBottom: "1px solid #e2e8f0" }}>
         <div className="container" style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
           <div className="text-center" style={{ maxWidth: "760px", margin: "0 auto 40px" }}>
-            <span style={{ 
+            <span style={{
               display: "inline-block",
               background: "#eff6ff",
               color: "#0062d2",
@@ -352,7 +352,7 @@ export default function PricingPage() {
                     href={`https://wa.me/${siteSettings.whatsapp_number.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(`Hello Abdullah! I want to order the "${pkg.name}" (${pkg.usdPrice} / ${pkg.bdtPrice}) backlink package. Please share payment instructions and onboarding details.`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`btn ${pkg.featured ? "btn-royal" : "btn-aqua-solid"} btn-block`}
+                    className="btn btn-aqua-solid btn-block"
                     style={{
                       display: "flex",
                       alignItems: "center",

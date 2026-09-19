@@ -1004,113 +1004,55 @@ img {
 }
 
 .btn-aqua-solid,
-.btn-glossy-blue,
-.digi-pricing-card.featured .pricing-card-footer .btn-aqua-solid {
-    background: #00D2D3 !important;
-    background-color: #00D2D3 !important;
+.btn-glossy-blue {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.32) 0%, rgba(255, 255, 255, 0.06) 50%, rgba(0, 0, 0, 0.08) 51%, rgba(0, 0, 0, 0.18) 100%), linear-gradient(135deg, #1d4ed8 0%, #2563eb 50%, #3b82f6 100%);
     color: #ffffff !important;
     font-weight: 700;
     font-size: 0.95rem;
     letter-spacing: 0.02em;
-    border: 1px solid #00D2D3;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-bottom-color: rgba(0, 0, 0, 0.35);
     border-radius: 8px;
     padding: 12px 22px;
-    box-shadow: 0 4px 14px rgba(0, 210, 211, 0.35);
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.85), inset 0 -1px 2px rgba(0, 0, 0, 0.25);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
     position: relative;
     overflow: hidden;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .btn-aqua-solid:hover,
-.btn-glossy-blue:hover,
-.digi-pricing-card.featured .pricing-card-footer .btn-aqua-solid:hover {
-    background: #01b8b9 !important;
-    background-color: #01b8b9 !important;
-    border-color: #01b8b9;
+.btn-glossy-blue:hover {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.12) 50%, rgba(0, 0, 0, 0.04) 51%, rgba(0, 0, 0, 0.14) 100%), linear-gradient(135deg, #1e40af 0%, #1d4ed8 50%, #2563eb 100%);
     color: #ffffff !important;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 210, 211, 0.45);
+    box-shadow: 0 8px 24px rgba(37, 99, 235, 0.48), inset 0 1px 2px rgba(255, 255, 255, 0.95), inset 0 -1px 2px rgba(0, 0, 0, 0.25);
 }
 
 .btn-glossy-green,
-.whatsapp-chat-btn,
-.btn-whatsapp {
-    background: #00B365 !important;
-    background-color: #00B365 !important;
-    color: #ffffff !important;
-    font-weight: 700;
-    font-size: 0.95rem;
-    letter-spacing: 0.02em;
-    border: 1px solid #00B365;
-    border-radius: 8px;
-    padding: 12px 22px;
-    box-shadow: 0 4px 14px rgba(0, 179, 101, 0.32);
-    position: relative;
-    overflow: hidden;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none !important;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.btn-glossy-green:hover,
-.whatsapp-chat-btn:hover,
-.btn-whatsapp:hover {
-    background: #009c58 !important;
-    background-color: #009c58 !important;
-    border-color: #009c58;
-    color: #ffffff !important;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 179, 101, 0.42);
-}
-
-/* Royal Animated Gradient Effect */
-.royal {
-    background: linear-gradient(90deg, #2b6cff 0%, #7b3cff 50%, #c026d3 100%);
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: #7b3cff; /* fallback */
-    font-weight: 700;
-    animation: royalShift 3s linear infinite;
-}
-
-.btn-royal {
-    background: linear-gradient(90deg, #2b6cff 0%, #7b3cff 50%, #c026d3 75%, #2b6cff 100%) !important;
-    background-size: 200% auto !important;
+.digi-pricing-card.featured .pricing-card-footer .btn-aqua-solid {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.32) 0%, rgba(255, 255, 255, 0.06) 50%, rgba(0, 0, 0, 0.08) 51%, rgba(0, 0, 0, 0.18) 100%), linear-gradient(135deg, #059669 0%, #10b981 50%, #047857 100%);
     color: #ffffff !important;
     font-weight: 700;
     font-size: 0.95rem;
     letter-spacing: 0.02em;
     border: 1px solid rgba(255, 255, 255, 0.45);
+    border-bottom-color: rgba(0, 0, 0, 0.35);
     border-radius: 8px;
     padding: 12px 22px;
-    box-shadow: 0 4px 18px rgba(123, 60, 255, 0.42), inset 0 1px 1px rgba(255, 255, 255, 0.85);
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.85), inset 0 -1px 2px rgba(0, 0, 0, 0.25);
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
     position: relative;
     overflow: hidden;
-    animation: royalShift 3s linear infinite;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.btn-royal:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 26px rgba(192, 38, 211, 0.55), inset 0 1px 2px rgba(255, 255, 255, 0.95);
+.btn-glossy-green:hover,
+.digi-pricing-card.featured .pricing-card-footer .btn-aqua-solid:hover {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.12) 50%, rgba(0, 0, 0, 0.04) 51%, rgba(0, 0, 0, 0.14) 100%), linear-gradient(135deg, #047857 0%, #059669 50%, #10b981 100%);
     color: #ffffff !important;
-}
-
-@keyframes royalShift {
-    0%   { background-position: 0% center; }
-    100% { background-position: 200% center; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .royal,
-    .btn-royal {
-        animation: none;
-    }
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.52), inset 0 1px 2px rgba(255, 255, 255, 0.95), inset 0 -1px 2px rgba(0, 0, 0, 0.25);
 }
 
 .btn-outline-blue {
@@ -7020,18 +6962,16 @@ nextjs-portal,
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
     gap: 30px;
-    align-items: stretch;
 }
 
 .blog-card {
     background: #ffffff;
     border: 1px solid #e2e8f0;
-    border-radius: 8px;
+    border-radius: 6px;
     overflow: hidden;
     box-shadow: 0 4px 15px -2px rgba(0, 0, 0, 0.04);
     display: flex;
     flex-direction: column;
-    height: 100%;
     transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
@@ -7075,7 +7015,7 @@ nextjs-portal,
 }
 
 .blog-card-body {
-    padding: 22px 24px 20px;
+    padding: 24px;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
@@ -7087,20 +7027,15 @@ nextjs-portal,
     gap: 16px;
     font-size: 0.82rem;
     color: #94a3b8;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 .blog-card-title {
-    font-size: 1.15rem;
+    font-size: 1.25rem;
     font-weight: 700;
     color: #0f172a;
     line-height: 1.4;
     margin-bottom: 12px;
-    min-height: 52px;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
 }
 
 .blog-card-title a {
@@ -7117,12 +7052,7 @@ nextjs-portal,
     font-size: 0.9rem;
     color: #64748b;
     line-height: 1.6;
-    margin-bottom: 18px;
-    min-height: 68px;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    margin-bottom: 20px;
     flex-grow: 1;
 }
 
@@ -7132,7 +7062,6 @@ nextjs-portal,
     justify-content: space-between;
     padding-top: 16px;
     border-top: 1px solid #f1f5f9;
-    margin-top: auto;
 }
 
 .blog-author-info {
@@ -8133,9 +8062,17 @@ nextjs-portal,
         print-color-adjust: exact !important;
     }
 
-    header, footer, nav, .header-wrapper, .site-footer, .digi-header,
-    .no-print, .social-share-widget, .hero-floating-card,
-    .floating-badge, .chat-widget {
+    header,
+    footer,
+    nav,
+    .header-wrapper,
+    .site-footer,
+    .digi-header,
+    .no-print,
+    .social-share-widget,
+    .hero-floating-card,
+    .floating-badge,
+    .chat-widget {
         display: none !important;
     }
 
@@ -8146,13 +8083,19 @@ nextjs-portal,
         margin: 0 !important;
     }
 
-    .card, .audit-card, .table-responsive {
+    .card,
+    .audit-card,
+    .table-responsive {
         box-shadow: none !important;
         border: 1px solid #cbd5e1 !important;
         page-break-inside: avoid;
     }
 
-    h1, h2, h3, h4, h5 {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
         page-break-after: avoid;
         color: #0f172a !important;
     }
@@ -8177,6 +8120,7 @@ body {
 }
 
 @supports not (overflow-x: clip) {
+
     html,
     body {
         overflow-x: hidden;
@@ -8191,13 +8135,24 @@ body {
 }
 
 /* Prevent long unbroken text from forcing horizontal scroll */
-h1, h2, h3, h4, h5, h6, p, span, a, li, blockquote {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+a,
+li,
+blockquote {
     overflow-wrap: break-word;
     word-break: break-word;
 }
 
 /* Form input touch optimization for iOS Safari */
 @media (max-width: 768px) {
+
     input[type="text"],
     input[type="email"],
     input[type="url"],
@@ -8206,7 +8161,8 @@ h1, h2, h3, h4, h5, h6, p, span, a, li, blockquote {
     input[type="password"],
     select,
     textarea {
-        font-size: 16px !important; /* Prevents auto-zoom on iOS */
+        font-size: 16px !important;
+        /* Prevents auto-zoom on iOS */
     }
 
     /* Modal dialogs touch scroll responsiveness */
@@ -8332,8 +8288,7 @@ h1, h2, h3, h4, h5, h6, p, span, a, li, blockquote {
 .blog-posts-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 30px;
-    align-items: stretch;
+    gap: 26px;
 }
 
 @media (max-width: 640px) {
@@ -8345,11 +8300,11 @@ h1, h2, h3, h4, h5, h6, p, span, a, li, blockquote {
 .blog-card {
     background: #ffffff;
     border: 1px solid var(--digi-border, #e2e8f0);
-    border-radius: 8px;
+    border-radius: 6px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    height: 100%;
+    justify-content: space-between;
     box-shadow: 0 4px 20px -2px rgba(67, 97, 238, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
     transition: var(--transition);
 }
@@ -8357,11 +8312,11 @@ h1, h2, h3, h4, h5, h6, p, span, a, li, blockquote {
 .blog-card:hover {
     transform: translateY(-4px);
     border-color: #93c5fd;
-    box-shadow: 0 14px 32px -4px rgba(67, 97, 238, 0.16), 0 4px 12px -2px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 12px 30px -4px rgba(67, 97, 238, 0.16), 0 4px 12px -2px rgba(0, 0, 0, 0.06);
 }
 
 .blog-card-body {
-    padding: 22px 24px 20px;
+    padding: 22px 24px;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
@@ -8377,17 +8332,54 @@ h1, h2, h3, h4, h5, h6, p, span, a, li, blockquote {
 }
 
 .blog-card-title {
-    font-size: 1.15rem;
+    font-size: 1.18rem;
     font-weight: 700;
     color: var(--digi-text-main, #0f172a);
     line-height: 1.4;
-    margin-bottom: 12px;
-    min-height: 52px;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    margin-bottom: 10px;
 }
+
+.blog-card-title a {
+    color: var(--digi-text-main, #0f172a);
+    transition: var(--transition);
+}
+
+.blog-card-title a:hover {
+    color: var(--digi-blue, #4361ee);
+}
+
+.blog-card-excerpt {
+    font-size: 0.92rem;
+    color: var(--digi-text-body, #475569);
+    line-height: 1.6;
+    margin-bottom: 18px;
+    flex-grow: 1;
+}
+
+.blog-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 16px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.read-more-link {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--digi-blue, #4361ee);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: var(--transition);
+    text-decoration: none;
+}
+
+.read-more-link:hover {
+    color: var(--digi-blue-dark, #3a56d4);
+    transform: translateX(2px);
+}
+
 
 .blog-card-title a {
     color: var(--digi-text-main, #0f172a);
@@ -8435,4 +8427,3 @@ h1, h2, h3, h4, h5, h6, p, span, a, li, blockquote {
     color: var(--digi-blue-dark, #3a56d4);
     transform: translateX(2px);
 }
-

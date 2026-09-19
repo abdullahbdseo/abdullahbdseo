@@ -366,7 +366,7 @@ export default function BacklinkServicePage() {
 
   return (
     <div className="service-landing-page" style={{ background: "#ffffff", color: "#0f172a" }}>
-      
+
       {/* STRUCTURED DATA FOR SEO & RICH SNIPPETS */}
       <script
         type="application/ld+json"
@@ -445,7 +445,7 @@ export default function BacklinkServicePage() {
         borderBottom: "1px solid #e2e8f0"
       }}>
         <div className="container" style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
-          
+
           {/* Breadcrumbs */}
           <nav aria-label="breadcrumb" style={{ marginBottom: "20px" }}>
             <ol style={{ display: "flex", gap: "8px", listStyle: "none", padding: 0, margin: 0, fontSize: "0.85rem", color: "#64748b" }}>
@@ -458,7 +458,7 @@ export default function BacklinkServicePage() {
           </nav>
 
           <div style={{ display: "grid", gridTemplateColumns: "1.15fr 0.85fr", gap: "40px", alignItems: "start" }}>
-            
+
             {/* Left Column: Core Value Proposition */}
             <div>
               <div style={{
@@ -793,7 +793,7 @@ export default function BacklinkServicePage() {
         <div className="container" style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
           <div className="row align-items-center">
             <div className="col-lg-6">
-              <span style={{ 
+              <span style={{
                 display: "inline-block",
                 background: "#eff6ff",
                 color: "#0062d2",
@@ -888,7 +888,7 @@ export default function BacklinkServicePage() {
       <section style={{ padding: "70px 0", background: "#ffffff", borderBottom: "1px solid #e2e8f0" }}>
         <div className="container" style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
           <div className="text-center" style={{ maxWidth: "760px", margin: "0 auto 40px" }}>
-            <span style={{ 
+            <span style={{
               display: "inline-block",
               background: "#eff6ff",
               color: "#0062d2",
@@ -989,7 +989,7 @@ export default function BacklinkServicePage() {
       <section style={{ padding: "70px 0", background: "#f8fafc", borderBottom: "1px solid #e2e8f0" }}>
         <div className="container" style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
           <div className="text-center" style={{ maxWidth: "720px", margin: "0 auto 40px" }}>
-            <span style={{ 
+            <span style={{
               display: "inline-block",
               background: "#eff6ff",
               color: "#0062d2",
@@ -1076,7 +1076,7 @@ export default function BacklinkServicePage() {
       <section style={{ padding: "70px 0", background: "#ffffff", borderBottom: "1px solid #e2e8f0" }}>
         <div className="container" style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
           <div className="text-center" style={{ maxWidth: "720px", margin: "0 auto 40px" }}>
-            <span style={{ 
+            <span style={{
               display: "inline-block",
               background: "#eff6ff",
               color: "#0062d2",
@@ -1178,7 +1178,7 @@ export default function BacklinkServicePage() {
       <section id="pricing-packages" className="section digi-pricing-section" style={{ padding: "70px 0", background: "#f8fafc", borderBottom: "1px solid #e2e8f0" }}>
         <div className="container" style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
           <div className="text-center" style={{ maxWidth: "720px", margin: "0 auto 40px" }}>
-            <span style={{ 
+            <span style={{
               display: "inline-block",
               background: "#eff6ff",
               color: "#0062d2",
@@ -1221,7 +1221,7 @@ export default function BacklinkServicePage() {
                     href={`https://wa.me/${siteSettings.whatsapp_number.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(`Hello Abdullah! I want to order the "${pkg.name}" (${pkg.usdPrice} / ${pkg.bdtPrice}) backlink package. Please share payment instructions and onboarding details.`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`btn ${pkg.isPopular ? "btn-royal" : "btn-aqua-solid"} btn-block`}
+                    className="btn btn-aqua-solid btn-block"
                     style={{
                       display: "flex",
                       alignItems: "center",
@@ -1245,7 +1245,7 @@ export default function BacklinkServicePage() {
       <section style={{ padding: "70px 0", background: "#ffffff", borderBottom: "1px solid #e2e8f0" }}>
         <div className="container" style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
           <div className="text-center" style={{ maxWidth: "720px", margin: "0 auto 40px" }}>
-            <span style={{ 
+            <span style={{
               display: "inline-block",
               background: "#eff6ff",
               color: "#0062d2",
@@ -1313,7 +1313,7 @@ export default function BacklinkServicePage() {
       <section style={{ padding: "70px 0", background: "#f8fafc", borderBottom: "1px solid #e2e8f0" }}>
         <div className="container" style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
           <div className="text-center" style={{ maxWidth: "720px", margin: "0 auto 40px" }}>
-            <span style={{ 
+            <span style={{
               display: "inline-block",
               background: "#eff6ff",
               color: "#0062d2",
@@ -1396,7 +1396,7 @@ export default function BacklinkServicePage() {
       <section style={{ padding: "70px 0", background: "#ffffff", borderBottom: "1px solid #e2e8f0" }}>
         <div className="container" style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
           <div className="text-center" style={{ maxWidth: "720px", margin: "0 auto 40px" }}>
-            <span style={{ 
+            <span style={{
               display: "inline-block",
               background: "#eff6ff",
               color: "#0062d2",
@@ -1484,7 +1484,7 @@ export default function BacklinkServicePage() {
       <section style={{ padding: "70px 0", background: "#f8fafc", borderBottom: "1px solid #e2e8f0" }}>
         <div className="container" style={{ maxWidth: "860px", margin: "0 auto", padding: "0 20px" }}>
           <div className="text-center" style={{ marginBottom: "40px" }}>
-            <span style={{ 
+            <span style={{
               display: "inline-block",
               background: "#eff6ff",
               color: "#0062d2",

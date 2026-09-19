@@ -167,8 +167,8 @@ export default function ServicesPage() {
                 <li><i className="fa-solid fa-check"></i> Email Support</li>
               </ul>
               <div className="pricing-card-footer">
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   className="btn btn-aqua-solid btn-block"
                   onClick={() => handleOpenPlan("Starter", 125, 15, 0, 5)}
                 >
@@ -196,8 +196,8 @@ export default function ServicesPage() {
                 <li><i className="fa-solid fa-check"></i> Bi-Weekly Progress Calls</li>
               </ul>
               <div className="pricing-card-footer">
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   className="btn btn-aqua-solid btn-block"
                   onClick={() => handleOpenPlan("Standard", 350, 30, 10, 15)}
                 >
@@ -225,8 +225,8 @@ export default function ServicesPage() {
                 <li><i className="fa-solid fa-check"></i> Dedicated Account Strategist</li>
               </ul>
               <div className="pricing-card-footer">
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   className="btn btn-aqua-solid btn-block"
                   onClick={() => handleOpenPlan("Growth", 550, 60, 25, 30)}
                 >
@@ -254,8 +254,8 @@ export default function ServicesPage() {
                 <li><i className="fa-solid fa-check"></i> 24/7 Priority Support</li>
               </ul>
               <div className="pricing-card-footer">
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   className="btn btn-aqua-solid btn-block"
                   onClick={() => handleOpenPlan("Enterprise", 850, "Unlimited", 50, "All")}
                 >
@@ -316,7 +316,7 @@ export default function ServicesPage() {
                     href={`https://wa.me/${siteSettings.whatsapp_number.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(`Hello Abdullah! I want to order the "${pkg.name}" (${pkg.usdPrice} / ${pkg.bdtPrice}) backlink package. Please share payment instructions and onboarding details.`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`btn ${pkg.featured ? "btn-royal" : "btn-aqua-solid"} btn-block`}
+                    className="btn btn-aqua-solid btn-block"
                     style={{
                       display: "flex",
                       alignItems: "center",
@@ -364,7 +364,7 @@ export default function ServicesPage() {
                   </span>
                   <h3>{service.title}</h3>
                   <p className="card-intro">{service.short_description}</p>
-                  
+
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid #f1f5f9", paddingTop: "16px", marginTop: "auto" }}>
                     <div>
                       <span style={{ fontSize: "0.75rem", color: "var(--digi-text-muted)" }}>Starting at</span>
@@ -524,7 +524,7 @@ export default function ServicesPage() {
       </section>
 
       {/* Service Order Modal */}
-      <ServiceOrderModal 
+      <ServiceOrderModal
         isOpen={!!selectedService}
         onClose={() => {
           setSelectedService(null);

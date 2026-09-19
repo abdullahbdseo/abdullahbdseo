@@ -6,13 +6,6 @@ import Link from "next/link";
 import { blogPosts as staticBlogPosts, siteSettings as staticSiteSettings } from "@/lib/data";
 import { useLiveCMS } from "@/lib/useLiveCMS";
 
-function formatExcerpt(text, limit = 120) {
-  if (!text) return "";
-  const cleaned = text.replace(/<[^>]+>/g, "").trim();
-  if (cleaned.length <= limit) return cleaned;
-  return cleaned.substring(0, limit - 3).trim() + "...";
-}
-
 export default function BlogPage() {
   const blogPosts = useLiveCMS("blogPosts", staticBlogPosts) || staticBlogPosts;
   const siteSettings = useLiveCMS("siteSettings", staticSiteSettings) || staticSiteSettings;
@@ -29,16 +22,16 @@ export default function BlogPage() {
 
   const filteredPosts = blogPosts.filter((post) => {
     const matchesCat = selectedCategory === "all" || post.category === selectedCategory;
-    const matchesSearch = 
+    const matchesSearch =
       post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (post.summary && post.summary.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      post.summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
       (post.tags && post.tags.some(t => t.toLowerCase().includes(searchQuery.toLowerCase())));
     return matchesCat && matchesSearch;
   });
 
   const featuredPost = blogPosts[0]; // Featured spotlight post
-  const displayPosts = selectedCategory === "all" && searchQuery === "" 
-    ? filteredPosts.slice(1) 
+  const displayPosts = selectedCategory === "all" && searchQuery === ""
+    ? filteredPosts.slice(1)
     : filteredPosts;
 
   return (
@@ -57,9 +50,9 @@ export default function BlogPage() {
           {/* Search Bar */}
           <div className="blog-search-bar">
             <i className="fa-solid fa-magnifying-glass blog-search-icon"></i>
-            <input 
-              type="text" 
-              placeholder="Search by keyword, topic, or schema..." 
+            <input
+              type="text"
+              placeholder="Search by keyword, topic, or schema..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="blog-search-input"
@@ -89,11 +82,11 @@ export default function BlogPage() {
             <div className="blog-featured-card">
               <div className="blog-featured-media">
                 <Link href={`/blog/${featuredPost.slug}`}>
-                  <Image 
-                    src={featuredPost.featured_image || featuredPost.image} 
-                    alt={featuredPost.title} 
-                    width={700} 
-                    height={400} 
+                  <Image
+                    src={featuredPost.featured_image || featuredPost.image}
+                    alt={featuredPost.title}
+                    width={700}
+                    height={400}
                     className="blog-featured-img"
                     priority
                   />
@@ -109,15 +102,15 @@ export default function BlogPage() {
                   <Link href={`/blog/${featuredPost.slug}`}>{featuredPost.title}</Link>
                 </h2>
 
-                <p className="blog-featured-excerpt">{formatExcerpt(featuredPost.summary || featuredPost.excerpt || featuredPost.meta_description, 160)}</p>
+                <p className="blog-featured-excerpt">{featuredPost.summary}</p>
 
                 <div className="blog-card-footer" style={{ borderTop: "none", paddingTop: 0 }}>
                   <div className="blog-author-info">
-                    <Image 
-                      src={featuredPost.author?.avatar || siteSettings.profile_photo} 
-                      alt={featuredPost.author?.name || siteSettings.expert_name} 
-                      width={32} 
-                      height={32} 
+                    <Image
+                      src={featuredPost.author?.avatar || siteSettings.profile_photo}
+                      alt={featuredPost.author?.name || siteSettings.expert_name}
+                      width={32}
+                      height={32}
                       className="author-mini-avatar"
                     />
                     <div style={{ display: "flex", flexDirection: "column" }}>
@@ -160,11 +153,11 @@ export default function BlogPage() {
                 <article key={post.slug || post.id} className="blog-card">
                   <div className="blog-card-image-wrap">
                     <Link href={`/blog/${post.slug}`}>
-                      <Image 
-                        src={post.featured_image || post.image} 
-                        alt={post.title} 
-                        width={500} 
-                        height={280} 
+                      <Image
+                        src={post.featured_image || post.image}
+                        alt={post.title}
+                        width={500}
+                        height={280}
                         className="blog-card-img"
                       />
                     </Link>
@@ -173,23 +166,23 @@ export default function BlogPage() {
 
                   <div className="blog-card-body">
                     <div className="blog-meta-line">
-                      <span><i className="fa-regular fa-calendar" style={{ color: "#4361ee" }}></i> {post.publish_date || post.date}</span>
-                      <span><i className="fa-regular fa-clock" style={{ color: "#10b981" }}></i> {post.read_time || "5 min read"}</span>
+                      <span><i className="fa-regular fa-calendar" style={{ color: "#4361ee" }}></i> {post.publish_date}</span>
+                      <span><i className="fa-regular fa-clock" style={{ color: "#10b981" }}></i> {post.read_time}</span>
                     </div>
 
                     <h3 className="blog-card-title">
                       <Link href={`/blog/${post.slug}`}>{post.title}</Link>
                     </h3>
 
-                    <p className="blog-card-excerpt">{formatExcerpt(post.summary || post.excerpt || post.meta_description, 120)}</p>
+                    <p className="blog-card-excerpt">{post.summary}</p>
 
                     <div className="blog-card-footer">
                       <div className="blog-author-info">
-                        <Image 
-                          src={post.author?.avatar || siteSettings.profile_photo} 
-                          alt={post.author?.name || siteSettings.expert_name} 
-                          width={28} 
-                          height={28} 
+                        <Image
+                          src={post.author?.avatar || siteSettings.profile_photo}
+                          alt={post.author?.name || siteSettings.expert_name}
+                          width={28}
+                          height={28}
                           className="author-mini-avatar"
                         />
                         <span className="author-mini-name">{post.author?.name || siteSettings.expert_name}</span>
