@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { siteSettings } from "@/lib/data";
+import { siteSettings as staticSiteSettings } from "@/lib/data";
+import { useLiveCMS } from "@/lib/useLiveCMS";
 
 export default function ContactPage() {
+  const siteSettings = useLiveCMS("siteSettings", staticSiteSettings) || staticSiteSettings;
   const [formData, setFormData] = useState({
     name: "",
     email: "",

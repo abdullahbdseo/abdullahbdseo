@@ -2,13 +2,16 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { siteSettings } from "@/lib/data";
+import { siteSettings as staticSiteSettings, pricingRetainers as staticPricingRetainers } from "@/lib/data";
+import { useLiveCMS } from "@/lib/useLiveCMS";
 import ServiceOrderModal from "@/components/ServiceOrderModal";
 
 export default function PricingPage() {
+  const siteSettings = useLiveCMS("siteSettings", staticSiteSettings) || staticSiteSettings;
+  const livePlans = useLiveCMS("pricingRetainers", staticPricingRetainers) || staticPricingRetainers;
   const [selectedPlan, setSelectedPlan] = useState(null);
 
-  const plans = [
+  const fallbackPlans = [
     {
       id: 901,
       name: "Starter",
@@ -78,6 +81,20 @@ export default function PricingPage() {
       featured: false,
     },
   ];
+
+  const plans = (Array.isArray(livePlans) && livePlans.length > 0)
+    ? livePlans.map((p, idx) => ({
+        id: p.id || 900 + idx,
+        name: p.name || `Plan ${idx + 1}`,
+        price: p.price || 0,
+        priceFormatted: `$${p.price || 0}`,
+        period: p.period || p.billing_cycle || "/month",
+        delivery_days: p.delivery_days || 30,
+        badges: p.badges || (Array.isArray(p.features) ? p.features.slice(0, 3) : ["SEO", "Audit", "Rank"]),
+        features: Array.isArray(p.features) ? p.features : [],
+        featured: Boolean(p.isPopular || p.is_popular || p.featured),
+      }))
+    : fallbackPlans;
 
   const backlinkPackages = [
     {
