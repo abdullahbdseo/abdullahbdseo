@@ -1,8 +1,8 @@
 import { siteSettings } from "@/lib/data";
 
 export const metadata = {
-  title: `Terms of Service | ${siteSettings.site_name}`,
-  description: `Terms and conditions governing consulting engagements and deliverables by ${siteSettings.site_name}.`
+  title: `Terms of Service | ${siteSettings.site_name} SEO Services`,
+  description: `Review the Terms of Service for ${siteSettings.site_name} SEO Consulting. Understand client agreements, project milestones, deliverables, and service guidelines.`
 };
 
 export default function TermsPage() {

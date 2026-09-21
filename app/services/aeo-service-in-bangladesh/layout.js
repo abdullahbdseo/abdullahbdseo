@@ -1,14 +1,14 @@
 import { siteSettings } from "@/lib/data";
 
 export const metadata = {
-  title: `Answer Engine Optimization (AEO) Service in Bangladesh`,
-  description: `Capture Google Featured Snippets, Zero-Click searches, and Voice Search answers with structured Answer Engine Optimization (AEO) frameworks.`,
+  title: `AEO Service in Bangladesh | Answer Engine Optimization`,
+  description: `Capture Google Featured Snippets, voice search answers, and Zero-Click searches with structured Answer Engine Optimization (AEO) services in Bangladesh.`,
   alternates: {
     canonical: "/services/aeo-service-in-bangladesh",
   },
   openGraph: {
-    title: `AEO Service in Bangladesh | ${siteSettings.site_name}`,
-    description: `Win position #0 on Google and become the default voice search response for your target market.`,
+    title: `AEO Service in Bangladesh | Answer Engine Optimization`,
+    description: `Capture Google Featured Snippets, voice search answers, and Zero-Click searches with structured Answer Engine Optimization (AEO) services in Bangladesh.`,
     url: "/services/aeo-service-in-bangladesh",
     type: "website",
   },

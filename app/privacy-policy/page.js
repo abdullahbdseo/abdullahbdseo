@@ -1,8 +1,8 @@
 import { siteSettings } from "@/lib/data";
 
 export const metadata = {
-  title: `Privacy Policy | ${siteSettings.site_name}`,
-  description: `Privacy Policy and data protection terms for ${siteSettings.site_name}.`
+  title: `Privacy Policy | ${siteSettings.site_name} SEO Services`,
+  description: `Read the official Privacy Policy for ${siteSettings.site_name} SEO Services. Learn how we collect, protect, and handle your data with complete transparency.`
 };
 
 export default function PrivacyPolicyPage() {

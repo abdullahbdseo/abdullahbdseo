@@ -1,14 +1,14 @@
 import { siteSettings } from "@/lib/data";
 
 export const metadata = {
-  title: `Frequently Asked Questions (FAQ) | SEO & AI Search Services | ${siteSettings.site_name}`,
-  description: `Comprehensive answers to top questions regarding technical SEO audits, Generative Engine Optimization (GEO), AI search visibility (ChatGPT, Perplexity, Gemini), pricing plans, and organic ranking timelines by Abdullah.`,
+  title: `SEO FAQs & Answers | ${siteSettings.expert_name} SEO Consultant`,
+  description: `Get answers to frequently asked questions about SEO services, technical audits, pricing, ranking timelines, and AI search optimization in Bangladesh.`,
   alternates: {
     canonical: "/faq",
   },
   openGraph: {
-    title: `Frequently Asked Questions | ${siteSettings.site_name}`,
-    description: `Everything you need to know about technical SEO audits, AI search optimization (GEO/AEO), deliverables, and pricing with SEO specialist Abdullah.`,
+    title: `SEO FAQs & Answers | ${siteSettings.expert_name} SEO Consultant`,
+    description: `Get answers to frequently asked questions about SEO services, technical audits, pricing, ranking timelines, and AI search optimization in Bangladesh.`,
     url: "/faq",
     type: "website",
   },

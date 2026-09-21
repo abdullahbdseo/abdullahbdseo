@@ -10,8 +10,8 @@ export async function generateMetadata({ params }) {
     };
   }
 
-  const title = `${portfolio.title} - SEO Case Study | ${siteSettings.site_name}`;
-  const description = portfolio.meta_description || portfolio.summary || portfolio.challenge?.substring(0, 160);
+  const title = `${portfolio.title} | Case Study | ${siteSettings.site_name}`;
+  const description = (portfolio.meta_description || portfolio.summary || portfolio.challenge || "").substring(0, 155);
 
   return {
     title,

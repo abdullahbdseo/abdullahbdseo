@@ -10,8 +10,8 @@ export async function generateMetadata({ params }) {
     };
   }
 
-  const title = `${service.title} | SEO Services in Bangladesh | ${siteSettings.site_name}`;
-  const description = service.meta_description || service.short_description || service.description?.substring(0, 160);
+  const title = service.meta_title || `${service.title} | ${siteSettings.site_name}`;
+  const description = (service.meta_description || service.short_description || service.description || "").substring(0, 155);
 
   return {
     title,

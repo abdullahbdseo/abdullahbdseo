@@ -1,8 +1,8 @@
 import { siteSettings } from "@/lib/data";
 
 export const metadata = {
-  title: `Refund Policy | ${siteSettings.site_name}`,
-  description: `Refund and cancellation terms for SEO deliverables and consulting services.`
+  title: `Refund & Cancellation Policy | ${siteSettings.site_name}`,
+  description: `Understand our refund and cancellation policies for monthly SEO retainers, technical audits, and digital marketing consulting services by ${siteSettings.expert_name}.`
 };
 
 export default function RefundPolicyPage() {

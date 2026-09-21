@@ -1,14 +1,14 @@
 import { siteSettings } from "@/lib/data";
 
 export const metadata = {
-  title: `Professional SEO Services in Bangladesh | Technical, Local, E-Commerce & AI SEO`,
-  description: `Explore full-suite SEO services in Bangladesh by ${siteSettings.expert_name}. Guaranteed ROI-driven Technical SEO, Local Google Maps Optimization, E-Commerce Ranking, and AI Search Visibility.`,
+  title: `SEO Services in Bangladesh | Technical, Local & AI SEO`,
+  description: `Professional SEO services in Bangladesh by ${siteSettings.expert_name}. Dominate Google with data-driven Technical SEO, Local Maps ranking, and E-Commerce growth.`,
   alternates: {
     canonical: "/services",
   },
   openGraph: {
     title: `SEO Services in Bangladesh | ${siteSettings.site_name}`,
-    description: `All-in-one organic SEO solutions engineered to rank your website #1 on Google and AI search engines.`,
+    description: `Professional SEO services in Bangladesh by ${siteSettings.expert_name}. Dominate Google with data-driven Technical SEO, Local Maps ranking, and E-Commerce growth.`,
     url: "/services",
     type: "website",
   },

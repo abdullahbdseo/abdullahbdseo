@@ -1,14 +1,14 @@
 import { siteSettings } from "@/lib/data";
 
 export const metadata = {
-  title: `SEO Case Studies & Client Results Portfolio | ${siteSettings.site_name}`,
-  description: `Explore verified Google Search Console ranking proofs, traffic growth screenshots, and detailed SEO case studies across e-commerce, local businesses, and global brands.`,
+  title: `SEO Case Studies & Client Results | ${siteSettings.site_name}`,
+  description: `Explore verified SEO case studies, Google #1 ranking proofs, and organic traffic growth results across local, e-commerce, and enterprise businesses.`,
   alternates: {
     canonical: "/portfolio",
   },
   openGraph: {
-    title: `SEO Case Studies & Results | ${siteSettings.site_name}`,
-    description: `Transparent proof of #1 rankings and exponential organic revenue growth.`,
+    title: `SEO Case Studies & Client Results | ${siteSettings.site_name}`,
+    description: `Explore verified SEO case studies, Google #1 ranking proofs, and organic traffic growth results across local, e-commerce, and enterprise businesses.`,
     url: "/portfolio",
     type: "website",
   },

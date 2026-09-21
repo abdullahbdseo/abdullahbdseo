@@ -1,14 +1,14 @@
 import { siteSettings } from "@/lib/data";
 
 export const metadata = {
-  title: `Contact ${siteSettings.expert_name} | Book a Free SEO Audit & Consultation`,
-  description: `Get in touch with Bangladesh's top SEO specialist. Request a comprehensive forensic SEO audit, discuss custom monthly retainer plans, or schedule a strategy call today.`,
+  title: `Contact ${siteSettings.expert_name} | Free SEO Consultation & Audit`,
+  description: `Contact ${siteSettings.expert_name}, top SEO specialist in Bangladesh. Book a free 30-minute SEO audit & consultation to discuss your business growth strategy today.`,
   alternates: {
     canonical: "/contact",
   },
   openGraph: {
-    title: `Contact ${siteSettings.expert_name} | SEO Consultant`,
-    description: `Request a free 30-minute SEO growth consultation and website audit.`,
+    title: `Contact ${siteSettings.expert_name} | Free SEO Consultation & Audit`,
+    description: `Contact ${siteSettings.expert_name}, top SEO specialist in Bangladesh. Book a free 30-minute SEO audit & consultation to discuss your business growth strategy today.`,
     url: "/contact",
     type: "website",
   },
