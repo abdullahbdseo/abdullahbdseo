@@ -5,6 +5,13 @@ export default function sitemap() {
   const baseUrl = "https://abdullahbdseo.vercel.app";
   const now = new Date().toISOString();
 
+  // Safely parse any date string — returns ISO string or falls back to now
+  const safeDate = (dateStr) => {
+    if (!dateStr) return now;
+    const parsed = new Date(dateStr);
+    return isNaN(parsed.getTime()) ? now : parsed.toISOString();
+  };
+
   // Static Pages (non-data-driven routes only)
   // NOTE: /services/* are NOT listed here — they are generated dynamically below from data.js
   // to avoid duplicate sitemap entries and ensure all service pages are always included.
@@ -68,7 +75,7 @@ export default function sitemap() {
   // Dynamic Blog Posts
   const blogRoutes = (blogPosts || []).map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
-    lastModified: post.date || post.publish_date || now,
+    lastModified: safeDate(post.date || post.publish_date),
     changeFrequency: "weekly",
     priority: 0.8,
   }));
@@ -76,7 +83,7 @@ export default function sitemap() {
   // Dynamic High DA Backlink Resource Guides
   const backlinkRoutes = (backlinkPosts || []).map((post) => ({
     url: `${baseUrl}/high-da-backlinks/${post.slug}`,
-    lastModified: now,
+    lastModified: safeDate(post.date || post.lastModified),
     changeFrequency: "weekly",
     priority: 0.85,
   }));
