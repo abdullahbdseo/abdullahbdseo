@@ -16,10 +16,41 @@ export async function generateMetadata({ params }) {
   const unwrappedParams = await params;
   const post = blogPosts.find((p) => p.slug === unwrappedParams.slug);
   if (!post) return { title: "Article Not Found" };
+
+  const title = post.meta_title || `${post.title} | ${siteSettings.site_name}`;
+  const description = post.meta_description || post.summary || post.excerpt || "";
+  const image = post.featured_image || post.image || "/images/seo_hero_3d.png";
+
   return {
-    title: post.meta_title || `${post.title} | ${siteSettings.site_name}`,
-    description: post.meta_description || post.summary || post.excerpt,
-    keywords: post.meta_keywords || (Array.isArray(post.tags) ? post.tags.join(", ") : post.tags)
+    title,
+    description,
+    keywords: post.meta_keywords || (Array.isArray(post.tags) ? post.tags.join(", ") : post.tags),
+    alternates: {
+      canonical: `/blog/${post.slug}`,
+    },
+    openGraph: {
+      title,
+      description,
+      url: `/blog/${post.slug}`,
+      type: "article",
+      publishedTime: post.publish_date || post.date,
+      modifiedTime: post.dateModified || post.publish_date || post.date,
+      authors: [post.author?.name || siteSettings.expert_name],
+      images: [
+        {
+          url: image,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [image],
+    },
   };
 }
 
