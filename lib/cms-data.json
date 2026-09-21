@@ -515,6 +515,33 @@
   ],
   "caseStudies": [
     {
+      "id": 7,
+      "title": "Enterprise SEO Domination: Scaling to 1.18M Organic Clicks & 92.4% CTR",
+      "slug": "enterprise-seo-1-18m-clicks-gsc",
+      "client_name": "Global Digital Solutions",
+      "website_url": "https://example-globaldigital.com",
+      "industry": "Enterprise Technology / SaaS",
+      "category_name": "SaaS & Enterprise SEO",
+      "featured_image": "/images/portfolio/proof_gsc_1_18m_scale.jpg",
+      "summary": "Engineered high-intent search structure and technical optimization delivering 1.18 Million organic clicks with an unprecedented 92.4% click-through rate and #1 average position on Google Search Console.",
+      "challenge": "The client had significant traffic potential but was held back by deep site architecture flaws, internal link cannibalization, and suboptimal snippet CTR across major commercial keywords.",
+      "strategy": "Conducted an exhaustive 230-point technical crawl audit, rebuilt the internal silo hierarchy, deployed custom Product and FAQ JSON-LD schemas, and rewrote title/meta hooks to maximize search snippet click appeal.",
+      "implementation": [
+        "Resolved 450+ canonical anomalies and duplicate URL parameters.",
+        "Implemented automated breadcrumb and FAQ rich snippets.",
+        "Built 40+ topic cluster pillar pages linking to core commercial hubs.",
+        "Scaled high-tier contextual backlinks from DA 60+ industry portals."
+      ],
+      "results": "Achieved 1.18 Million organic clicks and 1.28 Million impressions over a 3-month performance window with a remarkable 92.4% CTR and sustained #1 average position.",
+      "metrics": {
+        "total_clicks": "1.18M",
+        "total_impressions": "1.28M",
+        "avg_ctr": "92.4%",
+        "avg_position": "1.0"
+      },
+      "duration": "3 Months"
+    },
+    {
       "id": 12,
       "title": "Authority Portal Traffic Surge: 80.5K Clicks & 88.1% CTR with 1.6 Avg Position",
       "slug": "authority-portal-80k-clicks-gsc",
@@ -565,33 +592,6 @@
         "total_impressions": "194K",
         "avg_ctr": "69.6%",
         "avg_position": "2.4"
-      },
-      "duration": "3 Months"
-    },
-    {
-      "id": 7,
-      "title": "Enterprise SEO Domination: Scaling to 1.18M Organic Clicks & 92.4% CTR",
-      "slug": "enterprise-seo-1-18m-clicks-gsc",
-      "client_name": "Global Digital Solutions",
-      "website_url": "https://example-globaldigital.com",
-      "industry": "Enterprise Technology / SaaS",
-      "category_name": "SaaS & Enterprise SEO",
-      "featured_image": "/images/portfolio/proof_gsc_1_18m_scale.jpg",
-      "summary": "Engineered high-intent search structure and technical optimization delivering 1.18 Million organic clicks with an unprecedented 92.4% click-through rate and #1 average position on Google Search Console.",
-      "challenge": "The client had significant traffic potential but was held back by deep site architecture flaws, internal link cannibalization, and suboptimal snippet CTR across major commercial keywords.",
-      "strategy": "Conducted an exhaustive 230-point technical crawl audit, rebuilt the internal silo hierarchy, deployed custom Product and FAQ JSON-LD schemas, and rewrote title/meta hooks to maximize search snippet click appeal.",
-      "implementation": [
-        "Resolved 450+ canonical anomalies and duplicate URL parameters.",
-        "Implemented automated breadcrumb and FAQ rich snippets.",
-        "Built 40+ topic cluster pillar pages linking to core commercial hubs.",
-        "Scaled high-tier contextual backlinks from DA 60+ industry portals."
-      ],
-      "results": "Achieved 1.18 Million organic clicks and 1.28 Million impressions over a 3-month performance window with a remarkable 92.4% CTR and sustained #1 average position.",
-      "metrics": {
-        "total_clicks": "1.18M",
-        "total_impressions": "1.28M",
-        "avg_ctr": "92.4%",
-        "avg_position": "1.0"
       },
       "duration": "3 Months"
     },
