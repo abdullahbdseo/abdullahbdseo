@@ -3,6 +3,7 @@
 import "@/styles/globals.css";
 import ClientLayout from "@/components/ClientLayout";
 import { siteSettings } from "@/lib/data";
+import Script from "next/script";
 
 export const metadata = {
   metadataBase: new URL("https://abdullahbdseo.vercel.app"),
@@ -246,6 +247,22 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         <ClientLayout>{children}</ClientLayout>
+
+        {/* Google Analytics 4 - G-H773QB113V */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-H773QB113V"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-H773QB113V', {
+              page_path: window.location.pathname,
+            });
+          `}
+        </Script>
       </body>
     </html>
   );
