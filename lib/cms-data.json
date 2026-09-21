@@ -515,6 +515,33 @@
   ],
   "caseStudies": [
     {
+      "id": 11,
+      "title": "High-Performance Growth Campaign: 135K Organic Clicks & 69.6% CTR",
+      "slug": "high-performance-growth-135k-clicks-gsc",
+      "client_name": "Global Enterprise Platform",
+      "website_url": "https://example-enterpriseportal.com",
+      "industry": "Enterprise Technology / SaaS",
+      "category_name": "SaaS & Enterprise SEO",
+      "featured_image": "/images/portfolio/proof_gsc_135k_clicks.jpg",
+      "summary": "Engineered high-intent search structure and technical optimization delivering 135,000 organic clicks and 194,000 search impressions with a 69.6% CTR and 2.4 average position on Google Search Console.",
+      "challenge": "The client suffered from stagnant rankings, low snippet engagement, and crawl bottlenecks limiting search visibility on high-intent commercial queries.",
+      "strategy": "Conducted a full technical crawl audit, deployed custom JSON-LD schemas, optimized meta hooks for high CTR, and engineered topic cluster silos.",
+      "implementation": [
+        "Resolved crawl anomalies and optimized canonical URL architecture.",
+        "Implemented automated FAQ and Breadcrumb rich snippets.",
+        "Built targeted topical authority silos mapped to buyer search intent.",
+        "Acquired high-tier contextual backlinks from niche-relevant authority domains."
+      ],
+      "results": "Delivered 135K total organic clicks, 194K impressions, 69.6% average CTR, and sustained 2.4 average position on Google Search Console over a 3-month window.",
+      "metrics": {
+        "total_clicks": "135K",
+        "total_impressions": "194K",
+        "avg_ctr": "69.6%",
+        "avg_position": "2.4"
+      },
+      "duration": "3 Months"
+    },
+    {
       "id": 7,
       "title": "Enterprise SEO Domination: Scaling to 1.18M Organic Clicks & 92.4% CTR",
       "slug": "enterprise-seo-1-18m-clicks-gsc",
