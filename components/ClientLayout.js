@@ -7,7 +7,7 @@ import SeoChecklistModal from "@/components/SeoChecklistModal";
 import BackToTop from "@/components/BackToTop";
 
 // Routes where Header and Footer should NOT appear
-const NO_CHROME_PATHS = ["/admin", "/login"];
+const NO_CHROME_PATHS = ["/admin", "/100100"];
 
 export default function ClientLayout({ children }) {
   const pathname = usePathname();

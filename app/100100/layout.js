@@ -1,4 +1,4 @@
-// app/login/layout.js - Noindex login page (no SEO value)
+// app/100100/layout.js - Noindex secret login page (no SEO value)
 
 export const metadata = {
   title: "Admin Login",
@@ -12,6 +12,6 @@ export const metadata = {
   },
 };
 
-export default function LoginLayout({ children }) {
+export default function SecretLoginLayout({ children }) {
   return children;
 }

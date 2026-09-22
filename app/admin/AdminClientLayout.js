@@ -57,7 +57,7 @@ export default function AdminLayout({ children }) {
     if (typeof window !== "undefined") {
       const auth = localStorage.getItem("admin_auth");
       if (!auth || auth !== "true") {
-        router.replace("/login");
+        router.replace("/100100");
       } else {
         const storedUser = localStorage.getItem("admin_user");
         if (storedUser) {
@@ -77,7 +77,7 @@ export default function AdminLayout({ children }) {
       localStorage.removeItem("admin_auth");
       localStorage.removeItem("admin_user");
     }
-    router.push("/login");
+    router.push("/100100");
   };
 
   const isActive = (href, exact) => {
