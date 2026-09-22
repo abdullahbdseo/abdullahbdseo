@@ -121,7 +121,7 @@ export default function HighDaBacklinksPage() {
               <article key={post.id} className="blog-card" style={{ display: "flex", flexDirection: "column" }}>
                 
                 {/* Visual Thumbnail Image - Clickable (Opens in new window) */}
-                <div className="blog-card-image-wrap" style={{ height: "220px", position: "relative" }}>
+                <div className="blog-card-image-wrap" style={{ width: "100%", aspectRatio: "16 / 9", height: "auto", position: "relative" }}>
                   <Link
                     href={`/high-da-backlinks/${post.slug}`}
                     target="_blank"
@@ -131,8 +131,8 @@ export default function HighDaBacklinksPage() {
                     <Image
                       src={post.image}
                       alt={post.title}
-                      width={500}
-                      height={280}
+                      width={600}
+                      height={338}
                       className="blog-card-img"
                       style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
                     />

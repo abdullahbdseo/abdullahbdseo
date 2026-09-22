@@ -7010,7 +7010,8 @@ nextjs-portal,
 .blog-card-image-wrap {
     position: relative;
     width: 100%;
-    height: 210px;
+    aspect-ratio: 16 / 9;
+    height: auto;
     background: #0f172a;
     overflow: hidden;
 }
