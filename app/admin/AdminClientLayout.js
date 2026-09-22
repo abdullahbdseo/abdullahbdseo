@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import NotFound from "@/app/not-found";
 import "@/styles/admin.css";
 
 const navGroups = [
@@ -46,19 +47,18 @@ export default function AdminLayout({ children }) {
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [authChecked, setAuthChecked] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [adminUser, setAdminUser] = useState({
     name: "Abdullah Saleh",
     email: "admin@seoservice.local",
     role: "Master Administrator"
   });
 
-  // Strict Password/Auth Guard
+  // Strict Password/Auth Guard - Hidden 404 for unauthenticated visitors
   useEffect(() => {
     if (typeof window !== "undefined") {
       const auth = localStorage.getItem("admin_auth");
-      if (!auth || auth !== "true") {
-        router.replace("/100100");
-      } else {
+      if (auth === "true") {
         const storedUser = localStorage.getItem("admin_user");
         if (storedUser) {
           try {
@@ -67,16 +67,20 @@ export default function AdminLayout({ children }) {
             // fallback to default
           }
         }
-        setAuthChecked(true);
+        setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
       }
+      setAuthChecked(true);
     }
-  }, [router]);
+  }, [pathname]);
 
   const handleLogout = () => {
     if (typeof window !== "undefined") {
       localStorage.removeItem("admin_auth");
       localStorage.removeItem("admin_user");
     }
+    setIsAuthenticated(false);
     router.push("/100100");
   };
 
@@ -98,37 +102,12 @@ export default function AdminLayout({ children }) {
   };
 
   if (!authChecked) {
-    return (
-      <div style={{
-        minHeight: "100vh",
-        background: "#f8fafc",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: "14px",
-        color: "#64748b",
-        fontFamily: "'Plus Jakarta Sans', sans-serif"
-      }}>
-        <div style={{
-          width: "48px",
-          height: "48px",
-          borderRadius: "14px",
-          background: "linear-gradient(135deg, #2563eb 0%, #4f46e5 100%)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          color: "#ffffff",
-          fontSize: "20px",
-          boxShadow: "0 8px 20px rgba(37, 99, 235, 0.25)"
-        }}>
-          <i className="fa-solid fa-lock"></i>
-        </div>
-        <div style={{ fontSize: "14px", fontWeight: "700", color: "#0f172a" }}>
-          Verifying Administrator Session...
-        </div>
-      </div>
-    );
+    return null;
+  }
+
+  // Show standard 404 Not Found if visitor is not logged in as admin
+  if (!isAuthenticated) {
+    return <NotFound />;
   }
 
   return (
