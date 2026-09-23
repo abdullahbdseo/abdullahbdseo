@@ -1471,6 +1471,15 @@
       "category": "SEO & Technical"
     },
     {
+      "slug": "backlink-package-calculator",
+      "title": "Backlink Package Calculator",
+      "desc": "Custom bundle & live pricing",
+      "icon": "fa-sliders",
+      "color": "#2563eb",
+      "bg": "#eff6ff",
+      "category": "Calculators & ROI"
+    },
+    {
       "slug": "website-cost-calculator",
       "title": "Website Cost Calculator",
       "desc": "Estimate project investment",

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useId } from "react";
+import { useState, useMemo } from "react";
 import Link from "next/link";
 import ToolFaqAccordion from "@/components/ToolFaqAccordion";
 import { siteSettings } from "@/lib/data";
@@ -16,6 +16,8 @@ const BACKLINK_SERVICES = [
     min: 0,
     max: 800,
     step: 10,
+    presetSteps: [25, 50, 100, 200],
+    accentColor: "#3b82f6",
     desc: "100% manual high DA profile backlinks with synced NAP, avatar, and canonical website anchors."
   },
   {
@@ -28,6 +30,8 @@ const BACKLINK_SERVICES = [
     min: 0,
     max: 300,
     step: 5,
+    presetSteps: [10, 20, 50, 100],
+    accentColor: "#10b981",
     desc: "Unique handwritten 800+ word niche blogs on Medium, WordPress, Substack with in-content contextual DoFollow anchors."
   },
   {
@@ -40,6 +44,8 @@ const BACKLINK_SERVICES = [
     min: 0,
     max: 500,
     step: 10,
+    presetSteps: [50, 100, 200, 300],
+    accentColor: "#6366f1",
     desc: "High-velocity social bookmark discovery links on Reddit, Pinterest, Scoop.it to accelerate Googlebot crawl frequency."
   },
   {
@@ -52,6 +58,8 @@ const BACKLINK_SERVICES = [
     min: 0,
     max: 200,
     step: 5,
+    presetSteps: [10, 25, 50, 100],
+    accentColor: "#ef4444",
     desc: "Custom branded PDF guides and whitepapers uploaded to SlideShare, Scribd, Issuu with live clickable links."
   },
   {
@@ -64,6 +72,8 @@ const BACKLINK_SERVICES = [
     min: 0,
     max: 35,
     step: 1,
+    presetSteps: [1, 3, 5, 10],
+    accentColor: "#f59e0b",
     desc: "Real traffic multi-niche & tech publication articles with contextual in-content DoFollow backlink outreach."
   },
   {
@@ -76,6 +86,8 @@ const BACKLINK_SERVICES = [
     min: 0,
     max: 50,
     step: 2,
+    presetSteps: [5, 10, 20, 35],
+    accentColor: "#8b5cf6",
     desc: "Participating in active industry threads (Quora, Reddit, Webmaster boards) with natural signature & mention links."
   },
   {
@@ -88,6 +100,8 @@ const BACKLINK_SERVICES = [
     min: 0,
     max: 15,
     step: 1,
+    presetSteps: [1, 2, 5, 10],
+    accentColor: "#0284c7",
     desc: "Syndicated business milestone and launch announcements distributed across top PR wires & Google News index."
   },
   {
@@ -100,6 +114,8 @@ const BACKLINK_SERVICES = [
     min: 0,
     max: 25,
     step: 1,
+    presetSteps: [2, 5, 10, 20],
+    accentColor: "#059669",
     desc: "Ultra-high trust Tier-1 backlinks on verified educational (.edu) and government (.gov) resource portals."
   },
   {
@@ -112,16 +128,20 @@ const BACKLINK_SERVICES = [
     min: 0,
     max: 150,
     step: 10,
+    presetSteps: [20, 40, 80, 120],
+    accentColor: "#ea580c",
     desc: "100% NAP consistent business directory citations with geo-tagged images to rank in Google Maps 3-Pack."
   }
 ];
 
 const PRESET_BUNDLES = [
   {
+    id: "starter",
     name: "Starter Entity Launch",
     tag: "Best for New Sites",
     icon: "fa-solid fa-rocket",
-    desc: "Establish foundational brand entity and trust signals across major platforms.",
+    badgeColor: "#3b82f6",
+    desc: "Foundational brand authority, NAP consistency & social discovery signals.",
     config: {
       profile_creation: 50,
       social_bookmarks: 50,
@@ -135,10 +155,12 @@ const PRESET_BUNDLES = [
     }
   },
   {
+    id: "surge",
     name: "Authority Surge Pack",
     tag: "Most Popular 🔥",
     icon: "fa-solid fa-bolt",
-    desc: "Balanced contextual link building designed for ranking competitive organic keywords.",
+    badgeColor: "#f59e0b",
+    desc: "High-impact contextual mix designed for ranking competitive organic keywords.",
     config: {
       profile_creation: 100,
       web20_blogs: 15,
@@ -152,10 +174,12 @@ const PRESET_BUNDLES = [
     }
   },
   {
+    id: "enterprise",
     name: "Enterprise Domination",
     tag: "Maximum Link Juice",
     icon: "fa-solid fa-crown",
-    desc: "Heavy-hitting multi-tier link structure for high-volume organic search dominance.",
+    badgeColor: "#8b5cf6",
+    desc: "Aggressive multi-tier link structure for market leaders and high-volume keywords.",
     config: {
       profile_creation: 250,
       web20_blogs: 35,
@@ -183,6 +207,8 @@ export default function BacklinkPackageCalculatorPage() {
     local_citations: 20
   });
 
+  const [activePreset, setActivePreset] = useState("surge");
+
   const [addons, setAddons] = useState({
     tier2Indexation: true,
     dripFeed: true,
@@ -206,12 +232,14 @@ export default function BacklinkPackageCalculatorPage() {
   const bdtRate = 122; // 1 USD = 122 BDT
 
   const handleQtyChange = (id, val) => {
+    setActivePreset(null);
     const num = Math.max(0, parseInt(val) || 0);
     setQuantities(prev => ({ ...prev, [id]: num }));
   };
 
-  const applyPreset = (presetConfig) => {
-    setQuantities(presetConfig);
+  const applyPreset = (preset) => {
+    setActivePreset(preset.id);
+    setQuantities(preset.config);
   };
 
   const toggleAddon = (key) => {
@@ -219,18 +247,20 @@ export default function BacklinkPackageCalculatorPage() {
   };
 
   // Calculations
-  let rawTotalUSD = 0;
-  let totalLinkCount = 0;
-
-  BACKLINK_SERVICES.forEach(item => {
-    const qty = quantities[item.id] || 0;
-    rawTotalUSD += qty * item.unitPrice;
-    totalLinkCount += qty;
-  });
+  const { rawTotalUSD, totalLinkCount } = useMemo(() => {
+    let raw = 0;
+    let count = 0;
+    BACKLINK_SERVICES.forEach(item => {
+      const qty = quantities[item.id] || 0;
+      raw += qty * item.unitPrice;
+      count += qty;
+    });
+    return { rawTotalUSD: raw, totalLinkCount: count };
+  }, [quantities]);
 
   let addonMultiplier = 1.0;
-  if (addons.tier2Indexation) addonMultiplier += 0.15; // +15% for automated Tier-2 indexing pings
-  if (addons.expressDelivery) addonMultiplier += 0.20; // +20% for 7-day express turnaround
+  if (addons.tier2Indexation) addonMultiplier += 0.15; // +15%
+  if (addons.expressDelivery) addonMultiplier += 0.20; // +20%
 
   const finalTotalUSD = Math.round(rawTotalUSD * addonMultiplier * 100) / 100;
   const finalTotalBDT = Math.round(finalTotalUSD * bdtRate);
@@ -241,6 +271,15 @@ export default function BacklinkPackageCalculatorPage() {
   else if (totalLinkCount < 250) turnaroundDays = "7–10 Days";
   else if (totalLinkCount > 500) turnaroundDays = "14–21 Days";
   if (addons.expressDelivery) turnaroundDays = "3–5 Days (Express)";
+
+  // Link Power Gauge (0 to 100)
+  const powerScore = Math.min(100, Math.round((totalLinkCount / 500) * 80 + (addons.tier2Indexation ? 15 : 0) + (addons.dripFeed ? 5 : 0)));
+  let powerLabel = "Moderate Impact";
+  let powerColor = "#3b82f6";
+  if (powerScore < 30) { powerLabel = "Foundation Tier"; powerColor = "#06b6d4"; }
+  else if (powerScore < 60) { powerLabel = "Ranking Growth"; powerColor = "#3b82f6"; }
+  else if (powerScore < 85) { powerLabel = "High Authority"; powerColor = "#10b981"; }
+  else { powerLabel = "Domain Dominance 🔥"; powerColor = "#f59e0b"; }
 
   // Format package summary for WhatsApp and Clipboard
   const generateSummaryText = () => {
@@ -254,11 +293,12 @@ export default function BacklinkPackageCalculatorPage() {
     });
     summary += `----------------------------------------\n`;
     summary += `📊 *Total Backlinks:* ${totalLinkCount} Links\n`;
-    summary += `⚡ *Tier-2 Indexation:* ${addons.tier2Indexation ? "YES (Included)" : "NO"}\n`;
+    summary += `⚡ *Tier-2 Indexation:* ${addons.tier2Indexation ? "YES (+15% Booster)" : "NO"}\n`;
     summary += `⏱️ *Drip-Feed (Natural Velocity):* ${addons.dripFeed ? "YES (30 Days)" : "Standard"}\n`;
     summary += `🚀 *Delivery Speed:* ${addons.expressDelivery ? "Express (3-5 Days)" : turnaroundDays}\n`;
     summary += `💰 *Total Estimated Price:* $${finalTotalUSD.toFixed(2)} USD / ৳${finalTotalBDT.toLocaleString()} BDT\n`;
     summary += `----------------------------------------\n`;
+    summary += `Client Website: ${orderForm.websiteUrl || "To be provided"}\n`;
     summary += `Agency: Abdullah BD SEO (https://abdullahbdseo.com)`;
     return summary;
   };
@@ -325,396 +365,732 @@ export default function BacklinkPackageCalculatorPage() {
   ];
 
   return (
-    <div className="tool-single-page" style={{ backgroundColor: "#f8fafc", minHeight: "100vh", paddingBottom: "80px" }}>
-      {/* HEADER SECTION */}
-      <section className="page-header-section" style={{ background: "linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #3b82f6 100%)", color: "white", padding: "60px 20px 70px" }}>
-        <div className="container" style={{ maxWidth: "1140px", margin: "0 auto", textAlign: "center" }}>
-          <Link href="/high-da-backlinks" className="tool-back-link" style={{ color: "#93c5fd", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "8px", fontWeight: 700, fontSize: "14px", marginBottom: "16px" }}>
-            <i className="fa-solid fa-arrow-left"></i> Explore Backlink Resource Hub
-          </Link>
+    <div style={{ backgroundColor: "#f8fafc", minHeight: "100vh", paddingBottom: "90px" }}>
+      
+      {/* ================= HERO SECTION WITH GLASSMORPHISM ================= */}
+      <section style={{
+        position: "relative",
+        background: "radial-gradient(circle at 50% 20%, #1e3a8a 0%, #0f172a 60%, #020617 100%)",
+        color: "#ffffff",
+        padding: "60px 20px 80px",
+        overflow: "hidden"
+      }}>
+        {/* Subtle decorative glow spots */}
+        <div style={{ position: "absolute", top: "-150px", left: "10%", width: "500px", height: "500px", background: "radial-gradient(circle, rgba(59,130,246,0.2) 0%, transparent 70%)", filter: "blur(60px)", pointerEvents: "none" }}></div>
+        <div style={{ position: "absolute", bottom: "-100px", right: "10%", width: "600px", height: "600px", background: "radial-gradient(circle, rgba(14,165,233,0.15) 0%, transparent 70%)", filter: "blur(70px)", pointerEvents: "none" }}></div>
+
+        <div style={{ maxWidth: "1140px", margin: "0 auto", position: "relative", zIndex: 2, textAlign: "center" }}>
           
-          <div style={{ display: "inline-block", background: "rgba(255, 255, 255, 0.15)", backdropFilter: "blur(10px)", padding: "6px 18px", borderRadius: "30px", fontSize: "13px", fontWeight: 800, color: "#facc15", letterSpacing: "0.5px", marginBottom: "14px" }}>
-            <i className="fa-solid fa-sliders mr-2"></i> INTERACTIVE LINK BUILDING CONFIGURATOR
+          {/* Top Breadcrumb Nav */}
+          <div style={{ display: "inline-flex", alignItems: "center", gap: "10px", background: "rgba(255, 255, 255, 0.08)", backdropFilter: "blur(12px)", border: "1px solid rgba(255, 255, 255, 0.15)", padding: "6px 18px", borderRadius: "30px", fontSize: "13px", fontWeight: 700, marginBottom: "20px" }}>
+            <Link href="/tools" style={{ color: "#93c5fd", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "6px" }}>
+              <i className="fa-solid fa-toolbox"></i> Tools Suite
+            </Link>
+            <span style={{ color: "rgba(255,255,255,0.4)" }}>/</span>
+            <Link href="/high-da-backlinks" style={{ color: "#93c5fd", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "6px" }}>
+              <i className="fa-solid fa-link"></i> Backlink Hub
+            </Link>
+            <span style={{ color: "rgba(255,255,255,0.4)" }}>/</span>
+            <span style={{ color: "#facc15" }}>Package Calculator</span>
           </div>
 
-          <h1 style={{ fontSize: "clamp(28px, 4vw, 42px)", fontWeight: 900, marginBottom: "16px", letterSpacing: "-0.5px" }}>
-            Custom Backlink Package &amp; Investment Calculator
+          <h1 style={{ fontSize: "clamp(30px, 4.5vw, 48px)", fontWeight: 900, letterSpacing: "-1px", lineHeight: 1.15, marginBottom: "16px", textShadow: "0 4px 20px rgba(0,0,0,0.5)" }}>
+            Custom Backlink Package &amp; <span style={{ background: "linear-gradient(135deg, #38bdf8 0%, #818cf8 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Live Pricing Calculator</span>
           </h1>
-          <p style={{ fontSize: "16px", color: "#cbd5e1", maxWidth: "750px", margin: "0 auto 25px", lineHeight: "1.6" }}>
-            Tailor your link velocity, choose specific high-DA tiers, toggle indexation boosters, and receive transparent instant pricing in USD and BDT with 1-click order fulfillment.
+
+          <p style={{ fontSize: "17px", color: "#cbd5e1", maxWidth: "780px", margin: "0 auto 35px", lineHeight: 1.6 }}>
+            Customize your link velocity across 9 high-DA categories, toggle algorithmic safety &amp; indexation boosters, and view real-time estimates with 1-click WhatsApp order fulfillment.
           </p>
 
-          {/* Quick Presets Bar */}
-          <div style={{ background: "rgba(15, 23, 42, 0.6)", backdropFilter: "blur(12px)", padding: "16px 20px", borderRadius: "16px", border: "1px solid rgba(255, 255, 255, 0.1)", display: "inline-flex", flexWrap: "wrap", alignItems: "center", justifyContent: "center", gap: "12px" }}>
-            <span style={{ fontSize: "13px", fontWeight: 800, color: "#94a3b8" }}><i className="fa-solid fa-wand-magic-sparkles mr-1 text-amber-400"></i> QUICK PRESET BUNDLES:</span>
-            {PRESET_BUNDLES.map(bundle => (
-              <button
-                key={bundle.name}
-                type="button"
-                onClick={() => applyPreset(bundle.config)}
-                style={{ background: "rgba(255, 255, 255, 0.12)", border: "1px solid rgba(255, 255, 255, 0.2)", color: "#ffffff", padding: "8px 16px", borderRadius: "10px", fontSize: "13px", fontWeight: 700, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "8px", transition: "all 0.2s" }}
-                onMouseOver={(e) => { e.currentTarget.style.background = "#3b82f6"; e.currentTarget.style.borderColor = "#60a5fa"; }}
-                onMouseOut={(e) => { e.currentTarget.style.background = "rgba(255, 255, 255, 0.12)"; e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.2)"; }}
-              >
-                <i className={bundle.icon}></i>
-                <span>{bundle.name}</span>
-                <span style={{ fontSize: "10px", background: "#facc15", color: "#0f172a", padding: "2px 6px", borderRadius: "12px", fontWeight: 800 }}>{bundle.tag}</span>
-              </button>
-            ))}
+          {/* Interactive Steps Indicators */}
+          <div style={{ display: "inline-flex", flexWrap: "wrap", justifyContent: "center", gap: "16px", background: "rgba(15, 23, 42, 0.7)", backdropFilter: "blur(14px)", padding: "10px 24px", borderRadius: "40px", border: "1px solid rgba(255, 255, 255, 0.12)", marginBottom: "35px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px", fontWeight: 800, color: "#38bdf8" }}>
+              <span style={{ width: "24px", height: "24px", borderRadius: "50%", background: "#0284c7", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px" }}>1</span>
+              <span>Select Quantities</span>
+            </div>
+            <i className="fa-solid fa-arrow-right" style={{ color: "rgba(255,255,255,0.3)", fontSize: "11px", alignSelf: "center" }}></i>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px", fontWeight: 800, color: "#a5b4fc" }}>
+              <span style={{ width: "24px", height: "24px", borderRadius: "50%", background: "#4f46e5", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px" }}>2</span>
+              <span>Choose Add-Ons</span>
+            </div>
+            <i className="fa-solid fa-arrow-right" style={{ color: "rgba(255,255,255,0.3)", fontSize: "11px", alignSelf: "center" }}></i>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px", fontWeight: 800, color: "#4ade80" }}>
+              <span style={{ width: "24px", height: "24px", borderRadius: "50%", background: "#16a34a", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px" }}>3</span>
+              <span>1-Click Order / Quote</span>
+            </div>
           </div>
+
+          {/* PRESET BUNDLES BAR */}
+          <div>
+            <div style={{ fontSize: "12px", fontWeight: 800, letterSpacing: "1px", color: "#94a3b8", marginBottom: "12px" }}>
+              OR LOAD A PRE-CONFIGURED STRATEGY PACK:
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "14px", maxWidth: "980px", margin: "0 auto" }}>
+              {PRESET_BUNDLES.map(preset => {
+                const isSelected = activePreset === preset.id;
+                return (
+                  <button
+                    key={preset.id}
+                    type="button"
+                    onClick={() => applyPreset(preset)}
+                    style={{
+                      background: isSelected ? "rgba(37, 99, 235, 0.25)" : "rgba(255, 255, 255, 0.06)",
+                      border: `1.5px solid ${isSelected ? "#60a5fa" : "rgba(255, 255, 255, 0.15)"}`,
+                      boxShadow: isSelected ? "0 0 25px rgba(59, 130, 246, 0.4)" : "none",
+                      backdropFilter: "blur(10px)",
+                      borderRadius: "16px",
+                      padding: "16px 20px",
+                      textAlign: "left",
+                      color: "#ffffff",
+                      cursor: "pointer",
+                      transition: "all 0.25s ease",
+                      position: "relative"
+                    }}
+                  >
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                        <i className={`${preset.icon}`} style={{ fontSize: "16px", color: preset.badgeColor }}></i>
+                        <strong style={{ fontSize: "15px", fontWeight: 800 }}>{preset.name}</strong>
+                      </div>
+                      <span style={{ fontSize: "10px", fontWeight: 800, background: preset.badgeColor, color: "#0f172a", padding: "2px 8px", borderRadius: "12px" }}>
+                        {preset.tag}
+                      </span>
+                    </div>
+                    <p style={{ fontSize: "12px", color: "#cbd5e1", margin: 0, lineHeight: 1.4 }}>
+                      {preset.desc}
+                    </p>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
         </div>
       </section>
 
-      {/* MAIN CALCULATOR SECTION */}
-      <div className="container" style={{ maxWidth: "1200px", margin: "-30px auto 0", padding: "0 20px", position: "relative", zIndex: 10 }}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "30px", alignItems: "start" }}>
+      {/* ================= MAIN CALCULATOR LAYOUT ================= */}
+      <div style={{ maxWidth: "1220px", margin: "-35px auto 0", padding: "0 20px", position: "relative", zIndex: 10 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "30px", alignItems: "start" }}>
           
-          {/* LEFT: CONFIGURATOR SLIDERS */}
-          <div style={{ flex: 1.4 }}>
-            <div style={{ background: "#ffffff", borderRadius: "20px", padding: "30px", boxShadow: "0 10px 30px rgba(0,0,0,0.06)", border: "1px solid #e2e8f0", marginBottom: "25px" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #f1f5f9", paddingBottom: "18px", marginBottom: "24px" }}>
-                <div>
-                  <h2 style={{ fontSize: "20px", fontWeight: 900, color: "#0f172a", display: "flex", alignItems: "center", gap: "10px" }}>
-                    <i className="fa-solid fa-sliders text-blue-600"></i> Configure Backlink Quantities
-                  </h2>
-                  <p style={{ fontSize: "13px", color: "#64748b", marginTop: "2px" }}>Adjust sliders or type desired number of backlinks for each category.</p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setQuantities({
-                    profile_creation: 0,
-                    web20_blogs: 0,
-                    social_bookmarks: 0,
-                    pdf_sharing: 0,
-                    guest_posting: 0,
-                    forum_posting: 0,
-                    press_release: 0,
-                    edu_gov: 0,
-                    local_citations: 0
-                  })}
-                  style={{ background: "#f1f5f9", border: "none", color: "#64748b", padding: "6px 14px", borderRadius: "8px", fontSize: "12px", fontWeight: 700, cursor: "pointer" }}
-                >
-                  <i className="fa-solid fa-rotate-left mr-1"></i> Reset
-                </button>
-              </div>
-
-              {/* Backlink Sliders List */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "22px" }}>
-                {BACKLINK_SERVICES.map(item => {
-                  const qty = quantities[item.id] || 0;
-                  const itemSubtotal = (qty * item.unitPrice).toFixed(2);
-                  return (
-                    <div key={item.id} style={{ background: "#f8fafc", padding: "18px 20px", borderRadius: "14px", border: "1px solid #e2e8f0" }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "12px" }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                          <div style={{ width: "42px", height: "42px", borderRadius: "10px", background: "#eff6ff", color: "#2563eb", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px" }}>
-                            <i className={item.icon}></i>
-                          </div>
-                          <div>
-                            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                              <h3 style={{ fontSize: "16px", fontWeight: 800, color: "#0f172a", margin: 0 }}>{item.name}</h3>
-                              <span style={{ fontSize: "10px", fontWeight: 800, background: "#dbeafe", color: "#1e40af", padding: "2px 6px", borderRadius: "6px" }}>{item.da}</span>
-                            </div>
-                            <span style={{ fontSize: "12px", color: "#64748b" }}>${item.unitPrice.toFixed(2)}/link • {item.category}</span>
-                          </div>
-                        </div>
-
-                        {/* Quantity Counter Box */}
-                        <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                          <button
-                            type="button"
-                            onClick={() => handleQtyChange(item.id, Math.max(0, qty - item.step))}
-                            style={{ width: "28px", height: "28px", borderRadius: "6px", background: "#ffffff", border: "1px solid #cbd5e1", color: "#334155", fontWeight: 900, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
-                          >-</button>
-                          <input
-                            type="number"
-                            min="0"
-                            max={item.max}
-                            value={qty}
-                            onChange={(e) => handleQtyChange(item.id, e.target.value)}
-                            style={{ width: "65px", height: "32px", textAlign: "center", fontWeight: 800, fontSize: "15px", color: "#0f172a", border: "1.5px solid #3b82f6", borderRadius: "6px", outline: "none" }}
-                          />
-                          <button
-                            type="button"
-                            onClick={() => handleQtyChange(item.id, Math.min(item.max, qty + item.step))}
-                            style={{ width: "28px", height: "28px", borderRadius: "6px", background: "#ffffff", border: "1px solid #cbd5e1", color: "#334155", fontWeight: 900, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
-                          >+</button>
-                        </div>
-                      </div>
-
-                      {/* Range Slider */}
-                      <input
-                        type="range"
-                        min="0"
-                        max={item.max}
-                        step={item.step}
-                        value={qty}
-                        onChange={(e) => handleQtyChange(item.id, e.target.value)}
-                        style={{ width: "100%", accentColor: "#2563eb", cursor: "pointer", height: "6px", margin: "6px 0 10px" }}
-                      />
-
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "12px" }}>
-                        <span style={{ color: "#64748b", fontStyle: "italic", maxWidth: "75%" }}>{item.desc}</span>
-                        <span style={{ fontWeight: 800, color: qty > 0 ? "#059669" : "#94a3b8", fontSize: "14px" }}>
-                          ${itemSubtotal} USD
-                        </span>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* STRATEGY & ADD-ONS CARD */}
-            <div style={{ background: "#ffffff", borderRadius: "20px", padding: "30px", boxShadow: "0 10px 30px rgba(0,0,0,0.06)", border: "1px solid #e2e8f0" }}>
-              <h2 style={{ fontSize: "20px", fontWeight: 900, color: "#0f172a", marginBottom: "6px", display: "flex", alignItems: "center", gap: "10px" }}>
-                <i className="fa-solid fa-shield-halved text-emerald-600"></i> Indexation, Velocity &amp; Strategy Add-Ons
-              </h2>
-              <p style={{ fontSize: "13px", color: "#64748b", marginBottom: "20px" }}>Optional performance enhancements to maximize ranking boost and link juice.</p>
-
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "15px" }}>
-                {/* Tier 2 Indexing */}
-                <div
-                  onClick={() => toggleAddon("tier2Indexation")}
-                  style={{ background: addons.tier2Indexation ? "#ecfdf5" : "#f8fafc", border: `1.5px solid ${addons.tier2Indexation ? "#10b981" : "#e2e8f0"}`, borderRadius: "12px", padding: "16px", cursor: "pointer", transition: "all 0.2s" }}
-                >
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
-                    <span style={{ fontWeight: 800, fontSize: "14px", color: "#0f172a" }}>🚀 Tier-2 Indexation Pings</span>
-                    <i className={`fa-solid ${addons.tier2Indexation ? "fa-circle-check text-emerald-600" : "fa-circle text-slate-300"}`} style={{ fontSize: "18px" }}></i>
-                  </div>
-                  <p style={{ fontSize: "12px", color: "#64748b", margin: "0 0 8px" }}>Ping &amp; drip-feed backlinks into Google discovery networks for rapid 7-day crawl.</p>
-                  <span style={{ fontSize: "11px", fontWeight: 800, background: "#d1fae5", color: "#065f46", padding: "2px 8px", borderRadius: "6px" }}>+15% Link Juice Booster</span>
-                </div>
-
-                {/* Natural Drip Feed */}
-                <div
-                  onClick={() => toggleAddon("dripFeed")}
-                  style={{ background: addons.dripFeed ? "#eff6ff" : "#f8fafc", border: `1.5px solid ${addons.dripFeed ? "#3b82f6" : "#e2e8f0"}`, borderRadius: "12px", padding: "16px", cursor: "pointer", transition: "all 0.2s" }}
-                >
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
-                    <span style={{ fontWeight: 800, fontSize: "14px", color: "#0f172a" }}>⏱️ 30-Day Safe Drip-Feed</span>
-                    <i className={`fa-solid ${addons.dripFeed ? "fa-circle-check text-blue-600" : "fa-circle text-slate-300"}`} style={{ fontSize: "18px" }}></i>
-                  </div>
-                  <p style={{ fontSize: "12px", color: "#64748b", margin: "0 0 8px" }}>Spread link creation naturally over 30 days to avoid algorithmic spike penalties.</p>
-                  <span style={{ fontSize: "11px", fontWeight: 800, background: "#dbeafe", color: "#1e40af", padding: "2px 8px", borderRadius: "6px" }}>100% FREE / INCLUDED</span>
-                </div>
-
-                {/* Express Turnaround */}
-                <div
-                  onClick={() => toggleAddon("expressDelivery")}
-                  style={{ background: addons.expressDelivery ? "#fef3c7" : "#f8fafc", border: `1.5px solid ${addons.expressDelivery ? "#f59e0b" : "#e2e8f0"}`, borderRadius: "12px", padding: "16px", cursor: "pointer", transition: "all 0.2s" }}
-                >
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
-                    <span style={{ fontWeight: 800, fontSize: "14px", color: "#0f172a" }}>⚡ 7-Day Express Priority</span>
-                    <i className={`fa-solid ${addons.expressDelivery ? "fa-circle-check text-amber-600" : "fa-circle text-slate-300"}`} style={{ fontSize: "18px" }}></i>
-                  </div>
-                  <p style={{ fontSize: "12px", color: "#64748b", margin: "0 0 8px" }}>Dedicated team sprint for priority queue execution within 3 to 5 business days.</p>
-                  <span style={{ fontSize: "11px", fontWeight: 800, background: "#fef3c7", color: "#92400e", padding: "2px 8px", borderRadius: "6px" }}>+20% Express Fee</span>
-                </div>
-
-                {/* Detailed Live Sheet */}
-                <div
-                  style={{ background: "#f8fafc", border: "1.5px solid #e2e8f0", borderRadius: "12px", padding: "16px" }}
-                >
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
-                    <span style={{ fontWeight: 800, fontSize: "14px", color: "#0f172a" }}>📊 Live Google Sheet Report</span>
-                    <i className="fa-solid fa-circle-check text-emerald-600" style={{ fontSize: "18px" }}></i>
-                  </div>
-                  <p style={{ fontSize: "12px", color: "#64748b", margin: "0 0 8px" }}>Complete transparent live report with live links, anchor distribution, and login credentials.</p>
-                  <span style={{ fontSize: "11px", fontWeight: 800, background: "#e2e8f0", color: "#334155", padding: "2px 8px", borderRadius: "6px" }}>100% FREE / INCLUDED</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* RIGHT: STICKY ORDER SUMMARY & CHECKOUT CARD */}
-          <div style={{ position: "sticky", top: "20px" }}>
-            <div style={{ background: "linear-gradient(180deg, #0f172a 0%, #1e293b 100%)", color: "white", borderRadius: "24px", padding: "30px", boxShadow: "0 25px 50px -12px rgba(15, 23, 42, 0.4)", border: "1px solid rgba(255, 255, 255, 0.1)" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "30px" }}>
+            
+            <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1.4fr) minmax(320px, 0.85fr)", gap: "30px", alignItems: "start" }}>
               
-              {/* Currency Selector */}
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "16px", marginBottom: "20px" }}>
-                <span style={{ fontSize: "13px", fontWeight: 800, color: "#94a3b8" }}>ESTIMATED TOTAL</span>
-                <div style={{ display: "inline-flex", background: "rgba(255,255,255,0.1)", borderRadius: "8px", padding: "3px" }}>
-                  <button
-                    type="button"
-                    onClick={() => setCurrency("USD")}
-                    style={{ background: currency === "USD" ? "#3b82f6" : "transparent", border: "none", color: "white", padding: "4px 10px", borderRadius: "6px", fontSize: "12px", fontWeight: 800, cursor: "pointer" }}
-                  >USD ($)</button>
-                  <button
-                    type="button"
-                    onClick={() => setCurrency("BDT")}
-                    style={{ background: currency === "BDT" ? "#3b82f6" : "transparent", border: "none", color: "white", padding: "4px 10px", borderRadius: "6px", fontSize: "12px", fontWeight: 800, cursor: "pointer" }}
-                  >BDT (৳)</button>
-                </div>
-              </div>
-
-              {/* Price Display */}
-              <div style={{ marginBottom: "24px" }}>
-                <div style={{ fontSize: "clamp(36px, 4vw, 48px)", fontWeight: 900, color: "#38bdf8", lineHeight: 1 }}>
-                  {currency === "USD" ? `$${finalTotalUSD.toFixed(2)}` : `৳${finalTotalBDT.toLocaleString()}`}
-                </div>
-                <div style={{ fontSize: "13px", color: "#94a3b8", marginTop: "6px" }}>
-                  {currency === "USD" ? `Approx. ৳${finalTotalBDT.toLocaleString()} BDT` : `Approx. $${finalTotalUSD.toFixed(2)} USD`} • One-time investment
-                </div>
-              </div>
-
-              {/* Key Metrics Grid */}
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", background: "rgba(255,255,255,0.05)", borderRadius: "14px", padding: "16px", marginBottom: "24px", border: "1px solid rgba(255,255,255,0.08)" }}>
-                <div>
-                  <div style={{ fontSize: "11px", color: "#94a3b8", fontWeight: 700 }}>TOTAL LINKS</div>
-                  <div style={{ fontSize: "20px", fontWeight: 900, color: "#ffffff", marginTop: "2px" }}>
-                    <i className="fa-solid fa-link text-blue-400 mr-1"></i> {totalLinkCount}
-                  </div>
-                </div>
-                <div>
-                  <div style={{ fontSize: "11px", color: "#94a3b8", fontWeight: 700 }}>AVG AUTHORITY</div>
-                  <div style={{ fontSize: "20px", fontWeight: 900, color: "#10b981", marginTop: "2px" }}>
-                    DA 88+
-                  </div>
-                </div>
-                <div>
-                  <div style={{ fontSize: "11px", color: "#94a3b8", fontWeight: 700 }}>EST. DELIVERY</div>
-                  <div style={{ fontSize: "14px", fontWeight: 800, color: "#cbd5e1", marginTop: "4px" }}>
-                    {turnaroundDays}
-                  </div>
-                </div>
-                <div>
-                  <div style={{ fontSize: "11px", color: "#94a3b8", fontWeight: 700 }}>LINK JUICE RATING</div>
-                  <div style={{ fontSize: "14px", fontWeight: 800, color: "#facc15", marginTop: "4px" }}>
-                    ⭐ 9.8 / 10
-                  </div>
-                </div>
-              </div>
-
-              {/* Selected Breakdown Snippet */}
-              <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "16px", marginBottom: "24px" }}>
-                <div style={{ fontSize: "12px", fontWeight: 800, color: "#cbd5e1", marginBottom: "10px" }}>PACKAGE COMPOSITION:</div>
-                <div style={{ maxHeight: "150px", overflowY: "auto", display: "flex", flexDirection: "column", gap: "6px", fontSize: "12px" }}>
-                  {BACKLINK_SERVICES.filter(item => (quantities[item.id] || 0) > 0).map(item => (
-                    <div key={item.id} style={{ display: "flex", justifyContent: "space-between", color: "#94a3b8" }}>
-                      <span>• {item.name}:</span>
-                      <strong style={{ color: "#ffffff" }}>{quantities[item.id]} Links</strong>
+              {/* LEFT COLUMN: 9 BACKLINK CATEGORIES */}
+              <div>
+                <div style={{
+                  background: "#ffffff",
+                  borderRadius: "24px",
+                  padding: "32px",
+                  boxShadow: "0 10px 30px rgba(15, 23, 42, 0.05)",
+                  border: "1px solid #e2e8f0"
+                }}>
+                  
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1.5px solid #f1f5f9", paddingBottom: "20px", marginBottom: "26px", flexWrap: "wrap", gap: "12px" }}>
+                    <div>
+                      <h2 style={{ fontSize: "22px", fontWeight: 900, color: "#0f172a", margin: 0, display: "flex", alignItems: "center", gap: "10px" }}>
+                        <i className="fa-solid fa-sliders text-blue-600"></i> Configure Backlink Quantities
+                      </h2>
+                      <p style={{ fontSize: "13px", color: "#64748b", margin: "4px 0 0 0" }}>
+                        Fine-tune exact backlink quantities with individual sliders or quick increment buttons.
+                      </p>
                     </div>
-                  ))}
-                  {totalLinkCount === 0 && (
-                    <div style={{ color: "#f87171", fontStyle: "italic" }}>No backlinks selected yet. Adjust the sliders to configure your bundle.</div>
-                  )}
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setActivePreset(null);
+                        setQuantities({
+                          profile_creation: 0,
+                          web20_blogs: 0,
+                          social_bookmarks: 0,
+                          pdf_sharing: 0,
+                          guest_posting: 0,
+                          forum_posting: 0,
+                          press_release: 0,
+                          edu_gov: 0,
+                          local_citations: 0
+                        });
+                      }}
+                      style={{
+                        background: "#f1f5f9",
+                        border: "1px solid #cbd5e1",
+                        color: "#475569",
+                        padding: "7px 16px",
+                        borderRadius: "8px",
+                        fontSize: "12px",
+                        fontWeight: 800,
+                        cursor: "pointer",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "6px",
+                        transition: "all 0.2s"
+                      }}
+                    >
+                      <i className="fa-solid fa-rotate-left"></i> Reset All (0)
+                    </button>
+                  </div>
+
+                  {/* Backlink Sliders Cards */}
+                  <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+                    {BACKLINK_SERVICES.map(item => {
+                      const qty = quantities[item.id] || 0;
+                      const itemSubtotal = (qty * item.unitPrice).toFixed(2);
+                      const isHighlighted = qty > 0;
+
+                      return (
+                        <div
+                          key={item.id}
+                          style={{
+                            background: isHighlighted ? "#ffffff" : "#f8fafc",
+                            border: `1.5px solid ${isHighlighted ? item.accentColor : "#e2e8f0"}`,
+                            borderRadius: "18px",
+                            padding: "20px 24px",
+                            boxShadow: isHighlighted ? `0 8px 25px ${item.accentColor}18` : "none",
+                            transition: "all 0.25s ease"
+                          }}
+                        >
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "14px", flexWrap: "wrap", gap: "10px" }}>
+                            
+                            <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+                              <div style={{
+                                width: "46px",
+                                height: "46px",
+                                borderRadius: "12px",
+                                background: `${item.accentColor}15`,
+                                color: item.accentColor,
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                fontSize: "20px",
+                                border: `1px solid ${item.accentColor}30`
+                              }}>
+                                <i className={item.icon}></i>
+                              </div>
+                              
+                              <div>
+                                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                  <h3 style={{ fontSize: "16px", fontWeight: 800, color: "#0f172a", margin: 0 }}>{item.name}</h3>
+                                  <span style={{ fontSize: "11px", fontWeight: 800, background: "#dcfce7", color: "#166534", padding: "2px 8px", borderRadius: "6px" }}>
+                                    {item.da}
+                                  </span>
+                                </div>
+                                <span style={{ fontSize: "12px", color: "#64748b", fontWeight: 600 }}>
+                                  ${item.unitPrice.toFixed(2)}/link • {item.category}
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* Counter Input & Quick Presets */}
+                            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                              <button
+                                type="button"
+                                onClick={() => handleQtyChange(item.id, Math.max(0, qty - item.step))}
+                                style={{ width: "32px", height: "32px", borderRadius: "8px", background: "#f1f5f9", border: "1px solid #cbd5e1", color: "#334155", fontWeight: 900, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px" }}
+                              >-</button>
+                              
+                              <input
+                                type="number"
+                                min="0"
+                                max={item.max}
+                                value={qty}
+                                onChange={(e) => handleQtyChange(item.id, e.target.value)}
+                                style={{ width: "70px", height: "36px", textAlign: "center", fontWeight: 900, fontSize: "16px", color: "#0f172a", border: `2px solid ${isHighlighted ? item.accentColor : "#cbd5e1"}`, borderRadius: "8px", outline: "none" }}
+                              />
+
+                              <button
+                                type="button"
+                                onClick={() => handleQtyChange(item.id, Math.min(item.max, qty + item.step))}
+                                style={{ width: "32px", height: "32px", borderRadius: "8px", background: "#f1f5f9", border: "1px solid #cbd5e1", color: "#334155", fontWeight: 900, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px" }}
+                              >+</button>
+                            </div>
+
+                          </div>
+
+                          {/* Range Slider */}
+                          <div style={{ position: "relative", marginBottom: "12px" }}>
+                            <input
+                              type="range"
+                              min="0"
+                              max={item.max}
+                              step={item.step}
+                              value={qty}
+                              onChange={(e) => handleQtyChange(item.id, e.target.value)}
+                              style={{
+                                width: "100%",
+                                accentColor: item.accentColor,
+                                cursor: "pointer",
+                                height: "8px",
+                                borderRadius: "4px"
+                              }}
+                            />
+                          </div>
+
+                          {/* Preset Jump Pills */}
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "8px" }}>
+                            <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+                              <span style={{ fontSize: "11px", fontWeight: 700, color: "#94a3b8" }}>Quick Add:</span>
+                              {item.presetSteps.map(pStep => (
+                                <button
+                                  key={pStep}
+                                  type="button"
+                                  onClick={() => handleQtyChange(item.id, pStep)}
+                                  style={{
+                                    background: qty === pStep ? item.accentColor : "#f1f5f9",
+                                    color: qty === pStep ? "#ffffff" : "#475569",
+                                    border: "none",
+                                    padding: "2px 8px",
+                                    borderRadius: "6px",
+                                    fontSize: "11px",
+                                    fontWeight: 700,
+                                    cursor: "pointer"
+                                  }}
+                                >
+                                  {pStep}
+                                </button>
+                              ))}
+                              <button
+                                type="button"
+                                onClick={() => handleQtyChange(item.id, item.max)}
+                                style={{
+                                  background: "#fef3c7",
+                                  color: "#92400e",
+                                  border: "none",
+                                  padding: "2px 8px",
+                                  borderRadius: "6px",
+                                  fontSize: "11px",
+                                  fontWeight: 800,
+                                  cursor: "pointer"
+                                }}
+                              >
+                                Max ({item.max})
+                              </button>
+                            </div>
+
+                            <div style={{ textAlign: "right" }}>
+                              <span style={{ fontSize: "15px", fontWeight: 900, color: isHighlighted ? "#059669" : "#94a3b8" }}>
+                                ${itemSubtotal} USD
+                              </span>
+                            </div>
+                          </div>
+
+                          <div style={{ marginTop: "8px", fontSize: "12px", color: "#64748b", lineHeight: 1.4, borderTop: "1px dashed #e2e8f0", paddingTop: "8px" }}>
+                            {item.desc}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
                 </div>
+
+                {/* ================= STRATEGY & ADD-ONS ================= */}
+                <div style={{
+                  background: "#ffffff",
+                  borderRadius: "24px",
+                  padding: "32px",
+                  boxShadow: "0 10px 30px rgba(15, 23, 42, 0.05)",
+                  border: "1px solid #e2e8f0",
+                  marginTop: "25px"
+                }}>
+                  <div style={{ marginBottom: "22px" }}>
+                    <h2 style={{ fontSize: "20px", fontWeight: 900, color: "#0f172a", margin: 0, display: "flex", alignItems: "center", gap: "10px" }}>
+                      <i className="fa-solid fa-shield-halved text-emerald-600"></i> Indexation &amp; Velocity Add-Ons
+                    </h2>
+                    <p style={{ fontSize: "13px", color: "#64748b", margin: "4px 0 0 0" }}>
+                      Toggle automated performance boosters to maximize search crawl frequency and ranking impact.
+                    </p>
+                  </div>
+
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "16px" }}>
+                    
+                    {/* Tier 2 Indexing */}
+                    <div
+                      onClick={() => toggleAddon("tier2Indexation")}
+                      style={{
+                        background: addons.tier2Indexation ? "#ecfdf5" : "#f8fafc",
+                        border: `2px solid ${addons.tier2Indexation ? "#10b981" : "#e2e8f0"}`,
+                        borderRadius: "16px",
+                        padding: "18px",
+                        cursor: "pointer",
+                        transition: "all 0.2s"
+                      }}
+                    >
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
+                        <span style={{ fontWeight: 800, fontSize: "15px", color: "#0f172a" }}>🚀 Tier-2 Indexation Pings</span>
+                        <i className={`fa-solid ${addons.tier2Indexation ? "fa-circle-check text-emerald-600" : "fa-circle text-slate-300"}`} style={{ fontSize: "20px" }}></i>
+                      </div>
+                      <p style={{ fontSize: "12px", color: "#64748b", margin: "0 0 10px", lineHeight: 1.4 }}>
+                        Ping &amp; drip-feed backlinks into Google discovery networks for rapid 7-day indexation.
+                      </p>
+                      <span style={{ fontSize: "11px", fontWeight: 800, background: "#d1fae5", color: "#065f46", padding: "3px 8px", borderRadius: "6px" }}>
+                        +15% Booster Fee
+                      </span>
+                    </div>
+
+                    {/* Safe Drip Feed */}
+                    <div
+                      onClick={() => toggleAddon("dripFeed")}
+                      style={{
+                        background: addons.dripFeed ? "#eff6ff" : "#f8fafc",
+                        border: `2px solid ${addons.dripFeed ? "#3b82f6" : "#e2e8f0"}`,
+                        borderRadius: "16px",
+                        padding: "18px",
+                        cursor: "pointer",
+                        transition: "all 0.2s"
+                      }}
+                    >
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
+                        <span style={{ fontWeight: 800, fontSize: "15px", color: "#0f172a" }}>⏱️ 30-Day Safe Drip-Feed</span>
+                        <i className={`fa-solid ${addons.dripFeed ? "fa-circle-check text-blue-600" : "fa-circle text-slate-300"}`} style={{ fontSize: "20px" }}></i>
+                      </div>
+                      <p style={{ fontSize: "12px", color: "#64748b", margin: "0 0 10px", lineHeight: 1.4 }}>
+                        Spread link creation naturally over 30 days to mirror realistic organic velocity.
+                      </p>
+                      <span style={{ fontSize: "11px", fontWeight: 800, background: "#dbeafe", color: "#1e40af", padding: "3px 8px", borderRadius: "6px" }}>
+                        100% FREE / INCLUDED
+                      </span>
+                    </div>
+
+                    {/* Express Priority Delivery */}
+                    <div
+                      onClick={() => toggleAddon("expressDelivery")}
+                      style={{
+                        background: addons.expressDelivery ? "#fef3c7" : "#f8fafc",
+                        border: `2px solid ${addons.expressDelivery ? "#f59e0b" : "#e2e8f0"}`,
+                        borderRadius: "16px",
+                        padding: "18px",
+                        cursor: "pointer",
+                        transition: "all 0.2s"
+                      }}
+                    >
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
+                        <span style={{ fontWeight: 800, fontSize: "15px", color: "#0f172a" }}>⚡ 7-Day Express Priority</span>
+                        <i className={`fa-solid ${addons.expressDelivery ? "fa-circle-check text-amber-600" : "fa-circle text-slate-300"}`} style={{ fontSize: "20px" }}></i>
+                      </div>
+                      <p style={{ fontSize: "12px", color: "#64748b", margin: "0 0 10px", lineHeight: 1.4 }}>
+                        Dedicated team sprint for priority queue execution within 3 to 5 business days.
+                      </p>
+                      <span style={{ fontSize: "11px", fontWeight: 800, background: "#fef3c7", color: "#92400e", padding: "3px 8px", borderRadius: "6px" }}>
+                        +20% Express Fee
+                      </span>
+                    </div>
+
+                    {/* Live Tracking Report */}
+                    <div
+                      style={{
+                        background: "#f8fafc",
+                        border: "2px solid #e2e8f0",
+                        borderRadius: "16px",
+                        padding: "18px"
+                      }}
+                    >
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
+                        <span style={{ fontWeight: 800, fontSize: "15px", color: "#0f172a" }}>📊 Live Google Sheet Report</span>
+                        <i className="fa-solid fa-circle-check text-emerald-600" style={{ fontSize: "20px" }}></i>
+                      </div>
+                      <p style={{ fontSize: "12px", color: "#64748b", margin: "0 0 10px", lineHeight: 1.4 }}>
+                        Full transparent report with live link URLs, anchor distribution, and login credentials.
+                      </p>
+                      <span style={{ fontSize: "11px", fontWeight: 800, background: "#e2e8f0", color: "#334155", padding: "3px 8px", borderRadius: "6px" }}>
+                        100% FREE / INCLUDED
+                      </span>
+                    </div>
+
+                  </div>
+                </div>
+
               </div>
 
-              {/* ACTION BUTTONS */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                {/* Instant WhatsApp Order */}
-                <a
-                  href={totalLinkCount > 0 ? whatsappUrl : "#"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(e) => { if (totalLinkCount === 0) { e.preventDefault(); alert("Please select at least 1 backlink quantity."); } }}
-                  style={{ background: "#22c55e", color: "#ffffff", padding: "16px 20px", borderRadius: "14px", textDecoration: "none", fontWeight: 900, fontSize: "16px", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", boxShadow: "0 10px 25px rgba(34, 197, 94, 0.4)", transition: "all 0.2s" }}
-                >
-                  <i className="fa-brands fa-whatsapp text-2xl"></i>
-                  <span>Order via WhatsApp (1-Click)</span>
-                </a>
+              {/* RIGHT COLUMN: STICKY CHECKOUT & PRICING CARD */}
+              <div style={{ position: "sticky", top: "30px" }}>
+                
+                <div style={{
+                  background: "linear-gradient(180deg, #090e17 0%, #0f172a 100%)",
+                  borderRadius: "28px",
+                  padding: "32px",
+                  color: "#ffffff",
+                  boxShadow: "0 25px 60px -15px rgba(2, 6, 23, 0.7)",
+                  border: "1px solid rgba(56, 189, 248, 0.2)",
+                  position: "relative",
+                  overflow: "hidden"
+                }}>
+                  {/* Subtle top neon accent line */}
+                  <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "4px", background: "linear-gradient(90deg, #38bdf8 0%, #818cf8 50%, #34d399 100%)" }}></div>
 
-                {/* Direct Project Inquiry Modal Button */}
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (totalLinkCount === 0) { alert("Please select at least 1 backlink quantity."); return; }
-                    setShowOrderModal(true);
-                  }}
-                  style={{ background: "#3b82f6", color: "#ffffff", border: "none", padding: "14px 20px", borderRadius: "14px", fontWeight: 800, fontSize: "15px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}
-                >
-                  <i className="fa-solid fa-paper-plane"></i>
-                  <span>Submit Custom Project Order</span>
-                </button>
+                  {/* Header & Currency Toggle */}
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "18px", marginBottom: "22px" }}>
+                    <span style={{ fontSize: "12px", fontWeight: 800, letterSpacing: "1px", color: "#94a3b8" }}>
+                      ESTIMATED INVESTMENT
+                    </span>
 
-                {/* Copy Quote Button */}
-                <button
-                  type="button"
-                  onClick={copySummary}
-                  style={{ background: "rgba(255,255,255,0.08)", color: "#cbd5e1", border: "1px solid rgba(255,255,255,0.15)", padding: "11px 16px", borderRadius: "12px", fontWeight: 700, fontSize: "13px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}
-                >
-                  <i className={copied ? "fa-solid fa-check text-emerald-400" : "fa-solid fa-copy"}></i>
-                  <span>{copied ? "Package Summary Copied!" : "Copy Full Quote Breakdown"}</span>
-                </button>
-              </div>
+                    <div style={{ display: "inline-flex", background: "rgba(255,255,255,0.1)", borderRadius: "10px", padding: "3px" }}>
+                      <button
+                        type="button"
+                        onClick={() => setCurrency("USD")}
+                        style={{
+                          background: currency === "USD" ? "#2563eb" : "transparent",
+                          color: "#ffffff",
+                          border: "none",
+                          padding: "5px 12px",
+                          borderRadius: "8px",
+                          fontSize: "12px",
+                          fontWeight: 800,
+                          cursor: "pointer"
+                        }}
+                      >USD ($)</button>
+                      <button
+                        type="button"
+                        onClick={() => setCurrency("BDT")}
+                        style={{
+                          background: currency === "BDT" ? "#2563eb" : "transparent",
+                          color: "#ffffff",
+                          border: "none",
+                          padding: "5px 12px",
+                          borderRadius: "8px",
+                          fontSize: "12px",
+                          fontWeight: 800,
+                          cursor: "pointer"
+                        }}
+                      >BDT (৳)</button>
+                    </div>
+                  </div>
 
-              {/* Guarantees List */}
-              <div style={{ marginTop: "24px", paddingTop: "16px", borderTop: "1px solid rgba(255,255,255,0.1)", display: "flex", flexDirection: "column", gap: "8px", fontSize: "12px", color: "#94a3b8" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                  <i className="fa-solid fa-shield-check text-emerald-400"></i>
-                  <span>100% Real &amp; Manual Hand-Crafted Backlinks</span>
+                  {/* Big Glowing Price */}
+                  <div style={{ marginBottom: "24px" }}>
+                    <div style={{ fontSize: "clamp(38px, 4vw, 52px)", fontWeight: 900, color: "#38bdf8", lineHeight: 1, letterSpacing: "-1px", textShadow: "0 0 25px rgba(56, 189, 248, 0.4)" }}>
+                      {currency === "USD" ? `$${finalTotalUSD.toFixed(2)}` : `৳${finalTotalBDT.toLocaleString()}`}
+                    </div>
+                    <div style={{ fontSize: "13px", color: "#94a3b8", marginTop: "8px" }}>
+                      {currency === "USD" ? `Approx. ৳${finalTotalBDT.toLocaleString()} BDT` : `Approx. $${finalTotalUSD.toFixed(2)} USD`} • One-time verified execution
+                    </div>
+                  </div>
+
+                  {/* Link Power & Authority Gauge */}
+                  <div style={{ background: "rgba(255,255,255,0.06)", borderRadius: "16px", padding: "16px", marginBottom: "22px", border: "1px solid rgba(255,255,255,0.08)" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", fontSize: "12px", fontWeight: 800, marginBottom: "8px" }}>
+                      <span style={{ color: "#cbd5e1" }}>SEO Authority &amp; Ranking Impact:</span>
+                      <span style={{ color: powerColor }}>{powerLabel} ({powerScore}%)</span>
+                    </div>
+                    <div style={{ width: "100%", height: "8px", background: "rgba(255,255,255,0.1)", borderRadius: "4px", overflow: "hidden" }}>
+                      <div style={{ width: `${powerScore}%`, height: "100%", background: `linear-gradient(90deg, #38bdf8, ${powerColor})`, borderRadius: "4px", transition: "width 0.4s ease" }}></div>
+                    </div>
+                  </div>
+
+                  {/* Metrics Grid */}
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", background: "rgba(255,255,255,0.04)", borderRadius: "16px", padding: "16px", marginBottom: "24px", border: "1px solid rgba(255,255,255,0.08)" }}>
+                    <div>
+                      <div style={{ fontSize: "11px", color: "#94a3b8", fontWeight: 700 }}>TOTAL LINKS</div>
+                      <div style={{ fontSize: "22px", fontWeight: 900, color: "#ffffff", marginTop: "2px" }}>
+                        <i className="fa-solid fa-link text-blue-400 mr-1" style={{ fontSize: "16px" }}></i> {totalLinkCount}
+                      </div>
+                    </div>
+
+                    <div>
+                      <div style={{ fontSize: "11px", color: "#94a3b8", fontWeight: 700 }}>AVG DOMAIN TRUST</div>
+                      <div style={{ fontSize: "22px", fontWeight: 900, color: "#34d399", marginTop: "2px" }}>
+                        DA 88+
+                      </div>
+                    </div>
+
+                    <div>
+                      <div style={{ fontSize: "11px", color: "#94a3b8", fontWeight: 700 }}>EST. DELIVERY</div>
+                      <div style={{ fontSize: "14px", fontWeight: 800, color: "#e2e8f0", marginTop: "4px" }}>
+                        {turnaroundDays}
+                      </div>
+                    </div>
+
+                    <div>
+                      <div style={{ fontSize: "11px", color: "#94a3b8", fontWeight: 700 }}>INDEX GUARANTEE</div>
+                      <div style={{ fontSize: "14px", fontWeight: 800, color: "#facc15", marginTop: "4px" }}>
+                        {addons.tier2Indexation ? "Fast (7-14d)" : "Standard"}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Selected Breakdown List */}
+                  <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "18px", marginBottom: "24px" }}>
+                    <div style={{ fontSize: "12px", fontWeight: 800, color: "#cbd5e1", marginBottom: "10px", display: "flex", justifyContent: "space-between" }}>
+                      <span>SELECTED PACKAGE COMPOSITION:</span>
+                      <span style={{ color: "#38bdf8" }}>{BACKLINK_SERVICES.filter(item => (quantities[item.id] || 0) > 0).length} Types</span>
+                    </div>
+
+                    <div style={{ maxHeight: "150px", overflowY: "auto", display: "flex", flexDirection: "column", gap: "8px", fontSize: "12px", paddingRight: "4px" }}>
+                      {BACKLINK_SERVICES.filter(item => (quantities[item.id] || 0) > 0).map(item => (
+                        <div key={item.id} style={{ display: "flex", justifyContent: "space-between", color: "#94a3b8", borderBottom: "1px dashed rgba(255,255,255,0.06)", paddingBottom: "4px" }}>
+                          <span>• {item.name}:</span>
+                          <strong style={{ color: "#ffffff" }}>{quantities[item.id]} Links</strong>
+                        </div>
+                      ))}
+                      {totalLinkCount === 0 && (
+                        <div style={{ color: "#f87171", fontStyle: "italic", textAlign: "center", padding: "10px 0" }}>
+                          No backlinks selected. Use sliders or select a preset bundle above.
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* ACTION BUTTONS */}
+                  <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                    
+                    {/* WhatsApp 1-Click Order */}
+                    <a
+                      href={totalLinkCount > 0 ? whatsappUrl : "#"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => { if (totalLinkCount === 0) { e.preventDefault(); alert("Please select at least 1 backlink quantity."); } }}
+                      style={{
+                        background: "linear-gradient(135deg, #22c55e 0%, #16a34a 100%)",
+                        color: "#ffffff",
+                        padding: "16px 20px",
+                        borderRadius: "14px",
+                        textDecoration: "none",
+                        fontWeight: 900,
+                        fontSize: "16px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "10px",
+                        boxShadow: "0 10px 25px rgba(34, 197, 94, 0.45)",
+                        transition: "all 0.2s"
+                      }}
+                    >
+                      <i className="fa-brands fa-whatsapp text-2xl"></i>
+                      <span>Order via WhatsApp (1-Click)</span>
+                    </a>
+
+                    {/* Direct Project Order Modal Button */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (totalLinkCount === 0) { alert("Please select at least 1 backlink quantity."); return; }
+                        setShowOrderModal(true);
+                      }}
+                      style={{
+                        background: "linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)",
+                        color: "#ffffff",
+                        border: "none",
+                        padding: "15px 20px",
+                        borderRadius: "14px",
+                        fontWeight: 800,
+                        fontSize: "15px",
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "10px",
+                        boxShadow: "0 10px 25px rgba(37, 99, 235, 0.35)"
+                      }}
+                    >
+                      <i className="fa-solid fa-paper-plane"></i>
+                      <span>Submit Custom Project Order</span>
+                    </button>
+
+                    {/* Copy Quote Button */}
+                    <button
+                      type="button"
+                      onClick={copySummary}
+                      style={{
+                        background: "rgba(255,255,255,0.08)",
+                        color: "#cbd5e1",
+                        border: "1px solid rgba(255,255,255,0.15)",
+                        padding: "11px 16px",
+                        borderRadius: "12px",
+                        fontWeight: 700,
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "8px"
+                      }}
+                    >
+                      <i className={copied ? "fa-solid fa-check text-emerald-400" : "fa-solid fa-copy"}></i>
+                      <span>{copied ? "Package Summary Copied!" : "Copy Full Quote Breakdown"}</span>
+                    </button>
+
+                  </div>
+
+                  {/* Trust Guarantees */}
+                  <div style={{ marginTop: "24px", paddingTop: "18px", borderTop: "1px solid rgba(255,255,255,0.1)", display: "flex", flexDirection: "column", gap: "8px", fontSize: "12px", color: "#94a3b8" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <i className="fa-solid fa-shield-check text-emerald-400"></i>
+                      <span>100% Real Manual Hand-Crafted Accounts</span>
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <i className="fa-solid fa-arrows-rotate text-blue-400"></i>
+                      <span>Free Replacement for Any Dropped Links</span>
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <i className="fa-solid fa-file-excel text-emerald-400"></i>
+                      <span>Live White-Label Excel Spreadsheet Delivery</span>
+                    </div>
+                  </div>
+
                 </div>
-                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                  <i className="fa-solid fa-rotate-left text-blue-400"></i>
-                  <span>Full Replacement Guarantee for Dropped Links</span>
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                  <i className="fa-solid fa-file-excel text-emerald-400"></i>
-                  <span>White-Label Excel Spreadsheet Delivery</span>
-                </div>
+
               </div>
 
             </div>
+
           </div>
 
         </div>
       </div>
 
-      {/* FAQ & STRATEGY GUIDE SECTION */}
-      <section style={{ maxWidth: "1000px", margin: "70px auto 0", padding: "0 20px" }}>
+      {/* ================= FAQ SECTION ================= */}
+      <section style={{ maxWidth: "1000px", margin: "80px auto 0", padding: "0 20px" }}>
         <div style={{ textAlign: "center", marginBottom: "40px" }}>
-          <div style={{ display: "inline-block", background: "#e0e7ff", color: "#4338ca", padding: "4px 14px", borderRadius: "20px", fontSize: "12px", fontWeight: 800, marginBottom: "10px" }}>
-            TRANSPARENCY &amp; GUARANTEE
+          <div style={{ display: "inline-block", background: "#e0e7ff", color: "#4338ca", padding: "5px 16px", borderRadius: "30px", fontSize: "12px", fontWeight: 800, marginBottom: "12px" }}>
+            TRANSPARENCY &amp; METHODOLOGY
           </div>
-          <h2 style={{ fontSize: "28px", fontWeight: 900, color: "#0f172a" }}>Frequently Asked Questions</h2>
-          <p style={{ fontSize: "15px", color: "#64748b" }}>Everything you need to know about our custom link building execution.</p>
+          <h2 style={{ fontSize: "30px", fontWeight: 900, color: "#0f172a" }}>Frequently Asked Questions</h2>
+          <p style={{ fontSize: "15px", color: "#64748b" }}>Everything you need to know about custom link building execution.</p>
         </div>
 
         <ToolFaqAccordion items={faqItems} />
       </section>
 
-      {/* ORDER INQUIRY MODAL */}
+      {/* ================= ORDER INQUIRY MODAL ================= */}
       {showOrderModal && (
-        <div style={{ position: "fixed", inset: 0, background: "rgba(15, 23, 42, 0.75)", backdropFilter: "blur(6px)", zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center", padding: "20px" }}>
-          <div style={{ background: "#ffffff", borderRadius: "20px", maxWidth: "550px", width: "100%", padding: "30px", boxShadow: "0 25px 50px rgba(0,0,0,0.3)", position: "relative" }}>
+        <div style={{ position: "fixed", inset: 0, background: "rgba(15, 23, 42, 0.8)", backdropFilter: "blur(8px)", zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center", padding: "20px" }}>
+          <div style={{ background: "#ffffff", borderRadius: "24px", maxWidth: "560px", width: "100%", padding: "34px", boxShadow: "0 25px 60px rgba(0,0,0,0.35)", position: "relative" }}>
             
             <button
               type="button"
               onClick={() => { setShowOrderModal(false); setOrderSuccess(false); }}
-              style={{ position: "absolute", top: "20px", right: "20px", background: "#f1f5f9", border: "none", width: "32px", height: "32px", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "#64748b" }}
+              style={{ position: "absolute", top: "22px", right: "22px", background: "#f1f5f9", border: "none", width: "34px", height: "34px", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "#64748b" }}
             >
               <i className="fa-solid fa-xmark"></i>
             </button>
 
             {orderSuccess ? (
               <div style={{ textAlign: "center", padding: "30px 10px" }}>
-                <div style={{ width: "64px", height: "64px", borderRadius: "50%", background: "#ecfdf5", color: "#059669", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "28px", margin: "0 auto 16px" }}>
+                <div style={{ width: "70px", height: "70px", borderRadius: "50%", background: "#ecfdf5", color: "#059669", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "32px", margin: "0 auto 18px" }}>
                   <i className="fa-solid fa-circle-check"></i>
                 </div>
-                <h3 style={{ fontSize: "22px", fontWeight: 900, color: "#0f172a", marginBottom: "8px" }}>Order Inquiry Submitted!</h3>
-                <p style={{ fontSize: "14px", color: "#64748b", lineHeight: "1.6", marginBottom: "20px" }}>
-                  Thank you! Our lead SEO strategist will review your target URLs and keyword configuration, and reach out via email/WhatsApp within 2 hours.
+                <h3 style={{ fontSize: "24px", fontWeight: 900, color: "#0f172a", marginBottom: "8px" }}>Order Inquiry Submitted!</h3>
+                <p style={{ fontSize: "14px", color: "#64748b", lineHeight: "1.6", marginBottom: "24px" }}>
+                  Thank you! Our lead SEO strategist will review your target website and custom package configuration, and contact you via email/WhatsApp within 2 hours.
                 </p>
                 <button
                   type="button"
                   onClick={() => { setShowOrderModal(false); setOrderSuccess(false); }}
-                  style={{ background: "#2563eb", color: "#ffffff", border: "none", padding: "10px 24px", borderRadius: "10px", fontWeight: 800, cursor: "pointer" }}
+                  style={{ background: "#2563eb", color: "#ffffff", border: "none", padding: "12px 28px", borderRadius: "10px", fontWeight: 800, cursor: "pointer" }}
                 >
                   Close Window
                 </button>
               </div>
             ) : (
               <div>
-                <h3 style={{ fontSize: "20px", fontWeight: 900, color: "#0f172a", marginBottom: "4px" }}>
+                <h3 style={{ fontSize: "22px", fontWeight: 900, color: "#0f172a", marginBottom: "4px" }}>
                   Submit Custom Backlink Order
                 </h3>
-                <p style={{ fontSize: "13px", color: "#64748b", marginBottom: "20px" }}>
-                  Package: <strong>{totalLinkCount} Links</strong> • Estimated Total: <strong>${finalTotalUSD.toFixed(2)} USD</strong>
+                <p style={{ fontSize: "13px", color: "#64748b", marginBottom: "22px" }}>
+                  Package: <strong>{totalLinkCount} Links</strong> • Estimated Total: <strong>${finalTotalUSD.toFixed(2)} USD (৳{finalTotalBDT.toLocaleString()} BDT)</strong>
                 </p>
 
-                <form onSubmit={handleOrderSubmit} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+                <form onSubmit={handleOrderSubmit} style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
                   <div>
                     <label style={{ fontSize: "12px", fontWeight: 800, color: "#334155", display: "block", marginBottom: "4px" }}>Your Full Name *</label>
                     <input
@@ -723,7 +1099,7 @@ export default function BacklinkPackageCalculatorPage() {
                       placeholder="e.g. John Doe"
                       value={orderForm.name}
                       onChange={(e) => setOrderForm({ ...orderForm, name: e.target.value })}
-                      style={{ width: "100%", padding: "10px 14px", borderRadius: "8px", border: "1px solid #cbd5e1", outline: "none", fontSize: "14px" }}
+                      style={{ width: "100%", padding: "11px 14px", borderRadius: "8px", border: "1px solid #cbd5e1", outline: "none", fontSize: "14px" }}
                     />
                   </div>
 
@@ -735,7 +1111,7 @@ export default function BacklinkPackageCalculatorPage() {
                       placeholder="john@example.com"
                       value={orderForm.email}
                       onChange={(e) => setOrderForm({ ...orderForm, email: e.target.value })}
-                      style={{ width: "100%", padding: "10px 14px", borderRadius: "8px", border: "1px solid #cbd5e1", outline: "none", fontSize: "14px" }}
+                      style={{ width: "100%", padding: "11px 14px", borderRadius: "8px", border: "1px solid #cbd5e1", outline: "none", fontSize: "14px" }}
                     />
                   </div>
 
@@ -747,7 +1123,7 @@ export default function BacklinkPackageCalculatorPage() {
                       placeholder="https://yourwebsite.com"
                       value={orderForm.websiteUrl}
                       onChange={(e) => setOrderForm({ ...orderForm, websiteUrl: e.target.value })}
-                      style={{ width: "100%", padding: "10px 14px", borderRadius: "8px", border: "1px solid #cbd5e1", outline: "none", fontSize: "14px" }}
+                      style={{ width: "100%", padding: "11px 14px", borderRadius: "8px", border: "1px solid #cbd5e1", outline: "none", fontSize: "14px" }}
                     />
                   </div>
 
@@ -758,7 +1134,7 @@ export default function BacklinkPackageCalculatorPage() {
                       placeholder="e.g. ecommerce seo, local plumber, brand name"
                       value={orderForm.targetKeywords}
                       onChange={(e) => setOrderForm({ ...orderForm, targetKeywords: e.target.value })}
-                      style={{ width: "100%", padding: "10px 14px", borderRadius: "8px", border: "1px solid #cbd5e1", outline: "none", fontSize: "14px" }}
+                      style={{ width: "100%", padding: "11px 14px", borderRadius: "8px", border: "1px solid #cbd5e1", outline: "none", fontSize: "14px" }}
                     />
                   </div>
 
@@ -769,7 +1145,7 @@ export default function BacklinkPackageCalculatorPage() {
                       placeholder="Any specific anchor ratio, country targets, or notes..."
                       value={orderForm.notes}
                       onChange={(e) => setOrderForm({ ...orderForm, notes: e.target.value })}
-                      style={{ width: "100%", padding: "10px 14px", borderRadius: "8px", border: "1px solid #cbd5e1", outline: "none", fontSize: "14px", resize: "none" }}
+                      style={{ width: "100%", padding: "11px 14px", borderRadius: "8px", border: "1px solid #cbd5e1", outline: "none", fontSize: "14px", resize: "none" }}
                     />
                   </div>
 
