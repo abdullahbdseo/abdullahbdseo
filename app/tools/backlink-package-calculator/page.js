@@ -1184,18 +1184,18 @@ export default function BacklinkPackageCalculatorPage() {
         <ToolFaqAccordion items={faqItems} />
       </section>
 
-      {/* ================= ORDER INQUIRY MODAL ================= */}
+      {/* ================= ORDER INQUIRY MODAL (HOMEPAGE DESIGN ALIGNED) ================= */}
       {showOrderModal && (
-        <div style={{ position: "fixed", inset: 0, background: "rgba(15, 23, 42, 0.75)", backdropFilter: "blur(8px)", zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center", padding: "16px", overflowY: "auto" }}>
+        <div style={{ position: "fixed", inset: 0, background: "rgba(15, 23, 42, 0.75)", backdropFilter: "blur(6px)", zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center", padding: "16px", overflowY: "auto" }}>
           <div style={{
             background: "#ffffff",
-            borderRadius: "12px",
-            maxWidth: "580px",
+            borderRadius: "4px",
+            maxWidth: "560px",
             width: "100%",
-            padding: orderSuccess ? "32px 28px 28px" : "28px",
-            boxShadow: "0 20px 50px -10px rgba(15, 23, 42, 0.4)",
+            padding: orderSuccess ? "32px 26px 26px" : "28px 26px",
+            boxShadow: "0 20px 50px -10px rgba(67, 97, 238, 0.25)",
             position: "relative",
-            border: "1px solid rgba(226, 232, 240, 0.9)",
+            border: "1.5px solid #e0e7ff",
             maxHeight: "92vh",
             overflowY: "auto"
           }}>
@@ -1207,13 +1207,13 @@ export default function BacklinkPackageCalculatorPage() {
               aria-label="Close modal"
               style={{
                 position: "absolute",
-                top: "16px",
-                right: "16px",
+                top: "14px",
+                right: "14px",
                 background: "#f1f5f9",
                 border: "none",
-                width: "32px",
-                height: "32px",
-                borderRadius: "8px",
+                width: "30px",
+                height: "30px",
+                borderRadius: "4px",
                 cursor: "pointer",
                 display: "flex",
                 alignItems: "center",
@@ -1222,7 +1222,7 @@ export default function BacklinkPackageCalculatorPage() {
                 fontSize: "14px",
                 transition: "all 0.2s ease"
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = "#e2e8f0"; e.currentTarget.style.color = "#0f172a"; }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = "#fee2e2"; e.currentTarget.style.color = "#ef4444"; }}
               onMouseLeave={(e) => { e.currentTarget.style.background = "#f1f5f9"; e.currentTarget.style.color = "#64748b"; }}
             >
               <i className="fa-solid fa-xmark"></i>
@@ -1232,88 +1232,67 @@ export default function BacklinkPackageCalculatorPage() {
               <div style={{ textAlign: "center" }}>
                 
                 {/* Glowing Success Badge */}
-                <div style={{ position: "relative", width: "70px", height: "70px", margin: "0 auto 14px" }}>
-                  <div style={{
-                    position: "absolute",
-                    inset: 0,
-                    borderRadius: "50%",
-                    background: "radial-gradient(circle, rgba(16,185,129,0.25) 0%, rgba(16,185,129,0) 70%)",
-                    animation: "pulse 2s infinite"
-                  }}></div>
-                  <div style={{
-                    width: "70px",
-                    height: "70px",
-                    borderRadius: "50%",
-                    background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
-                    color: "#ffffff",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "30px",
-                    boxShadow: "0 8px 20px rgba(16,185,129,0.3)",
-                    position: "relative",
-                    zIndex: 2
-                  }}>
-                    <i className="fa-solid fa-check"></i>
-                  </div>
+                <div style={{ width: "64px", height: "64px", borderRadius: "50%", background: "#dcfce7", color: "#16a34a", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "28px", margin: "0 auto 14px" }}>
+                  <i className="fa-solid fa-circle-check"></i>
                 </div>
 
                 {/* Status Pill */}
                 <div style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "6px",
+                  display: "inline-block",
+                  fontSize: "0.74rem",
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  color: "#047857",
                   background: "#ecfdf5",
                   border: "1px solid #a7f3d0",
-                  padding: "4px 12px",
-                  borderRadius: "6px",
-                  fontSize: "11px",
-                  fontWeight: 800,
-                  color: "#047857",
-                  marginBottom: "10px"
+                  padding: "3px 10px",
+                  borderRadius: "4px",
+                  letterSpacing: "0.04em",
+                  marginBottom: "8px"
                 }}>
-                  <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#10b981" }}></span>
-                  INQUIRY RECEIVED &amp; QUEUED FOR AUDIT
+                  ● INQUIRY RECEIVED &amp; QUEUED FOR AUDIT
                 </div>
 
-                <h3 style={{ fontSize: "22px", fontWeight: 900, color: "#0f172a", marginBottom: "6px", letterSpacing: "-0.4px" }}>
-                  Order Inquiry Submitted Successfully!
+                <h3 style={{ fontSize: "1.45rem", fontWeight: 800, color: "#0f172a", margin: "4px 0 8px" }}>
+                  Order Inquiry Submitted!
                 </h3>
                 
-                <p style={{ fontSize: "13.5px", color: "#64748b", lineHeight: "1.55", marginBottom: "18px", maxWidth: "480px", margin: "0 auto 18px" }}>
-                  Thank you, <strong>{orderForm.name || "Valued Client"}</strong>! Our lead SEO strategist is now reviewing your target website metrics, anchor distribution, and custom package configuration.
+                <p style={{ fontSize: "0.9rem", color: "#475569", lineHeight: "1.55", marginBottom: "18px", maxWidth: "480px", margin: "0 auto 18px" }}>
+                  Thank you, <strong>{orderForm.name || "Valued Client"}</strong>! Your custom backlink order details have been securely dispatched. Our lead strategist is reviewing your target domain metrics and anchor configuration.
                 </p>
 
                 {/* Order Summary Snapshot Card */}
                 <div style={{
                   background: "#f8fafc",
                   border: "1px solid #e2e8f0",
-                  borderRadius: "8px",
-                  padding: "14px 18px",
+                  borderRadius: "4px",
+                  padding: "12px 16px",
                   textAlign: "left",
-                  marginBottom: "18px"
+                  fontSize: "0.85rem",
+                  marginBottom: "16px",
+                  color: "#334155"
                 }}>
-                  <div style={{ fontSize: "11px", fontWeight: 800, color: "#475569", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: "8px", display: "flex", justifyContent: "space-between" }}>
-                    <span>Selected Package Details</span>
-                    <span style={{ color: "#2563eb" }}>Custom Order</span>
+                  <div style={{ fontSize: "0.72rem", fontWeight: 700, color: "#4361ee", textTransform: "uppercase", letterSpacing: "0.04em", marginBottom: "6px", display: "flex", justifyContent: "space-between" }}>
+                    <span>Selected Package Breakdown</span>
+                    <span>Custom Order</span>
                   </div>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", fontSize: "12.5px" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", fontSize: "0.84rem" }}>
                     <div>
-                      <span style={{ color: "#64748b", display: "block", fontSize: "10.5px", fontWeight: 600 }}>TARGET WEBSITE</span>
+                      <span style={{ color: "#64748b", display: "block", fontSize: "0.72rem", fontWeight: 600 }}>TARGET WEBSITE</span>
                       <strong style={{ color: "#0f172a", wordBreak: "break-all" }}>{orderForm.websiteUrl || "To be finalized"}</strong>
                     </div>
                     <div>
-                      <span style={{ color: "#64748b", display: "block", fontSize: "10.5px", fontWeight: 600 }}>TOTAL BACKLINKS</span>
+                      <span style={{ color: "#64748b", display: "block", fontSize: "0.72rem", fontWeight: 600 }}>TOTAL BACKLINKS</span>
                       <strong style={{ color: "#0f172a" }}>{totalLinkCount} High-DA Links</strong>
                     </div>
                     <div>
-                      <span style={{ color: "#64748b", display: "block", fontSize: "10.5px", fontWeight: 600 }}>ESTIMATED TOTAL</span>
-                      <strong style={{ color: "#16a34a", fontSize: "13.5px" }}>
-                        ${finalTotalUSD.toFixed(2)} USD <span style={{ fontSize: "11.5px", color: "#64748b" }}>(৳{finalTotalBDT.toLocaleString()} BDT)</span>
+                      <span style={{ color: "#64748b", display: "block", fontSize: "0.72rem", fontWeight: 600 }}>ESTIMATED TOTAL</span>
+                      <strong style={{ color: "#16a34a", fontSize: "0.92rem" }}>
+                        ${finalTotalUSD.toFixed(2)} USD <span style={{ fontSize: "0.78rem", color: "#64748b" }}>(৳{finalTotalBDT.toLocaleString()} BDT)</span>
                       </strong>
                     </div>
                     <div>
-                      <span style={{ color: "#64748b", display: "block", fontSize: "10.5px", fontWeight: 600 }}>ESTIMATED TIMELINE</span>
+                      <span style={{ color: "#64748b", display: "block", fontSize: "0.72rem", fontWeight: 600 }}>TIMELINE</span>
                       <strong style={{ color: "#0f172a" }}>5 - 7 Business Days</strong>
                     </div>
                   </div>
@@ -1323,27 +1302,27 @@ export default function BacklinkPackageCalculatorPage() {
                 <div style={{
                   background: "#eff6ff",
                   border: "1px solid #bfdbfe",
-                  borderRadius: "8px",
-                  padding: "14px",
+                  borderRadius: "4px",
+                  padding: "12px 16px",
                   textAlign: "left",
-                  marginBottom: "20px"
+                  marginBottom: "18px"
                 }}>
-                  <div style={{ fontSize: "11px", fontWeight: 800, color: "#1e40af", marginBottom: "8px", display: "flex", alignItems: "center", gap: "6px" }}>
+                  <div style={{ fontSize: "0.72rem", fontWeight: 700, color: "#1e40af", textTransform: "uppercase", letterSpacing: "0.04em", marginBottom: "6px", display: "flex", alignItems: "center", gap: "6px" }}>
                     <i className="fa-solid fa-route"></i>
-                    <span>WHAT HAPPENS NEXT?</span>
+                    <span>What Happens Next?</span>
                   </div>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "7px", fontSize: "12px", color: "#334155" }}>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "6px", fontSize: "0.8rem", color: "#334155" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                      <span style={{ width: "18px", height: "18px", borderRadius: "50%", background: "#2563eb", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", fontWeight: 800, flexShrink: 0 }}>1</span>
-                      <span><strong>Niche &amp; Anchor Audit:</strong> We analyze your domain and verify optimal anchor ratios (Within 2 Hours).</span>
+                      <span style={{ width: "16px", height: "16px", borderRadius: "2px", background: "#2563eb", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "9px", fontWeight: 800, flexShrink: 0 }}>1</span>
+                      <span><strong>Niche &amp; Anchor Audit:</strong> We analyze domain metrics &amp; anchor ratios (Within 2 Hours).</span>
                     </div>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                      <span style={{ width: "18px", height: "18px", borderRadius: "50%", background: "#2563eb", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", fontWeight: 800, flexShrink: 0 }}>2</span>
-                      <span><strong>Direct Contact &amp; Invoice:</strong> We reach out via WhatsApp/Email to confirm anchor text &amp; payment.</span>
+                      <span style={{ width: "16px", height: "16px", borderRadius: "2px", background: "#2563eb", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "9px", fontWeight: 800, flexShrink: 0 }}>2</span>
+                      <span><strong>Direct Contact &amp; Invoice:</strong> We reach out via WhatsApp/Email with the confirmation invoice.</span>
                     </div>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                      <span style={{ width: "18px", height: "18px", borderRadius: "50%", background: "#2563eb", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", fontWeight: 800, flexShrink: 0 }}>3</span>
-                      <span><strong>Live Excel Sheet Delivery:</strong> 100% manual links creation with login details &amp; replacement guarantee.</span>
+                      <span style={{ width: "16px", height: "16px", borderRadius: "2px", background: "#2563eb", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "9px", fontWeight: 800, flexShrink: 0 }}>3</span>
+                      <span><strong>Live Excel Delivery:</strong> 100% manual links creation with login sheet &amp; replacement guarantee.</span>
                     </div>
                   </div>
                 </div>
@@ -1361,17 +1340,17 @@ export default function BacklinkPackageCalculatorPage() {
                       gap: "8px",
                       background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)",
                       color: "#ffffff",
-                      padding: "12px 18px",
-                      borderRadius: "8px",
-                      fontWeight: 800,
-                      fontSize: "14px",
+                      padding: "11px 18px",
+                      borderRadius: "4px",
+                      fontWeight: 700,
+                      fontSize: "0.92rem",
                       textDecoration: "none",
-                      boxShadow: "0 8px 18px rgba(37,211,102,0.25)",
+                      boxShadow: "0 6px 16px rgba(37,211,102,0.25)",
                       transition: "all 0.2s ease"
                     }}
                   >
-                    <i className="fa-brands fa-whatsapp" style={{ fontSize: "18px" }}></i>
-                    <span>Connect Instantly on WhatsApp for Fast-Track</span>
+                    <i className="fa-brands fa-whatsapp" style={{ fontSize: "17px" }}></i>
+                    <span>Instant Chat on WhatsApp</span>
                   </a>
 
                   <button
@@ -1381,22 +1360,22 @@ export default function BacklinkPackageCalculatorPage() {
                       background: "#f1f5f9",
                       color: "#475569",
                       border: "none",
-                      padding: "11px 18px",
-                      borderRadius: "8px",
+                      padding: "10px 18px",
+                      borderRadius: "4px",
                       fontWeight: 700,
-                      fontSize: "13.5px",
+                      fontSize: "0.88rem",
                       cursor: "pointer",
                       transition: "all 0.2s ease"
                     }}
                     onMouseEnter={(e) => { e.currentTarget.style.background = "#e2e8f0"; e.currentTarget.style.color = "#0f172a"; }}
                     onMouseLeave={(e) => { e.currentTarget.style.background = "#f1f5f9"; e.currentTarget.style.color = "#475569"; }}
                   >
-                    Close &amp; Continue Browsing
+                    Done / Close Window
                   </button>
                 </div>
 
                 {/* Trust Seals Footer */}
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "14px", marginTop: "16px", paddingTop: "14px", borderTop: "1px solid #f1f5f9", fontSize: "11px", color: "#64748b" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "12px", marginTop: "14px", paddingTop: "12px", borderTop: "1px solid #f1f5f9", fontSize: "0.75rem", color: "#64748b" }}>
                   <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
                     <i className="fa-solid fa-shield-halved" style={{ color: "#10b981" }}></i>
                     100% White-Hat Safe
@@ -1404,7 +1383,7 @@ export default function BacklinkPackageCalculatorPage() {
                   <span>•</span>
                   <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
                     <i className="fa-solid fa-bolt" style={{ color: "#f59e0b" }}></i>
-                    &lt; 2hr Response Time
+                    &lt; 2hr Response
                   </span>
                   <span>•</span>
                   <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
@@ -1416,103 +1395,103 @@ export default function BacklinkPackageCalculatorPage() {
               </div>
             ) : (
               <div>
-                <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "6px" }}>
-                  <div style={{ width: "34px", height: "34px", borderRadius: "8px", background: "#dbeafe", color: "#2563eb", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "15px" }}>
-                    <i className="fa-solid fa-paper-plane"></i>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px", borderBottom: "1px solid #e2e8f0", paddingBottom: "12px" }}>
+                  <div style={{ width: "32px", height: "32px", borderRadius: "4px", background: "#dbeafe", color: "#2563eb", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px" }}>
+                    <i className="fa-solid fa-file-signature"></i>
                   </div>
                   <div>
-                    <h3 style={{ fontSize: "19px", fontWeight: 900, color: "#0f172a", margin: 0, letterSpacing: "-0.3px" }}>
-                      Submit Custom Backlink Order
+                    <div style={{ display: "inline-block", fontSize: "0.72rem", fontWeight: 700, textTransform: "uppercase", color: "#4361ee", background: "#eef2ff", padding: "2px 8px", borderRadius: "4px", letterSpacing: "0.04em", marginBottom: "2px" }}>
+                      Custom Link Building Order
+                    </div>
+                    <h3 style={{ fontSize: "1.25rem", fontWeight: 800, color: "#0f172a", margin: 0 }}>
+                      Submit Backlink Order
                     </h3>
-                    <p style={{ fontSize: "12px", color: "#64748b", margin: 0 }}>
-                      Directly submit your requirements for strategist review
-                    </p>
                   </div>
                 </div>
 
                 {/* Package Highlights Pill */}
                 <div style={{
-                  background: "linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)",
-                  border: "1px solid #cbd5e1",
-                  borderRadius: "8px",
-                  padding: "9px 12px",
+                  background: "#f8fafc",
+                  border: "1px solid #e2e8f0",
+                  borderRadius: "4px",
+                  padding: "8px 12px",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  margin: "14px 0 16px",
-                  fontSize: "12.5px"
+                  margin: "12px 0 14px",
+                  fontSize: "0.82rem"
                 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                     <i className="fa-solid fa-cubes-stacked text-blue-600"></i>
-                    <span style={{ color: "#334155" }}>Package: <strong>{totalLinkCount} Custom Links</strong></span>
+                    <span style={{ color: "#334155" }}>Package: <strong>{totalLinkCount} Links</strong></span>
                   </div>
                   <div style={{ fontWeight: 800, color: "#16a34a" }}>
-                    ${finalTotalUSD.toFixed(2)} USD <span style={{ color: "#64748b", fontWeight: 600, fontSize: "11px" }}>(৳{finalTotalBDT.toLocaleString()})</span>
+                    ${finalTotalUSD.toFixed(2)} USD <span style={{ color: "#64748b", fontWeight: 600, fontSize: "0.75rem" }}>(৳{finalTotalBDT.toLocaleString()})</span>
                   </div>
                 </div>
 
-                <form onSubmit={handleOrderSubmit} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                <form onSubmit={handleOrderSubmit} style={{ display: "flex", flexDirection: "column", gap: "11px" }}>
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
                     <div>
-                      <label style={{ fontSize: "11px", fontWeight: 800, color: "#334155", display: "block", marginBottom: "4px", textTransform: "uppercase" }}>Your Full Name *</label>
+                      <label style={{ fontSize: "0.75rem", fontWeight: 700, color: "#334155", display: "block", marginBottom: "3px", textTransform: "uppercase" }}>Your Full Name *</label>
                       <input
                         type="text"
                         required
                         placeholder="e.g. John Doe"
                         value={orderForm.name}
                         onChange={(e) => setOrderForm({ ...orderForm, name: e.target.value })}
-                        style={{ width: "100%", padding: "9px 12px", borderRadius: "6px", border: "1px solid #cbd5e1", outline: "none", fontSize: "13px" }}
+                        style={{ width: "100%", padding: "9px 12px", borderRadius: "4px", border: "1px solid #cbd5e1", outline: "none", fontSize: "0.85rem" }}
                       />
                     </div>
 
                     <div>
-                      <label style={{ fontSize: "11px", fontWeight: 800, color: "#334155", display: "block", marginBottom: "4px", textTransform: "uppercase" }}>Work Email *</label>
+                      <label style={{ fontSize: "0.75rem", fontWeight: 700, color: "#334155", display: "block", marginBottom: "3px", textTransform: "uppercase" }}>Work Email *</label>
                       <input
                         type="email"
                         required
                         placeholder="john@example.com"
                         value={orderForm.email}
                         onChange={(e) => setOrderForm({ ...orderForm, email: e.target.value })}
-                        style={{ width: "100%", padding: "9px 12px", borderRadius: "6px", border: "1px solid #cbd5e1", outline: "none", fontSize: "13px" }}
+                        style={{ width: "100%", padding: "9px 12px", borderRadius: "4px", border: "1px solid #cbd5e1", outline: "none", fontSize: "0.85rem" }}
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label style={{ fontSize: "11px", fontWeight: 800, color: "#334155", display: "block", marginBottom: "4px", textTransform: "uppercase" }}>Target Website URL *</label>
+                    <label style={{ fontSize: "0.75rem", fontWeight: 700, color: "#334155", display: "block", marginBottom: "3px", textTransform: "uppercase" }}>Target Website URL *</label>
                     <input
                       type="url"
                       required
                       placeholder="https://yourwebsite.com"
                       value={orderForm.websiteUrl}
                       onChange={(e) => setOrderForm({ ...orderForm, websiteUrl: e.target.value })}
-                      style={{ width: "100%", padding: "9px 12px", borderRadius: "6px", border: "1px solid #cbd5e1", outline: "none", fontSize: "13px" }}
+                      style={{ width: "100%", padding: "9px 12px", borderRadius: "4px", border: "1px solid #cbd5e1", outline: "none", fontSize: "0.85rem" }}
                     />
                   </div>
 
                   <div>
-                    <label style={{ fontSize: "11px", fontWeight: 800, color: "#334155", display: "block", marginBottom: "4px", textTransform: "uppercase" }}>Primary Keywords (comma separated)</label>
+                    <label style={{ fontSize: "0.75rem", fontWeight: 700, color: "#334155", display: "block", marginBottom: "3px", textTransform: "uppercase" }}>Primary Keywords (comma separated)</label>
                     <input
                       type="text"
                       placeholder="e.g. ecommerce seo, local plumber, brand name"
                       value={orderForm.targetKeywords}
                       onChange={(e) => setOrderForm({ ...orderForm, targetKeywords: e.target.value })}
-                      style={{ width: "100%", padding: "9px 12px", borderRadius: "6px", border: "1px solid #cbd5e1", outline: "none", fontSize: "13px" }}
+                      style={{ width: "100%", padding: "9px 12px", borderRadius: "4px", border: "1px solid #cbd5e1", outline: "none", fontSize: "0.85rem" }}
                     />
                   </div>
 
                   <div>
-                    <label style={{ fontSize: "11px", fontWeight: 800, color: "#334155", display: "block", marginBottom: "4px", textTransform: "uppercase" }}>Special Instructions / Anchor Notes</label>
+                    <label style={{ fontSize: "0.75rem", fontWeight: 700, color: "#334155", display: "block", marginBottom: "3px", textTransform: "uppercase" }}>Special Instructions / Anchor Notes</label>
                     <textarea
                       rows="2"
                       placeholder="Any specific anchor ratio, country targets, or notes..."
                       value={orderForm.notes}
                       onChange={(e) => setOrderForm({ ...orderForm, notes: e.target.value })}
-                      style={{ width: "100%", padding: "9px 12px", borderRadius: "6px", border: "1px solid #cbd5e1", outline: "none", fontSize: "13px", resize: "none" }}
+                      style={{ width: "100%", padding: "9px 12px", borderRadius: "4px", border: "1px solid #cbd5e1", outline: "none", fontSize: "0.85rem", resize: "none" }}
                     />
                   </div>
 
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "11px", color: "#64748b", margin: "1px 0 2px" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.75rem", color: "#64748b", margin: "0" }}>
                     <i className="fa-solid fa-lock text-emerald-500"></i>
                     <span>Your domain details are 100% confidential and protected by NDA.</span>
                   </div>
@@ -1521,19 +1500,20 @@ export default function BacklinkPackageCalculatorPage() {
                     type="submit"
                     disabled={orderSubmitting}
                     style={{
-                      background: "linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)",
+                      background: "#2563eb",
                       color: "#ffffff",
                       border: "none",
-                      padding: "12px",
-                      borderRadius: "8px",
-                      fontWeight: 800,
-                      fontSize: "13.5px",
+                      padding: "11px",
+                      borderRadius: "4px",
+                      fontWeight: 700,
+                      fontSize: "0.92rem",
                       cursor: "pointer",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                       gap: "8px",
-                      boxShadow: "0 8px 18px rgba(37,99,235,0.25)"
+                      boxShadow: "0 6px 16px rgba(37,99,235,0.25)",
+                      marginTop: "2px"
                     }}
                   >
                     {orderSubmitting ? (
