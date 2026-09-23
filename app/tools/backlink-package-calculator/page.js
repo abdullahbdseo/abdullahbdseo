@@ -1186,16 +1186,16 @@ export default function BacklinkPackageCalculatorPage() {
 
       {/* ================= ORDER INQUIRY MODAL ================= */}
       {showOrderModal && (
-        <div style={{ position: "fixed", inset: 0, background: "rgba(15, 23, 42, 0.75)", backdropFilter: "blur(10px)", zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center", padding: "16px", overflowY: "auto" }}>
+        <div style={{ position: "fixed", inset: 0, background: "rgba(15, 23, 42, 0.75)", backdropFilter: "blur(8px)", zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center", padding: "16px", overflowY: "auto" }}>
           <div style={{
             background: "#ffffff",
-            borderRadius: "24px",
+            borderRadius: "12px",
             maxWidth: "580px",
             width: "100%",
-            padding: orderSuccess ? "36px 32px 32px" : "32px",
-            boxShadow: "0 25px 60px -12px rgba(15, 23, 42, 0.45)",
+            padding: orderSuccess ? "32px 28px 28px" : "28px",
+            boxShadow: "0 20px 50px -10px rgba(15, 23, 42, 0.4)",
             position: "relative",
-            border: "1px solid rgba(226, 232, 240, 0.8)",
+            border: "1px solid rgba(226, 232, 240, 0.9)",
             maxHeight: "92vh",
             overflowY: "auto"
           }}>
@@ -1207,19 +1207,19 @@ export default function BacklinkPackageCalculatorPage() {
               aria-label="Close modal"
               style={{
                 position: "absolute",
-                top: "18px",
-                right: "18px",
+                top: "16px",
+                right: "16px",
                 background: "#f1f5f9",
                 border: "none",
-                width: "36px",
-                height: "36px",
-                borderRadius: "50%",
+                width: "32px",
+                height: "32px",
+                borderRadius: "8px",
                 cursor: "pointer",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 color: "#64748b",
-                fontSize: "15px",
+                fontSize: "14px",
                 transition: "all 0.2s ease"
               }}
               onMouseEnter={(e) => { e.currentTarget.style.background = "#e2e8f0"; e.currentTarget.style.color = "#0f172a"; }}
@@ -1232,25 +1232,25 @@ export default function BacklinkPackageCalculatorPage() {
               <div style={{ textAlign: "center" }}>
                 
                 {/* Glowing Success Badge */}
-                <div style={{ position: "relative", width: "80px", height: "80px", margin: "0 auto 16px" }}>
+                <div style={{ position: "relative", width: "70px", height: "70px", margin: "0 auto 14px" }}>
                   <div style={{
                     position: "absolute",
                     inset: 0,
                     borderRadius: "50%",
-                    background: "radial-gradient(circle, rgba(16,185,129,0.3) 0%, rgba(16,185,129,0) 70%)",
+                    background: "radial-gradient(circle, rgba(16,185,129,0.25) 0%, rgba(16,185,129,0) 70%)",
                     animation: "pulse 2s infinite"
                   }}></div>
                   <div style={{
-                    width: "80px",
-                    height: "80px",
+                    width: "70px",
+                    height: "70px",
                     borderRadius: "50%",
                     background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
                     color: "#ffffff",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    fontSize: "36px",
-                    boxShadow: "0 10px 25px rgba(16,185,129,0.35)",
+                    fontSize: "30px",
+                    boxShadow: "0 8px 20px rgba(16,185,129,0.3)",
                     position: "relative",
                     zIndex: 2
                   }}>
@@ -1265,22 +1265,22 @@ export default function BacklinkPackageCalculatorPage() {
                   gap: "6px",
                   background: "#ecfdf5",
                   border: "1px solid #a7f3d0",
-                  padding: "4px 14px",
-                  borderRadius: "20px",
-                  fontSize: "12px",
+                  padding: "4px 12px",
+                  borderRadius: "6px",
+                  fontSize: "11px",
                   fontWeight: 800,
                   color: "#047857",
-                  marginBottom: "12px"
+                  marginBottom: "10px"
                 }}>
-                  <span style={{ width: "7px", height: "7px", borderRadius: "50%", background: "#10b981" }}></span>
+                  <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#10b981" }}></span>
                   INQUIRY RECEIVED &amp; QUEUED FOR AUDIT
                 </div>
 
-                <h3 style={{ fontSize: "24px", fontWeight: 900, color: "#0f172a", marginBottom: "8px", letterSpacing: "-0.5px" }}>
+                <h3 style={{ fontSize: "22px", fontWeight: 900, color: "#0f172a", marginBottom: "6px", letterSpacing: "-0.4px" }}>
                   Order Inquiry Submitted Successfully!
                 </h3>
                 
-                <p style={{ fontSize: "14px", color: "#64748b", lineHeight: "1.6", marginBottom: "22px", maxWidth: "480px", margin: "0 auto 22px" }}>
+                <p style={{ fontSize: "13.5px", color: "#64748b", lineHeight: "1.55", marginBottom: "18px", maxWidth: "480px", margin: "0 auto 18px" }}>
                   Thank you, <strong>{orderForm.name || "Valued Client"}</strong>! Our lead SEO strategist is now reviewing your target website metrics, anchor distribution, and custom package configuration.
                 </p>
 
@@ -1288,32 +1288,32 @@ export default function BacklinkPackageCalculatorPage() {
                 <div style={{
                   background: "#f8fafc",
                   border: "1px solid #e2e8f0",
-                  borderRadius: "16px",
-                  padding: "16px 20px",
+                  borderRadius: "8px",
+                  padding: "14px 18px",
                   textAlign: "left",
-                  marginBottom: "22px"
+                  marginBottom: "18px"
                 }}>
-                  <div style={{ fontSize: "12px", fontWeight: 800, color: "#475569", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: "10px", display: "flex", justifyContent: "space-between" }}>
+                  <div style={{ fontSize: "11px", fontWeight: 800, color: "#475569", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: "8px", display: "flex", justifyContent: "space-between" }}>
                     <span>Selected Package Details</span>
                     <span style={{ color: "#2563eb" }}>Custom Order</span>
                   </div>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", fontSize: "13px" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", fontSize: "12.5px" }}>
                     <div>
-                      <span style={{ color: "#64748b", display: "block", fontSize: "11px", fontWeight: 600 }}>TARGET WEBSITE</span>
+                      <span style={{ color: "#64748b", display: "block", fontSize: "10.5px", fontWeight: 600 }}>TARGET WEBSITE</span>
                       <strong style={{ color: "#0f172a", wordBreak: "break-all" }}>{orderForm.websiteUrl || "To be finalized"}</strong>
                     </div>
                     <div>
-                      <span style={{ color: "#64748b", display: "block", fontSize: "11px", fontWeight: 600 }}>TOTAL BACKLINKS</span>
+                      <span style={{ color: "#64748b", display: "block", fontSize: "10.5px", fontWeight: 600 }}>TOTAL BACKLINKS</span>
                       <strong style={{ color: "#0f172a" }}>{totalLinkCount} High-DA Links</strong>
                     </div>
                     <div>
-                      <span style={{ color: "#64748b", display: "block", fontSize: "11px", fontWeight: 600 }}>ESTIMATED TOTAL</span>
-                      <strong style={{ color: "#16a34a", fontSize: "14px" }}>
-                        ${finalTotalUSD.toFixed(2)} USD <span style={{ fontSize: "12px", color: "#64748b" }}>(৳{finalTotalBDT.toLocaleString()} BDT)</span>
+                      <span style={{ color: "#64748b", display: "block", fontSize: "10.5px", fontWeight: 600 }}>ESTIMATED TOTAL</span>
+                      <strong style={{ color: "#16a34a", fontSize: "13.5px" }}>
+                        ${finalTotalUSD.toFixed(2)} USD <span style={{ fontSize: "11.5px", color: "#64748b" }}>(৳{finalTotalBDT.toLocaleString()} BDT)</span>
                       </strong>
                     </div>
                     <div>
-                      <span style={{ color: "#64748b", display: "block", fontSize: "11px", fontWeight: 600 }}>ESTIMATED TIMELINE</span>
+                      <span style={{ color: "#64748b", display: "block", fontSize: "10.5px", fontWeight: 600 }}>ESTIMATED TIMELINE</span>
                       <strong style={{ color: "#0f172a" }}>5 - 7 Business Days</strong>
                     </div>
                   </div>
@@ -1323,33 +1323,33 @@ export default function BacklinkPackageCalculatorPage() {
                 <div style={{
                   background: "#eff6ff",
                   border: "1px solid #bfdbfe",
-                  borderRadius: "14px",
-                  padding: "16px",
+                  borderRadius: "8px",
+                  padding: "14px",
                   textAlign: "left",
-                  marginBottom: "24px"
+                  marginBottom: "20px"
                 }}>
-                  <div style={{ fontSize: "12px", fontWeight: 800, color: "#1e40af", marginBottom: "10px", display: "flex", alignItems: "center", gap: "6px" }}>
+                  <div style={{ fontSize: "11px", fontWeight: 800, color: "#1e40af", marginBottom: "8px", display: "flex", alignItems: "center", gap: "6px" }}>
                     <i className="fa-solid fa-route"></i>
                     <span>WHAT HAPPENS NEXT?</span>
                   </div>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "8px", fontSize: "12px", color: "#334155" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                      <span style={{ width: "20px", height: "20px", borderRadius: "50%", background: "#2563eb", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", fontWeight: 800, flexShrink: 0 }}>1</span>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "7px", fontSize: "12px", color: "#334155" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <span style={{ width: "18px", height: "18px", borderRadius: "50%", background: "#2563eb", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", fontWeight: 800, flexShrink: 0 }}>1</span>
                       <span><strong>Niche &amp; Anchor Audit:</strong> We analyze your domain and verify optimal anchor ratios (Within 2 Hours).</span>
                     </div>
-                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                      <span style={{ width: "20px", height: "20px", borderRadius: "50%", background: "#2563eb", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", fontWeight: 800, flexShrink: 0 }}>2</span>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <span style={{ width: "18px", height: "18px", borderRadius: "50%", background: "#2563eb", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", fontWeight: 800, flexShrink: 0 }}>2</span>
                       <span><strong>Direct Contact &amp; Invoice:</strong> We reach out via WhatsApp/Email to confirm anchor text &amp; payment.</span>
                     </div>
-                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                      <span style={{ width: "20px", height: "20px", borderRadius: "50%", background: "#2563eb", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", fontWeight: 800, flexShrink: 0 }}>3</span>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <span style={{ width: "18px", height: "18px", borderRadius: "50%", background: "#2563eb", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", fontWeight: 800, flexShrink: 0 }}>3</span>
                       <span><strong>Live Excel Sheet Delivery:</strong> 100% manual links creation with login details &amp; replacement guarantee.</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Call-to-Action Buttons */}
-                <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
                   <a
                     href={whatsappUrl}
                     target="_blank"
@@ -1358,19 +1358,19 @@ export default function BacklinkPackageCalculatorPage() {
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      gap: "10px",
+                      gap: "8px",
                       background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)",
                       color: "#ffffff",
-                      padding: "14px 20px",
-                      borderRadius: "12px",
+                      padding: "12px 18px",
+                      borderRadius: "8px",
                       fontWeight: 800,
-                      fontSize: "15px",
+                      fontSize: "14px",
                       textDecoration: "none",
-                      boxShadow: "0 10px 20px rgba(37,211,102,0.3)",
+                      boxShadow: "0 8px 18px rgba(37,211,102,0.25)",
                       transition: "all 0.2s ease"
                     }}
                   >
-                    <i className="fa-brands fa-whatsapp" style={{ fontSize: "20px" }}></i>
+                    <i className="fa-brands fa-whatsapp" style={{ fontSize: "18px" }}></i>
                     <span>Connect Instantly on WhatsApp for Fast-Track</span>
                   </a>
 
@@ -1381,10 +1381,10 @@ export default function BacklinkPackageCalculatorPage() {
                       background: "#f1f5f9",
                       color: "#475569",
                       border: "none",
-                      padding: "12px 20px",
-                      borderRadius: "12px",
+                      padding: "11px 18px",
+                      borderRadius: "8px",
                       fontWeight: 700,
-                      fontSize: "14px",
+                      fontSize: "13.5px",
                       cursor: "pointer",
                       transition: "all 0.2s ease"
                     }}
@@ -1396,18 +1396,18 @@ export default function BacklinkPackageCalculatorPage() {
                 </div>
 
                 {/* Trust Seals Footer */}
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "16px", marginTop: "20px", paddingTop: "16px", borderTop: "1px solid #f1f5f9", fontSize: "11px", color: "#64748b" }}>
-                  <span style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "14px", marginTop: "16px", paddingTop: "14px", borderTop: "1px solid #f1f5f9", fontSize: "11px", color: "#64748b" }}>
+                  <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
                     <i className="fa-solid fa-shield-halved" style={{ color: "#10b981" }}></i>
                     100% White-Hat Safe
                   </span>
                   <span>•</span>
-                  <span style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                  <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
                     <i className="fa-solid fa-bolt" style={{ color: "#f59e0b" }}></i>
                     &lt; 2hr Response Time
                   </span>
                   <span>•</span>
-                  <span style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                  <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
                     <i className="fa-solid fa-lock" style={{ color: "#3b82f6" }}></i>
                     NDA Protected
                   </span>
@@ -1417,11 +1417,11 @@ export default function BacklinkPackageCalculatorPage() {
             ) : (
               <div>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "6px" }}>
-                  <div style={{ width: "36px", height: "36px", borderRadius: "10px", background: "#dbeafe", color: "#2563eb", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "16px" }}>
+                  <div style={{ width: "34px", height: "34px", borderRadius: "8px", background: "#dbeafe", color: "#2563eb", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "15px" }}>
                     <i className="fa-solid fa-paper-plane"></i>
                   </div>
                   <div>
-                    <h3 style={{ fontSize: "20px", fontWeight: 900, color: "#0f172a", margin: 0, letterSpacing: "-0.3px" }}>
+                    <h3 style={{ fontSize: "19px", fontWeight: 900, color: "#0f172a", margin: 0, letterSpacing: "-0.3px" }}>
                       Submit Custom Backlink Order
                     </h3>
                     <p style={{ fontSize: "12px", color: "#64748b", margin: 0 }}>
@@ -1434,13 +1434,13 @@ export default function BacklinkPackageCalculatorPage() {
                 <div style={{
                   background: "linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)",
                   border: "1px solid #cbd5e1",
-                  borderRadius: "12px",
-                  padding: "10px 14px",
+                  borderRadius: "8px",
+                  padding: "9px 12px",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  margin: "16px 0 18px",
-                  fontSize: "13px"
+                  margin: "14px 0 16px",
+                  fontSize: "12.5px"
                 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                     <i className="fa-solid fa-cubes-stacked text-blue-600"></i>
@@ -1451,8 +1451,8 @@ export default function BacklinkPackageCalculatorPage() {
                   </div>
                 </div>
 
-                <form onSubmit={handleOrderSubmit} style={{ display: "flex", flexDirection: "column", gap: "13px" }}>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                <form onSubmit={handleOrderSubmit} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
                     <div>
                       <label style={{ fontSize: "11px", fontWeight: 800, color: "#334155", display: "block", marginBottom: "4px", textTransform: "uppercase" }}>Your Full Name *</label>
                       <input
@@ -1461,7 +1461,7 @@ export default function BacklinkPackageCalculatorPage() {
                         placeholder="e.g. John Doe"
                         value={orderForm.name}
                         onChange={(e) => setOrderForm({ ...orderForm, name: e.target.value })}
-                        style={{ width: "100%", padding: "10px 12px", borderRadius: "8px", border: "1px solid #cbd5e1", outline: "none", fontSize: "13px" }}
+                        style={{ width: "100%", padding: "9px 12px", borderRadius: "6px", border: "1px solid #cbd5e1", outline: "none", fontSize: "13px" }}
                       />
                     </div>
 
@@ -1473,7 +1473,7 @@ export default function BacklinkPackageCalculatorPage() {
                         placeholder="john@example.com"
                         value={orderForm.email}
                         onChange={(e) => setOrderForm({ ...orderForm, email: e.target.value })}
-                        style={{ width: "100%", padding: "10px 12px", borderRadius: "8px", border: "1px solid #cbd5e1", outline: "none", fontSize: "13px" }}
+                        style={{ width: "100%", padding: "9px 12px", borderRadius: "6px", border: "1px solid #cbd5e1", outline: "none", fontSize: "13px" }}
                       />
                     </div>
                   </div>
@@ -1486,7 +1486,7 @@ export default function BacklinkPackageCalculatorPage() {
                       placeholder="https://yourwebsite.com"
                       value={orderForm.websiteUrl}
                       onChange={(e) => setOrderForm({ ...orderForm, websiteUrl: e.target.value })}
-                      style={{ width: "100%", padding: "10px 12px", borderRadius: "8px", border: "1px solid #cbd5e1", outline: "none", fontSize: "13px" }}
+                      style={{ width: "100%", padding: "9px 12px", borderRadius: "6px", border: "1px solid #cbd5e1", outline: "none", fontSize: "13px" }}
                     />
                   </div>
 
@@ -1497,7 +1497,7 @@ export default function BacklinkPackageCalculatorPage() {
                       placeholder="e.g. ecommerce seo, local plumber, brand name"
                       value={orderForm.targetKeywords}
                       onChange={(e) => setOrderForm({ ...orderForm, targetKeywords: e.target.value })}
-                      style={{ width: "100%", padding: "10px 12px", borderRadius: "8px", border: "1px solid #cbd5e1", outline: "none", fontSize: "13px" }}
+                      style={{ width: "100%", padding: "9px 12px", borderRadius: "6px", border: "1px solid #cbd5e1", outline: "none", fontSize: "13px" }}
                     />
                   </div>
 
@@ -1508,11 +1508,11 @@ export default function BacklinkPackageCalculatorPage() {
                       placeholder="Any specific anchor ratio, country targets, or notes..."
                       value={orderForm.notes}
                       onChange={(e) => setOrderForm({ ...orderForm, notes: e.target.value })}
-                      style={{ width: "100%", padding: "10px 12px", borderRadius: "8px", border: "1px solid #cbd5e1", outline: "none", fontSize: "13px", resize: "none" }}
+                      style={{ width: "100%", padding: "9px 12px", borderRadius: "6px", border: "1px solid #cbd5e1", outline: "none", fontSize: "13px", resize: "none" }}
                     />
                   </div>
 
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "11px", color: "#64748b", margin: "2px 0 4px" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "11px", color: "#64748b", margin: "1px 0 2px" }}>
                     <i className="fa-solid fa-lock text-emerald-500"></i>
                     <span>Your domain details are 100% confidential and protected by NDA.</span>
                   </div>
@@ -1524,16 +1524,16 @@ export default function BacklinkPackageCalculatorPage() {
                       background: "linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)",
                       color: "#ffffff",
                       border: "none",
-                      padding: "13px",
-                      borderRadius: "10px",
+                      padding: "12px",
+                      borderRadius: "8px",
                       fontWeight: 800,
-                      fontSize: "14px",
+                      fontSize: "13.5px",
                       cursor: "pointer",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                       gap: "8px",
-                      boxShadow: "0 10px 20px rgba(37,99,235,0.25)"
+                      boxShadow: "0 8px 18px rgba(37,99,235,0.25)"
                     }}
                   >
                     {orderSubmitting ? (
