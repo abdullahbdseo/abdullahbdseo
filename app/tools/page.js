@@ -66,6 +66,15 @@ export default function ToolsHubPage() {
 
   const calcTools = [
     {
+      title: "Custom Backlink Package Calculator",
+      href: "/tools/backlink-package-calculator",
+      icon: "fa-solid fa-sliders",
+      iconBg: "#eff6ff",
+      iconColor: "#2563eb",
+      badge: "🔥 Live Pricing",
+      desc: "Configure custom link velocity across Profile Creation, Web 2.0, Bookmarks, and Guest Posts with real-time pricing and 1-click order fulfillment."
+    },
+    {
       title: "Google Ads ROI Calculator",
       href: "/tools/google-ads-roi-calculator",
       icon: "fa-brands fa-google",

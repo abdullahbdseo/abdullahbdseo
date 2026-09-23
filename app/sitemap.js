@@ -42,6 +42,7 @@ export default function sitemap() {
     "/tools/keyword-density-checker",
     "/tools/http-header-checker",
     "/tools/love-calculator",
+    "/tools/backlink-package-calculator",
   ].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: now,

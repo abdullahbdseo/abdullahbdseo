@@ -77,8 +77,57 @@ export default function HighDaBacklinksPage() {
       </section>
 
       {/* MAIN CONTENT AREA */}
-      <section style={{ padding: "50px 0 80px" }}>
+      <section style={{ padding: "40px 0 80px" }}>
         <div className="container">
+          
+          {/* INTERACTIVE CALCULATOR CTA BANNER */}
+          <div style={{
+            background: "linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #2563eb 100%)",
+            borderRadius: "16px",
+            padding: "24px 30px",
+            marginBottom: "35px",
+            color: "white",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            gap: "20px",
+            boxShadow: "0 10px 25px rgba(37, 99, 235, 0.25)",
+            border: "1px solid rgba(255, 255, 255, 0.15)"
+          }}>
+            <div style={{ maxWidth: "680px" }}>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: "rgba(250, 204, 21, 0.2)", color: "#facc15", padding: "3px 10px", borderRadius: "20px", fontSize: "11px", fontWeight: 800, marginBottom: "8px" }}>
+                <i className="fa-solid fa-wand-magic-sparkles"></i> INTERACTIVE ESTIMATOR
+              </div>
+              <h3 style={{ fontSize: "1.25rem", fontWeight: 900, color: "#ffffff", margin: "0 0 6px 0" }}>
+                Need a Custom Link Building Package for Your Website?
+              </h3>
+              <p style={{ fontSize: "0.9rem", color: "#cbd5e1", margin: 0, lineHeight: 1.5 }}>
+                Mix &amp; match Profile Links, Web 2.0 Blogs, Bookmarks, and Guest Posts. Calculate real-time pricing in USD &amp; BDT with 1-click order fulfillment.
+              </p>
+            </div>
+            <Link
+              href="/tools/backlink-package-calculator"
+              style={{
+                background: "#facc15",
+                color: "#0f172a",
+                padding: "12px 24px",
+                borderRadius: "10px",
+                fontWeight: 900,
+                fontSize: "0.95rem",
+                textDecoration: "none",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                boxShadow: "0 4px 15px rgba(250, 204, 21, 0.4)",
+                whiteSpace: "nowrap"
+              }}
+            >
+              <i className="fa-solid fa-calculator"></i>
+              <span>Launch Package Calculator</span>
+              <i className="fa-solid fa-arrow-right"></i>
+            </Link>
+          </div>
           
           {/* Header Bar */}
           <div style={{
