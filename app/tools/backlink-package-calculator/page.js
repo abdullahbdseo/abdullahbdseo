@@ -194,6 +194,29 @@ const PRESET_BUNDLES = [
   }
 ];
 
+const BACKLINK_FAQS = [
+  {
+    q: "Are these backlinks 100% safe from Google penalties and algorithm updates?",
+    a: "Yes, 100% safe. Every backlink is created manually following strict Google Search Essentials and Webmaster Guidelines. We strictly prohibit automated bot generation, link farms, or toxic private blog networks (PBNs). All links are placed on established, high Domain Authority (DA 80+ to 95+) platforms with natural anchor text ratios (branded, generic, topical, and naked URL), ensuring complete protection against Google Core, Spam, and Helpful Content updates."
+  },
+  {
+    q: "How quickly will I see SEO ranking improvements and traffic growth?",
+    a: "Most websites observe initial Googlebot crawl signals and indexing within 7 to 14 days, followed by measurable organic keyword ranking improvements in 3 to 6 weeks. Backlink authority distributes gradually as search engine bots crawl and validate newly indexed link nodes. Combining contextual Web 2.0 blogs, high-authority brand profiles, and social signals accelerates this authority velocity."
+  },
+  {
+    q: "What kind of reporting and proof of work do I receive upon completion?",
+    a: "You receive a comprehensive, white-label Google / Excel spreadsheet upon delivery. The live report includes every published live URL, verified Domain Authority (DA/DR) metrics, exact anchor text used, indexation status, and full master login credentials (usernames and passwords) for all created Web 2.0s and profile accounts—giving you 100% permanent ownership of your link assets."
+  },
+  {
+    q: "What happens if a backlink drops or goes offline? Is there a guarantee?",
+    a: "We provide a 100% Free 90-Day Replacement Guarantee on all custom link building packages. While our manual placement method ensures high link permanence, if any link drops or is removed within 90 days of project delivery, our team will immediately replace it with an equivalent or higher DA backlink at zero additional cost."
+  },
+  {
+    q: "How do I choose the best backlink mix and quantity for my website?",
+    a: "For newly launched websites or brand foundation building, our Starter Booster (Profile links, Social Bookmarks, Citations) creates a natural trust footprint. For established domains targeting high-intent commercial keywords, the Authority Surge Pack or Enterprise Domination (Contextual Web 2.0s, Guest Posts, EDU/GOV links) passes maximum ranking power. You can also customize your exact quantities with our calculator sliders above, and our senior SEO strategist will review your target anchors before execution."
+  }
+];
+
 export default function BacklinkPackageCalculatorPage() {
   const [quantities, setQuantities] = useState({
     profile_creation: 100,
@@ -1172,16 +1195,8 @@ export default function BacklinkPackageCalculatorPage() {
       </div>
 
       {/* ================= FAQ SECTION ================= */}
-      <section style={{ maxWidth: "1000px", margin: "80px auto 0", padding: "0 20px" }}>
-        <div style={{ textAlign: "center", marginBottom: "40px" }}>
-          <div style={{ display: "inline-block", background: "#e0e7ff", color: "#4338ca", padding: "4px 12px", borderRadius: "4px", fontSize: "11.5px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.04em", marginBottom: "12px" }}>
-            TRANSPARENCY &amp; METHODOLOGY
-          </div>
-          <h2 style={{ fontSize: "30px", fontWeight: 900, color: "#0f172a" }}>Frequently Asked Questions</h2>
-          <p style={{ fontSize: "15px", color: "#64748b" }}>Everything you need to know about custom link building execution.</p>
-        </div>
-
-        <ToolFaqAccordion items={faqItems} />
+      <section style={{ maxWidth: "1000px", margin: "70px auto 0", padding: "0 20px" }}>
+        <ToolFaqAccordion faqs={BACKLINK_FAQS} title="Frequently Asked Questions (FAQ)" />
       </section>
 
       {/* ================= ORDER INQUIRY MODAL (HOMEPAGE DESIGN ALIGNED) ================= */}

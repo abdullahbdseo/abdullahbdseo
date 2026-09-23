@@ -50,7 +50,7 @@ export default function ToolFaqAccordion({ faqs = [], title = "Frequently Asked 
                 style={{
                   background: "#ffffff",
                   border: isOpen ? "1.5px solid #4361ee" : "1px solid #e2e8f0",
-                  borderRadius: "8px",
+                  borderRadius: "4px",
                   overflow: "hidden",
                   transition: "all 0.2s ease",
                   boxShadow: isOpen ? "0 4px 14px rgba(67, 97, 238, 0.08)" : "0 1px 3px rgba(0,0,0,0.02)",
