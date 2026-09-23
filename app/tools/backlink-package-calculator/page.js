@@ -367,65 +367,198 @@ export default function BacklinkPackageCalculatorPage() {
   return (
     <div style={{ backgroundColor: "#f8fafc", minHeight: "100vh", paddingBottom: "90px" }}>
       
-      {/* ================= HERO SECTION WITH GLASSMORPHISM ================= */}
+      {/* ================= HERO SECTION WITH ENTERPRISE PROFESSIONAL DESIGN ================= */}
       <section style={{
         position: "relative",
-        background: "radial-gradient(circle at 50% 20%, #1e3a8a 0%, #0f172a 60%, #020617 100%)",
+        background: "linear-gradient(180deg, #090e17 0%, #0f172a 45%, #1e293b 100%)",
         color: "#ffffff",
-        padding: "60px 20px 80px",
-        overflow: "hidden"
+        padding: "50px 20px 85px",
+        overflow: "hidden",
+        borderBottom: "1px solid rgba(255, 255, 255, 0.08)"
       }}>
-        {/* Subtle decorative glow spots */}
-        <div style={{ position: "absolute", top: "-150px", left: "10%", width: "500px", height: "500px", background: "radial-gradient(circle, rgba(59,130,246,0.2) 0%, transparent 70%)", filter: "blur(60px)", pointerEvents: "none" }}></div>
-        <div style={{ position: "absolute", bottom: "-100px", right: "10%", width: "600px", height: "600px", background: "radial-gradient(circle, rgba(14,165,233,0.15) 0%, transparent 70%)", filter: "blur(70px)", pointerEvents: "none" }}></div>
+        {/* Subtle decorative grid lines and gradient orbs */}
+        <div style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: "linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px)",
+          backgroundSize: "40px 40px",
+          pointerEvents: "none"
+        }}></div>
+        <div style={{ position: "absolute", top: "-120px", left: "15%", width: "550px", height: "550px", background: "radial-gradient(circle, rgba(37,99,235,0.25) 0%, transparent 70%)", filter: "blur(70px)", pointerEvents: "none" }}></div>
+        <div style={{ position: "absolute", top: "40px", right: "12%", width: "500px", height: "500px", background: "radial-gradient(circle, rgba(14,165,233,0.2) 0%, transparent 70%)", filter: "blur(80px)", pointerEvents: "none" }}></div>
 
-        <div style={{ maxWidth: "1140px", margin: "0 auto", position: "relative", zIndex: 2, textAlign: "center" }}>
+        <div style={{ maxWidth: "1160px", margin: "0 auto", position: "relative", zIndex: 2, textAlign: "center" }}>
           
-          {/* Top Breadcrumb Nav */}
-          <div style={{ display: "inline-flex", alignItems: "center", gap: "10px", background: "rgba(255, 255, 255, 0.08)", backdropFilter: "blur(12px)", border: "1px solid rgba(255, 255, 255, 0.15)", padding: "6px 18px", borderRadius: "30px", fontSize: "13px", fontWeight: 700, marginBottom: "20px" }}>
-            <Link href="/tools" style={{ color: "#93c5fd", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "6px" }}>
-              <i className="fa-solid fa-toolbox"></i> Tools Suite
-            </Link>
-            <span style={{ color: "rgba(255,255,255,0.4)" }}>/</span>
-            <Link href="/high-da-backlinks" style={{ color: "#93c5fd", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "6px" }}>
-              <i className="fa-solid fa-link"></i> Backlink Hub
-            </Link>
-            <span style={{ color: "rgba(255,255,255,0.4)" }}>/</span>
-            <span style={{ color: "#facc15" }}>Package Calculator</span>
+          {/* Breadcrumb Capsule Navigation */}
+          <nav aria-label="Breadcrumb" style={{ marginBottom: "22px", display: "inline-flex" }}>
+            <ol style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "8px",
+              background: "rgba(255, 255, 255, 0.06)",
+              backdropFilter: "blur(12px)",
+              border: "1px solid rgba(255, 255, 255, 0.12)",
+              padding: "6px 18px",
+              borderRadius: "30px",
+              fontSize: "13px",
+              fontWeight: 700,
+              listStyle: "none",
+              margin: 0
+            }}>
+              <li style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                <Link href="/" style={{ color: "#94a3b8", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                  <i className="fa-solid fa-house" style={{ fontSize: "11px" }}></i> Home
+                </Link>
+              </li>
+              <li style={{ color: "rgba(255,255,255,0.3)" }}><i className="fa-solid fa-angle-right" style={{ fontSize: "10px" }}></i></li>
+              <li>
+                <Link href="/tools" style={{ color: "#94a3b8", textDecoration: "none" }}>
+                  Tools Suite
+                </Link>
+              </li>
+              <li style={{ color: "rgba(255,255,255,0.3)" }}><i className="fa-solid fa-angle-right" style={{ fontSize: "10px" }}></i></li>
+              <li>
+                <Link href="/high-da-backlinks" style={{ color: "#93c5fd", textDecoration: "none" }}>
+                  Backlinks Hub
+                </Link>
+              </li>
+              <li style={{ color: "rgba(255,255,255,0.3)" }}><i className="fa-solid fa-angle-right" style={{ fontSize: "10px" }}></i></li>
+              <li style={{ color: "#facc15", fontWeight: 800 }}>Package Calculator</li>
+            </ol>
+          </nav>
+
+          {/* Glowing Live Engine Badge */}
+          <div style={{ marginBottom: "16px" }}>
+            <div style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "10px",
+              background: "rgba(37, 99, 235, 0.15)",
+              border: "1px solid rgba(96, 165, 250, 0.35)",
+              color: "#60a5fa",
+              padding: "6px 18px",
+              borderRadius: "30px",
+              fontSize: "12px",
+              fontWeight: 800,
+              letterSpacing: "0.5px"
+            }}>
+              <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#22c55e", boxShadow: "0 0 10px #22c55e", display: "inline-block" }}></span>
+              <span>100% MANUAL HIGH-DA LINK BUILDING ENGINE</span>
+            </div>
           </div>
 
-          <h1 style={{ fontSize: "clamp(30px, 4.5vw, 48px)", fontWeight: 900, letterSpacing: "-1px", lineHeight: 1.15, marginBottom: "16px", textShadow: "0 4px 20px rgba(0,0,0,0.5)" }}>
-            Custom Backlink Package &amp; <span style={{ background: "linear-gradient(135deg, #38bdf8 0%, #818cf8 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Live Pricing Calculator</span>
+          {/* Main Title */}
+          <h1 style={{
+            fontSize: "clamp(28px, 4.2vw, 46px)",
+            fontWeight: 900,
+            letterSpacing: "-0.8px",
+            lineHeight: 1.2,
+            marginBottom: "16px",
+            color: "#ffffff"
+          }}>
+            Custom Backlink Package &amp; <span style={{
+              background: "linear-gradient(135deg, #38bdf8 0%, #60a5fa 50%, #a78bfa 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              display: "inline-block"
+            }}>Live Pricing Calculator</span>
           </h1>
 
-          <p style={{ fontSize: "17px", color: "#cbd5e1", maxWidth: "780px", margin: "0 auto 35px", lineHeight: 1.6 }}>
-            Customize your link velocity across 9 high-DA categories, toggle algorithmic safety &amp; indexation boosters, and view real-time estimates with 1-click WhatsApp order fulfillment.
+          {/* Subtitle */}
+          <p style={{
+            fontSize: "16px",
+            color: "#cbd5e1",
+            maxWidth: "760px",
+            margin: "0 auto 30px",
+            lineHeight: "1.65"
+          }}>
+            Configure exact backlink quantities across 9 verified high-authority categories (DA 80+). Select indexation boosters and get instant pricing in USD &amp; BDT with 1-click WhatsApp order fulfillment.
           </p>
 
-          {/* Interactive Steps Indicators */}
-          <div style={{ display: "inline-flex", flexWrap: "wrap", justifyContent: "center", gap: "16px", background: "rgba(15, 23, 42, 0.7)", backdropFilter: "blur(14px)", padding: "10px 24px", borderRadius: "40px", border: "1px solid rgba(255, 255, 255, 0.12)", marginBottom: "35px" }}>
+          {/* Four Core Value Pillars */}
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+            gap: "12px",
+            maxWidth: "960px",
+            margin: "0 auto 36px"
+          }}>
+            <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "12px", padding: "12px 14px", display: "flex", alignItems: "center", gap: "10px", textAlign: "left" }}>
+              <div style={{ width: "32px", height: "32px", borderRadius: "8px", background: "rgba(34, 197, 94, 0.15)", color: "#4ade80", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px", flexShrink: 0 }}>
+                <i className="fa-solid fa-shield-halved"></i>
+              </div>
+              <div>
+                <div style={{ fontSize: "12px", fontWeight: 800, color: "#ffffff" }}>100% Real Manual</div>
+                <div style={{ fontSize: "11px", color: "#94a3b8" }}>No bots or automated PBNs</div>
+              </div>
+            </div>
+
+            <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "12px", padding: "12px 14px", display: "flex", alignItems: "center", gap: "10px", textAlign: "left" }}>
+              <div style={{ width: "32px", height: "32px", borderRadius: "8px", background: "rgba(56, 189, 248, 0.15)", color: "#38bdf8", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px", flexShrink: 0 }}>
+                <i className="fa-solid fa-bolt"></i>
+              </div>
+              <div>
+                <div style={{ fontSize: "12px", fontWeight: 800, color: "#ffffff" }}>Tier-2 Indexation</div>
+                <div style={{ fontSize: "11px", color: "#94a3b8" }}>Fast 7-14 day discovery</div>
+              </div>
+            </div>
+
+            <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "12px", padding: "12px 14px", display: "flex", alignItems: "center", gap: "10px", textAlign: "left" }}>
+              <div style={{ width: "32px", height: "32px", borderRadius: "8px", background: "rgba(168, 85, 247, 0.15)", color: "#c084fc", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px", flexShrink: 0 }}>
+                <i className="fa-solid fa-clock-rotate-left"></i>
+              </div>
+              <div>
+                <div style={{ fontSize: "12px", fontWeight: 800, color: "#ffffff" }}>Natural Drip-Feed</div>
+                <div style={{ fontSize: "11px", color: "#94a3b8" }}>Safe velocity distribution</div>
+              </div>
+            </div>
+
+            <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "12px", padding: "12px 14px", display: "flex", alignItems: "center", gap: "10px", textAlign: "left" }}>
+              <div style={{ width: "32px", height: "32px", borderRadius: "8px", background: "rgba(250, 204, 21, 0.15)", color: "#facc15", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px", flexShrink: 0 }}>
+                <i className="fa-solid fa-file-excel"></i>
+              </div>
+              <div>
+                <div style={{ fontSize: "12px", fontWeight: 800, color: "#ffffff" }}>Live Excel Sheet</div>
+                <div style={{ fontSize: "11px", color: "#94a3b8" }}>Full links + logins report</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Interactive Steps Progress */}
+          <div style={{
+            display: "inline-flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            gap: "14px",
+            background: "rgba(15, 23, 42, 0.8)",
+            backdropFilter: "blur(14px)",
+            padding: "10px 26px",
+            borderRadius: "40px",
+            border: "1px solid rgba(255, 255, 255, 0.12)",
+            marginBottom: "36px"
+          }}>
             <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px", fontWeight: 800, color: "#38bdf8" }}>
-              <span style={{ width: "24px", height: "24px", borderRadius: "50%", background: "#0284c7", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px" }}>1</span>
-              <span>Select Quantities</span>
+              <span style={{ width: "22px", height: "22px", borderRadius: "50%", background: "#0284c7", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px" }}>1</span>
+              <span>Set Link Quantities</span>
             </div>
-            <i className="fa-solid fa-arrow-right" style={{ color: "rgba(255,255,255,0.3)", fontSize: "11px", alignSelf: "center" }}></i>
+            <i className="fa-solid fa-arrow-right" style={{ color: "rgba(255,255,255,0.25)", fontSize: "11px", alignSelf: "center" }}></i>
             <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px", fontWeight: 800, color: "#a5b4fc" }}>
-              <span style={{ width: "24px", height: "24px", borderRadius: "50%", background: "#4f46e5", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px" }}>2</span>
-              <span>Choose Add-Ons</span>
+              <span style={{ width: "22px", height: "22px", borderRadius: "50%", background: "#4f46e5", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px" }}>2</span>
+              <span>Select Add-Ons</span>
             </div>
-            <i className="fa-solid fa-arrow-right" style={{ color: "rgba(255,255,255,0.3)", fontSize: "11px", alignSelf: "center" }}></i>
+            <i className="fa-solid fa-arrow-right" style={{ color: "rgba(255,255,255,0.25)", fontSize: "11px", alignSelf: "center" }}></i>
             <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px", fontWeight: 800, color: "#4ade80" }}>
-              <span style={{ width: "24px", height: "24px", borderRadius: "50%", background: "#16a34a", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px" }}>3</span>
+              <span style={{ width: "22px", height: "22px", borderRadius: "50%", background: "#16a34a", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px" }}>3</span>
               <span>1-Click Order / Quote</span>
             </div>
           </div>
 
-          {/* PRESET BUNDLES BAR */}
+          {/* Pre-Configured Preset Packs */}
           <div>
-            <div style={{ fontSize: "12px", fontWeight: 800, letterSpacing: "1px", color: "#94a3b8", marginBottom: "12px" }}>
-              OR LOAD A PRE-CONFIGURED STRATEGY PACK:
+            <div style={{ fontSize: "12px", fontWeight: 800, letterSpacing: "1px", color: "#94a3b8", marginBottom: "14px" }}>
+              POPULAR PRE-CONFIGURED STRATEGY PACKS:
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "14px", maxWidth: "980px", margin: "0 auto" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "16px", maxWidth: "1020px", margin: "0 auto" }}>
               {PRESET_BUNDLES.map(preset => {
                 const isSelected = activePreset === preset.id;
                 return (
@@ -434,12 +567,12 @@ export default function BacklinkPackageCalculatorPage() {
                     type="button"
                     onClick={() => applyPreset(preset)}
                     style={{
-                      background: isSelected ? "rgba(37, 99, 235, 0.25)" : "rgba(255, 255, 255, 0.06)",
-                      border: `1.5px solid ${isSelected ? "#60a5fa" : "rgba(255, 255, 255, 0.15)"}`,
-                      boxShadow: isSelected ? "0 0 25px rgba(59, 130, 246, 0.4)" : "none",
-                      backdropFilter: "blur(10px)",
-                      borderRadius: "16px",
-                      padding: "16px 20px",
+                      background: isSelected ? "rgba(37, 99, 235, 0.22)" : "rgba(255, 255, 255, 0.05)",
+                      border: `1.5px solid ${isSelected ? "#60a5fa" : "rgba(255, 255, 255, 0.12)"}`,
+                      boxShadow: isSelected ? "0 0 25px rgba(59, 130, 246, 0.35)" : "0 4px 15px rgba(0,0,0,0.2)",
+                      backdropFilter: "blur(12px)",
+                      borderRadius: "18px",
+                      padding: "18px 20px",
                       textAlign: "left",
                       color: "#ffffff",
                       cursor: "pointer",
@@ -447,16 +580,16 @@ export default function BacklinkPackageCalculatorPage() {
                       position: "relative"
                     }}
                   >
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
                       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                        <i className={`${preset.icon}`} style={{ fontSize: "16px", color: preset.badgeColor }}></i>
+                        <i className={`${preset.icon}`} style={{ fontSize: "17px", color: preset.badgeColor }}></i>
                         <strong style={{ fontSize: "15px", fontWeight: 800 }}>{preset.name}</strong>
                       </div>
-                      <span style={{ fontSize: "10px", fontWeight: 800, background: preset.badgeColor, color: "#0f172a", padding: "2px 8px", borderRadius: "12px" }}>
+                      <span style={{ fontSize: "10px", fontWeight: 800, background: preset.badgeColor, color: "#0f172a", padding: "3px 9px", borderRadius: "12px" }}>
                         {preset.tag}
                       </span>
                     </div>
-                    <p style={{ fontSize: "12px", color: "#cbd5e1", margin: 0, lineHeight: 1.4 }}>
+                    <p style={{ fontSize: "12px", color: "#cbd5e1", margin: 0, lineHeight: 1.45 }}>
                       {preset.desc}
                     </p>
                   </button>
