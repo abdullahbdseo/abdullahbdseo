@@ -76,15 +76,32 @@ export default function AdminSettingsPage() {
   const [credMsg, setCredMsg] = useState(null);
   const [credErr, setCredErr] = useState(null);
 
+  const [updatingCreds, setUpdatingCreds] = useState(false);
+
   useEffect(() => {
     if (data?.siteSettings) {
       setForm({ ...data.siteSettings });
     }
-    if (typeof window !== "undefined") {
-      const savedUser = localStorage.getItem("admin_custom_username") || "admin@seoservice.local";
-      setCurrentUsername(savedUser);
-      setNewUsername(savedUser);
-    }
+    // Fetch active admin username from backend
+    fetch("/api/admin/auth")
+      .then((res) => res.json())
+      .then((resData) => {
+        if (resData.success && resData.username) {
+          setCurrentUsername(resData.username);
+          setNewUsername(resData.username);
+        } else if (typeof window !== "undefined") {
+          const savedUser = localStorage.getItem("admin_custom_username") || "admin@seoservice.local";
+          setCurrentUsername(savedUser);
+          setNewUsername(savedUser);
+        }
+      })
+      .catch(() => {
+        if (typeof window !== "undefined") {
+          const savedUser = localStorage.getItem("admin_custom_username") || "admin@seoservice.local";
+          setCurrentUsername(savedUser);
+          setNewUsername(savedUser);
+        }
+      });
   }, [data]);
 
   const handleChange = (key, val) => {
@@ -95,28 +112,19 @@ export default function AdminSettingsPage() {
     await saveSection("siteSettings", form);
   };
 
-  const handleCredentialsUpdate = (e) => {
+  const handleCredentialsUpdate = async (e) => {
     e.preventDefault();
     setCredMsg(null);
     setCredErr(null);
 
-    const savedPass = (typeof window !== "undefined" && localStorage.getItem("admin_custom_password")) || "admin123";
-
-    // 1. Verify Current Password
-    if (currentPass !== savedPass && currentPass !== "admin123") {
-      setCredErr("Current password does not match.");
-      return;
-    }
-
-    // 2. Validate Username
+    // 1. Validate Username
     const cleanUser = newUsername.trim().toLowerCase();
     if (!cleanUser || cleanUser.length < 3) {
       setCredErr("Username or Email must be at least 3 characters long.");
       return;
     }
 
-    // 3. If user wants to change password
-    let updatedPassword = savedPass;
+    // 2. Validate Password confirmation if changing
     if (newPass || confirmPass) {
       if (newPass.length < 5) {
         setCredErr("New password must be at least 5 characters long.");
@@ -126,29 +134,53 @@ export default function AdminSettingsPage() {
         setCredErr("New password and confirm password do not match.");
         return;
       }
-      updatedPassword = newPass;
     }
 
-    // 4. Save to localStorage
-    if (typeof window !== "undefined") {
-      localStorage.setItem("admin_custom_username", cleanUser);
-      localStorage.setItem("admin_custom_password", updatedPassword);
+    setUpdatingCreds(true);
 
-      // Update admin_user profile session
-      const existingUser = localStorage.getItem("admin_user");
-      let parsed = { name: "Abdullah Saleh", role: "Master Administrator" };
-      if (existingUser) {
-        try { parsed = JSON.parse(existingUser); } catch(err) {}
+    try {
+      const res = await fetch("/api/admin/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "update_credentials",
+          currentPassword: currentPass,
+          newUsername: cleanUser,
+          newPassword: newPass || undefined
+        })
+      });
+
+      const resData = await res.json();
+
+      if (res.ok && resData.success) {
+        // Update local session
+        if (typeof window !== "undefined") {
+          localStorage.setItem("admin_custom_username", cleanUser);
+          if (newPass) {
+            localStorage.setItem("admin_custom_password", newPass);
+          }
+          const existingUser = localStorage.getItem("admin_user");
+          let parsed = { name: "Abdullah Saleh", role: "Master Administrator" };
+          if (existingUser) {
+            try { parsed = JSON.parse(existingUser); } catch(err) {}
+          }
+          parsed.email = cleanUser;
+          localStorage.setItem("admin_user", JSON.stringify(parsed));
+        }
+
+        setCurrentUsername(cleanUser);
+        setCredMsg(resData.message || "Admin credentials updated successfully! You can now log in with these credentials from any device.");
+        setCurrentPass("");
+        setNewPass("");
+        setConfirmPass("");
+      } else {
+        setCredErr(resData.error || "Failed to update credentials. Please check your current password.");
       }
-      parsed.email = cleanUser;
-      localStorage.setItem("admin_user", JSON.stringify(parsed));
+    } catch (err) {
+      setCredErr("Network error while connecting to server. Please try again.");
+    } finally {
+      setUpdatingCreds(false);
     }
-
-    setCurrentUsername(cleanUser);
-    setCredMsg("Admin Username & Password credentials updated successfully! Use them on your next login.");
-    setCurrentPass("");
-    setNewPass("");
-    setConfirmPass("");
   };
 
   if (loading) return <div style={{ textAlign: "center", padding: "60px 20px", color: "#64748b" }}><i className="fa-solid fa-spinner fa-spin mr-2"></i>Loading settings...</div>;
@@ -298,11 +330,21 @@ export default function AdminSettingsPage() {
 
               <button
                 type="submit"
+                disabled={updatingCreds}
                 className="btn-admin btn-admin-primary"
                 style={{ padding: "9px 20px" }}
               >
-                <i className="fa-solid fa-user-shield"></i>
-                <span>Save Admin Credentials</span>
+                {updatingCreds ? (
+                  <>
+                    <i className="fa-solid fa-spinner fa-spin mr-2"></i>
+                    <span>Updating Credentials...</span>
+                  </>
+                ) : (
+                  <>
+                    <i className="fa-solid fa-user-shield mr-2"></i>
+                    <span>Save Admin Credentials</span>
+                  </>
+                )}
               </button>
             </div>
           </form>

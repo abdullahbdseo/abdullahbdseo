@@ -25,7 +25,7 @@ export default function SecretLoginPage() {
     }
   }, [router]);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
@@ -33,31 +33,57 @@ export default function SecretLoginPage() {
     const cleanEmail = email.trim().toLowerCase();
     const cleanPassword = password.trim();
 
-    // Check custom saved credentials or fallback defaults
-    let customUsername = null;
-    let customPassword = null;
-    if (typeof window !== "undefined") {
-      customUsername = localStorage.getItem("admin_custom_username");
-      customPassword = localStorage.getItem("admin_custom_password");
-    }
+    try {
+      const res = await fetch("/api/admin/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "login",
+          username: cleanEmail,
+          password: cleanPassword
+        })
+      });
 
-    const validEmails = [
-      "admin@seoservice.local",
-      "admin@abdullahbdseo.com",
-      "admin@seoservice.com",
-      "admin",
-      "abdullah"
-    ];
+      const resData = await res.json();
 
-    if (customUsername) {
-      validEmails.unshift(customUsername.toLowerCase());
-    }
+      if (res.ok && resData.success) {
+        if (typeof window !== "undefined") {
+          localStorage.setItem("admin_auth", "true");
+          localStorage.setItem("admin_user", JSON.stringify(resData.user || {
+            name: "Abdullah Saleh",
+            email: cleanEmail,
+            role: "Master Administrator",
+            loginTime: new Date().toISOString()
+          }));
+        }
+        setSuccess(true);
+        setTimeout(() => {
+          router.push("/admin");
+        }, 400);
+        return;
+      } else {
+        setLoading(false);
+        setError(resData.error || "Invalid administrative credentials. Please verify your username/email and password.");
+      }
+    } catch (err) {
+      // Fallback offline verification if API call fails
+      let customUsername = null;
+      let customPassword = null;
+      if (typeof window !== "undefined") {
+        customUsername = localStorage.getItem("admin_custom_username");
+        customPassword = localStorage.getItem("admin_custom_password");
+      }
 
-    const validPasswords = customPassword 
-      ? [customPassword, "admin123"] 
-      : ["admin123", "admin", "123456"];
+      const validEmails = [
+        "admin@seoservice.local",
+        "admin@abdullahbdseo.com",
+        "admin@seoservice.com",
+        "admin",
+        "abdullah"
+      ];
+      if (customUsername) validEmails.unshift(customUsername.toLowerCase());
+      const validPasswords = customPassword ? [customPassword, "admin123"] : ["admin123", "admin", "123456"];
 
-    setTimeout(() => {
       if (validEmails.includes(cleanEmail) && validPasswords.includes(cleanPassword)) {
         if (typeof window !== "undefined") {
           localStorage.setItem("admin_auth", "true");
@@ -76,7 +102,7 @@ export default function SecretLoginPage() {
         setLoading(false);
         setError("Invalid administrative credentials. Please verify your username/email and password.");
       }
-    }, 400);
+    }
   };
 
   return (
