@@ -389,7 +389,7 @@ export default function BacklinkPackageCalculatorPage() {
 
         <div style={{ maxWidth: "1160px", margin: "0 auto", position: "relative", zIndex: 2, textAlign: "center" }}>
           
-          {/* Breadcrumb Capsule Navigation */}
+          {/* Breadcrumb Navigation */}
           <nav aria-label="Breadcrumb" style={{ marginBottom: "22px", display: "inline-flex" }}>
             <ol style={{
               display: "inline-flex",
@@ -398,8 +398,8 @@ export default function BacklinkPackageCalculatorPage() {
               background: "rgba(255, 255, 255, 0.06)",
               backdropFilter: "blur(12px)",
               border: "1px solid rgba(255, 255, 255, 0.12)",
-              padding: "6px 18px",
-              borderRadius: "30px",
+              padding: "6px 14px",
+              borderRadius: "4px",
               fontSize: "13px",
               fontWeight: 700,
               listStyle: "none",
@@ -427,22 +427,22 @@ export default function BacklinkPackageCalculatorPage() {
             </ol>
           </nav>
 
-          {/* Glowing Live Engine Badge */}
+          {/* Live Engine Badge */}
           <div style={{ marginBottom: "16px" }}>
             <div style={{
               display: "inline-flex",
               alignItems: "center",
-              gap: "10px",
+              gap: "8px",
               background: "rgba(37, 99, 235, 0.15)",
               border: "1px solid rgba(96, 165, 250, 0.35)",
               color: "#60a5fa",
-              padding: "6px 18px",
-              borderRadius: "30px",
+              padding: "5px 14px",
+              borderRadius: "4px",
               fontSize: "12px",
               fontWeight: 800,
               letterSpacing: "0.5px"
             }}>
-              <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#22c55e", boxShadow: "0 0 10px #22c55e", display: "inline-block" }}></span>
+              <span style={{ width: "7px", height: "7px", borderRadius: "50%", background: "#22c55e", boxShadow: "0 0 8px #22c55e", display: "inline-block" }}></span>
               <span>100% MANUAL HIGH-DA LINK BUILDING ENGINE</span>
             </div>
           </div>
@@ -483,8 +483,8 @@ export default function BacklinkPackageCalculatorPage() {
             maxWidth: "960px",
             margin: "0 auto 36px"
           }}>
-            <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "12px", padding: "12px 14px", display: "flex", alignItems: "center", gap: "10px", textAlign: "left" }}>
-              <div style={{ width: "32px", height: "32px", borderRadius: "8px", background: "rgba(34, 197, 94, 0.15)", color: "#4ade80", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px", flexShrink: 0 }}>
+            <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "4px", padding: "12px 14px", display: "flex", alignItems: "center", gap: "10px", textAlign: "left" }}>
+              <div style={{ width: "30px", height: "30px", borderRadius: "4px", background: "rgba(34, 197, 94, 0.15)", color: "#4ade80", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "13px", flexShrink: 0 }}>
                 <i className="fa-solid fa-shield-halved"></i>
               </div>
               <div>
@@ -493,8 +493,8 @@ export default function BacklinkPackageCalculatorPage() {
               </div>
             </div>
 
-            <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "12px", padding: "12px 14px", display: "flex", alignItems: "center", gap: "10px", textAlign: "left" }}>
-              <div style={{ width: "32px", height: "32px", borderRadius: "8px", background: "rgba(56, 189, 248, 0.15)", color: "#38bdf8", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px", flexShrink: 0 }}>
+            <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "4px", padding: "12px 14px", display: "flex", alignItems: "center", gap: "10px", textAlign: "left" }}>
+              <div style={{ width: "30px", height: "30px", borderRadius: "4px", background: "rgba(56, 189, 248, 0.15)", color: "#38bdf8", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "13px", flexShrink: 0 }}>
                 <i className="fa-solid fa-bolt"></i>
               </div>
               <div>
@@ -503,8 +503,8 @@ export default function BacklinkPackageCalculatorPage() {
               </div>
             </div>
 
-            <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "12px", padding: "12px 14px", display: "flex", alignItems: "center", gap: "10px", textAlign: "left" }}>
-              <div style={{ width: "32px", height: "32px", borderRadius: "8px", background: "rgba(168, 85, 247, 0.15)", color: "#c084fc", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px", flexShrink: 0 }}>
+            <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "4px", padding: "12px 14px", display: "flex", alignItems: "center", gap: "10px", textAlign: "left" }}>
+              <div style={{ width: "30px", height: "30px", borderRadius: "4px", background: "rgba(168, 85, 247, 0.15)", color: "#c084fc", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "13px", flexShrink: 0 }}>
                 <i className="fa-solid fa-clock-rotate-left"></i>
               </div>
               <div>
@@ -513,8 +513,8 @@ export default function BacklinkPackageCalculatorPage() {
               </div>
             </div>
 
-            <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "12px", padding: "12px 14px", display: "flex", alignItems: "center", gap: "10px", textAlign: "left" }}>
-              <div style={{ width: "32px", height: "32px", borderRadius: "8px", background: "rgba(250, 204, 21, 0.15)", color: "#facc15", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px", flexShrink: 0 }}>
+            <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "4px", padding: "12px 14px", display: "flex", alignItems: "center", gap: "10px", textAlign: "left" }}>
+              <div style={{ width: "30px", height: "30px", borderRadius: "4px", background: "rgba(250, 204, 21, 0.15)", color: "#facc15", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "13px", flexShrink: 0 }}>
                 <i className="fa-solid fa-file-excel"></i>
               </div>
               <div>
@@ -524,7 +524,7 @@ export default function BacklinkPackageCalculatorPage() {
             </div>
           </div>
 
-          {/* Interactive Steps Progress */}
+          {/* Steps Progress Bar */}
           <div style={{
             display: "inline-flex",
             flexWrap: "wrap",
@@ -532,23 +532,23 @@ export default function BacklinkPackageCalculatorPage() {
             gap: "14px",
             background: "rgba(15, 23, 42, 0.8)",
             backdropFilter: "blur(14px)",
-            padding: "10px 26px",
-            borderRadius: "40px",
+            padding: "8px 20px",
+            borderRadius: "4px",
             border: "1px solid rgba(255, 255, 255, 0.12)",
             marginBottom: "36px"
           }}>
             <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px", fontWeight: 800, color: "#38bdf8" }}>
-              <span style={{ width: "22px", height: "22px", borderRadius: "50%", background: "#0284c7", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px" }}>1</span>
+              <span style={{ width: "20px", height: "20px", borderRadius: "2px", background: "#0284c7", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px" }}>1</span>
               <span>Set Link Quantities</span>
             </div>
             <i className="fa-solid fa-arrow-right" style={{ color: "rgba(255,255,255,0.25)", fontSize: "11px", alignSelf: "center" }}></i>
             <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px", fontWeight: 800, color: "#a5b4fc" }}>
-              <span style={{ width: "22px", height: "22px", borderRadius: "50%", background: "#4f46e5", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px" }}>2</span>
+              <span style={{ width: "20px", height: "20px", borderRadius: "2px", background: "#4f46e5", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px" }}>2</span>
               <span>Select Add-Ons</span>
             </div>
             <i className="fa-solid fa-arrow-right" style={{ color: "rgba(255,255,255,0.25)", fontSize: "11px", alignSelf: "center" }}></i>
             <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px", fontWeight: 800, color: "#4ade80" }}>
-              <span style={{ width: "22px", height: "22px", borderRadius: "50%", background: "#16a34a", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px" }}>3</span>
+              <span style={{ width: "20px", height: "20px", borderRadius: "2px", background: "#16a34a", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px" }}>3</span>
               <span>1-Click Order / Quote</span>
             </div>
           </div>
@@ -571,8 +571,8 @@ export default function BacklinkPackageCalculatorPage() {
                       border: `1.5px solid ${isSelected ? "#60a5fa" : "rgba(255, 255, 255, 0.12)"}`,
                       boxShadow: isSelected ? "0 0 25px rgba(59, 130, 246, 0.35)" : "0 4px 15px rgba(0,0,0,0.2)",
                       backdropFilter: "blur(12px)",
-                      borderRadius: "18px",
-                      padding: "18px 20px",
+                      borderRadius: "4px",
+                      padding: "16px 18px",
                       textAlign: "left",
                       color: "#ffffff",
                       cursor: "pointer",
@@ -585,7 +585,7 @@ export default function BacklinkPackageCalculatorPage() {
                         <i className={`${preset.icon}`} style={{ fontSize: "17px", color: preset.badgeColor }}></i>
                         <strong style={{ fontSize: "15px", fontWeight: 800 }}>{preset.name}</strong>
                       </div>
-                      <span style={{ fontSize: "10px", fontWeight: 800, background: preset.badgeColor, color: "#0f172a", padding: "3px 9px", borderRadius: "12px" }}>
+                      <span style={{ fontSize: "10px", fontWeight: 800, background: preset.badgeColor, color: "#0f172a", padding: "2px 8px", borderRadius: "4px" }}>
                         {preset.tag}
                       </span>
                     </div>
@@ -613,15 +613,15 @@ export default function BacklinkPackageCalculatorPage() {
               <div>
                 <div style={{
                   background: "#ffffff",
-                  borderRadius: "24px",
-                  padding: "32px",
+                  borderRadius: "4px",
+                  padding: "28px",
                   boxShadow: "0 10px 30px rgba(15, 23, 42, 0.05)",
                   border: "1px solid #e2e8f0"
                 }}>
                   
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1.5px solid #f1f5f9", paddingBottom: "20px", marginBottom: "26px", flexWrap: "wrap", gap: "12px" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1.5px solid #f1f5f9", paddingBottom: "18px", marginBottom: "24px", flexWrap: "wrap", gap: "12px" }}>
                     <div>
-                      <h2 style={{ fontSize: "22px", fontWeight: 900, color: "#0f172a", margin: 0, display: "flex", alignItems: "center", gap: "10px" }}>
+                      <h2 style={{ fontSize: "20px", fontWeight: 900, color: "#0f172a", margin: 0, display: "flex", alignItems: "center", gap: "10px" }}>
                         <i className="fa-solid fa-sliders text-blue-600"></i> Configure Backlink Quantities
                       </h2>
                       <p style={{ fontSize: "13px", color: "#64748b", margin: "4px 0 0 0" }}>
@@ -649,8 +649,8 @@ export default function BacklinkPackageCalculatorPage() {
                         background: "#f1f5f9",
                         border: "1px solid #cbd5e1",
                         color: "#475569",
-                        padding: "7px 16px",
-                        borderRadius: "8px",
+                        padding: "6px 14px",
+                        borderRadius: "4px",
                         fontSize: "12px",
                         fontWeight: 800,
                         cursor: "pointer",
@@ -665,7 +665,7 @@ export default function BacklinkPackageCalculatorPage() {
                   </div>
 
                   {/* Backlink Sliders Cards */}
-                  <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                     {BACKLINK_SERVICES.map(item => {
                       const qty = quantities[item.id] || 0;
                       const itemSubtotal = (qty * item.unitPrice).toFixed(2);
@@ -677,25 +677,25 @@ export default function BacklinkPackageCalculatorPage() {
                           style={{
                             background: isHighlighted ? "#ffffff" : "#f8fafc",
                             border: `1.5px solid ${isHighlighted ? item.accentColor : "#e2e8f0"}`,
-                            borderRadius: "18px",
-                            padding: "20px 24px",
-                            boxShadow: isHighlighted ? `0 8px 25px ${item.accentColor}18` : "none",
+                            borderRadius: "4px",
+                            padding: "18px 20px",
+                            boxShadow: isHighlighted ? `0 6px 20px ${item.accentColor}15` : "none",
                             transition: "all 0.25s ease"
                           }}
                         >
-                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "14px", flexWrap: "wrap", gap: "10px" }}>
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "12px", flexWrap: "wrap", gap: "10px" }}>
                             
-                            <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                               <div style={{
-                                width: "46px",
-                                height: "46px",
-                                borderRadius: "12px",
+                                width: "40px",
+                                height: "40px",
+                                borderRadius: "4px",
                                 background: `${item.accentColor}15`,
                                 color: item.accentColor,
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "center",
-                                fontSize: "20px",
+                                fontSize: "18px",
                                 border: `1px solid ${item.accentColor}30`
                               }}>
                                 <i className={item.icon}></i>
@@ -703,23 +703,23 @@ export default function BacklinkPackageCalculatorPage() {
                               
                               <div>
                                 <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                                  <h3 style={{ fontSize: "16px", fontWeight: 800, color: "#0f172a", margin: 0 }}>{item.name}</h3>
-                                  <span style={{ fontSize: "11px", fontWeight: 800, background: "#dcfce7", color: "#166534", padding: "2px 8px", borderRadius: "6px" }}>
+                                  <h3 style={{ fontSize: "15px", fontWeight: 800, color: "#0f172a", margin: 0 }}>{item.name}</h3>
+                                  <span style={{ fontSize: "10.5px", fontWeight: 800, background: "#dcfce7", color: "#166534", padding: "2px 6px", borderRadius: "4px" }}>
                                     {item.da}
                                   </span>
                                 </div>
-                                <span style={{ fontSize: "12px", color: "#64748b", fontWeight: 600 }}>
+                                <span style={{ fontSize: "11.5px", color: "#64748b", fontWeight: 600 }}>
                                   ${item.unitPrice.toFixed(2)}/link • {item.category}
                                 </span>
                               </div>
                             </div>
 
                             {/* Counter Input & Quick Presets */}
-                            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                               <button
                                 type="button"
                                 onClick={() => handleQtyChange(item.id, Math.max(0, qty - item.step))}
-                                style={{ width: "32px", height: "32px", borderRadius: "8px", background: "#f1f5f9", border: "1px solid #cbd5e1", color: "#334155", fontWeight: 900, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px" }}
+                                style={{ width: "30px", height: "30px", borderRadius: "4px", background: "#f1f5f9", border: "1px solid #cbd5e1", color: "#334155", fontWeight: 900, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "13px" }}
                               >-</button>
                               
                               <input
@@ -728,20 +728,20 @@ export default function BacklinkPackageCalculatorPage() {
                                 max={item.max}
                                 value={qty}
                                 onChange={(e) => handleQtyChange(item.id, e.target.value)}
-                                style={{ width: "70px", height: "36px", textAlign: "center", fontWeight: 900, fontSize: "16px", color: "#0f172a", border: `2px solid ${isHighlighted ? item.accentColor : "#cbd5e1"}`, borderRadius: "8px", outline: "none" }}
+                                style={{ width: "65px", height: "32px", textAlign: "center", fontWeight: 900, fontSize: "15px", color: "#0f172a", border: `1.5px solid ${isHighlighted ? item.accentColor : "#cbd5e1"}`, borderRadius: "4px", outline: "none" }}
                               />
 
                               <button
                                 type="button"
                                 onClick={() => handleQtyChange(item.id, Math.min(item.max, qty + item.step))}
-                                style={{ width: "32px", height: "32px", borderRadius: "8px", background: "#f1f5f9", border: "1px solid #cbd5e1", color: "#334155", fontWeight: 900, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px" }}
+                                style={{ width: "30px", height: "30px", borderRadius: "4px", background: "#f1f5f9", border: "1px solid #cbd5e1", color: "#334155", fontWeight: 900, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "13px" }}
                               >+</button>
                             </div>
 
                           </div>
 
                           {/* Range Slider */}
-                          <div style={{ position: "relative", marginBottom: "12px" }}>
+                          <div style={{ position: "relative", marginBottom: "10px" }}>
                             <input
                               type="range"
                               min="0"
@@ -753,7 +753,7 @@ export default function BacklinkPackageCalculatorPage() {
                                 width: "100%",
                                 accentColor: item.accentColor,
                                 cursor: "pointer",
-                                height: "8px",
+                                height: "6px",
                                 borderRadius: "4px"
                               }}
                             />
@@ -761,8 +761,8 @@ export default function BacklinkPackageCalculatorPage() {
 
                           {/* Preset Jump Pills */}
                           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "8px" }}>
-                            <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
-                              <span style={{ fontSize: "11px", fontWeight: 700, color: "#94a3b8" }}>Quick Add:</span>
+                            <div style={{ display: "flex", gap: "5px", alignItems: "center" }}>
+                              <span style={{ fontSize: "11px", fontWeight: 700, color: "#94a3b8" }}>Quick:</span>
                               {item.presetSteps.map(pStep => (
                                 <button
                                   key={pStep}
@@ -772,8 +772,8 @@ export default function BacklinkPackageCalculatorPage() {
                                     background: qty === pStep ? item.accentColor : "#f1f5f9",
                                     color: qty === pStep ? "#ffffff" : "#475569",
                                     border: "none",
-                                    padding: "2px 8px",
-                                    borderRadius: "6px",
+                                    padding: "2px 7px",
+                                    borderRadius: "4px",
                                     fontSize: "11px",
                                     fontWeight: 700,
                                     cursor: "pointer"
@@ -789,8 +789,8 @@ export default function BacklinkPackageCalculatorPage() {
                                   background: "#fef3c7",
                                   color: "#92400e",
                                   border: "none",
-                                  padding: "2px 8px",
-                                  borderRadius: "6px",
+                                  padding: "2px 7px",
+                                  borderRadius: "4px",
                                   fontSize: "11px",
                                   fontWeight: 800,
                                   cursor: "pointer"
@@ -801,13 +801,13 @@ export default function BacklinkPackageCalculatorPage() {
                             </div>
 
                             <div style={{ textAlign: "right" }}>
-                              <span style={{ fontSize: "15px", fontWeight: 900, color: isHighlighted ? "#059669" : "#94a3b8" }}>
+                              <span style={{ fontSize: "14px", fontWeight: 900, color: isHighlighted ? "#059669" : "#94a3b8" }}>
                                 ${itemSubtotal} USD
                               </span>
                             </div>
                           </div>
 
-                          <div style={{ marginTop: "8px", fontSize: "12px", color: "#64748b", lineHeight: 1.4, borderTop: "1px dashed #e2e8f0", paddingTop: "8px" }}>
+                          <div style={{ marginTop: "8px", fontSize: "11.5px", color: "#64748b", lineHeight: 1.4, borderTop: "1px dashed #e2e8f0", paddingTop: "8px" }}>
                             {item.desc}
                           </div>
                         </div>
@@ -820,14 +820,14 @@ export default function BacklinkPackageCalculatorPage() {
                 {/* ================= STRATEGY & ADD-ONS ================= */}
                 <div style={{
                   background: "#ffffff",
-                  borderRadius: "24px",
-                  padding: "32px",
+                  borderRadius: "4px",
+                  padding: "28px",
                   boxShadow: "0 10px 30px rgba(15, 23, 42, 0.05)",
                   border: "1px solid #e2e8f0",
                   marginTop: "25px"
                 }}>
-                  <div style={{ marginBottom: "22px" }}>
-                    <h2 style={{ fontSize: "20px", fontWeight: 900, color: "#0f172a", margin: 0, display: "flex", alignItems: "center", gap: "10px" }}>
+                  <div style={{ marginBottom: "20px" }}>
+                    <h2 style={{ fontSize: "19px", fontWeight: 900, color: "#0f172a", margin: 0, display: "flex", alignItems: "center", gap: "10px" }}>
                       <i className="fa-solid fa-shield-halved text-emerald-600"></i> Indexation &amp; Velocity Add-Ons
                     </h2>
                     <p style={{ fontSize: "13px", color: "#64748b", margin: "4px 0 0 0" }}>
@@ -835,28 +835,28 @@ export default function BacklinkPackageCalculatorPage() {
                     </p>
                   </div>
 
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "16px" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "14px" }}>
                     
                     {/* Tier 2 Indexing */}
                     <div
                       onClick={() => toggleAddon("tier2Indexation")}
                       style={{
                         background: addons.tier2Indexation ? "#ecfdf5" : "#f8fafc",
-                        border: `2px solid ${addons.tier2Indexation ? "#10b981" : "#e2e8f0"}`,
-                        borderRadius: "16px",
-                        padding: "18px",
+                        border: `1.5px solid ${addons.tier2Indexation ? "#10b981" : "#e2e8f0"}`,
+                        borderRadius: "4px",
+                        padding: "16px",
                         cursor: "pointer",
                         transition: "all 0.2s"
                       }}
                     >
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
-                        <span style={{ fontWeight: 800, fontSize: "15px", color: "#0f172a" }}>🚀 Tier-2 Indexation Pings</span>
-                        <i className={`fa-solid ${addons.tier2Indexation ? "fa-circle-check text-emerald-600" : "fa-circle text-slate-300"}`} style={{ fontSize: "20px" }}></i>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
+                        <span style={{ fontWeight: 800, fontSize: "14px", color: "#0f172a" }}>🚀 Tier-2 Indexation Pings</span>
+                        <i className={`fa-solid ${addons.tier2Indexation ? "fa-circle-check text-emerald-600" : "fa-circle text-slate-300"}`} style={{ fontSize: "18px" }}></i>
                       </div>
-                      <p style={{ fontSize: "12px", color: "#64748b", margin: "0 0 10px", lineHeight: 1.4 }}>
+                      <p style={{ fontSize: "11.5px", color: "#64748b", margin: "0 0 8px", lineHeight: 1.4 }}>
                         Ping &amp; drip-feed backlinks into Google discovery networks for rapid 7-day indexation.
                       </p>
-                      <span style={{ fontSize: "11px", fontWeight: 800, background: "#d1fae5", color: "#065f46", padding: "3px 8px", borderRadius: "6px" }}>
+                      <span style={{ fontSize: "10.5px", fontWeight: 800, background: "#d1fae5", color: "#065f46", padding: "2px 7px", borderRadius: "4px" }}>
                         +15% Booster Fee
                       </span>
                     </div>
@@ -866,21 +866,21 @@ export default function BacklinkPackageCalculatorPage() {
                       onClick={() => toggleAddon("dripFeed")}
                       style={{
                         background: addons.dripFeed ? "#eff6ff" : "#f8fafc",
-                        border: `2px solid ${addons.dripFeed ? "#3b82f6" : "#e2e8f0"}`,
-                        borderRadius: "16px",
-                        padding: "18px",
+                        border: `1.5px solid ${addons.dripFeed ? "#3b82f6" : "#e2e8f0"}`,
+                        borderRadius: "4px",
+                        padding: "16px",
                         cursor: "pointer",
                         transition: "all 0.2s"
                       }}
                     >
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
-                        <span style={{ fontWeight: 800, fontSize: "15px", color: "#0f172a" }}>⏱️ 30-Day Safe Drip-Feed</span>
-                        <i className={`fa-solid ${addons.dripFeed ? "fa-circle-check text-blue-600" : "fa-circle text-slate-300"}`} style={{ fontSize: "20px" }}></i>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
+                        <span style={{ fontWeight: 800, fontSize: "14px", color: "#0f172a" }}>⏱️ 30-Day Safe Drip-Feed</span>
+                        <i className={`fa-solid ${addons.dripFeed ? "fa-circle-check text-blue-600" : "fa-circle text-slate-300"}`} style={{ fontSize: "18px" }}></i>
                       </div>
-                      <p style={{ fontSize: "12px", color: "#64748b", margin: "0 0 10px", lineHeight: 1.4 }}>
+                      <p style={{ fontSize: "11.5px", color: "#64748b", margin: "0 0 8px", lineHeight: 1.4 }}>
                         Spread link creation naturally over 30 days to mirror realistic organic velocity.
                       </p>
-                      <span style={{ fontSize: "11px", fontWeight: 800, background: "#dbeafe", color: "#1e40af", padding: "3px 8px", borderRadius: "6px" }}>
+                      <span style={{ fontSize: "10.5px", fontWeight: 800, background: "#dbeafe", color: "#1e40af", padding: "2px 7px", borderRadius: "4px" }}>
                         100% FREE / INCLUDED
                       </span>
                     </div>
@@ -890,21 +890,21 @@ export default function BacklinkPackageCalculatorPage() {
                       onClick={() => toggleAddon("expressDelivery")}
                       style={{
                         background: addons.expressDelivery ? "#fef3c7" : "#f8fafc",
-                        border: `2px solid ${addons.expressDelivery ? "#f59e0b" : "#e2e8f0"}`,
-                        borderRadius: "16px",
-                        padding: "18px",
+                        border: `1.5px solid ${addons.expressDelivery ? "#f59e0b" : "#e2e8f0"}`,
+                        borderRadius: "4px",
+                        padding: "16px",
                         cursor: "pointer",
                         transition: "all 0.2s"
                       }}
                     >
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
-                        <span style={{ fontWeight: 800, fontSize: "15px", color: "#0f172a" }}>⚡ 7-Day Express Priority</span>
-                        <i className={`fa-solid ${addons.expressDelivery ? "fa-circle-check text-amber-600" : "fa-circle text-slate-300"}`} style={{ fontSize: "20px" }}></i>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
+                        <span style={{ fontWeight: 800, fontSize: "14px", color: "#0f172a" }}>⚡ 7-Day Express Priority</span>
+                        <i className={`fa-solid ${addons.expressDelivery ? "fa-circle-check text-amber-600" : "fa-circle text-slate-300"}`} style={{ fontSize: "18px" }}></i>
                       </div>
-                      <p style={{ fontSize: "12px", color: "#64748b", margin: "0 0 10px", lineHeight: 1.4 }}>
+                      <p style={{ fontSize: "11.5px", color: "#64748b", margin: "0 0 8px", lineHeight: 1.4 }}>
                         Dedicated team sprint for priority queue execution within 3 to 5 business days.
                       </p>
-                      <span style={{ fontSize: "11px", fontWeight: 800, background: "#fef3c7", color: "#92400e", padding: "3px 8px", borderRadius: "6px" }}>
+                      <span style={{ fontSize: "10.5px", fontWeight: 800, background: "#fef3c7", color: "#92400e", padding: "2px 7px", borderRadius: "4px" }}>
                         +20% Express Fee
                       </span>
                     </div>
@@ -913,19 +913,19 @@ export default function BacklinkPackageCalculatorPage() {
                     <div
                       style={{
                         background: "#f8fafc",
-                        border: "2px solid #e2e8f0",
-                        borderRadius: "16px",
-                        padding: "18px"
+                        border: "1.5px solid #e2e8f0",
+                        borderRadius: "4px",
+                        padding: "16px"
                       }}
                     >
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
-                        <span style={{ fontWeight: 800, fontSize: "15px", color: "#0f172a" }}>📊 Live Google Sheet Report</span>
-                        <i className="fa-solid fa-circle-check text-emerald-600" style={{ fontSize: "20px" }}></i>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
+                        <span style={{ fontWeight: 800, fontSize: "14px", color: "#0f172a" }}>📊 Live Google Sheet Report</span>
+                        <i className="fa-solid fa-circle-check text-emerald-600" style={{ fontSize: "18px" }}></i>
                       </div>
-                      <p style={{ fontSize: "12px", color: "#64748b", margin: "0 0 10px", lineHeight: 1.4 }}>
+                      <p style={{ fontSize: "11.5px", color: "#64748b", margin: "0 0 8px", lineHeight: 1.4 }}>
                         Full transparent report with live link URLs, anchor distribution, and login credentials.
                       </p>
-                      <span style={{ fontSize: "11px", fontWeight: 800, background: "#e2e8f0", color: "#334155", padding: "3px 8px", borderRadius: "6px" }}>
+                      <span style={{ fontSize: "10.5px", fontWeight: 800, background: "#e2e8f0", color: "#334155", padding: "2px 7px", borderRadius: "4px" }}>
                         100% FREE / INCLUDED
                       </span>
                     </div>
@@ -940,24 +940,24 @@ export default function BacklinkPackageCalculatorPage() {
                 
                 <div style={{
                   background: "linear-gradient(180deg, #090e17 0%, #0f172a 100%)",
-                  borderRadius: "28px",
-                  padding: "32px",
+                  borderRadius: "4px",
+                  padding: "28px",
                   color: "#ffffff",
-                  boxShadow: "0 25px 60px -15px rgba(2, 6, 23, 0.7)",
+                  boxShadow: "0 20px 50px -10px rgba(2, 6, 23, 0.7)",
                   border: "1px solid rgba(56, 189, 248, 0.2)",
                   position: "relative",
                   overflow: "hidden"
                 }}>
                   {/* Subtle top neon accent line */}
-                  <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "4px", background: "linear-gradient(90deg, #38bdf8 0%, #818cf8 50%, #34d399 100%)" }}></div>
+                  <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: "linear-gradient(90deg, #38bdf8 0%, #818cf8 50%, #34d399 100%)" }}></div>
 
                   {/* Header & Currency Toggle */}
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "18px", marginBottom: "22px" }}>
-                    <span style={{ fontSize: "12px", fontWeight: 800, letterSpacing: "1px", color: "#94a3b8" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "16px", marginBottom: "20px" }}>
+                    <span style={{ fontSize: "11px", fontWeight: 800, letterSpacing: "1px", color: "#94a3b8" }}>
                       ESTIMATED INVESTMENT
                     </span>
 
-                    <div style={{ display: "inline-flex", background: "rgba(255,255,255,0.1)", borderRadius: "10px", padding: "3px" }}>
+                    <div style={{ display: "inline-flex", background: "rgba(255,255,255,0.1)", borderRadius: "4px", padding: "2px" }}>
                       <button
                         type="button"
                         onClick={() => setCurrency("USD")}
@@ -965,9 +965,9 @@ export default function BacklinkPackageCalculatorPage() {
                           background: currency === "USD" ? "#2563eb" : "transparent",
                           color: "#ffffff",
                           border: "none",
-                          padding: "5px 12px",
-                          borderRadius: "8px",
-                          fontSize: "12px",
+                          padding: "4px 10px",
+                          borderRadius: "4px",
+                          fontSize: "11px",
                           fontWeight: 800,
                           cursor: "pointer"
                         }}
@@ -979,9 +979,9 @@ export default function BacklinkPackageCalculatorPage() {
                           background: currency === "BDT" ? "#2563eb" : "transparent",
                           color: "#ffffff",
                           border: "none",
-                          padding: "5px 12px",
-                          borderRadius: "8px",
-                          fontSize: "12px",
+                          padding: "4px 10px",
+                          borderRadius: "4px",
+                          fontSize: "11px",
                           fontWeight: 800,
                           cursor: "pointer"
                         }}
@@ -989,74 +989,74 @@ export default function BacklinkPackageCalculatorPage() {
                     </div>
                   </div>
 
-                  {/* Big Glowing Price */}
-                  <div style={{ marginBottom: "24px" }}>
-                    <div style={{ fontSize: "clamp(38px, 4vw, 52px)", fontWeight: 900, color: "#38bdf8", lineHeight: 1, letterSpacing: "-1px", textShadow: "0 0 25px rgba(56, 189, 248, 0.4)" }}>
+                  {/* Big Price */}
+                  <div style={{ marginBottom: "22px" }}>
+                    <div style={{ fontSize: "clamp(34px, 3.5vw, 46px)", fontWeight: 900, color: "#38bdf8", lineHeight: 1, letterSpacing: "-1px" }}>
                       {currency === "USD" ? `$${finalTotalUSD.toFixed(2)}` : `৳${finalTotalBDT.toLocaleString()}`}
                     </div>
-                    <div style={{ fontSize: "13px", color: "#94a3b8", marginTop: "8px" }}>
-                      {currency === "USD" ? `Approx. ৳${finalTotalBDT.toLocaleString()} BDT` : `Approx. $${finalTotalUSD.toFixed(2)} USD`} • One-time verified execution
+                    <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "6px" }}>
+                      {currency === "USD" ? `Approx. ৳${finalTotalBDT.toLocaleString()} BDT` : `Approx. $${finalTotalUSD.toFixed(2)} USD`} • Verified execution
                     </div>
                   </div>
 
                   {/* Link Power & Authority Gauge */}
-                  <div style={{ background: "rgba(255,255,255,0.06)", borderRadius: "16px", padding: "16px", marginBottom: "22px", border: "1px solid rgba(255,255,255,0.08)" }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", fontSize: "12px", fontWeight: 800, marginBottom: "8px" }}>
-                      <span style={{ color: "#cbd5e1" }}>SEO Authority &amp; Ranking Impact:</span>
+                  <div style={{ background: "rgba(255,255,255,0.06)", borderRadius: "4px", padding: "14px", marginBottom: "20px", border: "1px solid rgba(255,255,255,0.08)" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", fontSize: "11.5px", fontWeight: 800, marginBottom: "6px" }}>
+                      <span style={{ color: "#cbd5e1" }}>SEO Ranking Impact:</span>
                       <span style={{ color: powerColor }}>{powerLabel} ({powerScore}%)</span>
                     </div>
-                    <div style={{ width: "100%", height: "8px", background: "rgba(255,255,255,0.1)", borderRadius: "4px", overflow: "hidden" }}>
-                      <div style={{ width: `${powerScore}%`, height: "100%", background: `linear-gradient(90deg, #38bdf8, ${powerColor})`, borderRadius: "4px", transition: "width 0.4s ease" }}></div>
+                    <div style={{ width: "100%", height: "6px", background: "rgba(255,255,255,0.1)", borderRadius: "2px", overflow: "hidden" }}>
+                      <div style={{ width: `${powerScore}%`, height: "100%", background: `linear-gradient(90deg, #38bdf8, ${powerColor})`, borderRadius: "2px", transition: "width 0.4s ease" }}></div>
                     </div>
                   </div>
 
                   {/* Metrics Grid */}
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", background: "rgba(255,255,255,0.04)", borderRadius: "16px", padding: "16px", marginBottom: "24px", border: "1px solid rgba(255,255,255,0.08)" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", background: "rgba(255,255,255,0.04)", borderRadius: "4px", padding: "14px", marginBottom: "20px", border: "1px solid rgba(255,255,255,0.08)" }}>
                     <div>
-                      <div style={{ fontSize: "11px", color: "#94a3b8", fontWeight: 700 }}>TOTAL LINKS</div>
-                      <div style={{ fontSize: "22px", fontWeight: 900, color: "#ffffff", marginTop: "2px" }}>
-                        <i className="fa-solid fa-link text-blue-400 mr-1" style={{ fontSize: "16px" }}></i> {totalLinkCount}
+                      <div style={{ fontSize: "10.5px", color: "#94a3b8", fontWeight: 700 }}>TOTAL LINKS</div>
+                      <div style={{ fontSize: "20px", fontWeight: 900, color: "#ffffff", marginTop: "2px" }}>
+                        <i className="fa-solid fa-link text-blue-400 mr-1" style={{ fontSize: "15px" }}></i> {totalLinkCount}
                       </div>
                     </div>
 
                     <div>
-                      <div style={{ fontSize: "11px", color: "#94a3b8", fontWeight: 700 }}>AVG DOMAIN TRUST</div>
-                      <div style={{ fontSize: "22px", fontWeight: 900, color: "#34d399", marginTop: "2px" }}>
+                      <div style={{ fontSize: "10.5px", color: "#94a3b8", fontWeight: 700 }}>AVG DOMAIN TRUST</div>
+                      <div style={{ fontSize: "20px", fontWeight: 900, color: "#34d399", marginTop: "2px" }}>
                         DA 88+
                       </div>
                     </div>
 
                     <div>
-                      <div style={{ fontSize: "11px", color: "#94a3b8", fontWeight: 700 }}>EST. DELIVERY</div>
-                      <div style={{ fontSize: "14px", fontWeight: 800, color: "#e2e8f0", marginTop: "4px" }}>
+                      <div style={{ fontSize: "10.5px", color: "#94a3b8", fontWeight: 700 }}>EST. DELIVERY</div>
+                      <div style={{ fontSize: "13px", fontWeight: 800, color: "#e2e8f0", marginTop: "3px" }}>
                         {turnaroundDays}
                       </div>
                     </div>
 
                     <div>
-                      <div style={{ fontSize: "11px", color: "#94a3b8", fontWeight: 700 }}>INDEX GUARANTEE</div>
-                      <div style={{ fontSize: "14px", fontWeight: 800, color: "#facc15", marginTop: "4px" }}>
+                      <div style={{ fontSize: "10.5px", color: "#94a3b8", fontWeight: 700 }}>INDEX GUARANTEE</div>
+                      <div style={{ fontSize: "13px", fontWeight: 800, color: "#facc15", marginTop: "3px" }}>
                         {addons.tier2Indexation ? "Fast (7-14d)" : "Standard"}
                       </div>
                     </div>
                   </div>
 
                   {/* Selected Breakdown List */}
-                  <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "18px", marginBottom: "24px" }}>
-                    <div style={{ fontSize: "12px", fontWeight: 800, color: "#cbd5e1", marginBottom: "10px", display: "flex", justifyContent: "space-between" }}>
-                      <span>SELECTED PACKAGE COMPOSITION:</span>
+                  <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "16px", marginBottom: "20px" }}>
+                    <div style={{ fontSize: "11px", fontWeight: 800, color: "#cbd5e1", marginBottom: "8px", display: "flex", justifyContent: "space-between" }}>
+                      <span>PACKAGE COMPOSITION:</span>
                       <span style={{ color: "#38bdf8" }}>{BACKLINK_SERVICES.filter(item => (quantities[item.id] || 0) > 0).length} Types</span>
                     </div>
 
-                    <div style={{ maxHeight: "150px", overflowY: "auto", display: "flex", flexDirection: "column", gap: "8px", fontSize: "12px", paddingRight: "4px" }}>
+                    <div style={{ maxHeight: "140px", overflowY: "auto", display: "flex", flexDirection: "column", gap: "6px", fontSize: "11.5px", paddingRight: "4px" }}>
                       {BACKLINK_SERVICES.filter(item => (quantities[item.id] || 0) > 0).map(item => (
-                        <div key={item.id} style={{ display: "flex", justifyContent: "space-between", color: "#94a3b8", borderBottom: "1px dashed rgba(255,255,255,0.06)", paddingBottom: "4px" }}>
+                        <div key={item.id} style={{ display: "flex", justifyContent: "space-between", color: "#94a3b8", borderBottom: "1px dashed rgba(255,255,255,0.06)", paddingBottom: "3px" }}>
                           <span>• {item.name}:</span>
                           <strong style={{ color: "#ffffff" }}>{quantities[item.id]} Links</strong>
                         </div>
                       ))}
                       {totalLinkCount === 0 && (
-                        <div style={{ color: "#f87171", fontStyle: "italic", textAlign: "center", padding: "10px 0" }}>
+                        <div style={{ color: "#f87171", fontStyle: "italic", textAlign: "center", padding: "8px 0" }}>
                           No backlinks selected. Use sliders or select a preset bundle above.
                         </div>
                       )}
@@ -1064,7 +1064,7 @@ export default function BacklinkPackageCalculatorPage() {
                   </div>
 
                   {/* ACTION BUTTONS */}
-                  <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                     
                     {/* WhatsApp 1-Click Order */}
                     <a
@@ -1075,20 +1075,20 @@ export default function BacklinkPackageCalculatorPage() {
                       style={{
                         background: "linear-gradient(135deg, #22c55e 0%, #16a34a 100%)",
                         color: "#ffffff",
-                        padding: "16px 20px",
-                        borderRadius: "14px",
+                        padding: "14px 18px",
+                        borderRadius: "4px",
                         textDecoration: "none",
                         fontWeight: 900,
-                        fontSize: "16px",
+                        fontSize: "15px",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        gap: "10px",
-                        boxShadow: "0 10px 25px rgba(34, 197, 94, 0.45)",
+                        gap: "8px",
+                        boxShadow: "0 8px 20px rgba(34, 197, 94, 0.4)",
                         transition: "all 0.2s"
                       }}
                     >
-                      <i className="fa-brands fa-whatsapp text-2xl"></i>
+                      <i className="fa-brands fa-whatsapp text-xl"></i>
                       <span>Order via WhatsApp (1-Click)</span>
                     </a>
 
@@ -1100,19 +1100,19 @@ export default function BacklinkPackageCalculatorPage() {
                         setShowOrderModal(true);
                       }}
                       style={{
-                        background: "linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)",
+                        background: "#2563eb",
                         color: "#ffffff",
                         border: "none",
-                        padding: "15px 20px",
-                        borderRadius: "14px",
+                        padding: "13px 18px",
+                        borderRadius: "4px",
                         fontWeight: 800,
-                        fontSize: "15px",
+                        fontSize: "14px",
                         cursor: "pointer",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        gap: "10px",
-                        boxShadow: "0 10px 25px rgba(37, 99, 235, 0.35)"
+                        gap: "8px",
+                        boxShadow: "0 8px 20px rgba(37, 99, 235, 0.3)"
                       }}
                     >
                       <i className="fa-solid fa-paper-plane"></i>
@@ -1127,15 +1127,15 @@ export default function BacklinkPackageCalculatorPage() {
                         background: "rgba(255,255,255,0.08)",
                         color: "#cbd5e1",
                         border: "1px solid rgba(255,255,255,0.15)",
-                        padding: "11px 16px",
-                        borderRadius: "12px",
+                        padding: "10px 14px",
+                        borderRadius: "4px",
                         fontWeight: 700,
-                        fontSize: "13px",
+                        fontSize: "12px",
                         cursor: "pointer",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        gap: "8px"
+                        gap: "6px"
                       }}
                     >
                       <i className={copied ? "fa-solid fa-check text-emerald-400" : "fa-solid fa-copy"}></i>
@@ -1145,16 +1145,16 @@ export default function BacklinkPackageCalculatorPage() {
                   </div>
 
                   {/* Trust Guarantees */}
-                  <div style={{ marginTop: "24px", paddingTop: "18px", borderTop: "1px solid rgba(255,255,255,0.1)", display: "flex", flexDirection: "column", gap: "8px", fontSize: "12px", color: "#94a3b8" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                  <div style={{ marginTop: "20px", paddingTop: "16px", borderTop: "1px solid rgba(255,255,255,0.1)", display: "flex", flexDirection: "column", gap: "7px", fontSize: "11.5px", color: "#94a3b8" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                       <i className="fa-solid fa-shield-check text-emerald-400"></i>
                       <span>100% Real Manual Hand-Crafted Accounts</span>
                     </div>
-                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                       <i className="fa-solid fa-arrows-rotate text-blue-400"></i>
                       <span>Free Replacement for Any Dropped Links</span>
                     </div>
-                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                       <i className="fa-solid fa-file-excel text-emerald-400"></i>
                       <span>Live White-Label Excel Spreadsheet Delivery</span>
                     </div>
@@ -1174,7 +1174,7 @@ export default function BacklinkPackageCalculatorPage() {
       {/* ================= FAQ SECTION ================= */}
       <section style={{ maxWidth: "1000px", margin: "80px auto 0", padding: "0 20px" }}>
         <div style={{ textAlign: "center", marginBottom: "40px" }}>
-          <div style={{ display: "inline-block", background: "#e0e7ff", color: "#4338ca", padding: "5px 16px", borderRadius: "30px", fontSize: "12px", fontWeight: 800, marginBottom: "12px" }}>
+          <div style={{ display: "inline-block", background: "#e0e7ff", color: "#4338ca", padding: "4px 12px", borderRadius: "4px", fontSize: "11.5px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.04em", marginBottom: "12px" }}>
             TRANSPARENCY &amp; METHODOLOGY
           </div>
           <h2 style={{ fontSize: "30px", fontWeight: 900, color: "#0f172a" }}>Frequently Asked Questions</h2>
