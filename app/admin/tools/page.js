@@ -74,6 +74,16 @@ export default function AdminToolsPage() {
     }
   };
 
+  const [configTool, setConfigTool] = useState(null);
+
+  const handleSaveConfig = async (toolSlug, updatedConfig) => {
+    const updated = tools.map((t) =>
+      t.slug === toolSlug ? { ...t, config: updatedConfig } : t
+    );
+    await handleSave(updated);
+    setConfigTool(null);
+  };
+
   const handleAdd = async (form) => {
     const updated = [...tools, form];
     await handleSave(updated);
@@ -332,7 +342,7 @@ export default function AdminToolsPage() {
           <div>
             <h2 className="admin-table-title">Registered Free Tools</h2>
             <p style={{ margin: "2px 0 0 0", fontSize: "12.5px", color: "#64748b" }}>
-              Showing {filtered.length} free audit and calculator utilities (Edit, Delete, Duplicate, Configure)
+              Showing {filtered.length} free audit and calculator utilities (Configure, Edit, Duplicate, Delete)
             </p>
           </div>
         </div>
@@ -414,7 +424,7 @@ export default function AdminToolsPage() {
 
                     <td>
                       <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
-                        {tool.slug === "backlink-package-calculator" && (
+                        {tool.slug === "backlink-package-calculator" ? (
                           <Link
                             href="/admin/backlink-calculator"
                             title="Configure Rates & Packages"
@@ -424,6 +434,16 @@ export default function AdminToolsPage() {
                             <i className="fa-solid fa-sliders"></i>
                             <span>Configure</span>
                           </Link>
+                        ) : (
+                          <button
+                            onClick={() => setConfigTool(tool)}
+                            title={`Configure ${tool.title} Parameters & Settings`}
+                            className="btn-admin btn-admin-primary btn-admin-sm"
+                            style={{ padding: "5px 9px", fontSize: "11px", display: "inline-flex", alignItems: "center", gap: "4px", borderRadius: "4px" }}
+                          >
+                            <i className="fa-solid fa-sliders"></i>
+                            <span>Configure</span>
+                          </button>
                         )}
 
                         <Link
@@ -438,7 +458,7 @@ export default function AdminToolsPage() {
 
                         <button
                           onClick={() => { setEditItem(tool); setShowForm(false); }}
-                          title="Edit Tool"
+                          title="Edit Tool Details"
                           className="btn-admin btn-admin-outline btn-admin-sm"
                           style={{ padding: "5px 9px", color: "#2563eb", borderRadius: "4px" }}
                         >
@@ -472,7 +492,17 @@ export default function AdminToolsPage() {
         </div>
       </div>
 
-      {/* 6. DELETE MODAL */}
+      {/* 6. TOOL CONFIGURATION MODAL */}
+      {configTool && (
+        <ToolConfigModal
+          tool={configTool}
+          onSave={(updatedConfig) => handleSaveConfig(configTool.slug, updatedConfig)}
+          onClose={() => setConfigTool(null)}
+          saving={saving}
+        />
+      )}
+
+      {/* 7. DELETE MODAL */}
       {deleteSlug && (
         <div
           style={{
@@ -804,6 +834,508 @@ function ToolForm({ initial, categories, colors, onSave, onCancel, saving, isEdi
           </button>
         </div>
       </form>
+    </div>
+  );
+}
+
+function ToolConfigModal({ tool, onSave, onClose, saving }) {
+  const [activeTab, setActiveTab] = useState("branding"); // "branding" | "params" | "faqs" | "json"
+  const [cfg, setCfg] = useState(() => {
+    const existing = tool.config || {};
+    return {
+      customHeading: existing.customHeading || "",
+      customSubtitle: existing.customSubtitle || "",
+      alertNotice: existing.alertNotice || "",
+      whatsappNumber: existing.whatsappNumber || "+8801670769816",
+      ctaLabel: existing.ctaLabel || "Book Free Consultation",
+      ctaUrl: existing.ctaUrl || "/contact",
+      basePrice: existing.basePrice ?? 500,
+      rateMultiplier: existing.rateMultiplier ?? 1.0,
+      currency: existing.currency || "USD",
+      requireLeadCapture: !!existing.requireLeadCapture,
+      dailyRateLimit: existing.dailyRateLimit || 50,
+      faqs: Array.isArray(existing.faqs) ? existing.faqs : [],
+      jsonConfigText: existing.jsonConfig ? JSON.stringify(existing.jsonConfig, null, 2) : "{\n  \"engineVersion\": \"2026.1\",\n  \"enableProCalculations\": true\n}"
+    };
+  });
+
+  const [jsonError, setJsonError] = useState("");
+
+  const updateField = (key, val) => {
+    setCfg((prev) => ({ ...prev, [key]: val }));
+  };
+
+  const handleAddFaq = () => {
+    setCfg((prev) => ({
+      ...prev,
+      faqs: [...prev.faqs, { question: "", answer: "" }]
+    }));
+  };
+
+  const handleUpdateFaq = (idx, field, val) => {
+    const updatedFaqs = [...cfg.faqs];
+    updatedFaqs[idx] = { ...updatedFaqs[idx], [field]: val };
+    setCfg((prev) => ({ ...prev, faqs: updatedFaqs }));
+  };
+
+  const handleDeleteFaq = (idx) => {
+    setCfg((prev) => ({
+      ...prev,
+      faqs: prev.faqs.filter((_, i) => i !== idx)
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    let parsedJson = null;
+    if (cfg.jsonConfigText && cfg.jsonConfigText.trim()) {
+      try {
+        parsedJson = JSON.parse(cfg.jsonConfigText);
+        setJsonError("");
+      } catch (err) {
+        setJsonError("Invalid JSON syntax: " + err.message);
+        setActiveTab("json");
+        return;
+      }
+    }
+
+    const finalConfig = {
+      customHeading: cfg.customHeading,
+      customSubtitle: cfg.customSubtitle,
+      alertNotice: cfg.alertNotice,
+      whatsappNumber: cfg.whatsappNumber,
+      ctaLabel: cfg.ctaLabel,
+      ctaUrl: cfg.ctaUrl,
+      basePrice: Number(cfg.basePrice) || 0,
+      rateMultiplier: Number(cfg.rateMultiplier) || 1.0,
+      currency: cfg.currency,
+      requireLeadCapture: cfg.requireLeadCapture,
+      dailyRateLimit: Number(cfg.dailyRateLimit) || 50,
+      faqs: cfg.faqs.filter((f) => f.question && f.question.trim()),
+      jsonConfig: parsedJson
+    };
+
+    onSave(finalConfig);
+  };
+
+  return (
+    <div
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: "rgba(15, 23, 42, 0.65)",
+        backdropFilter: "blur(4px)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        zIndex: 99999,
+        padding: "20px",
+      }}
+    >
+      <div
+        style={{
+          background: "#ffffff",
+          borderRadius: "4px",
+          width: "100%",
+          maxWidth: "760px",
+          maxHeight: "90vh",
+          display: "flex",
+          flexDirection: "column",
+          boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+          border: "1px solid #cbd5e1",
+          overflow: "hidden"
+        }}
+      >
+        {/* Modal Header */}
+        <div
+          style={{
+            padding: "16px 20px",
+            borderBottom: "1px solid #e2e8f0",
+            background: "#f8fafc",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <div
+              style={{
+                width: "36px",
+                height: "36px",
+                borderRadius: "4px",
+                background: tool.bg || "#eff6ff",
+                color: tool.color || "#2563eb",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "16px",
+              }}
+            >
+              <i className={`fa-solid ${tool.icon || "fa-sliders"}`}></i>
+            </div>
+            <div>
+              <div style={{ fontWeight: 800, fontSize: "15px", color: "#0f172a" }}>
+                Configure: {tool.title}
+              </div>
+              <div style={{ fontSize: "11.5px", color: "#64748b", fontFamily: "monospace" }}>
+                /tools/{tool.slug}
+              </div>
+            </div>
+          </div>
+
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <Link
+              href={`/tools/${tool.slug}`}
+              target="_blank"
+              className="btn-admin btn-admin-outline btn-admin-sm"
+              style={{ padding: "4px 8px", fontSize: "11px", borderRadius: "4px", textDecoration: "none", color: "#475569" }}
+            >
+              <i className="fa-solid fa-arrow-up-right-from-square" style={{ marginRight: "4px" }}></i>
+              <span>Live Tool</span>
+            </Link>
+            <button
+              onClick={onClose}
+              style={{ background: "none", border: "none", fontSize: "18px", color: "#64748b", cursor: "pointer" }}
+            >
+              <i className="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        </div>
+
+        {/* Tab Navigation */}
+        <div
+          style={{
+            display: "flex",
+            borderBottom: "1px solid #e2e8f0",
+            background: "#ffffff",
+            padding: "0 20px",
+            gap: "8px",
+            overflowX: "auto"
+          }}
+        >
+          {[
+            { id: "branding", label: "General & Branding", icon: "fa-sliders" },
+            { id: "params", label: "Algorithm & Defaults", icon: "fa-calculator" },
+            { id: "faqs", label: `Tool FAQs (${cfg.faqs.length})`, icon: "fa-circle-question" },
+            { id: "json", label: "Engine JSON Config", icon: "fa-code" },
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              onClick={() => setActiveTab(tab.id)}
+              style={{
+                padding: "11px 14px",
+                fontSize: "12.5px",
+                fontWeight: 700,
+                border: "none",
+                background: "none",
+                cursor: "pointer",
+                borderBottom: activeTab === tab.id ? "2px solid #2563eb" : "2px solid transparent",
+                color: activeTab === tab.id ? "#2563eb" : "#64748b",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "6px",
+                whiteSpace: "nowrap"
+              }}
+            >
+              <i className={`fa-solid ${tab.icon}`}></i>
+              <span>{tab.label}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* Modal Form Body */}
+        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", flex: 1, overflow: "hidden" }}>
+          <div style={{ padding: "20px", overflowY: "auto", flex: 1, display: "flex", flexDirection: "column", gap: "16px" }}>
+            
+            {/* TAB 1: BRANDING */}
+            {activeTab === "branding" && (
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
+                <div style={{ gridColumn: "1 / -1" }}>
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: 700, color: "#334155", marginBottom: "5px" }}>
+                    Custom Headline / Page Title Override
+                  </label>
+                  <input
+                    type="text"
+                    value={cfg.customHeading}
+                    onChange={(e) => updateField("customHeading", e.target.value)}
+                    placeholder={tool.title}
+                    style={{ width: "100%", padding: "8px 12px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "13px" }}
+                  />
+                </div>
+
+                <div style={{ gridColumn: "1 / -1" }}>
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: 700, color: "#334155", marginBottom: "5px" }}>
+                    Custom Subtitle / Description
+                  </label>
+                  <textarea
+                    rows={2}
+                    value={cfg.customSubtitle}
+                    onChange={(e) => updateField("customSubtitle", e.target.value)}
+                    placeholder={tool.desc}
+                    style={{ width: "100%", padding: "8px 12px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "13px" }}
+                  />
+                </div>
+
+                <div style={{ gridColumn: "1 / -1" }}>
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: 700, color: "#334155", marginBottom: "5px" }}>
+                    Notice Alert Banner (Optional message banner at top of tool)
+                  </label>
+                  <input
+                    type="text"
+                    value={cfg.alertNotice}
+                    onChange={(e) => updateField("alertNotice", e.target.value)}
+                    placeholder="e.g. 🚀 2026 Live Core Updates Algorithm Activated"
+                    style={{ width: "100%", padding: "8px 12px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "13px" }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: 700, color: "#334155", marginBottom: "5px" }}>
+                    Direct WhatsApp Number
+                  </label>
+                  <input
+                    type="text"
+                    value={cfg.whatsappNumber}
+                    onChange={(e) => updateField("whatsappNumber", e.target.value)}
+                    placeholder="+8801670769816"
+                    style={{ width: "100%", padding: "8px 12px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "13px" }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: 700, color: "#334155", marginBottom: "5px" }}>
+                    CTA Button Label
+                  </label>
+                  <input
+                    type="text"
+                    value={cfg.ctaLabel}
+                    onChange={(e) => updateField("ctaLabel", e.target.value)}
+                    placeholder="Book Free Strategy Audit"
+                    style={{ width: "100%", padding: "8px 12px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "13px" }}
+                  />
+                </div>
+
+                <div style={{ gridColumn: "1 / -1" }}>
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: 700, color: "#334155", marginBottom: "5px" }}>
+                    CTA Target URL Destination
+                  </label>
+                  <input
+                    type="text"
+                    value={cfg.ctaUrl}
+                    onChange={(e) => updateField("ctaUrl", e.target.value)}
+                    placeholder="/contact"
+                    style={{ width: "100%", padding: "8px 12px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "13px" }}
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* TAB 2: PARAMETERS & DEFAULTS */}
+            {activeTab === "params" && (
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
+                <div>
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: 700, color: "#334155", marginBottom: "5px" }}>
+                    Base Starting Value / Price
+                  </label>
+                  <input
+                    type="number"
+                    value={cfg.basePrice}
+                    onChange={(e) => updateField("basePrice", e.target.value)}
+                    placeholder="500"
+                    style={{ width: "100%", padding: "8px 12px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "13px" }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: 700, color: "#334155", marginBottom: "5px" }}>
+                    Rate Multiplier / Ratio (e.g. 1.0 = standard, 1.2 = surge)
+                  </label>
+                  <input
+                    type="number"
+                    step="0.05"
+                    value={cfg.rateMultiplier}
+                    onChange={(e) => updateField("rateMultiplier", e.target.value)}
+                    placeholder="1.0"
+                    style={{ width: "100%", padding: "8px 12px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "13px" }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: 700, color: "#334155", marginBottom: "5px" }}>
+                    Currency Symbol / Unit
+                  </label>
+                  <select
+                    value={cfg.currency}
+                    onChange={(e) => updateField("currency", e.target.value)}
+                    style={{ width: "100%", padding: "8px 12px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "13px", background: "#fff" }}
+                  >
+                    <option value="USD">USD ($)</option>
+                    <option value="BDT">BDT (৳)</option>
+                    <option value="EUR">EUR (€)</option>
+                    <option value="GBP">GBP (£)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: 700, color: "#334155", marginBottom: "5px" }}>
+                    Daily Calculation / Query Limit
+                  </label>
+                  <input
+                    type="number"
+                    value={cfg.dailyRateLimit}
+                    onChange={(e) => updateField("dailyRateLimit", e.target.value)}
+                    placeholder="50"
+                    style={{ width: "100%", padding: "8px 12px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "13px" }}
+                  />
+                </div>
+
+                <div style={{ gridColumn: "1 / -1", background: "#f8fafc", padding: "12px 16px", borderRadius: "4px", border: "1px solid #e2e8f0" }}>
+                  <label style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer", fontWeight: 700, fontSize: "13px", color: "#0f172a" }}>
+                    <input
+                      type="checkbox"
+                      checked={cfg.requireLeadCapture}
+                      onChange={(e) => updateField("requireLeadCapture", e.target.checked)}
+                      style={{ width: "16px", height: "16px" }}
+                    />
+                    <span>Require Email / Contact Lead Capture before showing Full Results</span>
+                  </label>
+                  <p style={{ margin: "4px 0 0 26px", fontSize: "11.5px", color: "#64748b" }}>
+                    When enabled, users must provide their email/website before unlocking downloadable report or in-depth data.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 3: FAQS */}
+            {activeTab === "faqs" && (
+              <div>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
+                  <span style={{ fontSize: "12.5px", fontWeight: 700, color: "#334155" }}>
+                    Specific FAQ items displayed on this tool's page
+                  </span>
+                  <button
+                    type="button"
+                    onClick={handleAddFaq}
+                    className="btn-admin btn-admin-primary btn-admin-sm"
+                    style={{ borderRadius: "4px", display: "inline-flex", alignItems: "center", gap: "4px" }}
+                  >
+                    <i className="fa-solid fa-plus"></i>
+                    <span>Add FAQ</span>
+                  </button>
+                </div>
+
+                {cfg.faqs.length === 0 ? (
+                  <div style={{ textAlign: "center", padding: "30px", border: "1px dashed #cbd5e1", borderRadius: "4px", color: "#64748b", fontSize: "13px" }}>
+                    No tool-specific FAQs configured. Click "Add FAQ" above to add helpful Q&A items.
+                  </div>
+                ) : (
+                  <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                    {cfg.faqs.map((faq, idx) => (
+                      <div key={idx} style={{ background: "#f8fafc", padding: "12px 14px", borderRadius: "4px", border: "1px solid #e2e8f0" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
+                          <span style={{ fontSize: "11.5px", fontWeight: 700, color: "#2563eb" }}>FAQ #{idx + 1}</span>
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteFaq(idx)}
+                            style={{ background: "none", border: "none", color: "#ef4444", fontSize: "13px", cursor: "pointer" }}
+                            title="Remove FAQ"
+                          >
+                            <i className="fa-solid fa-trash"></i>
+                          </button>
+                        </div>
+                        <input
+                          type="text"
+                          value={faq.question}
+                          onChange={(e) => handleUpdateFaq(idx, "question", e.target.value)}
+                          placeholder="Question..."
+                          style={{ width: "100%", padding: "7px 10px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "12.5px", marginBottom: "6px" }}
+                        />
+                        <textarea
+                          rows={2}
+                          value={faq.answer}
+                          onChange={(e) => handleUpdateFaq(idx, "answer", e.target.value)}
+                          placeholder="Answer explanation..."
+                          style={{ width: "100%", padding: "7px 10px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "12.5px" }}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* TAB 4: JSON CONFIG */}
+            {activeTab === "json" && (
+              <div>
+                <label style={{ display: "block", fontSize: "12px", fontWeight: 700, color: "#334155", marginBottom: "5px" }}>
+                  Advanced Tool Algorithm & Data Parameters (JSON)
+                </label>
+                <textarea
+                  rows={9}
+                  value={cfg.jsonConfigText}
+                  onChange={(e) => {
+                    updateField("jsonConfigText", e.target.value);
+                    setJsonError("");
+                  }}
+                  style={{
+                    width: "100%",
+                    padding: "10px 12px",
+                    borderRadius: "4px",
+                    border: jsonError ? "1px solid #ef4444" : "1px solid #cbd5e1",
+                    fontSize: "12.5px",
+                    fontFamily: "monospace",
+                    background: "#0f172a",
+                    color: "#f8fafc"
+                  }}
+                />
+                {jsonError && (
+                  <div style={{ marginTop: "6px", color: "#ef4444", fontSize: "12px", fontWeight: 600 }}>
+                    <i className="fa-solid fa-triangle-exclamation" style={{ marginRight: "4px" }}></i>
+                    {jsonError}
+                  </div>
+                )}
+                <p style={{ margin: "6px 0 0 0", fontSize: "11.5px", color: "#64748b" }}>
+                  Directly customize any algorithmic coefficients, weightings, supported schemas, or data tables.
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Modal Footer */}
+          <div
+            style={{
+              padding: "14px 20px",
+              borderTop: "1px solid #e2e8f0",
+              background: "#f8fafc",
+              display: "flex",
+              justifyContent: "flex-end",
+              gap: "10px",
+            }}
+          >
+            <button
+              type="button"
+              onClick={onClose}
+              className="btn-admin btn-admin-outline"
+              style={{ borderRadius: "4px" }}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={saving}
+              className="btn-admin btn-admin-primary"
+              style={{ borderRadius: "4px", display: "inline-flex", alignItems: "center", gap: "6px" }}
+            >
+              <i className="fa-solid fa-floppy-disk"></i>
+              <span>{saving ? "Saving Configuration..." : "Save Tool Settings"}</span>
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
