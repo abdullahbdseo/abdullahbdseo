@@ -81,9 +81,20 @@ export default function AdminToolsPage() {
   };
 
   const handleUpdate = async (form) => {
-    const updated = tools.map((t) => (t.slug === form.slug ? form : t));
+    const origSlug = editItem?.slug || form.slug;
+    const updated = tools.map((t) => (t.slug === origSlug ? form : t));
     await handleSave(updated);
     setEditItem(null);
+  };
+
+  const handleDuplicate = async (tool) => {
+    const dup = {
+      ...tool,
+      title: `${tool.title} (Copy)`,
+      slug: `${tool.slug}-copy-${Math.random().toString(36).substring(2, 6)}`,
+    };
+    const updated = [...tools, dup];
+    await handleSave(updated);
   };
 
   const handleDelete = async (slug) => {
@@ -161,7 +172,7 @@ export default function AdminToolsPage() {
             border: "1px solid #6ee7b7",
             color: "#065f46",
             padding: "12px 18px",
-            borderRadius: "10px",
+            borderRadius: "4px",
             fontWeight: 600,
             display: "flex",
             alignItems: "center",
@@ -180,7 +191,7 @@ export default function AdminToolsPage() {
             border: "1px solid #fecaca",
             color: "#991b1b",
             padding: "12px 18px",
-            borderRadius: "10px",
+            borderRadius: "4px",
             fontWeight: 600,
             display: "flex",
             alignItems: "center",
@@ -194,10 +205,10 @@ export default function AdminToolsPage() {
 
       {/* 2. STATS ROW */}
       <div className="admin-stats-row">
-        <div className="admin-stat-glass-card">
+        <div className="admin-stat-glass-card" style={{ borderRadius: "4px" }}>
           <div className="admin-stat-top">
             <span className="admin-stat-label">Active Free Tools</span>
-            <div className="admin-stat-icon-wrap icon-blue">
+            <div className="admin-stat-icon-wrap icon-blue" style={{ borderRadius: "4px" }}>
               <i className="fa-solid fa-screwdriver-wrench"></i>
             </div>
           </div>
@@ -208,10 +219,10 @@ export default function AdminToolsPage() {
           </div>
         </div>
 
-        <div className="admin-stat-glass-card">
+        <div className="admin-stat-glass-card" style={{ borderRadius: "4px" }}>
           <div className="admin-stat-top">
             <span className="admin-stat-label">Tool Categories</span>
-            <div className="admin-stat-icon-wrap icon-purple">
+            <div className="admin-stat-icon-wrap icon-purple" style={{ borderRadius: "4px" }}>
               <i className="fa-solid fa-table-cells-large"></i>
             </div>
           </div>
@@ -223,10 +234,10 @@ export default function AdminToolsPage() {
           </div>
         </div>
 
-        <div className="admin-stat-glass-card">
+        <div className="admin-stat-glass-card" style={{ borderRadius: "4px" }}>
           <div className="admin-stat-top">
             <span className="admin-stat-label">Matching Query</span>
-            <div className="admin-stat-icon-wrap icon-emerald">
+            <div className="admin-stat-icon-wrap icon-emerald" style={{ borderRadius: "4px" }}>
               <i className="fa-solid fa-filter"></i>
             </div>
           </div>
@@ -241,7 +252,7 @@ export default function AdminToolsPage() {
       {(showForm || editItem) && (
         <ToolForm
           initial={editItem || emptyTool}
-          categories={CATEGORIES}
+          categories={allCategories.filter(c => c !== "all")}
           colors={COLORS}
           onSave={editItem ? handleUpdate : handleAdd}
           onCancel={() => { setShowForm(false); setEditItem(null); }}
@@ -254,7 +265,7 @@ export default function AdminToolsPage() {
       <div
         style={{
           background: "#ffffff",
-          borderRadius: "14px",
+          borderRadius: "4px",
           border: "1px solid #e2e8f0",
           padding: "14px 18px",
           display: "flex",
@@ -284,7 +295,7 @@ export default function AdminToolsPage() {
             style={{
               width: "100%",
               padding: "8px 12px 8px 34px",
-              borderRadius: "8px",
+              borderRadius: "4px",
               border: "1px solid #cbd5e1",
               fontSize: "13px",
               outline: "none",
@@ -316,12 +327,12 @@ export default function AdminToolsPage() {
       </div>
 
       {/* 5. TOOLS TABLE */}
-      <div className="admin-table-card">
+      <div className="admin-table-card" style={{ borderRadius: "4px" }}>
         <div className="admin-table-header">
           <div>
             <h2 className="admin-table-title">Registered Free Tools</h2>
             <p style={{ margin: "2px 0 0 0", fontSize: "12.5px", color: "#64748b" }}>
-              Showing {filtered.length} free audit and calculator utilities
+              Showing {filtered.length} free audit and calculator utilities (Edit, Delete, Duplicate, Configure)
             </p>
           </div>
         </div>
@@ -352,7 +363,7 @@ export default function AdminToolsPage() {
                           style={{
                             width: "36px",
                             height: "36px",
-                            borderRadius: "8px",
+                            borderRadius: "4px",
                             background: tool.bg || "#eff6ff",
                             color: tool.color || "#2563eb",
                             display: "flex",
@@ -365,8 +376,13 @@ export default function AdminToolsPage() {
                           <i className={`fa-solid ${tool.icon || "fa-wrench"}`}></i>
                         </div>
                         <div>
-                          <div style={{ fontWeight: 700, color: "#0f172a", fontSize: "13.5px" }}>
-                            {tool.title}
+                          <div style={{ fontWeight: 700, color: "#0f172a", fontSize: "13.5px", display: "flex", alignItems: "center", gap: "6px" }}>
+                            <span>{tool.title}</span>
+                            {tool.badge && (
+                              <span style={{ fontSize: "10.5px", padding: "1px 6px", background: "#e0f2fe", color: "#0369a1", borderRadius: "4px", fontWeight: 700 }}>
+                                {tool.badge}
+                              </span>
+                            )}
                           </div>
                           <div style={{ fontSize: "12px", color: "#64748b" }}>
                             {tool.desc}
@@ -383,7 +399,7 @@ export default function AdminToolsPage() {
                           color: "#475569",
                           background: "#f1f5f9",
                           padding: "3px 8px",
-                          borderRadius: "6px",
+                          borderRadius: "4px",
                         }}
                       >
                         {tool.category}
@@ -424,16 +440,25 @@ export default function AdminToolsPage() {
                           onClick={() => { setEditItem(tool); setShowForm(false); }}
                           title="Edit Tool"
                           className="btn-admin btn-admin-outline btn-admin-sm"
-                          style={{ padding: "5px 9px", color: "#2563eb" }}
+                          style={{ padding: "5px 9px", color: "#2563eb", borderRadius: "4px" }}
                         >
                           <i className="fa-solid fa-pen-to-square"></i>
+                        </button>
+
+                        <button
+                          onClick={() => handleDuplicate(tool)}
+                          title="Duplicate Tool"
+                          className="btn-admin btn-admin-outline btn-admin-sm"
+                          style={{ padding: "5px 9px", color: "#059669", borderRadius: "4px" }}
+                        >
+                          <i className="fa-solid fa-copy"></i>
                         </button>
 
                         <button
                           onClick={() => setDeleteSlug(tool.slug)}
                           title="Delete Tool"
                           className="btn-admin btn-admin-outline btn-admin-sm"
-                          style={{ padding: "5px 9px", color: "#ef4444" }}
+                          style={{ padding: "5px 9px", color: "#ef4444", borderRadius: "4px" }}
                         >
                           <i className="fa-solid fa-trash"></i>
                         </button>
@@ -468,7 +493,7 @@ export default function AdminToolsPage() {
           <div
             style={{
               background: "#ffffff",
-              borderRadius: "16px",
+              borderRadius: "4px",
               padding: "24px",
               maxWidth: "420px",
               width: "100%",
@@ -481,7 +506,7 @@ export default function AdminToolsPage() {
               style={{
                 width: "48px",
                 height: "48px",
-                borderRadius: "50%",
+                borderRadius: "4px",
                 background: "#fef2f2",
                 color: "#ef4444",
                 display: "flex",
@@ -497,12 +522,13 @@ export default function AdminToolsPage() {
               Delete Tool "/tools/{deleteSlug}"?
             </h3>
             <p style={{ margin: "0 0 20px 0", fontSize: "13px", color: "#64748b", lineHeight: 1.5 }}>
-              This will remove the tool entry from the free tools directory.
+              This will remove the tool entry from the free tools directory and database.
             </p>
             <div style={{ display: "flex", justifyContent: "center", gap: "10px" }}>
               <button
                 onClick={() => setDeleteSlug(null)}
                 className="btn-admin btn-admin-outline"
+                style={{ borderRadius: "4px" }}
               >
                 Cancel
               </button>
@@ -514,7 +540,7 @@ export default function AdminToolsPage() {
                   color: "#ffffff",
                   border: "none",
                   padding: "9px 18px",
-                  borderRadius: "8px",
+                  borderRadius: "4px",
                   fontWeight: 700,
                   fontSize: "13.5px",
                   cursor: "pointer",
@@ -538,7 +564,7 @@ function ToolForm({ initial, categories, colors, onSave, onCancel, saving, isEdi
     <div
       style={{
         background: "#ffffff",
-        borderRadius: "16px",
+        borderRadius: "4px",
         border: "1px solid #cbd5e1",
         boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.05)",
         overflow: "hidden",
@@ -587,13 +613,13 @@ function ToolForm({ initial, categories, colors, onSave, onCancel, saving, isEdi
             <input
               type="text"
               required
-              value={form.title}
+              value={form.title || ""}
               onChange={(e) => set("title", e.target.value)}
               placeholder="e.g. Keyword Cannibalization Finder"
               style={{
                 width: "100%",
                 padding: "9px 12px",
-                borderRadius: "8px",
+                borderRadius: "4px",
                 border: "1px solid #cbd5e1",
                 fontSize: "13.5px",
               }}
@@ -607,13 +633,13 @@ function ToolForm({ initial, categories, colors, onSave, onCancel, saving, isEdi
             <input
               type="text"
               required
-              value={form.slug}
+              value={form.slug || ""}
               onChange={(e) => set("slug", e.target.value)}
               placeholder="keyword-cannibalization-finder"
               style={{
                 width: "100%",
                 padding: "9px 12px",
-                borderRadius: "8px",
+                borderRadius: "4px",
                 border: "1px solid #cbd5e1",
                 fontSize: "13px",
                 fontFamily: "monospace",
@@ -627,13 +653,13 @@ function ToolForm({ initial, categories, colors, onSave, onCancel, saving, isEdi
             </label>
             <input
               type="text"
-              value={form.desc}
+              value={form.desc || ""}
               onChange={(e) => set("desc", e.target.value)}
               placeholder="Identify competing internal pages and optimize ranking equity"
               style={{
                 width: "100%",
                 padding: "9px 12px",
-                borderRadius: "8px",
+                borderRadius: "4px",
                 border: "1px solid #cbd5e1",
                 fontSize: "13.5px",
               }}
@@ -645,12 +671,12 @@ function ToolForm({ initial, categories, colors, onSave, onCancel, saving, isEdi
               Category
             </label>
             <select
-              value={form.category}
+              value={form.category || categories[0]}
               onChange={(e) => set("category", e.target.value)}
               style={{
                 width: "100%",
                 padding: "9px 12px",
-                borderRadius: "8px",
+                borderRadius: "4px",
                 border: "1px solid #cbd5e1",
                 fontSize: "13.5px",
                 background: "#ffffff",
@@ -666,17 +692,36 @@ function ToolForm({ initial, categories, colors, onSave, onCancel, saving, isEdi
 
           <div>
             <label style={{ display: "block", fontSize: "12.5px", fontWeight: 700, color: "#334155", marginBottom: "6px" }}>
+              Badge / Feature Tag (Optional)
+            </label>
+            <input
+              type="text"
+              value={form.badge || ""}
+              onChange={(e) => set("badge", e.target.value)}
+              placeholder="e.g. Live Pricing, 70+ Points, New"
+              style={{
+                width: "100%",
+                padding: "9px 12px",
+                borderRadius: "4px",
+                border: "1px solid #cbd5e1",
+                fontSize: "13.5px",
+              }}
+            />
+          </div>
+
+          <div>
+            <label style={{ display: "block", fontSize: "12.5px", fontWeight: 700, color: "#334155", marginBottom: "6px" }}>
               FontAwesome Icon Class
             </label>
             <input
               type="text"
-              value={form.icon}
+              value={form.icon || ""}
               onChange={(e) => set("icon", e.target.value)}
               placeholder="fa-magnifying-glass"
               style={{
                 width: "100%",
                 padding: "9px 12px",
-                borderRadius: "8px",
+                borderRadius: "4px",
                 border: "1px solid #cbd5e1",
                 fontSize: "13px",
                 fontFamily: "monospace",
@@ -691,18 +736,18 @@ function ToolForm({ initial, categories, colors, onSave, onCancel, saving, isEdi
             <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
               <input
                 type="color"
-                value={form.color}
+                value={form.color || "#2563eb"}
                 onChange={(e) => set("color", e.target.value)}
-                style={{ width: "38px", height: "38px", borderRadius: "8px", border: "1px solid #cbd5e1", cursor: "pointer" }}
+                style={{ width: "38px", height: "38px", borderRadius: "4px", border: "1px solid #cbd5e1", cursor: "pointer" }}
               />
               <input
                 type="text"
-                value={form.color}
+                value={form.color || ""}
                 onChange={(e) => set("color", e.target.value)}
                 style={{
                   flex: 1,
                   padding: "9px 12px",
-                  borderRadius: "8px",
+                  borderRadius: "4px",
                   border: "1px solid #cbd5e1",
                   fontSize: "13px",
                   fontFamily: "monospace",
@@ -718,18 +763,18 @@ function ToolForm({ initial, categories, colors, onSave, onCancel, saving, isEdi
             <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
               <input
                 type="color"
-                value={form.bg}
+                value={form.bg || "#eff6ff"}
                 onChange={(e) => set("bg", e.target.value)}
-                style={{ width: "38px", height: "38px", borderRadius: "8px", border: "1px solid #cbd5e1", cursor: "pointer" }}
+                style={{ width: "38px", height: "38px", borderRadius: "4px", border: "1px solid #cbd5e1", cursor: "pointer" }}
               />
               <input
                 type="text"
-                value={form.bg}
+                value={form.bg || ""}
                 onChange={(e) => set("bg", e.target.value)}
                 style={{
                   flex: 1,
                   padding: "9px 12px",
-                  borderRadius: "8px",
+                  borderRadius: "4px",
                   border: "1px solid #cbd5e1",
                   fontSize: "13px",
                   fontFamily: "monospace",
@@ -744,6 +789,7 @@ function ToolForm({ initial, categories, colors, onSave, onCancel, saving, isEdi
             type="button"
             onClick={onCancel}
             className="btn-admin btn-admin-outline"
+            style={{ borderRadius: "4px" }}
           >
             Cancel
           </button>
@@ -751,6 +797,7 @@ function ToolForm({ initial, categories, colors, onSave, onCancel, saving, isEdi
             type="submit"
             disabled={saving}
             className="btn-admin btn-admin-primary"
+            style={{ borderRadius: "4px" }}
           >
             <i className="fa-solid fa-floppy-disk"></i>
             <span>{saving ? "Saving..." : isEdit ? "Update Tool" : "Add Tool"}</span>
