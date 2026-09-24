@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { DB } from "@/lib/db";
 import { sendOrderNotificationEmail } from "@/lib/mailer";
+import { sendTelegramNotification } from "@/lib/notifications";
 
 export async function POST(req) {
   try {
@@ -44,6 +45,19 @@ export async function POST(req) {
 
     // Send automated email notification to admin with full client & package info
     await sendOrderNotificationEmail(newOrder);
+
+    // Send instant Telegram notification
+    await sendTelegramNotification({
+      title: "🛒 New Client Project Order Created",
+      leadType: "Order",
+      contactName: data.client_name,
+      contactEmail: data.client_email,
+      contactPhone: data.client_phone || data.phone,
+      websiteUrl: data.website_url,
+      serviceName: `${data.service_title || "SEO Service"} (${data.package_name || "Custom"})`,
+      amount: data.total || data.price || 0,
+      details: `Keywords: ${data.target_keywords || "N/A"}\nNotes: ${data.client_notes || "N/A"}`
+    });
 
     return NextResponse.json({
       success: true,

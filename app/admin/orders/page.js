@@ -353,11 +353,21 @@ export default function AdminOrdersPage() {
                     <td style={{ textAlign: "right" }}>
                       <div style={{ display: "flex", gap: "6px", justifyContent: "flex-end", alignItems: "center" }}>
                         <Link
+                          href={`/track-order?q=${order.order_number}`}
+                          className="btn-admin btn-admin-outline btn-admin-sm"
+                          target="_blank"
+                          title="View Live Order Tracking Page"
+                          style={{ padding: "5px 8px", borderRadius: "4px" }}
+                        >
+                          <i className="fa-solid fa-location-crosshairs" style={{ color: "#2563eb" }}></i>
+                        </Link>
+
+                        <Link
                           href={`/admin/invoices/${order.invoice_id || order.id}`}
                           className="btn-admin btn-admin-outline btn-admin-sm"
                           target="_blank"
                           title="View Invoice"
-                          style={{ padding: "5px 8px" }}
+                          style={{ padding: "5px 8px", borderRadius: "4px" }}
                         >
                           <i className="fa-solid fa-file-invoice"></i>
                         </Link>
@@ -366,6 +376,7 @@ export default function AdminOrdersPage() {
                           onClick={() => setEditOrder(order)}
                           className="btn-admin btn-admin-primary btn-admin-sm"
                           title="Edit Order & Date"
+                          style={{ borderRadius: "4px" }}
                         >
                           <i className="fa-solid fa-pen-to-square"></i>
                           <span>Edit</span>
@@ -775,7 +786,7 @@ function OrderFormModal({ initial, onSave, onCancel, isNew }) {
                   width: "100%",
                   background: "#ffffff",
                   border: "1px solid #cbd5e1",
-                  borderRadius: "8px",
+                  borderRadius: "4px",
                   padding: "8px 12px",
                   fontSize: "13px",
                   fontWeight: 700,
@@ -788,6 +799,71 @@ function OrderFormModal({ initial, onSave, onCancel, isNew }) {
                 <option value="completed">🟢 Completed</option>
                 <option value="cancelled">🔴 Cancelled</option>
               </select>
+            </div>
+          </div>
+
+          <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "14px" }}>
+            <div style={{ fontSize: "12.5px", fontWeight: 800, color: "#0f172a", marginBottom: "10px", display: "flex", alignItems: "center", gap: "6px" }}>
+              <i className="fa-solid fa-location-crosshairs" style={{ color: "#2563eb" }}></i>
+              <span>Live Order Tracking Parameters (Client Visible)</span>
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "10px" }}>
+              <div>
+                <label style={{ display: "block", fontSize: "11.5px", fontWeight: 700, color: "#475569", marginBottom: "4px" }}>
+                  Campaign Progress: <strong style={{ color: "#2563eb" }}>{form.progress_percent ?? (form.status === "completed" ? 100 : form.status === "in_progress" ? 65 : 20)}%</strong>
+                </label>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  step="5"
+                  value={form.progress_percent ?? (form.status === "completed" ? 100 : form.status === "in_progress" ? 65 : 20)}
+                  onChange={(e) => set("progress_percent", Number(e.target.value))}
+                  style={{ width: "100%", cursor: "pointer" }}
+                />
+              </div>
+
+              <div>
+                <label style={{ display: "block", fontSize: "11.5px", fontWeight: 700, color: "#475569", marginBottom: "4px" }}>
+                  Estimated Delivery Date
+                </label>
+                <input
+                  type="date"
+                  value={form.estimated_delivery || ""}
+                  onChange={(e) => set("estimated_delivery", e.target.value)}
+                  style={{
+                    width: "100%",
+                    background: "#ffffff",
+                    border: "1px solid #cbd5e1",
+                    borderRadius: "4px",
+                    padding: "6px 10px",
+                    fontSize: "12.5px",
+                    outline: "none",
+                  }}
+                />
+              </div>
+            </div>
+
+            <div>
+              <label style={{ display: "block", fontSize: "11.5px", fontWeight: 700, color: "#475569", marginBottom: "4px" }}>
+                Client Live Google Sheet / Report Link
+              </label>
+              <input
+                type="url"
+                value={form.report_url || ""}
+                onChange={(e) => set("report_url", e.target.value)}
+                placeholder="https://docs.google.com/spreadsheets/d/..."
+                style={{
+                  width: "100%",
+                  background: "#ffffff",
+                  border: "1px solid #cbd5e1",
+                  borderRadius: "4px",
+                  padding: "7px 10px",
+                  fontSize: "12.5px",
+                  outline: "none",
+                }}
+              />
             </div>
           </div>
 

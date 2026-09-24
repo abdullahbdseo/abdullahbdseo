@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { DB } from "@/lib/db";
+import { sendTelegramNotification } from "@/lib/notifications";
 
 export async function POST(req) {
   try {
@@ -17,6 +18,18 @@ export async function POST(req) {
       budget: data.budget || "Unspecified",
       service_interested: data.service_interest || data.service_interested || "General Consultation",
       message: data.message || ""
+    });
+
+    // Send instant notification
+    await sendTelegramNotification({
+      title: "📥 New Consultation / Strategy Inquiry",
+      leadType: "Inquiry Form",
+      contactName: data.name,
+      contactEmail: data.email,
+      contactPhone: data.phone,
+      websiteUrl: data.website || data.website_url,
+      serviceName: data.service_interest || data.service_interested,
+      details: data.message
     });
 
     return NextResponse.json({

@@ -60,6 +60,15 @@ const FIELD_GROUPS = [
       { key: "bkash_instructions", label: "bKash Checkout Instructions", type: "textarea" },
     ],
   },
+  {
+    label: "Instant Notifications & Telegram Webhooks",
+    icon: "fa-paper-plane",
+    fields: [
+      { key: "telegram_bot_token", label: "Telegram Bot Token", type: "text" },
+      { key: "telegram_chat_id", label: "Telegram Admin Chat ID", type: "text" },
+      { key: "admin_whatsapp_alert_number", label: "WhatsApp Direct Alert Number (e.g. 8801700000000)", type: "text" },
+    ],
+  },
 ];
 
 export default function AdminSettingsPage() {
@@ -77,6 +86,33 @@ export default function AdminSettingsPage() {
   const [credErr, setCredErr] = useState(null);
 
   const [updatingCreds, setUpdatingCreds] = useState(false);
+  const [testingNotif, setTestingNotif] = useState(false);
+  const [testNotifMsg, setTestNotifMsg] = useState(null);
+
+  const handleTestTelegram = async () => {
+    setTestingNotif(true);
+    setTestNotifMsg(null);
+    try {
+      const res = await fetch("/api/admin/notifications/test", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          botToken: form?.telegram_bot_token || "",
+          chatId: form?.telegram_chat_id || "",
+        }),
+      });
+      const json = await res.json();
+      if (json.success) {
+        setTestNotifMsg({ type: "success", text: json.message });
+      } else {
+        setTestNotifMsg({ type: "error", text: json.error || "Failed to send test alert." });
+      }
+    } catch (err) {
+      setTestNotifMsg({ type: "error", text: err.message || "Network error occurred." });
+    } finally {
+      setTestingNotif(false);
+    }
+  };
 
   useEffect(() => {
     if (data?.siteSettings) {
@@ -385,6 +421,48 @@ export default function AdminSettingsPage() {
                 )}
               </div>
             ))}
+
+            {group.label === "Instant Notifications & Telegram Webhooks" && (
+              <div style={{ gridColumn: "1 / -1", paddingTop: "8px", borderTop: "1px dashed #e2e8f0" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "10px" }}>
+                  <div style={{ fontSize: "12px", color: "#64748b" }}>
+                    <i className="fa-solid fa-circle-info" style={{ color: "#3b82f6", marginRight: "6px" }}></i>
+                    Test your Telegram webhook configuration to receive instant lead, audit, and client order alerts.
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleTestTelegram}
+                    disabled={testingNotif}
+                    className="btn-admin btn-admin-outline"
+                    style={{ borderRadius: "4px", fontSize: "12.5px", padding: "7px 14px" }}
+                  >
+                    <i className={`fa-solid ${testingNotif ? "fa-spinner fa-spin" : "fa-paper-plane"}`} style={{ color: "#2563eb" }}></i>
+                    <span>{testingNotif ? "Sending Test Alert..." : "Send Test Telegram Alert"}</span>
+                  </button>
+                </div>
+
+                {testNotifMsg && (
+                  <div
+                    style={{
+                      marginTop: "12px",
+                      padding: "10px 14px",
+                      borderRadius: "4px",
+                      fontSize: "12.5px",
+                      fontWeight: 600,
+                      background: testNotifMsg.type === "success" ? "#ecfdf5" : "#fff1f2",
+                      border: `1px solid ${testNotifMsg.type === "success" ? "#a7f3d0" : "#fecdd3"}`,
+                      color: testNotifMsg.type === "success" ? "#059669" : "#e11d48",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                    }}
+                  >
+                    <i className={`fa-solid ${testNotifMsg.type === "success" ? "fa-circle-check" : "fa-triangle-exclamation"}`}></i>
+                    <span>{testNotifMsg.text}</span>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       ))}

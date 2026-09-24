@@ -68,6 +68,43 @@ export default function BacklinkPackageCalculatorPage() {
     notes: ""
   });
 
+  // PDF Proposal & Lead Gate States
+  const [showPdfModal, setShowPdfModal] = useState(false);
+  const [pdfLead, setPdfLead] = useState({ name: "", email: "", phone: "", website: "" });
+  const [pdfGenerating, setPdfGenerating] = useState(false);
+  const [pdfReady, setPdfReady] = useState(false);
+
+  const handleGeneratePdf = async (e) => {
+    e.preventDefault();
+    if (!pdfLead.name || !pdfLead.email) {
+      alert("Please provide your Name and Email to download proposal.");
+      return;
+    }
+    setPdfGenerating(true);
+    try {
+      await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: pdfLead.name,
+          email: pdfLead.email,
+          phone: pdfLead.phone,
+          website: pdfLead.website,
+          service_interest: "Backlink Package Calculator PDF Proposal",
+          budget: `$${finalTotalUSD}`,
+          message: `Generated custom backlink package quotation for ${totalLinkCount} links. Estimated Investment: $${finalTotalUSD} (approx ৳${finalTotalBDT.toLocaleString()} BDT).`
+        })
+      });
+    } catch (err) {
+      console.warn("Lead dispatch warning:", err);
+    }
+    setPdfGenerating(false);
+    setPdfReady(true);
+    setTimeout(() => {
+      window.print();
+    }, 400);
+  };
+
   const handleQtyChange = (id, val) => {
     setActivePreset(null);
     const num = Math.max(0, parseInt(val) || 0);
@@ -926,14 +963,42 @@ export default function BacklinkPackageCalculatorPage() {
                       <span>Submit Custom Project Order</span>
                     </button>
 
+                    {/* Download PDF Proposal Button */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (totalLinkCount === 0) { alert("Please select at least 1 backlink quantity."); return; }
+                        setShowPdfModal(true);
+                        setPdfReady(false);
+                      }}
+                      style={{
+                        background: "rgba(255,255,255,0.08)",
+                        color: "#ffffff",
+                        border: "1px solid rgba(255,255,255,0.2)",
+                        padding: "11px 16px",
+                        borderRadius: "4px",
+                        fontWeight: 800,
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "8px",
+                        transition: "all 0.2s"
+                      }}
+                    >
+                      <i className="fa-solid fa-file-pdf text-red-400"></i>
+                      <span>Download PDF Proposal (1-Click)</span>
+                    </button>
+
                     {/* Copy Quote Button */}
                     <button
                       type="button"
                       onClick={copySummary}
                       style={{
-                        background: "rgba(255,255,255,0.08)",
+                        background: "rgba(255,255,255,0.05)",
                         color: "#cbd5e1",
-                        border: "1px solid rgba(255,255,255,0.15)",
+                        border: "1px solid rgba(255,255,255,0.12)",
                         padding: "10px 14px",
                         borderRadius: "4px",
                         fontWeight: 700,
@@ -1325,6 +1390,271 @@ export default function BacklinkPackageCalculatorPage() {
               </div>
             )}
 
+          </div>
+        </div>
+      )}
+
+      {/* ================= PDF PROPOSAL MODAL & LEAD CAPTURE GATE ================= */}
+      {showPdfModal && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(15, 23, 42, 0.8)", backdropFilter: "blur(6px)", zIndex: 99999, display: "flex", alignItems: "center", justifyContent: "center", padding: "16px", overflowY: "auto" }}>
+          <div style={{
+            background: "#ffffff",
+            borderRadius: "4px",
+            maxWidth: pdfReady ? "780px" : "520px",
+            width: "100%",
+            padding: "28px",
+            boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.35)",
+            position: "relative",
+            border: "1px solid #cbd5e1",
+            maxHeight: "92vh",
+            overflowY: "auto"
+          }}>
+            {/* Close Button */}
+            <button
+              type="button"
+              onClick={() => setShowPdfModal(false)}
+              aria-label="Close"
+              style={{
+                position: "absolute",
+                top: "14px",
+                right: "14px",
+                background: "#f1f5f9",
+                border: "none",
+                width: "32px",
+                height: "32px",
+                borderRadius: "4px",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#64748b",
+                fontSize: "15px"
+              }}
+            >
+              <i className="fa-solid fa-xmark"></i>
+            </button>
+
+            {!pdfReady ? (
+              /* --- 1. LEAD CAPTURE GATE --- */
+              <div>
+                <div style={{ textAlign: "center", marginBottom: "20px" }}>
+                  <div style={{ width: "48px", height: "48px", borderRadius: "4px", background: "#fee2e2", color: "#ef4444", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "22px", marginBottom: "10px" }}>
+                    <i className="fa-solid fa-file-pdf"></i>
+                  </div>
+                  <h3 style={{ fontSize: "1.35rem", fontWeight: 800, color: "#0f172a", margin: "0 0 6px" }}>
+                    Download Official PDF Proposal
+                  </h3>
+                  <p style={{ fontSize: "0.88rem", color: "#64748b", margin: 0, lineHeight: 1.5 }}>
+                    Enter your business details below to generate a branded, printable A4 proposal for this <strong>{totalLinkCount} Backlink Campaign</strong>.
+                  </p>
+                </div>
+
+                <form onSubmit={handleGeneratePdf} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+                  <div>
+                    <label style={{ fontSize: "0.78rem", fontWeight: 700, color: "#334155", display: "block", marginBottom: "4px" }}>
+                      Your Full Name *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. David Miller"
+                      value={pdfLead.name}
+                      onChange={(e) => setPdfLead({ ...pdfLead, name: e.target.value })}
+                      style={{ width: "100%", padding: "10px 12px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "0.9rem", outline: "none" }}
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{ fontSize: "0.78rem", fontWeight: 700, color: "#334155", display: "block", marginBottom: "4px" }}>
+                      Business / Work Email *
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      placeholder="e.g. david@company.com"
+                      value={pdfLead.email}
+                      onChange={(e) => setPdfLead({ ...pdfLead, email: e.target.value })}
+                      style={{ width: "100%", padding: "10px 12px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "0.9rem", outline: "none" }}
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{ fontSize: "0.78rem", fontWeight: 700, color: "#334155", display: "block", marginBottom: "4px" }}>
+                      Target Website URL (Optional)
+                    </label>
+                    <input
+                      type="url"
+                      placeholder="https://yourwebsite.com"
+                      value={pdfLead.website}
+                      onChange={(e) => setPdfLead({ ...pdfLead, website: e.target.value })}
+                      style={{ width: "100%", padding: "10px 12px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "0.9rem", outline: "none" }}
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{ fontSize: "0.78rem", fontWeight: 700, color: "#334155", display: "block", marginBottom: "4px" }}>
+                      WhatsApp / Phone (For instant proposal delivery)
+                    </label>
+                    <input
+                      type="tel"
+                      placeholder="+1 (555) 019-2834"
+                      value={pdfLead.phone}
+                      onChange={(e) => setPdfLead({ ...pdfLead, phone: e.target.value })}
+                      style={{ width: "100%", padding: "10px 12px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "0.9rem", outline: "none" }}
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={pdfGenerating}
+                    style={{
+                      background: "#ef4444",
+                      color: "#ffffff",
+                      border: "none",
+                      padding: "12px",
+                      borderRadius: "4px",
+                      fontWeight: 800,
+                      fontSize: "0.95rem",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "8px",
+                      boxShadow: "0 6px 18px rgba(239, 68, 68, 0.35)",
+                      marginTop: "4px"
+                    }}
+                  >
+                    {pdfGenerating ? (
+                      <><i className="fa-solid fa-spinner fa-spin"></i> Generating Official PDF...</>
+                    ) : (
+                      <><i className="fa-solid fa-file-arrow-down"></i> Generate &amp; Download PDF Proposal</>
+                    )}
+                  </button>
+                </form>
+              </div>
+            ) : (
+              /* --- 2. PRINTABLE PDF PROPOSAL VIEW --- */
+              <div id="printable-proposal-area">
+                {/* Proposal Letterhead Header */}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", borderBottom: "2px solid #0f172a", paddingBottom: "16px", marginBottom: "20px" }}>
+                  <div>
+                    <h2 style={{ margin: 0, fontSize: "20px", fontWeight: 900, color: "#0f172a" }}>
+                      ABDULLAH SALEH
+                    </h2>
+                    <div style={{ fontSize: "12px", color: "#475569", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px" }}>
+                      Organic Growth Specialist &amp; Technical SEO Architect
+                    </div>
+                    <div style={{ fontSize: "11px", color: "#64748b", marginTop: "4px" }}>
+                      🌐 abdullahseo.com • ✉️ contact@abdullahseo.com • 📱 +8801670769816
+                    </div>
+                  </div>
+                  <div style={{ textAlign: "right" }}>
+                    <div style={{ fontSize: "10.5px", color: "#64748b", fontWeight: 700 }}>PROPOSAL REF</div>
+                    <div style={{ fontSize: "14px", fontWeight: 900, color: "#2563eb", fontFamily: "monospace" }}>
+                      PROP-{new Date().getFullYear()}-{Math.floor(1000 + Math.random() * 9000)}
+                    </div>
+                    <div style={{ fontSize: "11px", color: "#64748b", marginTop: "2px" }}>
+                      Date: {new Date().toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Prepared For Client */}
+                <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "12px 16px", marginBottom: "20px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", fontSize: "12px" }}>
+                  <div>
+                    <span style={{ color: "#64748b", fontWeight: 700 }}>PREPARED FOR:</span>
+                    <strong style={{ color: "#0f172a", display: "block", fontSize: "13.5px" }}>{pdfLead.name}</strong>
+                    <span style={{ color: "#475569" }}>{pdfLead.email}</span>
+                  </div>
+                  <div>
+                    <span style={{ color: "#64748b", fontWeight: 700 }}>TARGET DOMAIN:</span>
+                    <strong style={{ color: "#2563eb", display: "block", wordBreak: "break-all" }}>{pdfLead.website || "Domain to be provided"}</strong>
+                    <span style={{ color: "#475569" }}>Turnaround: {turnaroundDays}</span>
+                  </div>
+                </div>
+
+                {/* Itemized Table */}
+                <div style={{ marginBottom: "20px" }}>
+                  <h4 style={{ margin: "0 0 8px 0", fontSize: "13px", fontWeight: 800, color: "#0f172a", textTransform: "uppercase" }}>
+                    Selected Link Building Allocation
+                  </h4>
+                  <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "12px", textAlign: "left" }}>
+                    <thead>
+                      <tr style={{ background: "#0f172a", color: "#ffffff" }}>
+                        <th style={{ padding: "8px 10px", borderRadius: "4px 0 0 0" }}>Service Category</th>
+                        <th style={{ padding: "8px 10px" }}>Quantity</th>
+                        <th style={{ padding: "8px 10px" }}>Authority Metric</th>
+                        <th style={{ padding: "8px 10px", textAlign: "right", borderRadius: "0 4px 0 0" }}>Subtotal (USD)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {services.filter(item => (quantities[item.id] || 0) > 0).map((item, idx) => (
+                        <tr key={item.id} style={{ borderBottom: "1px solid #e2e8f0", background: idx % 2 === 0 ? "#ffffff" : "#f8fafc" }}>
+                          <td style={{ padding: "8px 10px", fontWeight: 700, color: "#0f172a" }}>{item.name}</td>
+                          <td style={{ padding: "8px 10px" }}>{quantities[item.id]} Links</td>
+                          <td style={{ padding: "8px 10px", color: "#059669", fontWeight: 700 }}>DA 85+ / Real Traffic</td>
+                          <td style={{ padding: "8px 10px", textAlign: "right", fontWeight: 700, color: "#0f172a" }}>
+                            ${((quantities[item.id] || 0) * (item.unitPrice || 0)).toFixed(2)}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Investment Total Box */}
+                <div style={{ background: "#eff6ff", border: "1.5px solid #bfdbfe", borderRadius: "4px", padding: "14px 18px", display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+                  <div>
+                    <div style={{ fontSize: "11px", fontWeight: 800, color: "#1e40af", textTransform: "uppercase" }}>
+                      TOTAL PROPOSED INVESTMENT
+                    </div>
+                    <div style={{ fontSize: "11px", color: "#64748b", marginTop: "2px" }}>
+                      Includes {addons.tier2Indexation ? "Tier-2 Indexation, " : ""}30-Day Safe Drip Feed &amp; Live Google Sheet
+                    </div>
+                  </div>
+                  <div style={{ textAlign: "right" }}>
+                    <div style={{ fontSize: "24px", fontWeight: 900, color: "#1d4ed8" }}>
+                      ${finalTotalUSD.toFixed(2)} USD
+                    </div>
+                    <div style={{ fontSize: "12px", fontWeight: 700, color: "#64748b" }}>
+                      Approx. ৳{finalTotalBDT.toLocaleString()} BDT
+                    </div>
+                  </div>
+                </div>
+
+                {/* Print and Actions Bar */}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+                  <Link
+                    href="/track-order"
+                    target="_blank"
+                    style={{ fontSize: "12px", color: "#2563eb", fontWeight: 700, textDecoration: "none" }}
+                  >
+                    <i className="fa-solid fa-satellite-dish" style={{ marginRight: "4px" }}></i>
+                    Client Order Tracking Hub
+                  </Link>
+
+                  <div style={{ display: "flex", gap: "8px" }}>
+                    <button
+                      type="button"
+                      onClick={() => window.print()}
+                      className="btn-admin btn-admin-primary"
+                      style={{ borderRadius: "4px", padding: "8px 16px", fontSize: "12.5px", display: "inline-flex", alignItems: "center", gap: "6px" }}
+                    >
+                      <i className="fa-solid fa-print"></i>
+                      <span>Print / Save PDF</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowPdfModal(false)}
+                      className="btn-admin btn-admin-outline"
+                      style={{ borderRadius: "4px", padding: "8px 14px", fontSize: "12.5px" }}
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

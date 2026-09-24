@@ -26,6 +26,9 @@ export default function AdminBlogsPage() {
   const [searchQ, setSearchQ] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [showAddForm, setShowAddForm] = useState(false);
+  const [showAiModal, setShowAiModal] = useState(false);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [customInitialPost, setCustomInitialPost] = useState(null);
   const [editPost, setEditPost] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
 
@@ -183,11 +186,26 @@ export default function AdminBlogsPage() {
             <span>Refresh</span>
           </button>
           <button
+            onClick={() => setShowAiModal(true)}
+            className="btn-admin"
+            style={{
+              background: "linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%)",
+              color: "#ffffff",
+              border: "none",
+              boxShadow: "0 4px 12px rgba(124, 58, 237, 0.25)",
+              borderRadius: "4px",
+            }}
+          >
+            <i className="fa-solid fa-wand-magic-sparkles"></i>
+            <span>1-Click AI Blog Generator</span>
+          </button>
+          <button
             onClick={() => {
               setShowAddForm(true);
               setEditPost(null);
             }}
             className="btn-admin btn-admin-primary"
+            style={{ borderRadius: "4px" }}
           >
             <i className="fa-solid fa-plus"></i>
             <span>Add New Post</span>
@@ -238,11 +256,19 @@ export default function AdminBlogsPage() {
       {/* Form Editor Modal / View */}
       {(showAddForm || editPost) && (
         <BlogForm
-          initial={editPost || emptyPost}
-          onSave={editPost ? handleUpdate : handleAdd}
+          initial={editPost || customInitialPost || emptyPost}
+          onSave={async (payload) => {
+            if (editPost) {
+              await handleUpdate(payload);
+            } else {
+              await handleAdd(payload);
+            }
+            setCustomInitialPost(null);
+          }}
           onCancel={() => {
             setShowAddForm(false);
             setEditPost(null);
+            setCustomInitialPost(null);
           }}
           saving={saving}
           isEdit={!!editPost}
@@ -548,6 +574,345 @@ export default function AdminBlogsPage() {
           </div>
         </div>
       )}
+
+      {/* AI Blog Generator Modal */}
+      {showAiModal && (
+        <AiBlogGeneratorModal
+          onClose={() => setShowAiModal(false)}
+          onGenerated={(postData) => {
+            setCustomInitialPost({
+              ...emptyPost,
+              ...postData,
+              id: Date.now(),
+              publish_date: new Date().toISOString().split("T")[0],
+              date: new Date().toISOString().split("T")[0],
+              featured_image: "/images/blog_tech_seo.jpg",
+              image: "/images/blog_tech_seo.jpg",
+            });
+            setShowAiModal(false);
+            setEditPost(null);
+            setShowAddForm(true);
+          }}
+        />
+      )}
+    </div>
+  );
+}
+
+function AiBlogGeneratorModal({ onClose, onGenerated }) {
+  const [topic, setTopic] = useState("");
+  const [targetKeyword, setTargetKeyword] = useState("");
+  const [category, setCategory] = useState("Technical SEO");
+  const [tone, setTone] = useState("Authoritative & Actionable");
+  const [loading, setLoading] = useState(false);
+  const [genError, setGenError] = useState("");
+
+  const presets = [
+    { topic: "Google 2026 Core Update Recovery Blueprint", kw: "google core update recovery", cat: "Technical SEO" },
+    { topic: "Semantic SEO & Entity Knowledge Graph Optimization", kw: "entity based seo strategy", cat: "AI Search & GEO" },
+    { topic: "High DR Contextual Backlink Building Masterclass", kw: "high authority backlinks strategy", cat: "Backlink Strategy" },
+    { topic: "E-Commerce Category Page SEO Scaling Guide", kw: "ecommerce seo architecture", cat: "E-Commerce SEO" },
+    { topic: "Local SEO 3-Pack Map Domination Playbook", kw: "google map pack ranking", cat: "Local SEO" },
+  ];
+
+  const handleGenerate = async (e) => {
+    e.preventDefault();
+    if (!topic.trim()) {
+      setGenError("Please enter a blog topic or keyword.");
+      return;
+    }
+    setLoading(true);
+    setGenError("");
+
+    try {
+      const res = await fetch("/api/admin/blogs/ai-generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          topic: topic.trim(),
+          targetKeyword: targetKeyword.trim() || topic.trim(),
+          category,
+          tone,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Failed to generate blog article.");
+      }
+
+      onGenerated(data.data);
+    } catch (err) {
+      setGenError(err.message || "Failed to generate article. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div
+      style={{
+        position: "fixed",
+        inset: 0,
+        background: "rgba(15, 23, 42, 0.6)",
+        backdropFilter: "blur(5px)",
+        zIndex: 99999,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "20px",
+      }}
+    >
+      <div
+        style={{
+          background: "#ffffff",
+          border: "1px solid #cbd5e1",
+          borderRadius: "4px",
+          maxWidth: "600px",
+          width: "100%",
+          maxHeight: "90vh",
+          overflowY: "auto",
+          boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+        }}
+      >
+        <div
+          style={{
+            padding: "20px 24px",
+            borderBottom: "1px solid #e2e8f0",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)",
+            color: "#ffffff",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <div
+              style={{
+                width: "36px",
+                height: "36px",
+                background: "rgba(124, 58, 237, 0.3)",
+                color: "#c084fc",
+                borderRadius: "4px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "16px",
+              }}
+            >
+              <i className="fa-solid fa-wand-magic-sparkles"></i>
+            </div>
+            <div>
+              <h3 style={{ margin: 0, fontSize: "17px", fontWeight: 800, color: "#ffffff" }}>
+                1-Click AI Blog Generator
+              </h3>
+              <p style={{ margin: 0, fontSize: "12px", color: "#94a3b8" }}>
+                Generate complete Google E-E-A-T structured SEO articles instantly
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            style={{
+              background: "transparent",
+              border: "none",
+              color: "#94a3b8",
+              cursor: "pointer",
+              fontSize: "18px",
+              padding: "4px 8px",
+            }}
+          >
+            <i className="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <form onSubmit={handleGenerate} style={{ padding: "24px", display: "flex", flexDirection: "column", gap: "18px" }}>
+          {genError && (
+            <div
+              style={{
+                background: "#fff1f2",
+                border: "1px solid #fecdd3",
+                color: "#e11d48",
+                padding: "10px 14px",
+                borderRadius: "4px",
+                fontSize: "13px",
+                fontWeight: 600,
+              }}
+            >
+              <i className="fa-solid fa-circle-exclamation" style={{ marginRight: "6px" }}></i>
+              {genError}
+            </div>
+          )}
+
+          <div>
+            <label style={{ display: "block", fontSize: "12.5px", fontWeight: 700, color: "#334155", marginBottom: "6px" }}>
+              Quick Preset Inspirations (Click to Apply)
+            </label>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+              {presets.map((p, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => {
+                    setTopic(p.topic);
+                    setTargetKeyword(p.kw);
+                    setCategory(p.cat);
+                  }}
+                  style={{
+                    background: topic === p.topic ? "#eff6ff" : "#f1f5f9",
+                    border: `1px solid ${topic === p.topic ? "#2563eb" : "#cbd5e1"}`,
+                    color: topic === p.topic ? "#1d4ed8" : "#475569",
+                    fontSize: "11.5px",
+                    fontWeight: 600,
+                    padding: "5px 10px",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                  }}
+                >
+                  {p.topic}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label style={{ display: "block", fontSize: "13px", fontWeight: 700, color: "#0f172a", marginBottom: "6px" }}>
+              Article Topic / Title Focus <span style={{ color: "#e11d48" }}>*</span>
+            </label>
+            <input
+              type="text"
+              value={topic}
+              onChange={(e) => setTopic(e.target.value)}
+              placeholder="e.g. How to Rank #1 on Google for High Competition Keywords"
+              required
+              style={{
+                width: "100%",
+                padding: "10px 14px",
+                border: "1px solid #cbd5e1",
+                borderRadius: "4px",
+                fontSize: "14px",
+                color: "#0f172a",
+                outline: "none",
+              }}
+            />
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
+            <div>
+              <label style={{ display: "block", fontSize: "13px", fontWeight: 700, color: "#0f172a", marginBottom: "6px" }}>
+                Primary Target Keyword
+              </label>
+              <input
+                type="text"
+                value={targetKeyword}
+                onChange={(e) => setTargetKeyword(e.target.value)}
+                placeholder="e.g. rank #1 on google"
+                style={{
+                  width: "100%",
+                  padding: "9px 12px",
+                  border: "1px solid #cbd5e1",
+                  borderRadius: "4px",
+                  fontSize: "13.5px",
+                  color: "#0f172a",
+                  outline: "none",
+                }}
+              />
+            </div>
+
+            <div>
+              <label style={{ display: "block", fontSize: "13px", fontWeight: 700, color: "#0f172a", marginBottom: "6px" }}>
+                Category
+              </label>
+              <select
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                style={{
+                  width: "100%",
+                  padding: "9px 12px",
+                  border: "1px solid #cbd5e1",
+                  borderRadius: "4px",
+                  fontSize: "13.5px",
+                  color: "#0f172a",
+                  outline: "none",
+                  background: "#ffffff",
+                }}
+              >
+                <option value="Technical SEO">Technical SEO</option>
+                <option value="AI Search & GEO">AI Search & GEO</option>
+                <option value="Backlink Strategy">Backlink Strategy</option>
+                <option value="E-Commerce SEO">E-Commerce SEO</option>
+                <option value="Local SEO">Local SEO</option>
+                <option value="AEO & Voice Search">AEO & Voice Search</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label style={{ display: "block", fontSize: "13px", fontWeight: 700, color: "#0f172a", marginBottom: "6px" }}>
+              Tone & Approach
+            </label>
+            <select
+              value={tone}
+              onChange={(e) => setTone(e.target.value)}
+              style={{
+                width: "100%",
+                padding: "9px 12px",
+                border: "1px solid #cbd5e1",
+                borderRadius: "4px",
+                fontSize: "13.5px",
+                color: "#0f172a",
+                outline: "none",
+                background: "#ffffff",
+              }}
+            >
+              <option value="Authoritative & Actionable">Authoritative & Actionable (Executive standard)</option>
+              <option value="Comprehensive Blueprint">Comprehensive Blueprint (Deep-dive guide)</option>
+              <option value="Step-by-Step Practical Roadmap">Step-by-Step Practical Roadmap (Beginner to Advanced)</option>
+              <option value="Data-Driven Case Study Style">Data-Driven Case Study Style (Metrics-focused)</option>
+            </select>
+          </div>
+
+          <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
+            <button
+              type="button"
+              onClick={onClose}
+              className="btn-admin btn-admin-outline"
+              style={{ flex: 1, borderRadius: "4px", justifyContent: "center" }}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={loading}
+              className="btn-admin"
+              style={{
+                flex: 2,
+                background: "linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%)",
+                color: "#ffffff",
+                border: "none",
+                borderRadius: "4px",
+                justifyContent: "center",
+                fontWeight: 700,
+                fontSize: "14px",
+                boxShadow: "0 4px 14px rgba(124, 58, 237, 0.35)",
+                cursor: loading ? "not-allowed" : "pointer",
+              }}
+            >
+              {loading ? (
+                <>
+                  <i className="fa-solid fa-spinner fa-spin"></i>
+                  <span>Writing SEO Article with AI...</span>
+                </>
+              ) : (
+                <>
+                  <i className="fa-solid fa-wand-magic-sparkles"></i>
+                  <span>Generate Full Article (1-Click)</span>
+                </>
+              )}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
