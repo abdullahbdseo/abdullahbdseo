@@ -74,15 +74,14 @@ export default function SecretLoginPage() {
         customPassword = localStorage.getItem("admin_custom_password");
       }
 
-      const validEmails = [
-        "admin@seoservice.local",
-        "admin@abdullahbdseo.com",
-        "admin@seoservice.com",
-        "admin",
-        "abdullah"
-      ];
-      if (customUsername) validEmails.unshift(customUsername.toLowerCase());
-      const validPasswords = customPassword ? [customPassword, "admin123"] : ["admin123", "admin", "123456"];
+      if (!customUsername || !customPassword) {
+        setLoading(false);
+        setError("Invalid administrative credentials. Please verify your username/email and password.");
+        return;
+      }
+
+      const validEmails = [customUsername.toLowerCase()];
+      const validPasswords = [customPassword];
 
       if (validEmails.includes(cleanEmail) && validPasswords.includes(cleanPassword)) {
         if (typeof window !== "undefined") {

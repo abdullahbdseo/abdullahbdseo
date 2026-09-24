@@ -31,6 +31,7 @@ function readCMSData() {
     pricingPlans: [],
     pricingRetainers: [],
     freeTools: [],
+    backlinkCalculator: null,
   };
 }
 
@@ -57,6 +58,7 @@ function rebuildDataJs(data) {
     ["processSteps", data.processSteps],
     ["pricingPlans", data.pricingPlans],
     ["freeTools", data.freeTools],
+    ["backlinkCalculator", data.backlinkCalculator],
   ];
 
   for (const [name, value] of sections) {
@@ -122,6 +124,21 @@ export async function GET(request) {
               cloudData[docSnap.id] = docData.value;
             }
           });
+
+          // Ensure built-in tools like backlink-package-calculator are merged if cloud has older array
+          if (Array.isArray(cloudData.freeTools) && Array.isArray(localData.freeTools)) {
+            const existingSlugs = new Set(cloudData.freeTools.map((t) => t.slug));
+            localData.freeTools.forEach((defaultTool) => {
+              if (!existingSlugs.has(defaultTool.slug)) {
+                cloudData.freeTools.push(defaultTool);
+              }
+            });
+          }
+
+          if (!cloudData.backlinkCalculator && localData.backlinkCalculator) {
+            cloudData.backlinkCalculator = localData.backlinkCalculator;
+          }
+
           return NextResponse.json({ success: true, data: cloudData, source: "firestore" });
         }
       } catch (fbErr) {

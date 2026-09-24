@@ -1524,5 +1524,224 @@
       "bg": "#ffe4e6",
       "category": "Calculators & ROI"
     }
-  ]
+  ],
+  "backlinkCalculator": {
+    "settings": {
+      "bdtRate": 122,
+      "tier2Multiplier": 0.15,
+      "expressMultiplier": 0.2,
+      "turnaroundStandard": "10–14 Days",
+      "turnaroundExpress": "3–5 Days (Express)",
+      "whatsappNumber": "+8801670769816"
+    },
+    "services": [
+      {
+        "id": "profile_creation",
+        "name": "Profile Creation Links",
+        "category": "Brand Entity",
+        "icon": "fa-solid fa-id-card",
+        "unitPrice": 0.35,
+        "da": "DA 85+",
+        "min": 0,
+        "max": 800,
+        "step": 10,
+        "presetSteps": [25, 50, 100, 200],
+        "accentColor": "#3b82f6",
+        "desc": "100% manual high DA profile backlinks with synced NAP, avatar, and canonical website anchors."
+      },
+      {
+        "id": "web20_blogs",
+        "name": "Web 2.0 Satellite Blogs",
+        "category": "Contextual In-Content",
+        "icon": "fa-solid fa-globe",
+        "unitPrice": 1.25,
+        "da": "DA 88+",
+        "min": 0,
+        "max": 300,
+        "step": 5,
+        "presetSteps": [10, 20, 50, 100],
+        "accentColor": "#10b981",
+        "desc": "Unique handwritten 800+ word niche blogs on Medium, WordPress, Substack with in-content contextual DoFollow anchors."
+      },
+      {
+        "id": "social_bookmarks",
+        "name": "Social Bookmarking & Signals",
+        "category": "Fast Indexing",
+        "icon": "fa-solid fa-bookmark",
+        "unitPrice": 0.25,
+        "da": "DA 85+",
+        "min": 0,
+        "max": 500,
+        "step": 10,
+        "presetSteps": [50, 100, 200, 300],
+        "accentColor": "#6366f1",
+        "desc": "High-velocity social bookmark discovery links on Reddit, Pinterest, Scoop.it to accelerate Googlebot crawl frequency."
+      },
+      {
+        "id": "pdf_sharing",
+        "name": "PDF & Document Sharing",
+        "category": "Document Embeds",
+        "icon": "fa-solid fa-file-pdf",
+        "unitPrice": 0.9,
+        "da": "DA 87+",
+        "min": 0,
+        "max": 200,
+        "step": 5,
+        "presetSteps": [10, 25, 50, 100],
+        "accentColor": "#ef4444",
+        "desc": "Custom branded PDF guides and whitepapers uploaded to SlideShare, Scribd, Issuu with live clickable links."
+      },
+      {
+        "id": "guest_posting",
+        "name": "Editorial Guest Posts",
+        "category": "High Authority",
+        "icon": "fa-solid fa-newspaper",
+        "unitPrice": 18,
+        "da": "DA 87+",
+        "min": 0,
+        "max": 35,
+        "step": 1,
+        "presetSteps": [1, 3, 5, 10],
+        "accentColor": "#f59e0b",
+        "desc": "Real traffic multi-niche & tech publication articles with contextual in-content DoFollow backlink outreach."
+      },
+      {
+        "id": "forum_posting",
+        "name": "Forum & Discussion Mentions",
+        "category": "Community Traffic",
+        "icon": "fa-solid fa-comments",
+        "unitPrice": 1.5,
+        "da": "DA 86+",
+        "min": 0,
+        "max": 50,
+        "step": 2,
+        "presetSteps": [5, 10, 20, 35],
+        "accentColor": "#8b5cf6",
+        "desc": "Participating in active industry threads (Quora, Reddit, Webmaster boards) with natural signature & mention links."
+      },
+      {
+        "id": "press_release",
+        "name": "Press Release Syndication",
+        "category": "Digital PR",
+        "icon": "fa-solid fa-bullhorn",
+        "unitPrice": 12,
+        "da": "DA 82+",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "presetSteps": [1, 2, 5, 10],
+        "accentColor": "#0284c7",
+        "desc": "Syndicated business milestone and launch announcements distributed across top PR wires & Google News index."
+      },
+      {
+        "id": "edu_gov",
+        "name": "Edu & Gov Trust Backlinks",
+        "category": "Institutional Trust",
+        "icon": "fa-solid fa-graduation-cap",
+        "unitPrice": 4.5,
+        "da": "DA 90+",
+        "min": 0,
+        "max": 25,
+        "step": 1,
+        "presetSteps": [2, 5, 10, 20],
+        "accentColor": "#059669",
+        "desc": "Ultra-high trust Tier-1 backlinks on verified educational (.edu) and government (.gov) resource portals."
+      },
+      {
+        "id": "local_citations",
+        "name": "Local Citations (Google Maps)",
+        "category": "Local SEO & NAP",
+        "icon": "fa-solid fa-map-location-dot",
+        "unitPrice": 0.5,
+        "da": "DA 88+",
+        "min": 0,
+        "max": 150,
+        "step": 10,
+        "presetSteps": [20, 40, 80, 120],
+        "accentColor": "#ea580c",
+        "desc": "100% NAP consistent business directory citations with geo-tagged images to rank in Google Maps 3-Pack."
+      }
+    ],
+    "presetBundles": [
+      {
+        "id": "starter",
+        "name": "Starter Entity Launch",
+        "tag": "Best for New Sites",
+        "icon": "fa-solid fa-rocket",
+        "badgeColor": "#3b82f6",
+        "desc": "Foundational brand authority, NAP consistency & social discovery signals.",
+        "config": {
+          "profile_creation": 50,
+          "social_bookmarks": 50,
+          "local_citations": 20,
+          "web20_blogs": 5,
+          "pdf_sharing": 5,
+          "guest_posting": 0,
+          "forum_posting": 0,
+          "press_release": 0,
+          "edu_gov": 2
+        }
+      },
+      {
+        "id": "surge",
+        "name": "Authority Surge Pack",
+        "tag": "Most Popular 🔥",
+        "icon": "fa-solid fa-bolt",
+        "badgeColor": "#f59e0b",
+        "desc": "High-impact contextual mix designed for ranking competitive organic keywords.",
+        "config": {
+          "profile_creation": 100,
+          "web20_blogs": 15,
+          "social_bookmarks": 100,
+          "pdf_sharing": 15,
+          "guest_posting": 2,
+          "forum_posting": 10,
+          "press_release": 1,
+          "edu_gov": 5,
+          "local_citations": 30
+        }
+      },
+      {
+        "id": "enterprise",
+        "name": "Enterprise Domination",
+        "tag": "Maximum Link Juice",
+        "icon": "fa-solid fa-crown",
+        "badgeColor": "#8b5cf6",
+        "desc": "Aggressive multi-tier link structure for market leaders and high-volume keywords.",
+        "config": {
+          "profile_creation": 250,
+          "web20_blogs": 35,
+          "social_bookmarks": 250,
+          "pdf_sharing": 30,
+          "guest_posting": 5,
+          "forum_posting": 25,
+          "press_release": 3,
+          "edu_gov": 12,
+          "local_citations": 60
+        }
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Are these backlinks 100% safe from Google penalties and algorithm updates?",
+        "a": "Yes, 100% safe. Every backlink is created manually following strict Google Search Essentials and Webmaster Guidelines. We strictly prohibit automated bot generation, link farms, or toxic private blog networks (PBNs). All links are placed on established, high Domain Authority (DA 80+ to 95+) platforms with natural anchor text ratios (branded, generic, topical, and naked URL), ensuring complete protection against Google Core, Spam, and Helpful Content updates."
+      },
+      {
+        "q": "How quickly will I see SEO ranking improvements and traffic growth?",
+        "a": "Most websites observe initial Googlebot crawl signals and indexing within 7 to 14 days, followed by measurable organic keyword ranking improvements in 3 to 6 weeks. Backlink authority distributes gradually as search engine bots crawl and validate newly indexed link nodes. Combining contextual Web 2.0 blogs, high-authority brand profiles, and social signals accelerates this authority velocity."
+      },
+      {
+        "q": "What kind of reporting and proof of work do I receive upon completion?",
+        "a": "You receive a comprehensive, white-label Google / Excel spreadsheet upon delivery. The live report includes every published live URL, verified Domain Authority (DA/DR) metrics, exact anchor text used, indexation status, and full master login credentials (usernames and passwords) for all created Web 2.0s and profile accounts—giving you 100% permanent ownership of your link assets."
+      },
+      {
+        "q": "What happens if a backlink drops or goes offline? Is there a guarantee?",
+        "a": "We provide a 100% Free 90-Day Replacement Guarantee on all custom link building packages. While our manual placement method ensures high link permanence, if any link drops or is removed within 90 days of project delivery, our team will immediately replace it with an equivalent or higher DA backlink at zero additional cost."
+      },
+      {
+        "q": "How do I choose the best backlink mix and quantity for my website?",
+        "a": "For newly launched websites or brand foundation building, our Starter Booster (Profile links, Social Bookmarks, Citations) creates a natural trust footprint. For established domains targeting high-intent commercial keywords, the Authority Surge Pack or Enterprise Domination (Contextual Web 2.0s, Guest Posts, EDU/GOV links) passes maximum ranking power. You can also customize your exact quantities with our calculator sliders above, and our senior SEO strategist will review your target anchors before execution."
+      }
+    ]
+  }
 }

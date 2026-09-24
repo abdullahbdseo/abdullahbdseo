@@ -30,16 +30,7 @@ export async function POST(req) {
       const usernameInput = (body.username || "").trim().toLowerCase();
       const passwordInput = (body.password || "").trim();
 
-      const validUsernames = [
-        activeUsername,
-        "admin",
-        "abdullah",
-        "admin@seoservice.local",
-        "admin@abdullahbdseo.com",
-        "admin@seoservice.com"
-      ];
-
-      const isUserMatch = validUsernames.includes(usernameInput);
+      const isUserMatch = usernameInput === activeUsername;
       const isPassMatch = passwordInput === activePassword;
 
       if (isUserMatch && isPassMatch) {
@@ -69,7 +60,7 @@ export async function POST(req) {
       const cleanNewPass = (newPassword || "").trim();
 
       // Verify current password
-      if (cleanCurrentPass !== activePassword && cleanCurrentPass !== "admin123") {
+      if (cleanCurrentPass !== activePassword) {
         return NextResponse.json(
           { success: false, error: "Current password does not match." },
           { status: 400 }

@@ -3,13 +3,14 @@
 import { useState, useEffect } from "react";
 import { useCMS } from "@/lib/useCMS";
 import Link from "next/link";
+import { freeTools as defaultFreeTools } from "@/lib/data";
 
-const CATEGORIES = ["SEO & Analysis", "Calculators & ROI", "Generators & Writers", "Checkers & Validators"];
+const CATEGORIES = ["SEO & Technical", "SEO & Analysis", "Calculators & ROI", "Generators & Writers", "Checkers & Validators"];
 const COLORS = ["#4361ee", "#06b6d4", "#059669", "#e11d48", "#f59e0b", "#8b5cf6", "#2563eb", "#dc2626"];
 
 export default function AdminToolsPage() {
   const { data, loading, saving, error, saveMsg, saveSection } = useCMS();
-  const [tools, setTools] = useState([]);
+  const [tools, setTools] = useState(() => defaultFreeTools || []);
   const [showForm, setShowForm] = useState(false);
   const [editItem, setEditItem] = useState(null);
   const [deleteSlug, setDeleteSlug] = useState(null);
@@ -23,12 +24,33 @@ export default function AdminToolsPage() {
     icon: "fa-wrench",
     color: "#2563eb",
     bg: "#eff6ff",
-    category: "SEO & Analysis",
+    category: "Calculators & ROI",
   };
 
   useEffect(() => {
-    if (data?.freeTools) setTools(data.freeTools);
-  }, [data]);
+    if (data?.freeTools && Array.isArray(data.freeTools)) {
+      let currentList = [...data.freeTools];
+      // Auto-merge any default tools (like backlink-package-calculator) if missing in user's remote or cached list
+      if (Array.isArray(defaultFreeTools)) {
+        const existingSlugs = new Set(currentList.map((t) => t.slug));
+        let changed = false;
+        defaultFreeTools.forEach((defTool) => {
+          if (!existingSlugs.has(defTool.slug)) {
+            currentList.push(defTool);
+            changed = true;
+          }
+        });
+        if (changed) {
+          saveSection("freeTools", currentList);
+        }
+      }
+      setTools(currentList);
+    } else if (defaultFreeTools) {
+      setTools(defaultFreeTools);
+    }
+  }, [data, saveSection]);
+
+  const allCategories = ["all", ...new Set([...CATEGORIES, ...tools.map((t) => t.category)].filter(Boolean))];
 
   const filtered = tools.filter((t) => {
     const q = searchQ.toLowerCase();
@@ -44,6 +66,12 @@ export default function AdminToolsPage() {
   const handleSave = async (updated) => {
     setTools(updated);
     await saveSection("freeTools", updated);
+  };
+
+  const handleResetToDefaults = async () => {
+    if (confirm("Restore all default built-in SEO tools & calculators (including Backlink Package Calculator)?")) {
+      await handleSave(defaultFreeTools);
+    }
   };
 
   const handleAdd = async (form) => {
@@ -85,9 +113,40 @@ export default function AdminToolsPage() {
         </div>
 
         <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+          <Link
+            href="/admin/backlink-calculator"
+            className="btn-admin"
+            style={{
+              background: "#eff6ff",
+              border: "1px solid #bfdbfe",
+              color: "#1d4ed8",
+              fontWeight: 700,
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "8px",
+              padding: "8px 16px",
+              borderRadius: "4px",
+              textDecoration: "none"
+            }}
+          >
+            <i className="fa-solid fa-sliders"></i>
+            <span>Backlink Package Calculator</span>
+          </Link>
+
+          <button
+            onClick={handleResetToDefaults}
+            className="btn-admin btn-admin-outline"
+            title="Sync and restore all built-in SEO tools"
+            style={{ borderRadius: "4px", display: "inline-flex", alignItems: "center", gap: "6px" }}
+          >
+            <i className="fa-solid fa-arrows-rotate"></i>
+            <span>Sync Default Tools</span>
+          </button>
+
           <button
             onClick={() => { setShowForm(true); setEditItem(null); }}
             className="btn-admin btn-admin-primary"
+            style={{ borderRadius: "4px" }}
           >
             <i className="fa-solid fa-plus"></i>
             <span>Add New Tool</span>
@@ -238,7 +297,7 @@ export default function AdminToolsPage() {
           onChange={(e) => setCategoryFilter(e.target.value)}
           style={{
             padding: "8px 12px",
-            borderRadius: "8px",
+            borderRadius: "4px",
             border: "1px solid #cbd5e1",
             fontSize: "13px",
             outline: "none",
@@ -248,7 +307,7 @@ export default function AdminToolsPage() {
           }}
         >
           <option value="all">All Tool Categories ({tools.length})</option>
-          {CATEGORIES.map((cat) => (
+          {allCategories.filter((c) => c !== "all").map((cat) => (
             <option key={cat} value={cat}>
               {cat}
             </option>
@@ -339,12 +398,24 @@ export default function AdminToolsPage() {
 
                     <td>
                       <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+                        {tool.slug === "backlink-package-calculator" && (
+                          <Link
+                            href="/admin/backlink-calculator"
+                            title="Configure Rates & Packages"
+                            className="btn-admin btn-admin-primary btn-admin-sm"
+                            style={{ padding: "5px 9px", fontSize: "11px", display: "inline-flex", alignItems: "center", gap: "4px", borderRadius: "4px", textDecoration: "none" }}
+                          >
+                            <i className="fa-solid fa-sliders"></i>
+                            <span>Configure</span>
+                          </Link>
+                        )}
+
                         <Link
                           href={`/tools/${tool.slug}`}
                           target="_blank"
                           title="Open Live Tool"
                           className="btn-admin btn-admin-outline btn-admin-sm"
-                          style={{ padding: "5px 9px", color: "#475569" }}
+                          style={{ padding: "5px 9px", color: "#475569", borderRadius: "4px" }}
                         >
                           <i className="fa-solid fa-arrow-up-right-from-square"></i>
                         </Link>

@@ -32,6 +32,7 @@ const navGroups = [
       { href: "/admin/pricing", label: "Pricing Tables", icon: "fa-tags" },
       { href: "/admin/faqs", label: "FAQs Manager", icon: "fa-circle-question" },
       { href: "/admin/tools", label: "Free SEO Tools", icon: "fa-screwdriver-wrench" },
+      { href: "/admin/backlink-calculator", label: "Backlink Calculator", icon: "fa-calculator" },
     ],
   },
   {

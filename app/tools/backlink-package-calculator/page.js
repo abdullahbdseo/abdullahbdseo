@@ -3,221 +3,37 @@
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import ToolFaqAccordion from "@/components/ToolFaqAccordion";
-import { siteSettings } from "@/lib/data";
-
-const BACKLINK_SERVICES = [
-  {
-    id: "profile_creation",
-    name: "Profile Creation Links",
-    category: "Brand Entity",
-    icon: "fa-solid fa-id-card",
-    unitPrice: 0.35,
-    da: "DA 85+",
-    min: 0,
-    max: 800,
-    step: 10,
-    presetSteps: [25, 50, 100, 200],
-    accentColor: "#3b82f6",
-    desc: "100% manual high DA profile backlinks with synced NAP, avatar, and canonical website anchors."
-  },
-  {
-    id: "web20_blogs",
-    name: "Web 2.0 Satellite Blogs",
-    category: "Contextual In-Content",
-    icon: "fa-solid fa-globe",
-    unitPrice: 1.25,
-    da: "DA 88+",
-    min: 0,
-    max: 300,
-    step: 5,
-    presetSteps: [10, 20, 50, 100],
-    accentColor: "#10b981",
-    desc: "Unique handwritten 800+ word niche blogs on Medium, WordPress, Substack with in-content contextual DoFollow anchors."
-  },
-  {
-    id: "social_bookmarks",
-    name: "Social Bookmarking & Signals",
-    category: "Fast Indexing",
-    icon: "fa-solid fa-bookmark",
-    unitPrice: 0.25,
-    da: "DA 85+",
-    min: 0,
-    max: 500,
-    step: 10,
-    presetSteps: [50, 100, 200, 300],
-    accentColor: "#6366f1",
-    desc: "High-velocity social bookmark discovery links on Reddit, Pinterest, Scoop.it to accelerate Googlebot crawl frequency."
-  },
-  {
-    id: "pdf_sharing",
-    name: "PDF & Document Sharing",
-    category: "Document Embeds",
-    icon: "fa-solid fa-file-pdf",
-    unitPrice: 0.90,
-    da: "DA 87+",
-    min: 0,
-    max: 200,
-    step: 5,
-    presetSteps: [10, 25, 50, 100],
-    accentColor: "#ef4444",
-    desc: "Custom branded PDF guides and whitepapers uploaded to SlideShare, Scribd, Issuu with live clickable links."
-  },
-  {
-    id: "guest_posting",
-    name: "Editorial Guest Posts",
-    category: "High Authority",
-    icon: "fa-solid fa-newspaper",
-    unitPrice: 18.00,
-    da: "DA 87+",
-    min: 0,
-    max: 35,
-    step: 1,
-    presetSteps: [1, 3, 5, 10],
-    accentColor: "#f59e0b",
-    desc: "Real traffic multi-niche & tech publication articles with contextual in-content DoFollow backlink outreach."
-  },
-  {
-    id: "forum_posting",
-    name: "Forum & Discussion Mentions",
-    category: "Community Traffic",
-    icon: "fa-solid fa-comments",
-    unitPrice: 1.50,
-    da: "DA 86+",
-    min: 0,
-    max: 50,
-    step: 2,
-    presetSteps: [5, 10, 20, 35],
-    accentColor: "#8b5cf6",
-    desc: "Participating in active industry threads (Quora, Reddit, Webmaster boards) with natural signature & mention links."
-  },
-  {
-    id: "press_release",
-    name: "Press Release Syndication",
-    category: "Digital PR",
-    icon: "fa-solid fa-bullhorn",
-    unitPrice: 12.00,
-    da: "DA 82+",
-    min: 0,
-    max: 15,
-    step: 1,
-    presetSteps: [1, 2, 5, 10],
-    accentColor: "#0284c7",
-    desc: "Syndicated business milestone and launch announcements distributed across top PR wires & Google News index."
-  },
-  {
-    id: "edu_gov",
-    name: "Edu & Gov Trust Backlinks",
-    category: "Institutional Trust",
-    icon: "fa-solid fa-graduation-cap",
-    unitPrice: 4.50,
-    da: "DA 90+",
-    min: 0,
-    max: 25,
-    step: 1,
-    presetSteps: [2, 5, 10, 20],
-    accentColor: "#059669",
-    desc: "Ultra-high trust Tier-1 backlinks on verified educational (.edu) and government (.gov) resource portals."
-  },
-  {
-    id: "local_citations",
-    name: "Local Citations (Google Maps)",
-    category: "Local SEO & NAP",
-    icon: "fa-solid fa-map-location-dot",
-    unitPrice: 0.50,
-    da: "DA 88+",
-    min: 0,
-    max: 150,
-    step: 10,
-    presetSteps: [20, 40, 80, 120],
-    accentColor: "#ea580c",
-    desc: "100% NAP consistent business directory citations with geo-tagged images to rank in Google Maps 3-Pack."
-  }
-];
-
-const PRESET_BUNDLES = [
-  {
-    id: "starter",
-    name: "Starter Entity Launch",
-    tag: "Best for New Sites",
-    icon: "fa-solid fa-rocket",
-    badgeColor: "#3b82f6",
-    desc: "Foundational brand authority, NAP consistency & social discovery signals.",
-    config: {
-      profile_creation: 50,
-      social_bookmarks: 50,
-      local_citations: 20,
-      web20_blogs: 5,
-      pdf_sharing: 5,
-      guest_posting: 0,
-      forum_posting: 0,
-      press_release: 0,
-      edu_gov: 2
-    }
-  },
-  {
-    id: "surge",
-    name: "Authority Surge Pack",
-    tag: "Most Popular 🔥",
-    icon: "fa-solid fa-bolt",
-    badgeColor: "#f59e0b",
-    desc: "High-impact contextual mix designed for ranking competitive organic keywords.",
-    config: {
-      profile_creation: 100,
-      web20_blogs: 15,
-      social_bookmarks: 100,
-      pdf_sharing: 15,
-      guest_posting: 2,
-      forum_posting: 10,
-      press_release: 1,
-      edu_gov: 5,
-      local_citations: 30
-    }
-  },
-  {
-    id: "enterprise",
-    name: "Enterprise Domination",
-    tag: "Maximum Link Juice",
-    icon: "fa-solid fa-crown",
-    badgeColor: "#8b5cf6",
-    desc: "Aggressive multi-tier link structure for market leaders and high-volume keywords.",
-    config: {
-      profile_creation: 250,
-      web20_blogs: 35,
-      social_bookmarks: 250,
-      pdf_sharing: 30,
-      guest_posting: 5,
-      forum_posting: 25,
-      press_release: 3,
-      edu_gov: 12,
-      local_citations: 60
-    }
-  }
-];
-
-const BACKLINK_FAQS = [
-  {
-    q: "Are these backlinks 100% safe from Google penalties and algorithm updates?",
-    a: "Yes, 100% safe. Every backlink is created manually following strict Google Search Essentials and Webmaster Guidelines. We strictly prohibit automated bot generation, link farms, or toxic private blog networks (PBNs). All links are placed on established, high Domain Authority (DA 80+ to 95+) platforms with natural anchor text ratios (branded, generic, topical, and naked URL), ensuring complete protection against Google Core, Spam, and Helpful Content updates."
-  },
-  {
-    q: "How quickly will I see SEO ranking improvements and traffic growth?",
-    a: "Most websites observe initial Googlebot crawl signals and indexing within 7 to 14 days, followed by measurable organic keyword ranking improvements in 3 to 6 weeks. Backlink authority distributes gradually as search engine bots crawl and validate newly indexed link nodes. Combining contextual Web 2.0 blogs, high-authority brand profiles, and social signals accelerates this authority velocity."
-  },
-  {
-    q: "What kind of reporting and proof of work do I receive upon completion?",
-    a: "You receive a comprehensive, white-label Google / Excel spreadsheet upon delivery. The live report includes every published live URL, verified Domain Authority (DA/DR) metrics, exact anchor text used, indexation status, and full master login credentials (usernames and passwords) for all created Web 2.0s and profile accounts—giving you 100% permanent ownership of your link assets."
-  },
-  {
-    q: "What happens if a backlink drops or goes offline? Is there a guarantee?",
-    a: "We provide a 100% Free 90-Day Replacement Guarantee on all custom link building packages. While our manual placement method ensures high link permanence, if any link drops or is removed within 90 days of project delivery, our team will immediately replace it with an equivalent or higher DA backlink at zero additional cost."
-  },
-  {
-    q: "How do I choose the best backlink mix and quantity for my website?",
-    a: "For newly launched websites or brand foundation building, our Starter Booster (Profile links, Social Bookmarks, Citations) creates a natural trust footprint. For established domains targeting high-intent commercial keywords, the Authority Surge Pack or Enterprise Domination (Contextual Web 2.0s, Guest Posts, EDU/GOV links) passes maximum ranking power. You can also customize your exact quantities with our calculator sliders above, and our senior SEO strategist will review your target anchors before execution."
-  }
-];
+import { siteSettings, backlinkCalculator as defaultBacklinkCalculator } from "@/lib/data";
+import { useLiveCMS } from "@/lib/useLiveCMS";
 
 export default function BacklinkPackageCalculatorPage() {
+  const liveCMS = useLiveCMS("backlinkCalculator", defaultBacklinkCalculator);
+  const currentData = liveCMS || defaultBacklinkCalculator;
+
+  const services = useMemo(() => {
+    return (currentData?.services && currentData.services.length > 0)
+      ? currentData.services
+      : (defaultBacklinkCalculator?.services || []);
+  }, [currentData]);
+
+  const presetBundles = useMemo(() => {
+    return (currentData?.presetBundles && currentData.presetBundles.length > 0)
+      ? currentData.presetBundles
+      : (defaultBacklinkCalculator?.presetBundles || []);
+  }, [currentData]);
+
+  const faqs = useMemo(() => {
+    return (currentData?.faqs && currentData.faqs.length > 0)
+      ? currentData.faqs
+      : (defaultBacklinkCalculator?.faqs || []);
+  }, [currentData]);
+
+  const bdtRate = currentData?.settings?.bdtRate || defaultBacklinkCalculator?.settings?.bdtRate || 122;
+  const tier2Multiplier = currentData?.settings?.tier2Multiplier ?? defaultBacklinkCalculator?.settings?.tier2Multiplier ?? 0.15;
+  const expressMultiplier = currentData?.settings?.expressMultiplier ?? defaultBacklinkCalculator?.settings?.expressMultiplier ?? 0.20;
+  const standardTurnaround = currentData?.settings?.turnaroundStandard || "10–14 Days";
+  const expressTurnaround = currentData?.settings?.turnaroundExpress || "3–5 Days (Express)";
+
   const [quantities, setQuantities] = useState({
     profile_creation: 100,
     web20_blogs: 10,
@@ -252,8 +68,6 @@ export default function BacklinkPackageCalculatorPage() {
     notes: ""
   });
 
-  const bdtRate = 122; // 1 USD = 122 BDT
-
   const handleQtyChange = (id, val) => {
     setActivePreset(null);
     const num = Math.max(0, parseInt(val) || 0);
@@ -262,7 +76,7 @@ export default function BacklinkPackageCalculatorPage() {
 
   const applyPreset = (preset) => {
     setActivePreset(preset.id);
-    setQuantities(preset.config);
+    setQuantities(preset.config || {});
   };
 
   const toggleAddon = (key) => {
@@ -273,27 +87,27 @@ export default function BacklinkPackageCalculatorPage() {
   const { rawTotalUSD, totalLinkCount } = useMemo(() => {
     let raw = 0;
     let count = 0;
-    BACKLINK_SERVICES.forEach(item => {
+    services.forEach(item => {
       const qty = quantities[item.id] || 0;
-      raw += qty * item.unitPrice;
+      raw += qty * (item.unitPrice || 0);
       count += qty;
     });
     return { rawTotalUSD: raw, totalLinkCount: count };
-  }, [quantities]);
+  }, [services, quantities]);
 
   let addonMultiplier = 1.0;
-  if (addons.tier2Indexation) addonMultiplier += 0.15; // +15%
-  if (addons.expressDelivery) addonMultiplier += 0.20; // +20%
+  if (addons.tier2Indexation) addonMultiplier += tier2Multiplier;
+  if (addons.expressDelivery) addonMultiplier += expressMultiplier;
 
   const finalTotalUSD = Math.round(rawTotalUSD * addonMultiplier * 100) / 100;
   const finalTotalBDT = Math.round(finalTotalUSD * bdtRate);
 
   // Turnaround estimate
-  let turnaroundDays = "10–14 Days";
+  let turnaroundDays = standardTurnaround;
   if (totalLinkCount < 80) turnaroundDays = "5–7 Days";
   else if (totalLinkCount < 250) turnaroundDays = "7–10 Days";
   else if (totalLinkCount > 500) turnaroundDays = "14–21 Days";
-  if (addons.expressDelivery) turnaroundDays = "3–5 Days (Express)";
+  if (addons.expressDelivery) turnaroundDays = expressTurnaround;
 
   // Link Power Gauge (0 to 100)
   const powerScore = Math.min(100, Math.round((totalLinkCount / 500) * 80 + (addons.tier2Indexation ? 15 : 0) + (addons.dripFeed ? 5 : 0)));
@@ -308,17 +122,17 @@ export default function BacklinkPackageCalculatorPage() {
   const generateSummaryText = () => {
     let summary = `🚀 *CUSTOM BACKLINK PACKAGE ORDER*\n`;
     summary += `----------------------------------------\n`;
-    BACKLINK_SERVICES.forEach(item => {
+    services.forEach(item => {
       const qty = quantities[item.id] || 0;
       if (qty > 0) {
-        summary += `• ${item.name}: ${qty} Links ($${(qty * item.unitPrice).toFixed(2)})\n`;
+        summary += `• ${item.name}: ${qty} Links ($${(qty * (item.unitPrice || 0)).toFixed(2)})\n`;
       }
     });
     summary += `----------------------------------------\n`;
     summary += `📊 *Total Backlinks:* ${totalLinkCount} Links\n`;
-    summary += `⚡ *Tier-2 Indexation:* ${addons.tier2Indexation ? "YES (+15% Booster)" : "NO"}\n`;
+    summary += `⚡ *Tier-2 Indexation:* ${addons.tier2Indexation ? `YES (+${Math.round(tier2Multiplier * 100)}% Booster)` : "NO"}\n`;
     summary += `⏱️ *Drip-Feed (Natural Velocity):* ${addons.dripFeed ? "YES (30 Days)" : "Standard"}\n`;
-    summary += `🚀 *Delivery Speed:* ${addons.expressDelivery ? "Express (3-5 Days)" : turnaroundDays}\n`;
+    summary += `🚀 *Delivery Speed:* ${addons.expressDelivery ? expressTurnaround : turnaroundDays}\n`;
     summary += `💰 *Total Estimated Price:* $${finalTotalUSD.toFixed(2)} USD / ৳${finalTotalBDT.toLocaleString()} BDT\n`;
     summary += `----------------------------------------\n`;
     summary += `Client Website: ${orderForm.websiteUrl || "To be provided"}\n`;
@@ -334,7 +148,8 @@ export default function BacklinkPackageCalculatorPage() {
     }
   };
 
-  const whatsappNumber = (siteSettings?.whatsapp_number || "8801670769816").replace(/[^0-9]/g, "");
+  const rawWhatsappNum = currentData?.settings?.whatsappNumber || siteSettings?.whatsapp_number || "8801670769816";
+  const whatsappNumber = rawWhatsappNum.replace(/[^0-9]/g, "");
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(generateSummaryText())}`;
 
   const handleOrderSubmit = async (e) => {
@@ -363,29 +178,6 @@ export default function BacklinkPackageCalculatorPage() {
       setOrderSubmitting(false);
     }
   };
-
-  const faqItems = [
-    {
-      q: "How does the custom backlink pricing work?",
-      a: "Each backlink type has an individual per-link rate based on the authority, domain rating (DA 80+), manual creation labor, and whether it requires unique written content (e.g. Web 2.0 and Guest Posts). You only pay for the exact quantity you select."
-    },
-    {
-      q: "Are all backlinks 100% Google algorithm penalty safe?",
-      a: "Yes. Every backlink created by Abdullah BD SEO is built 100% manually on high DA/DR platforms with natural anchor text distribution (branded, naked URL, and topical anchors) and optional natural 30-day drip-feeding to safeguard against algorithmic over-optimization."
-    },
-    {
-      q: "How fast do the backlinks get indexed by Google?",
-      a: "When you select our Tier-2 Indexation Booster, all profile URLs and articles are pinged and distributed through Google-compliant indexing acceleration networks, resulting in indexation within 7 to 14 days."
-    },
-    {
-      q: "Will I receive a detailed live spreadsheet report?",
-      a: "Yes! Every order includes a complete live Google Sheet or Excel report containing live link URLs, target anchor texts, DA/DR metrics, and verified account login credentials."
-    },
-    {
-      q: "What payment methods are supported?",
-      a: "We support international payments via Credit Card, Debit Card, Stripe, PayPal, Wise, and Payoneer, as well as local Bangladesh payments via bKash, Nagad, Rocket, and Bank Transfer."
-    }
-  ];
 
   return (
     <div style={{ backgroundColor: "#f8fafc", minHeight: "100vh", paddingBottom: "90px" }}>
@@ -582,7 +374,7 @@ export default function BacklinkPackageCalculatorPage() {
               POPULAR PRE-CONFIGURED STRATEGY PACKS:
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "16px", maxWidth: "1020px", margin: "0 auto" }}>
-              {PRESET_BUNDLES.map(preset => {
+              {presetBundles.map(preset => {
                 const isSelected = activePreset === preset.id;
                 return (
                   <button
@@ -656,17 +448,9 @@ export default function BacklinkPackageCalculatorPage() {
                       type="button"
                       onClick={() => {
                         setActivePreset(null);
-                        setQuantities({
-                          profile_creation: 0,
-                          web20_blogs: 0,
-                          social_bookmarks: 0,
-                          pdf_sharing: 0,
-                          guest_posting: 0,
-                          forum_posting: 0,
-                          press_release: 0,
-                          edu_gov: 0,
-                          local_citations: 0
-                        });
+                        const zeroState = {};
+                        services.forEach(s => { zeroState[s.id] = 0; });
+                        setQuantities(zeroState);
                       }}
                       style={{
                         background: "#f1f5f9",
@@ -689,7 +473,7 @@ export default function BacklinkPackageCalculatorPage() {
 
                   {/* Backlink Sliders Cards */}
                   <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                    {BACKLINK_SERVICES.map(item => {
+                    {services.map(item => {
                       const qty = quantities[item.id] || 0;
                       const itemSubtotal = (qty * item.unitPrice).toFixed(2);
                       const isHighlighted = qty > 0;
@@ -1068,11 +852,11 @@ export default function BacklinkPackageCalculatorPage() {
                   <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "16px", marginBottom: "20px" }}>
                     <div style={{ fontSize: "11px", fontWeight: 800, color: "#cbd5e1", marginBottom: "8px", display: "flex", justifyContent: "space-between" }}>
                       <span>PACKAGE COMPOSITION:</span>
-                      <span style={{ color: "#38bdf8" }}>{BACKLINK_SERVICES.filter(item => (quantities[item.id] || 0) > 0).length} Types</span>
+                      <span style={{ color: "#38bdf8" }}>{services.filter(item => (quantities[item.id] || 0) > 0).length} Types</span>
                     </div>
 
                     <div style={{ maxHeight: "140px", overflowY: "auto", display: "flex", flexDirection: "column", gap: "6px", fontSize: "11.5px", paddingRight: "4px" }}>
-                      {BACKLINK_SERVICES.filter(item => (quantities[item.id] || 0) > 0).map(item => (
+                      {services.filter(item => (quantities[item.id] || 0) > 0).map(item => (
                         <div key={item.id} style={{ display: "flex", justifyContent: "space-between", color: "#94a3b8", borderBottom: "1px dashed rgba(255,255,255,0.06)", paddingBottom: "3px" }}>
                           <span>• {item.name}:</span>
                           <strong style={{ color: "#ffffff" }}>{quantities[item.id]} Links</strong>
@@ -1196,7 +980,7 @@ export default function BacklinkPackageCalculatorPage() {
 
       {/* ================= FAQ SECTION ================= */}
       <section style={{ maxWidth: "1000px", margin: "70px auto 0", padding: "0 20px" }}>
-        <ToolFaqAccordion faqs={BACKLINK_FAQS} title="Frequently Asked Questions (FAQ)" />
+        <ToolFaqAccordion faqs={faqs} title="Frequently Asked Questions (FAQ)" />
       </section>
 
       {/* ================= ORDER INQUIRY MODAL (HOMEPAGE DESIGN ALIGNED) ================= */}

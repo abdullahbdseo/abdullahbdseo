@@ -23,6 +23,7 @@ export async function GET(request) {
       faqs: staticData.faqs || staticData.globalFaqs || [],
       processSteps: staticData.processSteps || [],
       freeTools: staticData.freeTools || [],
+      backlinkCalculator: staticData.backlinkCalculator || null,
     };
 
     if (isFirebaseConfigured() && db) {
@@ -35,6 +36,20 @@ export async function GET(request) {
               result[docSnap.id] = data.value;
             }
           });
+
+          // Ensure any newly added built-in tools (like backlink-package-calculator) are not lost if Firestore has older freeTools
+          if (Array.isArray(result.freeTools) && Array.isArray(staticData.freeTools)) {
+            const existingSlugs = new Set(result.freeTools.map((t) => t.slug));
+            staticData.freeTools.forEach((defaultTool) => {
+              if (!existingSlugs.has(defaultTool.slug)) {
+                result.freeTools.push(defaultTool);
+              }
+            });
+          }
+
+          if (!result.backlinkCalculator && staticData.backlinkCalculator) {
+            result.backlinkCalculator = staticData.backlinkCalculator;
+          }
         }
       } catch (fbErr) {
         console.warn("Firestore fetch error in /api/cms:", fbErr.message);
