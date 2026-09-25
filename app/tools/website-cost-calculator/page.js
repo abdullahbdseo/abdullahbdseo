@@ -3,8 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import ToolFaqAccordion from "@/components/ToolFaqAccordion";
+import { useCurrency } from "@/context/CurrencyContext";
 
 export default function WebsiteCostCalculator() {
+  const { formatPrice, currency } = useCurrency();
   const [pageCount, setPageCount] = useState("5-10");
   const [designType, setDesignType] = useState("custom");
   const [features, setFeatures] = useState({
@@ -146,12 +148,12 @@ export default function WebsiteCostCalculator() {
                 </h2>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "10px" }}>
                   {[
-                    { key: "seoSetup", title: "Full On-Page & Schema SEO", price: "+$350", desc: "Complete JSON-LD markup, meta, & sitemap" },
-                    { key: "speedOpt", title: "Core Web Vitals 95+ Speed", price: "+$250", desc: "Sub-second load times & image optimization" },
-                    { key: "ecommerce", title: "E-Commerce Catalog & Products", price: "+$450", desc: "Product filters, variations & cart systems" },
-                    { key: "cmsBlog", title: "CMS Dynamic Blog Engine", price: "+$200", desc: "Author dashboard & article management" },
-                    { key: "clientPortal", title: "Client Portal & Dashboard", price: "+$300", desc: "User accounts & authenticated access" },
-                    { key: "customApi", title: "Custom API & Automation", price: "+$400", desc: "CRM sync, Zapier, or webhook pipelines" }
+                    { key: "seoSetup", title: "Full On-Page & Schema SEO", price: `+${formatPrice(350)}`, desc: "Complete JSON-LD markup, meta, & sitemap" },
+                    { key: "speedOpt", title: "Core Web Vitals 95+ Speed", price: `+${formatPrice(250)}`, desc: "Sub-second load times & image optimization" },
+                    { key: "ecommerce", title: "E-Commerce Catalog & Products", price: `+${formatPrice(450)}`, desc: "Product filters, variations & cart systems" },
+                    { key: "cmsBlog", title: "CMS Dynamic Blog Engine", price: `+${formatPrice(200)}`, desc: "Author dashboard & article management" },
+                    { key: "clientPortal", title: "Client Portal & Dashboard", price: `+${formatPrice(300)}`, desc: "User accounts & authenticated access" },
+                    { key: "customApi", title: "Custom API & Automation", price: `+${formatPrice(400)}`, desc: "CRM sync, Zapier, or webhook pipelines" }
                   ].map((feat) => (
                     <label
                       key={feat.key}
@@ -199,10 +201,10 @@ export default function WebsiteCostCalculator() {
                   Estimated Project Total
                 </span>
                 <div className="calc-kpi-main" style={{ color: "#34d399" }}>
-                  ${totalEstimate.toLocaleString()}
+                  {formatPrice(totalEstimate)}
                 </div>
                 <div style={{ fontSize: "0.85rem", color: "#cbd5e1", marginTop: "-10px", marginBottom: "16px" }}>
-                  Expected Range: ${minRange.toLocaleString()} – ${maxRange.toLocaleString()}
+                  Expected Range: {formatPrice(minRange)} – {formatPrice(maxRange)}
                 </div>
               </div>
 
@@ -213,11 +215,11 @@ export default function WebsiteCostCalculator() {
                 <div style={{ display: "flex", flexDirection: "column", gap: "8px", fontSize: "0.84rem" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", color: "#cbd5e1" }}>
                     <span>Base Website ({pageCount} pages):</span>
-                    <strong>${Math.round(basePrice * designMultiplier)}</strong>
+                    <strong>{formatPrice(Math.round(basePrice * designMultiplier))}</strong>
                   </div>
                   <div style={{ display: "flex", justifyContent: "space-between", color: "#cbd5e1" }}>
                     <span>Selected Add-on Modules:</span>
-                    <strong style={{ color: "#38bdf8" }}>+${featureAddons}</strong>
+                    <strong style={{ color: "#38bdf8" }}>+{formatPrice(featureAddons)}</strong>
                   </div>
                   <div style={{ display: "flex", justifyContent: "space-between", color: "#cbd5e1" }}>
                     <span>Estimated Turnaround:</span>
