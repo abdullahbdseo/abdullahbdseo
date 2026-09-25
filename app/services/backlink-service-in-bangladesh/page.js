@@ -3,8 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { siteSettings } from "@/lib/data";
+import { useCurrency } from "@/context/CurrencyContext";
 
 export default function BacklinkServicePage() {
+  const { formatPrice } = useCurrency();
   const [activeFaq, setActiveFaq] = useState(null);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [formData, setFormData] = useState({
@@ -1206,7 +1208,7 @@ export default function BacklinkServicePage() {
               <div key={pkg.name} className={`digi-pricing-card${pkg.isPopular ? " featured" : ""}`}>
                 <div className="pricing-card-header">
                   <h4>{pkg.name}</h4>
-                  <div className="pricing-card-price">{pkg.usdPrice}<span>{pkg.period}</span></div>
+                  <div className="pricing-card-price">{formatPrice(pkg.price)}<span>{pkg.period}</span></div>
                 </div>
                 <div className="pricing-card-badges">
                   {pkg.badges.map((b) => <span key={b}>{b}</span>)}

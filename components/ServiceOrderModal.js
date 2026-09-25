@@ -4,9 +4,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import { siteSettings } from "@/lib/data";
+import { useCurrency } from "@/context/CurrencyContext";
 
 export default function ServiceOrderModal({ isOpen, onClose, service, selectedPackage, initialPackage }) {
   const pkg = selectedPackage || initialPackage;
+  const { formatPrice, currency } = useCurrency();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -47,7 +49,8 @@ export default function ServiceOrderModal({ isOpen, onClose, service, selectedPa
           service_title: service.title,
           package_name: pkg.name,
           price: pkg.price || service.starting_price || 0,
-          total: pkg.price || service.starting_price || 0
+          total: pkg.price || service.starting_price || 0,
+          currency: currency || "USD"
         })
       });
 
@@ -71,7 +74,7 @@ export default function ServiceOrderModal({ isOpen, onClose, service, selectedPa
   };
 
   const whatsappMsg = encodeURIComponent(
-    `Hi Abdullah, I just submitted an order inquiry for the "${pkg.name}" package on "${service.title}" ($${pkg.price}) for my website: ${formData.website_url || "my website"}. My name is ${formData.name || "a client"}.`
+    `Hi Abdullah, I just submitted an order inquiry for the "${pkg.name}" package on "${service.title}" (${formatPrice(pkg.price)}) for my website: ${formData.website_url || "my website"}. My name is ${formData.name || "a client"}.`
   );
 
   return (
@@ -83,7 +86,7 @@ export default function ServiceOrderModal({ isOpen, onClose, service, selectedPa
           maxWidth: "560px", 
           maxHeight: "90vh", 
           overflowY: "auto", 
-          borderRadius: "12px", 
+          borderRadius: "4px", 
           padding: "30px 28px",
           boxShadow: "0 20px 40px -10px rgba(0,0,0,0.25)"
         }}
@@ -106,7 +109,7 @@ export default function ServiceOrderModal({ isOpen, onClose, service, selectedPa
           <h3 style={{ fontSize: "1.35rem", fontWeight: 800, color: "#0f172a", margin: "2px 0 6px" }}>{service.title}</h3>
           <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.9rem", color: "#475569", flexWrap: "wrap" }}>
             <span style={{ fontWeight: 700, color: "#0f172a" }}>{pkg.name}</span> &bull;{" "}
-            <span style={{ color: "#16a34a", fontWeight: 800, fontSize: "1.05rem" }}>${pkg.price}</span>
+            <span style={{ color: "#16a34a", fontWeight: 800, fontSize: "1.05rem" }}>{formatPrice(pkg.price)}</span>
             {pkg.delivery_days && (
               <> &bull; <span style={{ color: "#64748b" }}><i className="fa-regular fa-clock" style={{ marginRight: "4px" }}></i>{pkg.delivery_days} Days Delivery</span></>
             )}
@@ -116,7 +119,7 @@ export default function ServiceOrderModal({ isOpen, onClose, service, selectedPa
         {/* SUCCESS CONFIRMATION VIEW */}
         {submitted ? (
           <div style={{ textAlign: "center", padding: "10px 0" }}>
-            <div style={{ width: "64px", height: "64px", borderRadius: "50%", background: "#dcfce7", color: "#16a34a", fontSize: "2rem", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
+            <div style={{ width: "64px", height: "64px", borderRadius: "4px", background: "#dcfce7", color: "#16a34a", fontSize: "2rem", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
               <i className="fa-solid fa-circle-check"></i>
             </div>
             <h4 style={{ fontSize: "1.4rem", fontWeight: 800, color: "#0f172a", marginBottom: "8px" }}>Order Inquiry Received!</h4>
@@ -124,7 +127,7 @@ export default function ServiceOrderModal({ isOpen, onClose, service, selectedPa
               Thank you, <strong>{formData.name}</strong>! Your order details for <strong>{pkg.name}</strong> have been emailed directly to Abdullah Saleh. We will review your domain and respond within 24 hours.
             </p>
 
-            <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "14px 18px", textAlign: "left", fontSize: "0.85rem", marginBottom: "24px", color: "#334155" }}>
+            <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "14px 18px", textAlign: "left", fontSize: "0.85rem", marginBottom: "24px", color: "#334155" }}>
               <div><strong>Website:</strong> {formData.website_url}</div>
               <div style={{ marginTop: "4px" }}><strong>Email:</strong> {formData.email}</div>
               <div style={{ marginTop: "4px" }}><strong>Phone / WhatsApp:</strong> {formData.phone || "N/A"}</div>
@@ -136,7 +139,7 @@ export default function ServiceOrderModal({ isOpen, onClose, service, selectedPa
                 target="_blank"
                 rel="noreferrer"
                 className="btn btn-lg btn-blue-solid btn-block"
-                style={{ borderRadius: "6px", fontSize: "0.95rem" }}
+                style={{ borderRadius: "4px", fontSize: "0.95rem" }}
               >
                 <i className="fa-brands fa-whatsapp" style={{ marginRight: "8px" }}></i>
                 Instant Chat on WhatsApp

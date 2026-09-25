@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { siteSettings as staticSettings, services as staticServices, faqs as staticFaqs, globalFaqs as staticGlobalFaqs, testimonials as staticTestimonials } from "@/lib/data";
 import { useLiveCMS } from "@/lib/useLiveCMS";
+import { useCurrency } from "@/context/CurrencyContext";
 import QuoteModal from "@/components/QuoteModal";
 import ServiceOrderModal from "@/components/ServiceOrderModal";
 
@@ -73,6 +74,7 @@ export default function HomePage() {
   const rawFaqs = useLiveCMS("faqs", staticFaqs) || staticFaqs || staticGlobalFaqs;
   const globalFaqs = (Array.isArray(rawFaqs) && rawFaqs.length > 0) ? rawFaqs : (staticFaqs || staticGlobalFaqs || []);
   const testimonials = useLiveCMS("testimonials", staticTestimonials) || staticTestimonials;
+  const { formatPrice } = useCurrency();
 
   const [isQuoteOpen, setIsQuoteOpen] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
@@ -645,7 +647,7 @@ export default function HomePage() {
             <div className="digi-pricing-card">
               <div className="pricing-card-header">
                 <h4>Starter</h4>
-                <div className="pricing-card-price">$125<span>/month</span></div>
+                <div className="pricing-card-price">{formatPrice(125)}<span>/month</span></div>
               </div>
               <div className="pricing-card-badges">
                 <span>Audit</span>
@@ -674,7 +676,7 @@ export default function HomePage() {
             <div className="digi-pricing-card featured">
               <div className="pricing-card-header">
                 <h4>Standard</h4>
-                <div className="pricing-card-price">$350<span>/month</span></div>
+                <div className="pricing-card-price">{formatPrice(350)}<span>/month</span></div>
               </div>
               <div className="pricing-card-badges">
                 <span>30 KW</span>
@@ -703,7 +705,7 @@ export default function HomePage() {
             <div className="digi-pricing-card">
               <div className="pricing-card-header">
                 <h4>Growth</h4>
-                <div className="pricing-card-price">$550<span>/month</span></div>
+                <div className="pricing-card-price">{formatPrice(550)}<span>/month</span></div>
               </div>
               <div className="pricing-card-badges">
                 <span>60 KW</span>
@@ -732,7 +734,7 @@ export default function HomePage() {
             <div className="digi-pricing-card">
               <div className="pricing-card-header">
                 <h4>Enterprise</h4>
-                <div className="pricing-card-price">$850<span>/month</span></div>
+                <div className="pricing-card-price">{formatPrice(850)}<span>/month</span></div>
               </div>
               <div className="pricing-card-badges">
                 <span>Unlimited</span>

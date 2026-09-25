@@ -3,16 +3,18 @@
 
 import { useState } from "react";
 import { siteSettings } from "@/lib/data";
+import { useCurrency } from "@/context/CurrencyContext";
 
 export default function QuoteModal({ isOpen, onClose }) {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { formatPrice, currency } = useCurrency();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     website_url: "",
     service_interested: "Comprehensive Technical SEO Audit",
-    budget: "$500 - $1,500",
+    budget: `${formatPrice(500)} - ${formatPrice(1500)}`,
     message: ""
   });
 
@@ -123,10 +125,10 @@ export default function QuoteModal({ isOpen, onClose }) {
                     value={formData.budget}
                     onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
                   >
-                    <option>$350 - $1,000</option>
-                    <option>$1,000 - $3,000</option>
-                    <option>$3,000 - $10,000</option>
-                    <option>$10,000+</option>
+                    <option>{formatPrice(350)} - {formatPrice(1000)}</option>
+                    <option>{formatPrice(1000)} - {formatPrice(3000)}</option>
+                    <option>{formatPrice(3000)} - {formatPrice(10000)}</option>
+                    <option>{formatPrice(10000)}+</option>
                   </select>
                 </div>
               </div>

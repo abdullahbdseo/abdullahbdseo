@@ -4,10 +4,12 @@ import { useState } from "react";
 import Link from "next/link";
 import { services as staticServices, siteSettings } from "@/lib/data";
 import { useLiveCMS } from "@/lib/useLiveCMS";
+import { useCurrency } from "@/context/CurrencyContext";
 import ServiceOrderModal from "@/components/ServiceOrderModal";
 
 export default function ServicesPage() {
   const services = useLiveCMS("services", staticServices) || staticServices;
+  const { formatPrice } = useCurrency();
   const [selectedService, setSelectedService] = useState(null);
   const [selectedPackage, setSelectedPackage] = useState(null);
 
@@ -152,7 +154,7 @@ export default function ServicesPage() {
             <div className="digi-pricing-card">
               <div className="pricing-card-header">
                 <h4>Starter</h4>
-                <div className="pricing-card-price">$125<span>/month</span></div>
+                <div className="pricing-card-price">{formatPrice(125)}<span>/month</span></div>
               </div>
               <div className="pricing-card-badges">
                 <span>Audit</span>
@@ -181,7 +183,7 @@ export default function ServicesPage() {
             <div className="digi-pricing-card featured">
               <div className="pricing-card-header">
                 <h4>Standard</h4>
-                <div className="pricing-card-price">$350<span>/month</span></div>
+                <div className="pricing-card-price">{formatPrice(350)}<span>/month</span></div>
               </div>
               <div className="pricing-card-badges">
                 <span>30 KW</span>
@@ -210,7 +212,7 @@ export default function ServicesPage() {
             <div className="digi-pricing-card">
               <div className="pricing-card-header">
                 <h4>Growth</h4>
-                <div className="pricing-card-price">$550<span>/month</span></div>
+                <div className="pricing-card-price">{formatPrice(550)}<span>/month</span></div>
               </div>
               <div className="pricing-card-badges">
                 <span>60 KW</span>
@@ -239,7 +241,7 @@ export default function ServicesPage() {
             <div className="digi-pricing-card">
               <div className="pricing-card-header">
                 <h4>Enterprise</h4>
-                <div className="pricing-card-price">$850<span>/month</span></div>
+                <div className="pricing-card-price">{formatPrice(850)}<span>/month</span></div>
               </div>
               <div className="pricing-card-badges">
                 <span>Unlimited</span>
@@ -301,7 +303,7 @@ export default function ServicesPage() {
               <div key={pkg.name} className={`digi-pricing-card${pkg.featured ? " featured" : ""}`}>
                 <div className="pricing-card-header">
                   <h4>{pkg.name}</h4>
-                  <div className="pricing-card-price">{pkg.usdPrice}<span>{pkg.period}</span></div>
+                  <div className="pricing-card-price">{formatPrice(pkg.price)}<span>{pkg.period}</span></div>
                 </div>
                 <div className="pricing-card-badges">
                   {pkg.badges.map((b) => <span key={b}>{b}</span>)}
