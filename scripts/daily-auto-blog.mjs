@@ -245,30 +245,10 @@ export function runDailyBlogEngine() {
     }
   }
 
-  // If all static topics are used, generate a dynamic topical variation
+  // If all static topics are used, return without creating duplicate
   if (!selectedTopic) {
-    const topicCount = (dataJsContent.match(/slug:\s*"/g) || []).length;
-    selectedTopic = {
-      title: `Advanced Search Engine Strategy & Organic Growth Blueprint (Edition #${topicCount + 1})`,
-      slug: `advanced-search-engine-strategy-blueprint-edition-${topicCount + 1}`,
-      category: "SEO Strategy",
-      read_time: "8 min read",
-      featured_image: "/images/blog1.jpg",
-      summary: `Comprehensive organic search architecture covering algorithmic updates, technical crawlability, and conversion-optimized keyword siloing for modern businesses.`,
-      tags: ["SEO Strategy", "Technical SEO", "Organic Growth", "Google Updates"],
-      subheadings: [
-        "Analyzing Modern Search Algorithm Paradigms",
-        "Technical Crawlability & Indexation Checkpoints",
-        "Semantic Search Intent Mapping",
-        "Conversion Rate Optimization from Search Traffic"
-      ],
-      highlightBox: "Consistent organic growth stems from aligning technical crawl integrity with semantic topic authority and user-first page experiences.",
-      tableHeaders: ["Strategy Element", "Legacy Approach", "Modern 2026 Approach"],
-      tableRows: [
-        ["Keyword Strategy", "Single page per keyword", "Topic cluster addressing user lifecycle"],
-        ["Technical SEO", "Basic meta tags only", "Full Core Web Vitals, JSON-LD Graphs & SSR Hydration"]
-      ]
-    };
+    console.log("[Daily Blog Engine] All curated topics are already published. No duplicate created.");
+    return { success: true, message: "All unique topics are published." };
   }
 
   console.log(`[Daily Blog Engine] Publishing new blog post: "${selectedTopic.title}"`);
