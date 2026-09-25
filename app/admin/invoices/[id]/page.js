@@ -2,12 +2,15 @@
 
 import { use, useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { siteSettings } from "@/lib/data";
+import { useCurrency } from "@/context/CurrencyContext";
 
 export default function SingleInvoicePage({ params }) {
   const unwrappedParams = use(params);
   const invoiceId = unwrappedParams.id;
   const [invoice, setInvoice] = useState(null);
+  const { formatPrice } = useCurrency();
 
   useEffect(() => {
     async function loadInvoice() {
@@ -55,19 +58,32 @@ export default function SingleInvoicePage({ params }) {
         <button
           onClick={() => window.history.back()}
           className="btn btn-outline text-white border-slate-700 hover:bg-slate-800 btn-sm"
+          style={{ borderRadius: "4px" }}
         >
           <i className="fa-solid fa-arrow-left"></i> Back
         </button>
 
-        <button
-          onClick={() => window.print()}
-          className="btn btn-primary btn-sm"
-        >
-          <i className="fa-solid fa-print"></i> Print / Save as PDF
-        </button>
+        <div className="flex items-center gap-3">
+          <Link
+            href={`/invoices/${invoice.id || invoice.invoice_number}`}
+            target="_blank"
+            className="btn btn-outline text-white border-slate-700 hover:bg-slate-800 btn-sm"
+            style={{ borderRadius: "4px" }}
+          >
+            <i className="fa-solid fa-arrow-up-right-from-square"></i> Client View
+          </Link>
+
+          <button
+            onClick={() => window.print()}
+            className="btn btn-primary btn-sm"
+            style={{ borderRadius: "4px" }}
+          >
+            <i className="fa-solid fa-print"></i> Print / Save as PDF
+          </button>
+        </div>
       </div>
 
-      <div className="invoice-paper bg-white text-slate-900 max-w-3xl mx-auto p-10 rounded-2xl shadow-2xl border print:border-none print:shadow-none print:rounded-none">
+      <div className="invoice-paper bg-white text-slate-900 max-w-3xl mx-auto p-10 shadow-xl border print:border-none print:shadow-none" style={{ borderRadius: "4px" }}>
         {/* HEADER */}
         <div className="flex justify-between items-start border-b pb-8">
           <div>
@@ -98,7 +114,7 @@ export default function SingleInvoicePage({ params }) {
           <div className="text-right">
             <span className="text-xs font-bold uppercase text-slate-400 block mb-1">Payment Details</span>
             <div className="font-semibold text-slate-800 uppercase">{invoice.payment_method}</div>
-            <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold mt-1 ${invoice.status === "paid" ? "bg-emerald-100 text-emerald-800" : "bg-amber-100 text-amber-800"}`}>
+            <span className={`inline-block px-3 py-1 text-xs font-bold mt-1 ${invoice.status === "paid" ? "bg-emerald-100 text-emerald-800" : "bg-amber-100 text-amber-800"}`} style={{ borderRadius: "4px" }}>
               {invoice.status === "paid" ? "PAID IN FULL" : "PAYMENT PENDING"}
             </span>
           </div>
@@ -121,8 +137,8 @@ export default function SingleInvoicePage({ params }) {
                 <div className="text-xs text-slate-500">{invoice.package_name}</div>
               </td>
               <td className="py-4 px-4 text-center">1</td>
-              <td className="py-4 px-4 text-right font-mono">${invoice.subtotal || invoice.total}</td>
-              <td className="py-4 px-4 text-right font-mono font-bold">${invoice.total}</td>
+              <td className="py-4 px-4 text-right font-mono">{formatPrice(invoice.subtotal || invoice.total)}</td>
+              <td className="py-4 px-4 text-right font-mono font-bold">{formatPrice(invoice.total)}</td>
             </tr>
           </tbody>
         </table>
@@ -132,7 +148,7 @@ export default function SingleInvoicePage({ params }) {
           <div className="w-64 space-y-2 text-sm">
             <div className="flex justify-between text-slate-600">
               <span>Subtotal:</span>
-              <span className="font-mono">${invoice.total}</span>
+              <span className="font-mono">{formatPrice(invoice.subtotal || invoice.total)}</span>
             </div>
             <div className="flex justify-between text-slate-600">
               <span>Tax (0% Digital Export):</span>
@@ -140,7 +156,7 @@ export default function SingleInvoicePage({ params }) {
             </div>
             <div className="border-t pt-2 flex justify-between font-bold text-base text-slate-900">
               <span>Total Paid:</span>
-              <span className="font-mono text-primary">${invoice.total} USD</span>
+              <span className="font-mono text-primary">{formatPrice(invoice.total)}</span>
             </div>
           </div>
         </div>

@@ -4,11 +4,13 @@ import { useState } from "react";
 import Link from "next/link";
 import { siteSettings as staticSiteSettings, pricingRetainers as staticPricingRetainers } from "@/lib/data";
 import { useLiveCMS } from "@/lib/useLiveCMS";
+import { useCurrency } from "@/context/CurrencyContext";
 import ServiceOrderModal from "@/components/ServiceOrderModal";
 
 export default function PricingPage() {
   const siteSettings = useLiveCMS("siteSettings", staticSiteSettings) || staticSiteSettings;
   const livePlans = useLiveCMS("pricingRetainers", staticPricingRetainers) || staticPricingRetainers;
+  const { formatPrice, currency } = useCurrency();
   const [selectedPlan, setSelectedPlan] = useState(null);
 
   const fallbackPlans = [
@@ -273,7 +275,7 @@ export default function PricingPage() {
               <div key={plan.name} className={`digi-pricing-card${plan.featured ? " featured" : ""}`}>
                 <div className="pricing-card-header">
                   <h4>{plan.name}</h4>
-                  <div className="pricing-card-price">{plan.priceFormatted}<span>{plan.period}</span></div>
+                  <div className="pricing-card-price">{formatPrice(plan.price)}<span>{plan.period}</span></div>
                 </div>
                 <div className="pricing-card-badges">
                   {plan.badges.map((b) => <span key={b}>{b}</span>)}
@@ -317,7 +319,7 @@ export default function PricingPage() {
               background: "#eff6ff",
               color: "#0062d2",
               padding: "4px 14px",
-              borderRadius: "999px",
+              borderRadius: "4px",
               fontSize: "0.8rem",
               fontWeight: 700,
               letterSpacing: "0.04em",
@@ -354,7 +356,7 @@ export default function PricingPage() {
               <div key={pkg.name} className={`digi-pricing-card${pkg.featured ? " featured" : ""}`}>
                 <div className="pricing-card-header">
                   <h4>{pkg.name}</h4>
-                  <div className="pricing-card-price">{pkg.usdPrice}<span>{pkg.period}</span></div>
+                  <div className="pricing-card-price">{formatPrice(pkg.price)}<span>{pkg.period}</span></div>
                 </div>
                 <div className="pricing-card-badges">
                   {pkg.badges.map((b) => <span key={b}>{b}</span>)}

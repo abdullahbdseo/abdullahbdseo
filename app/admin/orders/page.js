@@ -525,7 +525,7 @@ function OrderFormModal({ initial, onSave, onCancel, isNew }) {
       <div
         style={{
           background: "#ffffff",
-          borderRadius: "16px",
+          borderRadius: "4px",
           border: "1px solid #cbd5e1",
           maxWidth: "640px",
           width: "100%",
@@ -542,6 +542,7 @@ function OrderFormModal({ initial, onSave, onCancel, isNew }) {
             padding: "18px 24px",
             borderBottom: "1px solid #e2e8f0",
             background: "#f8fafc",
+            borderRadius: "4px 4px 0 0",
           }}
         >
           <h3 style={{ margin: 0, fontSize: "16px", fontWeight: 800, color: "#0f172a" }}>
@@ -577,7 +578,7 @@ function OrderFormModal({ initial, onSave, onCancel, isNew }) {
                   width: "100%",
                   background: "#ffffff",
                   border: "1px solid #cbd5e1",
-                  borderRadius: "8px",
+                  borderRadius: "4px",
                   padding: "8px 12px",
                   fontSize: "13px",
                   fontFamily: "monospace",
@@ -600,7 +601,7 @@ function OrderFormModal({ initial, onSave, onCancel, isNew }) {
                   width: "100%",
                   background: "#ffffff",
                   border: "1px solid #cbd5e1",
-                  borderRadius: "8px",
+                  borderRadius: "4px",
                   padding: "8px 12px",
                   fontSize: "13px",
                   outline: "none",
@@ -623,7 +624,7 @@ function OrderFormModal({ initial, onSave, onCancel, isNew }) {
                   width: "100%",
                   background: "#ffffff",
                   border: "1px solid #cbd5e1",
-                  borderRadius: "8px",
+                  borderRadius: "4px",
                   padding: "8px 12px",
                   fontSize: "13px",
                   outline: "none",
@@ -645,7 +646,7 @@ function OrderFormModal({ initial, onSave, onCancel, isNew }) {
                   width: "100%",
                   background: "#ffffff",
                   border: "1px solid #cbd5e1",
-                  borderRadius: "8px",
+                  borderRadius: "4px",
                   padding: "8px 12px",
                   fontSize: "13px",
                   outline: "none",
@@ -669,7 +670,7 @@ function OrderFormModal({ initial, onSave, onCancel, isNew }) {
                 width: "100%",
                 background: "#ffffff",
                 border: "1px solid #cbd5e1",
-                borderRadius: "8px",
+                borderRadius: "4px",
                 padding: "8px 12px",
                 fontSize: "13px",
                 fontFamily: "monospace",
@@ -694,7 +695,7 @@ function OrderFormModal({ initial, onSave, onCancel, isNew }) {
                   width: "100%",
                   background: "#ffffff",
                   border: "1px solid #cbd5e1",
-                  borderRadius: "8px",
+                  borderRadius: "4px",
                   padding: "8px 12px",
                   fontSize: "13px",
                   outline: "none",
@@ -715,7 +716,7 @@ function OrderFormModal({ initial, onSave, onCancel, isNew }) {
                   width: "100%",
                   background: "#ffffff",
                   border: "1px solid #cbd5e1",
-                  borderRadius: "8px",
+                  borderRadius: "4px",
                   padding: "8px 12px",
                   fontSize: "13px",
                   outline: "none",
@@ -740,7 +741,7 @@ function OrderFormModal({ initial, onSave, onCancel, isNew }) {
                   width: "100%",
                   background: "#ffffff",
                   border: "1px solid #cbd5e1",
-                  borderRadius: "8px",
+                  borderRadius: "4px",
                   padding: "8px 12px",
                   fontSize: "13px",
                   outline: "none",
@@ -760,7 +761,7 @@ function OrderFormModal({ initial, onSave, onCancel, isNew }) {
                   width: "100%",
                   background: "#ffffff",
                   border: "1px solid #cbd5e1",
-                  borderRadius: "8px",
+                  borderRadius: "4px",
                   padding: "8px 12px",
                   fontSize: "13px",
                   outline: "none",
@@ -845,15 +846,39 @@ function OrderFormModal({ initial, onSave, onCancel, isNew }) {
               </div>
             </div>
 
-            <div>
+            <div style={{ marginBottom: "10px" }}>
               <label style={{ display: "block", fontSize: "11.5px", fontWeight: 700, color: "#475569", marginBottom: "4px" }}>
                 Client Live Google Sheet / Report Link
               </label>
               <input
                 type="url"
-                value={form.report_url || ""}
-                onChange={(e) => set("report_url", e.target.value)}
+                value={form.report_url || form.delivery_link || ""}
+                onChange={(e) => {
+                  set("report_url", e.target.value);
+                  set("delivery_link", e.target.value);
+                }}
                 placeholder="https://docs.google.com/spreadsheets/d/..."
+                style={{
+                  width: "100%",
+                  background: "#ffffff",
+                  border: "1px solid #cbd5e1",
+                  borderRadius: "4px",
+                  padding: "7px 10px",
+                  fontSize: "12.5px",
+                  outline: "none",
+                }}
+              />
+            </div>
+
+            <div>
+              <label style={{ display: "block", fontSize: "11.5px", fontWeight: 700, color: "#475569", marginBottom: "4px" }}>
+                Delivery Fulfillment Notes (Visible on Track Order)
+              </label>
+              <input
+                type="text"
+                value={form.delivery_notes || ""}
+                onChange={(e) => set("delivery_notes", e.target.value)}
+                placeholder="e.g. All 50 Tier-1 backlinks created and pinged for Google Indexing."
                 style={{
                   width: "100%",
                   background: "#ffffff",
@@ -879,7 +904,7 @@ function OrderFormModal({ initial, onSave, onCancel, isNew }) {
                 width: "100%",
                 background: "#ffffff",
                 border: "1px solid #cbd5e1",
-                borderRadius: "8px",
+                borderRadius: "4px",
                 padding: "8px 12px",
                 fontSize: "13px",
                 outline: "none",
@@ -891,10 +916,10 @@ function OrderFormModal({ initial, onSave, onCancel, isNew }) {
           </div>
 
           <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px", marginTop: "10px" }}>
-            <button type="button" onClick={onCancel} className="btn-admin btn-admin-outline">
+            <button type="button" onClick={onCancel} className="btn-admin btn-admin-outline" style={{ borderRadius: "4px" }}>
               Cancel
             </button>
-            <button type="submit" className="btn-admin btn-admin-primary">
+            <button type="submit" className="btn-admin btn-admin-primary" style={{ borderRadius: "4px" }}>
               <i className="fa-solid fa-floppy-disk"></i>
               <span>{isNew ? "Create Order" : "Save Order"}</span>
             </button>

@@ -308,13 +308,78 @@ export default function PortfolioPage() {
             )}
           </div>
 
+          {/* Interactive Before vs After SEO Impact Benchmark */}
+          <div style={{ marginTop: "50px", background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "30px", boxShadow: "0 4px 15px rgba(0,0,0,0.03)" }}>
+            <div style={{ textAlign: "center", maxWidth: "650px", margin: "0 auto 25px" }}>
+              <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "#2563eb", background: "#eff6ff", padding: "3px 10px", borderRadius: "4px", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+                Proven Track Record
+              </span>
+              <h3 style={{ fontSize: "1.6rem", fontWeight: 800, color: "#0f172a", margin: "8px 0 6px" }}>
+                Average Client Growth Trajectory (90 Days)
+              </h3>
+              <p style={{ fontSize: "0.95rem", color: "#64748b", margin: 0 }}>
+                Aggregated performance benchmarks across SaaS, E-Commerce, and Local Business campaigns.
+              </p>
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "16px" }}>
+              <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "20px", textAlign: "center" }}>
+                <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "#64748b" }}>Monthly Organic Traffic</div>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", margin: "10px 0 6px" }}>
+                  <span style={{ color: "#94a3b8", textDecoration: "line-through", fontSize: "1.1rem" }}>4,200</span>
+                  <i className="fa-solid fa-arrow-right" style={{ color: "#10b981", fontSize: "0.9rem" }}></i>
+                  <span style={{ color: "#0f172a", fontSize: "1.5rem", fontWeight: 800 }}>38,500+</span>
+                </div>
+                <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "#10b981", background: "#ecfdf5", padding: "2px 8px", borderRadius: "4px" }}>
+                  +816% Organic Lift
+                </span>
+              </div>
+
+              <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "20px", textAlign: "center" }}>
+                <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "#64748b" }}>Page 1 Target Keywords</div>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", margin: "10px 0 6px" }}>
+                  <span style={{ color: "#94a3b8", textDecoration: "line-through", fontSize: "1.1rem" }}>3 Keywords</span>
+                  <i className="fa-solid fa-arrow-right" style={{ color: "#10b981", fontSize: "0.9rem" }}></i>
+                  <span style={{ color: "#0f172a", fontSize: "1.5rem", fontWeight: 800 }}>47 Keywords</span>
+                </div>
+                <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "#10b981", background: "#ecfdf5", padding: "2px 8px", borderRadius: "4px" }}>
+                  Top 3 Ranking Dominance
+                </span>
+              </div>
+
+              <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "20px", textAlign: "center" }}>
+                <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "#64748b" }}>Domain Authority (DR / DA)</div>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", margin: "10px 0 6px" }}>
+                  <span style={{ color: "#94a3b8", textDecoration: "line-through", fontSize: "1.1rem" }}>DR 11</span>
+                  <i className="fa-solid fa-arrow-right" style={{ color: "#10b981", fontSize: "0.9rem" }}></i>
+                  <span style={{ color: "#0f172a", fontSize: "1.5rem", fontWeight: 800 }}>DR 48+</span>
+                </div>
+                <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "#10b981", background: "#ecfdf5", padding: "2px 8px", borderRadius: "4px" }}>
+                  Clean Editorial Links
+                </span>
+              </div>
+
+              <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "20px", textAlign: "center" }}>
+                <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "#64748b" }}>Organic Revenue Multiple</div>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", margin: "10px 0 6px" }}>
+                  <span style={{ color: "#94a3b8", textDecoration: "line-through", fontSize: "1.1rem" }}>$2.8K/mo</span>
+                  <i className="fa-solid fa-arrow-right" style={{ color: "#10b981", fontSize: "0.9rem" }}></i>
+                  <span style={{ color: "#0f172a", fontSize: "1.5rem", fontWeight: 800 }}>$21.4K/mo</span>
+                </div>
+                <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "#10b981", background: "#ecfdf5", padding: "2px 8px", borderRadius: "4px" }}>
+                  7.6x ROI Generated
+                </span>
+              </div>
+            </div>
+          </div>
+
           {/* Bottom Contact Ribbon */}
-          <div style={{ marginTop: "60px", background: "linear-gradient(135deg, #4361ee 0%, #3a56d4 100%)", borderRadius: "var(--radius-lg)", padding: "40px", color: "#ffffff", textAlign: "center" }}>
+          <div style={{ marginTop: "50px", background: "linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%)", borderRadius: "4px", padding: "40px 25px", color: "#ffffff", textAlign: "center" }}>
             <h2 style={{ color: "#ffffff", fontSize: "2rem", marginBottom: "10px", fontWeight: 800 }}>Ready to Experience Record Organic Traffic?</h2>
-            <p style={{ color: "rgba(255, 255, 255, 0.9)", fontSize: "1.05rem", maxWidth: "600px", margin: "0 auto 24px" }}>
+            <p style={{ color: "rgba(255, 255, 255, 0.9)", fontSize: "1.05rem", maxWidth: "600px", margin: "0 auto 24px", lineHeight: 1.6 }}>
               Request a comprehensive preliminary website audit. We&apos;ll diagnose your current search bottlenecks and craft a custom organic strategy roadmap.
             </p>
-            <Link href="/contact" className="btn btn-lg btn-aqua-solid" style={{ boxShadow: "0 10px 25px rgba(0,0,0,0.2)" }}>
+            <Link href="/contact" className="btn btn-lg btn-aqua-solid" style={{ borderRadius: "4px", boxShadow: "0 4px 15px rgba(0,0,0,0.15)" }}>
               Get Your Free SEO Audit <i className="fa-solid fa-arrow-right"></i>
             </Link>
           </div>

@@ -305,31 +305,90 @@ function TrackOrderContent() {
                 </div>
               </div>
 
+              {/* Deliverables & Work Report Section */}
+              {(order.delivery_link || order.report_url || order.status?.toLowerCase().includes("complete") || order.status?.toLowerCase().includes("deliver")) && (
+                <div
+                  style={{
+                    background: "#ecfdf5",
+                    border: "1px solid #a7f3d0",
+                    borderRadius: "4px",
+                    padding: "18px 20px",
+                    marginTop: "20px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "12px"
+                  }}
+                >
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                      <div style={{ width: "36px", height: "36px", borderRadius: "4px", background: "#059669", color: "#ffffff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "16px" }}>
+                        <i className="fa-solid fa-file-shield"></i>
+                      </div>
+                      <div>
+                        <div style={{ fontSize: "14px", fontWeight: 800, color: "#065f46" }}>Live Campaign Deliverables &amp; Backlink Report</div>
+                        <div style={{ fontSize: "12px", color: "#047857" }}>Real-time live Google Sheets with verified indexed URLs, anchor texts &amp; DA metrics</div>
+                      </div>
+                    </div>
+
+                    {order.delivery_link || order.report_url ? (
+                      <a
+                        href={order.delivery_link || order.report_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          background: "#059669",
+                          color: "#ffffff",
+                          fontWeight: 700,
+                          padding: "8px 16px",
+                          borderRadius: "4px",
+                          textDecoration: "none",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "6px",
+                          fontSize: "13px",
+                          boxShadow: "0 2px 5px rgba(5,150,105,0.2)"
+                        }}
+                      >
+                        <i className="fa-solid fa-arrow-up-right-from-square"></i>
+                        <span>Open Live Google Sheet</span>
+                      </a>
+                    ) : (
+                      <span style={{ fontSize: "12px", color: "#047857", fontWeight: 700, background: "#d1fae5", padding: "4px 10px", borderRadius: "4px" }}>
+                        Compiling Final Report...
+                      </span>
+                    )}
+                  </div>
+
+                  {order.delivery_notes && (
+                    <div style={{ background: "#ffffff", border: "1px solid #d1fae5", borderRadius: "4px", padding: "10px 14px", fontSize: "13px", color: "#1e293b", lineHeight: 1.5 }}>
+                      <strong style={{ color: "#059669" }}>Fulfillment Note: </strong>
+                      {order.delivery_notes}
+                    </div>
+                  )}
+                </div>
+              )}
+
               {/* Action Links */}
               <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", marginTop: "20px" }}>
-                {order.report_url && (
-                  <a
-                    href={order.report_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-admin"
-                    style={{
-                      background: "#059669",
-                      color: "#ffffff",
-                      fontWeight: 700,
-                      padding: "8px 16px",
-                      borderRadius: "4px",
-                      textDecoration: "none",
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: "6px",
-                      fontSize: "13px",
-                    }}
-                  >
-                    <i className="fa-solid fa-file-excel"></i>
-                    <span>Open Live Work Report (Google Sheets)</span>
-                  </a>
-                )}
+                <Link
+                  href={`/invoices/${order.invoice_id || order.order_number}`}
+                  className="btn-admin"
+                  style={{
+                    background: "#2563eb",
+                    color: "#ffffff",
+                    fontWeight: 700,
+                    padding: "8px 16px",
+                    borderRadius: "4px",
+                    textDecoration: "none",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    fontSize: "13px",
+                  }}
+                >
+                  <i className="fa-solid fa-file-invoice-dollar"></i>
+                  <span>View &amp; Download Invoice</span>
+                </Link>
 
                 <a
                   href={`https://wa.me/8801670769816?text=${encodeURIComponent(`Hello Abdullah, I am tracking my order ${order.order_number}. Could you share an update?`)}`}

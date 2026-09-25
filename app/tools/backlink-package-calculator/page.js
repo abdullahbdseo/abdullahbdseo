@@ -5,10 +5,12 @@ import Link from "next/link";
 import ToolFaqAccordion from "@/components/ToolFaqAccordion";
 import { siteSettings, backlinkCalculator as defaultBacklinkCalculator } from "@/lib/data";
 import { useLiveCMS } from "@/lib/useLiveCMS";
+import { useCurrency } from "@/context/CurrencyContext";
 
 export default function BacklinkPackageCalculatorPage() {
   const liveCMS = useLiveCMS("backlinkCalculator", defaultBacklinkCalculator);
   const currentData = liveCMS || defaultBacklinkCalculator;
+  const { currency, setCurrency, formatPrice, convertPrice, currencyInfo } = useCurrency();
 
   const services = useMemo(() => {
     return (currentData?.services && currentData.services.length > 0)
@@ -55,7 +57,6 @@ export default function BacklinkPackageCalculatorPage() {
     liveTrackingSheet: true
   });
 
-  const [currency, setCurrency] = useState("USD"); // USD or BDT
   const [copied, setCopied] = useState(false);
   const [showOrderModal, setShowOrderModal] = useState(false);
   const [orderSubmitting, setOrderSubmitting] = useState(false);
