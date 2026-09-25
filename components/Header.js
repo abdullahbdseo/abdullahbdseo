@@ -1,5 +1,5 @@
 "use client";
-// components/Header.js - Master Navigation with Interactive Tools Dropdown and Mobile Menu
+// components/Header.js - Master Navigation with Interactive Tools Dropdown and Mobile Menu (Clean Navbar)
 
 import { useState, useEffect } from "react";
 import Link from "next/link";

@@ -8454,3 +8454,15 @@ blockquote {
     color: var(--digi-blue-dark, #3a56d4);
     transform: translateX(2px);
 }
+
+/* Header Currency Switcher Removal Safeguard */
+.desktop-currency-switcher,
+.mobile-only-currency,
+.currency-switcher-wrapper,
+.currency-switcher-btn,
+.currency-dropdown-menu {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
