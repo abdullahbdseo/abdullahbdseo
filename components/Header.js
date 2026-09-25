@@ -6,8 +6,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { siteSettings, freeTools } from "@/lib/data";
 
-import CurrencySwitcher from "@/components/CurrencySwitcher";
-
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [toolsDropdownOpen, setToolsDropdownOpen] = useState(false);
@@ -123,21 +121,10 @@ export default function Header() {
               Contact
             </Link>
           </li>
-
-          {/* Mobile currency switcher */}
-          <li className="mobile-only-currency" style={{ display: mobileMenuOpen ? "block" : "none", padding: "10px 15px" }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <span style={{ fontSize: "0.85rem", color: "#64748b", fontWeight: 600 }}>Currency:</span>
-              <CurrencySwitcher isCompact={true} />
-            </div>
-          </li>
         </ul>
 
-        {/* Header Actions (Desktop Currency Switcher & Mobile Toggle) */}
+        {/* Header Actions (Mobile Toggle) */}
         <div className="digi-header-actions" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <div className="desktop-currency-switcher">
-            <CurrencySwitcher />
-          </div>
           <button 
             className="mobile-toggle" 
             aria-label="Toggle navigation"
