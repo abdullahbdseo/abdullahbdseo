@@ -1,5 +1,5 @@
 "use client";
-// components/Header.js - Clean Minimal Navigation (No down carets)
+// components/Header.js - Clean Minimal Navigation with 15 Growth Tools (No Down Caret)
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
