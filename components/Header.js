@@ -48,7 +48,7 @@ export default function Header() {
             onMouseLeave={() => setToolsDropdownOpen(false)}
           >
             <Link href="/tools" className={`digi-nav-link ${pathname.startsWith("/tools") ? "active" : ""}`}>
-              Tools <i className="fa-solid fa-chevron-down nav-caret" style={{ fontSize: "0.7rem", marginLeft: "4px" }}></i>
+              Tools
             </Link>
 
             <div className={`digi-nav-dropdown ${toolsDropdownOpen ? "show" : ""}`} style={{ maxHeight: "85vh", overflowY: "auto" }}>
