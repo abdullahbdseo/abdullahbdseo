@@ -785,10 +785,16 @@ img {
     position: relative;
 }
 
-.digi-nav-item.has-dropdown .nav-caret,
-.nav-caret {
-    display: none !important;
-    visibility: hidden !important;
+.digi-nav-item.has-dropdown .nav-caret {
+    font-size: 0.72rem;
+    margin-left: 5px;
+    transition: transform 0.25s ease;
+    opacity: 0.85;
+}
+
+.digi-nav-item.has-dropdown:hover .nav-caret,
+.digi-nav-item.has-dropdown.open .nav-caret {
+    transform: rotate(180deg);
 }
 
 .digi-nav-dropdown {
