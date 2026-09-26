@@ -785,14 +785,10 @@ img {
     position: relative;
 }
 
-.digi-nav-item.has-dropdown .nav-caret {
-    font-size: 0.65rem;
-    margin-left: 5px;
-    transition: transform 0.25s ease;
-}
-
-.digi-nav-item.has-dropdown:hover .nav-caret {
-    transform: rotate(180deg);
+.digi-nav-item.has-dropdown .nav-caret,
+.nav-caret {
+    display: none !important;
+    visibility: hidden !important;
 }
 
 .digi-nav-dropdown {
