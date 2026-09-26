@@ -525,6 +525,97 @@ export default function ServicesPage() {
         </div>
       </section>
 
+      {/* Google Structured Data: FAQPage & Services ItemList Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "ItemList",
+                "name": "Professional SEO & Digital Growth Services by Abdullah Saleh",
+                "itemListElement": [
+                  {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Technical SEO Service in Bangladesh",
+                    "url": "https://abdullahbdseo.com/services/technical-seo-service-in-bangladesh"
+                  },
+                  {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "High DA Backlink Service in Bangladesh",
+                    "url": "https://abdullahbdseo.com/services/backlink-service-in-bangladesh"
+                  },
+                  {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "name": "Local SEO Service in Bangladesh",
+                    "url": "https://abdullahbdseo.com/services/local-seo-service-in-bangladesh"
+                  },
+                  {
+                    "@type": "ListItem",
+                    "position": 4,
+                    "name": "E-Commerce SEO Service in Bangladesh",
+                    "url": "https://abdullahbdseo.com/services/ecommerce-seo-service-in-bangladesh"
+                  },
+                  {
+                    "@type": "ListItem",
+                    "position": 5,
+                    "name": "AI SEO & Generative Engine Optimization (GEO) in Bangladesh",
+                    "url": "https://abdullahbdseo.com/services/ai-seo-service-in-bangladesh"
+                  },
+                  {
+                    "@type": "ListItem",
+                    "position": 6,
+                    "name": "Answer Engine Optimization (AEO) Service in Bangladesh",
+                    "url": "https://abdullahbdseo.com/services/aeo-service-in-bangladesh"
+                  }
+                ]
+              },
+              {
+                "@type": "FAQPage",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "What SEO services does Abdullah Saleh provide in Bangladesh?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Abdullah Saleh provides full-stack organic SEO services including Technical SEO audits, high-DA white-hat backlink building, Local SEO Google Map Pack optimization, E-Commerce SEO for Shopify/WooCommerce, Generative Engine Optimization (GEO) for AI search, and Answer Engine Optimization (AEO) for zero-click voice and snippet rankings."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "How quickly can my website achieve first-page rankings on Google?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Initial ranking improvements and indexing accelerations typically emerge within 30 to 60 days following technical crawl fixes and keyword clustering. Highly competitive national and global search terms generally achieve dominant position #1 to #3 rankings within 3 to 6 months of continuous link building and topical authority expansion."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Are your backlink and off-page SEO strategies penalty-safe?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Yes, 100% white-hat and Google Spam Update penalty-safe. Every backlink is acquired through manual editorial outreach, branded entity profiles, niche-relevant guest posts (DR 50-85+), and natural anchor text ratios with continuous drip-feeding."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Do you provide transparent live reporting for SEO campaigns?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Yes. Every client receives access to a live Google Sheet tracking deliverable links, live Google Search Console traffic metrics, bi-weekly ranking movements, and scheduled progress strategy calls via WhatsApp or Google Meet."
+                    }
+                  }
+                ]
+              }
+            ]
+          })
+        }}
+      />
+
       {/* Service Order Modal */}
       <ServiceOrderModal
         isOpen={!!selectedService}
