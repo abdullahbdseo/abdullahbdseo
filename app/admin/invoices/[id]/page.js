@@ -4,13 +4,13 @@ import { use, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { siteSettings } from "@/lib/data";
-import { useCurrency } from "@/context/CurrencyContext";
+
 
 export default function SingleInvoicePage({ params }) {
   const unwrappedParams = use(params);
   const invoiceId = unwrappedParams.id;
   const [invoice, setInvoice] = useState(null);
-  const { formatPrice } = useCurrency();
+  const formatPrice = (amount) => `$${amount}`;
 
   useEffect(() => {
     async function loadInvoice() {

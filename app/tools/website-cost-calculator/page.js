@@ -3,10 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import ToolFaqAccordion from "@/components/ToolFaqAccordion";
-import { useCurrency } from "@/context/CurrencyContext";
+
 
 export default function WebsiteCostCalculator() {
-  const { formatPrice, currency } = useCurrency();
+  const formatPrice = (amount) => `$${amount}`;
   const [pageCount, setPageCount] = useState("5-10");
   const [designType, setDesignType] = useState("custom");
   const [features, setFeatures] = useState({

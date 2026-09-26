@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { services as staticServices, siteSettings as staticSiteSettings } from "@/lib/data";
 import { useLiveCMS } from "@/lib/useLiveCMS";
-import { useCurrency } from "@/context/CurrencyContext";
+
 import ServiceOrderModal from "@/components/ServiceOrderModal";
 import ServiceProofSection from "@/components/ServiceProofSection";
 
@@ -14,7 +14,7 @@ export default function SingleServicePage({ params }) {
   const liveServices = useLiveCMS("services", staticServices) || staticServices;
   const siteSettings = useLiveCMS("siteSettings", staticSiteSettings) || staticSiteSettings;
   const service = liveServices.find((s) => s.slug === unwrappedParams.slug) || staticServices.find((s) => s.slug === unwrappedParams.slug);
-  const { formatPrice } = useCurrency();
+  const formatPrice = (amount) => `$${amount}`;
 
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);

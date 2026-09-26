@@ -3,18 +3,18 @@
 
 import { useState } from "react";
 import { siteSettings } from "@/lib/data";
-import { useCurrency } from "@/context/CurrencyContext";
+
 
 export default function QuoteModal({ isOpen, onClose }) {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { formatPrice, currency } = useCurrency();
+  const formatPrice = (amount) => `$${amount}`;
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     website_url: "",
     service_interested: "Comprehensive Technical SEO Audit",
-    budget: `${formatPrice(500)} - ${formatPrice(1500)}`,
+    budget: `$500 - $1500`,
     message: ""
   });
 

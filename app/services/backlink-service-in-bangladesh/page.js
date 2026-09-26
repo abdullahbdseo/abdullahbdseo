@@ -3,10 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { siteSettings } from "@/lib/data";
-import { useCurrency } from "@/context/CurrencyContext";
+
 
 export default function BacklinkServicePage() {
-  const { formatPrice } = useCurrency();
+  const formatPrice = (amount) => `$${amount}`;
   const [activeFaq, setActiveFaq] = useState(null);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [formData, setFormData] = useState({

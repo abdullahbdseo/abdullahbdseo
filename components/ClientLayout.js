@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 import SeoChecklistModal from "@/components/SeoChecklistModal";
 import BackToTop from "@/components/BackToTop";
 
-import { CurrencyProvider } from "@/context/CurrencyContext";
+
 
 export default function ClientLayout({ children }) {
   const pathname = usePathname();
@@ -26,16 +26,16 @@ export default function ClientLayout({ children }) {
   const hideChrome = isSecretLoginRoute || (isAdminRoute && isAdminAuth);
 
   if (hideChrome) {
-    return <CurrencyProvider>{children}</CurrencyProvider>;
+    return <>{children}</>;
   }
 
   return (
-    <CurrencyProvider>
+    <>
       <Header />
       <main>{children}</main>
       <Footer />
       <SeoChecklistModal />
       <BackToTop />
-    </CurrencyProvider>
+    </>
   );
 }

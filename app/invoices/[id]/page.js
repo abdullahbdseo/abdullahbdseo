@@ -3,7 +3,7 @@
 import { use, useEffect, useState } from "react";
 import Link from "next/link";
 import { siteSettings } from "@/lib/data";
-import { useCurrency } from "@/context/CurrencyContext";
+
 
 export default function ClientInvoicePage({ params }) {
   const unwrappedParams = use(params);
@@ -11,7 +11,7 @@ export default function ClientInvoicePage({ params }) {
   const [invoice, setInvoice] = useState(null);
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
-  const { formatPrice, currency } = useCurrency();
+  const formatPrice = (amount) => `$${amount}`;
 
   useEffect(() => {
     async function loadInvoice() {

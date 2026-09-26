@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { siteSettings as staticSettings, services as staticServices, faqs as staticFaqs, globalFaqs as staticGlobalFaqs, testimonials as staticTestimonials } from "@/lib/data";
 import { useLiveCMS } from "@/lib/useLiveCMS";
-import { useCurrency } from "@/context/CurrencyContext";
+
 import QuoteModal from "@/components/QuoteModal";
 import ServiceOrderModal from "@/components/ServiceOrderModal";
 
@@ -74,7 +74,7 @@ export default function HomePage() {
   const rawFaqs = useLiveCMS("faqs", staticFaqs) || staticFaqs || staticGlobalFaqs;
   const globalFaqs = (Array.isArray(rawFaqs) && rawFaqs.length > 0) ? rawFaqs : (staticFaqs || staticGlobalFaqs || []);
   const testimonials = useLiveCMS("testimonials", staticTestimonials) || staticTestimonials;
-  const { formatPrice } = useCurrency();
+  const formatPrice = (amount) => `$${amount}`;
 
   const [isQuoteOpen, setIsQuoteOpen] = useState(false);
   const [selectedService, setSelectedService] = useState(null);

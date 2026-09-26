@@ -4,11 +4,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import { siteSettings } from "@/lib/data";
-import { useCurrency } from "@/context/CurrencyContext";
+
 
 export default function ServiceOrderModal({ isOpen, onClose, service, selectedPackage, initialPackage }) {
   const pkg = selectedPackage || initialPackage;
-  const { formatPrice, currency } = useCurrency();
+  const formatPrice = (amount) => `$${amount}`;
 
   const [formData, setFormData] = useState({
     name: "",
@@ -50,7 +50,7 @@ export default function ServiceOrderModal({ isOpen, onClose, service, selectedPa
           package_name: pkg.name,
           price: pkg.price || service.starting_price || 0,
           total: pkg.price || service.starting_price || 0,
-          currency: currency || "USD"
+          currency: "USD"
         })
       });
 

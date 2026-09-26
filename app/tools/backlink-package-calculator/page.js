@@ -5,12 +5,12 @@ import Link from "next/link";
 import ToolFaqAccordion from "@/components/ToolFaqAccordion";
 import { siteSettings, backlinkCalculator as defaultBacklinkCalculator } from "@/lib/data";
 import { useLiveCMS } from "@/lib/useLiveCMS";
-import { useCurrency } from "@/context/CurrencyContext";
+
 
 export default function BacklinkPackageCalculatorPage() {
   const liveCMS = useLiveCMS("backlinkCalculator", defaultBacklinkCalculator);
   const currentData = liveCMS || defaultBacklinkCalculator;
-  const { currency, setCurrency, formatPrice, convertPrice, currencyInfo } = useCurrency();
+
 
   const services = useMemo(() => {
     return (currentData?.services && currentData.services.length > 0)
@@ -30,7 +30,7 @@ export default function BacklinkPackageCalculatorPage() {
       : (defaultBacklinkCalculator?.faqs || []);
   }, [currentData]);
 
-  const bdtRate = currentData?.settings?.bdtRate || defaultBacklinkCalculator?.settings?.bdtRate || 122;
+
   const tier2Multiplier = currentData?.settings?.tier2Multiplier ?? defaultBacklinkCalculator?.settings?.tier2Multiplier ?? 0.15;
   const expressMultiplier = currentData?.settings?.expressMultiplier ?? defaultBacklinkCalculator?.settings?.expressMultiplier ?? 0.20;
   const standardTurnaround = currentData?.settings?.turnaroundStandard || "10–14 Days";
@@ -93,7 +93,7 @@ export default function BacklinkPackageCalculatorPage() {
           website: pdfLead.website,
           service_interest: "Backlink Package Calculator PDF Proposal",
           budget: `$${finalTotalUSD}`,
-          message: `Generated custom backlink package quotation for ${totalLinkCount} links. Estimated Investment: $${finalTotalUSD} (approx ৳${finalTotalBDT.toLocaleString()} BDT).`
+          message: `Generated custom backlink package quotation for ${totalLinkCount} links. Estimated Investment: $${finalTotalUSD} USD.`
         })
       });
     } catch (err) {
@@ -138,7 +138,7 @@ export default function BacklinkPackageCalculatorPage() {
   if (addons.expressDelivery) addonMultiplier += expressMultiplier;
 
   const finalTotalUSD = Math.round(rawTotalUSD * addonMultiplier * 100) / 100;
-  const finalTotalBDT = Math.round(finalTotalUSD * bdtRate);
+
 
   // Turnaround estimate
   let turnaroundDays = standardTurnaround;
@@ -171,7 +171,7 @@ export default function BacklinkPackageCalculatorPage() {
     summary += `⚡ *Tier-2 Indexation:* ${addons.tier2Indexation ? `YES (+${Math.round(tier2Multiplier * 100)}% Booster)` : "NO"}\n`;
     summary += `⏱️ *Drip-Feed (Natural Velocity):* ${addons.dripFeed ? "YES (30 Days)" : "Standard"}\n`;
     summary += `🚀 *Delivery Speed:* ${addons.expressDelivery ? expressTurnaround : turnaroundDays}\n`;
-    summary += `💰 *Total Estimated Price:* $${finalTotalUSD.toFixed(2)} USD / ৳${finalTotalBDT.toLocaleString()} BDT\n`;
+    summary += `💰 *Total Estimated Price:* $${finalTotalUSD.toFixed(2)} USD\n`;
     summary += `----------------------------------------\n`;
     summary += `Client Website: ${orderForm.websiteUrl || "To be provided"}\n`;
     summary += `Agency: Abdullah BD SEO (https://abdullahbdseo.com)`;
@@ -796,51 +796,20 @@ export default function BacklinkPackageCalculatorPage() {
                   {/* Subtle top neon accent line */}
                   <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: "linear-gradient(90deg, #38bdf8 0%, #818cf8 50%, #34d399 100%)" }}></div>
 
-                  {/* Header & Currency Toggle */}
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "16px", marginBottom: "20px" }}>
+                  {/* Header */}
+                  <div style={{ borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "16px", marginBottom: "20px" }}>
                     <span style={{ fontSize: "11px", fontWeight: 800, letterSpacing: "1px", color: "#94a3b8" }}>
                       ESTIMATED INVESTMENT
                     </span>
-
-                    <div style={{ display: "inline-flex", background: "rgba(255,255,255,0.1)", borderRadius: "4px", padding: "2px" }}>
-                      <button
-                        type="button"
-                        onClick={() => setCurrency("USD")}
-                        style={{
-                          background: currency === "USD" ? "#2563eb" : "transparent",
-                          color: "#ffffff",
-                          border: "none",
-                          padding: "4px 10px",
-                          borderRadius: "4px",
-                          fontSize: "11px",
-                          fontWeight: 800,
-                          cursor: "pointer"
-                        }}
-                      >USD ($)</button>
-                      <button
-                        type="button"
-                        onClick={() => setCurrency("BDT")}
-                        style={{
-                          background: currency === "BDT" ? "#2563eb" : "transparent",
-                          color: "#ffffff",
-                          border: "none",
-                          padding: "4px 10px",
-                          borderRadius: "4px",
-                          fontSize: "11px",
-                          fontWeight: 800,
-                          cursor: "pointer"
-                        }}
-                      >BDT (৳)</button>
-                    </div>
                   </div>
 
                   {/* Big Price */}
                   <div style={{ marginBottom: "22px" }}>
                     <div style={{ fontSize: "clamp(34px, 3.5vw, 46px)", fontWeight: 900, color: "#38bdf8", lineHeight: 1, letterSpacing: "-1px" }}>
-                      {currency === "USD" ? `$${finalTotalUSD.toFixed(2)}` : `৳${finalTotalBDT.toLocaleString()}`}
+                      ${finalTotalUSD.toFixed(2)}
                     </div>
                     <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "6px" }}>
-                      {currency === "USD" ? `Approx. ৳${finalTotalBDT.toLocaleString()} BDT` : `Approx. $${finalTotalUSD.toFixed(2)} USD`} • Verified execution
+                      USD • Verified execution
                     </div>
                   </div>
 
@@ -1153,7 +1122,7 @@ export default function BacklinkPackageCalculatorPage() {
                     <div>
                       <span style={{ color: "#64748b", display: "block", fontSize: "0.72rem", fontWeight: 600 }}>ESTIMATED TOTAL</span>
                       <strong style={{ color: "#16a34a", fontSize: "0.92rem" }}>
-                        ${finalTotalUSD.toFixed(2)} USD <span style={{ fontSize: "0.78rem", color: "#64748b" }}>(৳{finalTotalBDT.toLocaleString()} BDT)</span>
+                         ${finalTotalUSD.toFixed(2)} USD
                       </strong>
                     </div>
                     <div>
@@ -1291,7 +1260,7 @@ export default function BacklinkPackageCalculatorPage() {
                     <span style={{ color: "#334155" }}>Package: <strong>{totalLinkCount} Links</strong></span>
                   </div>
                   <div style={{ fontWeight: 800, color: "#16a34a" }}>
-                    ${finalTotalUSD.toFixed(2)} USD <span style={{ color: "#64748b", fontWeight: 600, fontSize: "0.75rem" }}>(৳{finalTotalBDT.toLocaleString()})</span>
+                    ${finalTotalUSD.toFixed(2)} USD
                   </div>
                 </div>
 
@@ -1617,9 +1586,7 @@ export default function BacklinkPackageCalculatorPage() {
                     <div style={{ fontSize: "24px", fontWeight: 900, color: "#1d4ed8" }}>
                       ${finalTotalUSD.toFixed(2)} USD
                     </div>
-                    <div style={{ fontSize: "12px", fontWeight: 700, color: "#64748b" }}>
-                      Approx. ৳{finalTotalBDT.toLocaleString()} BDT
-                    </div>
+
                   </div>
                 </div>
 

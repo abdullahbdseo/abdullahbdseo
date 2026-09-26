@@ -4,13 +4,13 @@ import { useState } from "react";
 import Link from "next/link";
 import { siteSettings as staticSiteSettings, pricingRetainers as staticPricingRetainers } from "@/lib/data";
 import { useLiveCMS } from "@/lib/useLiveCMS";
-import { useCurrency } from "@/context/CurrencyContext";
+
 import ServiceOrderModal from "@/components/ServiceOrderModal";
 
 export default function PricingPage() {
   const siteSettings = useLiveCMS("siteSettings", staticSiteSettings) || staticSiteSettings;
   const livePlans = useLiveCMS("pricingRetainers", staticPricingRetainers) || staticPricingRetainers;
-  const { formatPrice, currency } = useCurrency();
+  const formatPrice = (amount) => `$${amount}`;
   const [selectedPlan, setSelectedPlan] = useState(null);
 
   const fallbackPlans = [
