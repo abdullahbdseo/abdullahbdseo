@@ -3,11 +3,20 @@ import { siteSettings } from "@/lib/data";
 
 export const metadata = {
   title: `Free SEO & Marketing Tools Suite | ${siteSettings.site_name}`,
-  description: `Access 12 free in-house utilities for deep SEO auditing, technical analysis, schema markup, SERP preview, robots & sitemap building, and ROI calculation.`
+  description: `Access 15 free in-house utilities for deep SEO auditing, technical analysis, schema markup, SERP preview, robots & sitemap building, and ROI calculation.`
 };
 
 export default function ToolsHubPage() {
   const seoTools = [
+    {
+      title: "High DA Backlinks Database",
+      href: "/high-da-backlinks",
+      icon: "fa-solid fa-link",
+      iconBg: "#e0f2fe",
+      iconColor: "#0284c7",
+      badge: "150+ Authority Sites",
+      desc: "Access a curated list of 150+ free high-DA/DR platforms across Web 2.0, profile creation, business directories, and bookmarking sites."
+    },
     {
       title: "Deep SEO Audit & Report",
       href: "/tools/deep-seo-audit",
@@ -18,13 +27,31 @@ export default function ToolsHubPage() {
       desc: "Perform a forensic 70+ point technical & on-page SEO inspection. Get instant grades, critical issue diagnosis, and a downloadable 12-sheet Excel audit report."
     },
     {
-      title: "Google SERP Simulator",
+      title: "Website SEO Analyzer",
+      href: "/tools/website-seo-analyzer",
+      icon: "fa-solid fa-chart-pie",
+      iconBg: "#dbeafe",
+      iconColor: "#1d4ed8",
+      badge: "Live Page Audit",
+      desc: "Audit real-time on-page SEO tags, headings hierarchy, canonicals, image alt attributes, and technical indexation signals."
+    },
+    {
+      title: "SEO Audit Proposal Generator",
+      href: "/tools/seo-audit-report-generator",
+      icon: "fa-solid fa-file-invoice",
+      iconBg: "#ede9fe",
+      iconColor: "#7c3aed",
+      badge: "PDF Proposals",
+      desc: "Generate professional branded client SEO audit proposals and deliverables roadmap with 1-click printable PDF export."
+    },
+    {
+      title: "Meta Tag & OG Previewer",
       href: "/tools/serp-simulator",
       icon: "fa-brands fa-google",
       iconBg: "#fef3c7",
       iconColor: "#d97706",
-      badge: "SERP Preview",
-      desc: "Simulate how your meta title and description appear in Google Desktop and Mobile search results with real-time character & pixel width limits."
+      badge: "SERP & Social Preview",
+      desc: "Simulate how your meta title, description, and OpenGraph tags appear on Google SERP, Facebook, Twitter (X), LinkedIn, and WhatsApp."
     },
     {
       title: "JSON-LD Schema Generator",
@@ -45,13 +72,13 @@ export default function ToolsHubPage() {
       desc: "Analyze 1-word and 2-word semantic n-gram frequency, calculate reading ease, and prevent algorithmic keyword stuffing search penalties."
     },
     {
-      title: "Robots.txt & Sitemap Builder",
+      title: "Robots.txt & Sitemap Suite",
       href: "/tools/robots-sitemap-generator",
       icon: "fa-solid fa-robot",
       iconBg: "#f1f5f9",
       iconColor: "#334155",
-      badge: "Crawl Directives",
-      desc: "Build crawler directives, block aggressive AI scrapers, optimize crawl budgets, and generate compliant XML sitemaps for Google indexation."
+      badge: "Crawl Directives & Linter",
+      desc: "Build crawler directives, block aggressive AI scrapers, validate sitemap syntax, and generate compliant XML sitemaps for Google indexation."
     },
     {
       title: "HTTP Header & Redirect Tracer",

@@ -51,7 +51,7 @@ export default function Header() {
               Tools <i className="fa-solid fa-chevron-down nav-caret" style={{ fontSize: "0.7rem", marginLeft: "4px" }}></i>
             </Link>
 
-            <div className={`digi-nav-dropdown ${toolsDropdownOpen ? "show" : ""}`}>
+            <div className={`digi-nav-dropdown ${toolsDropdownOpen ? "show" : ""}`} style={{ maxHeight: "85vh", overflowY: "auto" }}>
               <div className="dropdown-header">
                 <span className="dropdown-header-title">
                   <i className="fa-solid fa-toolbox" style={{ color: "#2563eb", marginRight: "6px" }}></i> Free SEO &amp; Growth Tools
