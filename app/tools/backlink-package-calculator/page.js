@@ -31,10 +31,13 @@ export default function BacklinkPackageCalculatorPage() {
   }, [currentData]);
 
 
+  const bdtRate = currentData?.settings?.bdtRate || defaultBacklinkCalculator?.settings?.bdtRate || 122;
   const tier2Multiplier = currentData?.settings?.tier2Multiplier ?? defaultBacklinkCalculator?.settings?.tier2Multiplier ?? 0.15;
   const expressMultiplier = currentData?.settings?.expressMultiplier ?? defaultBacklinkCalculator?.settings?.expressMultiplier ?? 0.20;
   const standardTurnaround = currentData?.settings?.turnaroundStandard || "10–14 Days";
   const expressTurnaround = currentData?.settings?.turnaroundExpress || "3–5 Days (Express)";
+
+  const [currency, setCurrency] = useState("USD");
 
   const [quantities, setQuantities] = useState({
     profile_creation: 100,
@@ -138,6 +141,7 @@ export default function BacklinkPackageCalculatorPage() {
   if (addons.expressDelivery) addonMultiplier += expressMultiplier;
 
   const finalTotalUSD = Math.round(rawTotalUSD * addonMultiplier * 100) / 100;
+  const finalTotalBDT = Math.round(finalTotalUSD * bdtRate);
 
 
   // Turnaround estimate
@@ -796,20 +800,51 @@ export default function BacklinkPackageCalculatorPage() {
                   {/* Subtle top neon accent line */}
                   <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: "linear-gradient(90deg, #38bdf8 0%, #818cf8 50%, #34d399 100%)" }}></div>
 
-                  {/* Header */}
-                  <div style={{ borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "16px", marginBottom: "20px" }}>
+                  {/* Header & Currency Toggle */}
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "16px", marginBottom: "20px" }}>
                     <span style={{ fontSize: "11px", fontWeight: 800, letterSpacing: "1px", color: "#94a3b8" }}>
                       ESTIMATED INVESTMENT
                     </span>
+
+                    <div style={{ display: "inline-flex", background: "rgba(255,255,255,0.1)", borderRadius: "4px", padding: "2px" }}>
+                      <button
+                        type="button"
+                        onClick={() => setCurrency("USD")}
+                        style={{
+                          background: currency === "USD" ? "#2563eb" : "transparent",
+                          color: "#ffffff",
+                          border: "none",
+                          padding: "4px 10px",
+                          borderRadius: "4px",
+                          fontSize: "11px",
+                          fontWeight: 800,
+                          cursor: "pointer"
+                        }}
+                      >USD ($)</button>
+                      <button
+                        type="button"
+                        onClick={() => setCurrency("BDT")}
+                        style={{
+                          background: currency === "BDT" ? "#2563eb" : "transparent",
+                          color: "#ffffff",
+                          border: "none",
+                          padding: "4px 10px",
+                          borderRadius: "4px",
+                          fontSize: "11px",
+                          fontWeight: 800,
+                          cursor: "pointer"
+                        }}
+                      >BDT (৳)</button>
+                    </div>
                   </div>
 
                   {/* Big Price */}
                   <div style={{ marginBottom: "22px" }}>
                     <div style={{ fontSize: "clamp(34px, 3.5vw, 46px)", fontWeight: 900, color: "#38bdf8", lineHeight: 1, letterSpacing: "-1px" }}>
-                      ${finalTotalUSD.toFixed(2)}
+                      {currency === "USD" ? `$${finalTotalUSD.toFixed(2)}` : `৳${finalTotalBDT.toLocaleString()}`}
                     </div>
                     <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "6px" }}>
-                      USD • Verified execution
+                      {currency === "USD" ? `Approx. ৳${finalTotalBDT.toLocaleString()} BDT` : `Approx. $${finalTotalUSD.toFixed(2)} USD`} • Verified execution
                     </div>
                   </div>
 
