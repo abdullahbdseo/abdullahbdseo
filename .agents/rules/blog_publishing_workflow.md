@@ -1,64 +1,81 @@
-﻿# Rule: Blog Publishing Workflow & CMS Sync
+﻿# Rule: Blog Publishing Workflow (MANDATORY — Read Before Every Blog Publish)
 
-## Problem Context
-When a new blog post is published to `lib/data.js` (via `scripts/daily-auto-blog.mjs`),
-the frontend uses `useLiveCMS()` which fetches from Firestore first and can override
-the static data, causing newly published posts to NOT appear on the frontend
-even though they exist in `lib/data.js`.
+## ⚠️ ROOT CAUSE WARNING
+This project uses Firebase (HARDCODED credentials in lib/firebase.js).
+Firestore is ALWAYS connected. The frontend fetches blogPosts from Firestore via
+real-time onSnapshot. If Firestore does NOT have the new post, it will OVERRIDE
+the static data and the new post will disappear from the frontend after 1-2 seconds.
 
-## Mandatory Checklist - Every Blog Publish
-
-Whenever a new blog is published (manually or via script), ALWAYS verify ALL of the following:
-
-### 1. Run the publish script
-`node scripts/daily-auto-blog.mjs`
-This adds the post to both lib/data.js AND lib/cms-data.json.
-
-### 2. Verify merge logic exists in app/api/cms/route.js
-The file app/api/cms/route.js MUST contain the blogPosts merge block inside
-the Firestore success handler:
-
-`js
-// Ensure newly published blog posts from lib/data.js are not lost if Firestore has older blogPosts
-if (Array.isArray(result.blogPosts) && Array.isArray(staticData.blogPosts)) {
-  const existingBlogSlugs = new Set(result.blogPosts.map((p) => p.slug || p.id));
-  const newStaticPosts = staticData.blogPosts.filter(
-    (p) => !existingBlogSlugs.has(p.slug || p.id)
-  );
-  if (newStaticPosts.length > 0) {
-    result.blogPosts = [...newStaticPosts, ...result.blogPosts];
-  }
-}
-`
-
-If this block is MISSING for any reason, add it back immediately before pushing.
-
-### 3. Git commit BOTH files together
-Always stage and commit these two files together:
-- lib/data.js
-- lib/cms-data.json
-
-Never push one without the other.
-
-### 4. Git push to trigger Vercel deploy
-`git push origin main`
+Simply updating lib/data.js and lib/cms-data.json is NOT ENOUGH.
+Firestore MUST be synced every time a new blog is published.
 
 ---
 
-## Architecture Note (Why This Happens)
+## ✅ MANDATORY 4-Step Blog Publish Process
 
-Frontend blog/page.js uses useLiveCMS which:
-- Priority 1: Fetches from Firestore cms_content/blogPosts (can be OUTDATED)
-- Priority 2: Fetches /api/cms?section=blogPosts (FIXED: now merges static posts)
-- Fallback: Uses staticBlogPosts from lib/data.js (only if API fails)
+### STEP 1 — Publish the blog post
+```
+node scripts/daily-auto-blog.mjs
+```
+This updates lib/data.js AND lib/cms-data.json.
 
-The fix ensures /api/cms always prepends new static posts that Firestore does not know about.
-New posts appear at the top (index 0 = Featured post on blog page).
+### STEP 2 — Sync to Firestore (CRITICAL — DO NOT SKIP)
+```
+node scripts/sync-firestore-blogs.mjs
+```
+This pushes all blogPosts from lib/data.js to Firestore cms_content/blogPosts.
+WITHOUT THIS STEP the new post will show for 1-2 seconds then disappear.
+
+### STEP 3 — Git commit BOTH data files
+```
+git add lib/data.js lib/cms-data.json
+git commit -m "feat(blog): publish - [post title]"
+```
+Always commit lib/data.js AND lib/cms-data.json together. Never one without the other.
+
+### STEP 4 — Push to GitHub
+```
+git push origin main
+```
+This triggers Vercel auto-deploy.
 
 ---
 
-## DO NOT
+## ❌ DO NOT
 
-- Do NOT push only lib/data.js without also pushing lib/cms-data.json
-- Do NOT remove the blogPosts merge block from app/api/cms/route.js
-- Do NOT rely on Firestore auto-syncing new posts - it does NOT auto-sync from lib/data.js
+- Do NOT skip Step 2 (Firestore sync) — this is the #1 cause of blogs disappearing
+- Do NOT push only lib/data.js without lib/cms-data.json
+- Do NOT assume Firestore auto-syncs from lib/data.js — it NEVER does
+- Do NOT remove blogPosts merge block from app/api/cms/route.js
+- Do NOT change useLiveCMS.js merge order back to [...val, ...missingFromFirestore]
+
+---
+
+## Architecture (Why Firestore Sync Is Required)
+
+```
+lib/data.js (static, bundled at build time)
+  └── used as initial React state (shows correctly on first render)
+
+Firestore cms_content/blogPosts (live database)
+  └── onSnapshot fires 1-2 seconds after page load
+  └── OVERRIDES the static initial state
+  └── If new post is NOT in Firestore → new post disappears ❌
+  └── If new post IS in Firestore → new post stays ✅
+```
+
+## Fixes Already Applied (Do Not Remove)
+
+1. lib/useLiveCMS.js — merge order: [...missingFromFirestore, ...val] (new posts first)
+2. app/blog/page.js — date sort: newest post always at index 0 (featured)
+3. app/api/cms/route.js — blogPosts merge block (fallback path)
+4. scripts/daily-auto-blog.mjs — auto calls syncBlogPostsToFirestore() after publish
+5. scripts/sync-firestore-blogs.mjs — standalone Firestore sync script
+
+## Quick Reference — If Blog Disappears Again
+
+Run this immediately:
+```
+node scripts/sync-firestore-blogs.mjs
+```
+Then push to GitHub. That's all.
