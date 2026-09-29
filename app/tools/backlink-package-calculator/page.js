@@ -1550,7 +1550,7 @@ export default function BacklinkPackageCalculatorPage() {
                       Organic Growth Specialist &amp; Technical SEO Architect
                     </div>
                     <div style={{ fontSize: "11px", color: "#64748b", marginTop: "4px" }}>
-                      🌐 abdullahseo.com • ✉️ contact@abdullahseo.com • 📱 +8801670769816
+                      🌐 abdullahbdseo.vercel.app • ✉️ abdullahbd.seo@gmail.com • 📱 +8801670769816
                     </div>
                   </div>
                   <div style={{ textAlign: "right" }}>

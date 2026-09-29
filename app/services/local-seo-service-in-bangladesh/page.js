@@ -292,7 +292,7 @@ export default function LocalSeoServicePage() {
             "@graph": [
               {
                 "@type": "Service",
-                "@id": "https://abdullahseo.com/services/local-seo-service-in-bangladesh/#service",
+                "@id": "https://abdullahbdseo.vercel.app/services/local-seo-service-in-bangladesh/#service",
                 "serviceType": "Local SEO Service",
                 "name": "Local SEO Service in Bangladesh",
                 "description": "Professional Local SEO service in Bangladesh by Abdullah Saleh. Rank #1 on Google Maps 3-Pack, optimize Google Business Profile (GBP), build local citations, and drive high-intent local customer calls.",
@@ -300,13 +300,13 @@ export default function LocalSeoServicePage() {
                   "@type": "Person",
                   "name": "Abdullah Saleh",
                   "jobTitle": "Organic Business Growth Specialist & SEO Expert",
-                  "url": "https://abdullahseo.com"
+                  "url": "https://abdullahbdseo.vercel.app"
                 },
                 "areaServed": {
                   "@type": "Country",
                   "name": "Bangladesh"
                 },
-                "url": "https://abdullahseo.com/services/local-seo-service-in-bangladesh",
+                "url": "https://abdullahbdseo.vercel.app/services/local-seo-service-in-bangladesh",
                 "offers": {
                   "@type": "Offer",
                   "price": "12000",
@@ -334,33 +334,33 @@ export default function LocalSeoServicePage() {
               },
               {
                 "@type": "BreadcrumbList",
-                "@id": "https://abdullahseo.com/services/local-seo-service-in-bangladesh/#breadcrumb",
+                "@id": "https://abdullahbdseo.vercel.app/services/local-seo-service-in-bangladesh/#breadcrumb",
                 "itemListElement": [
                   {
                     "@type": "ListItem",
                     "position": 1,
                     "name": "Home",
-                    "item": "https://abdullahseo.com"
+                    "item": "https://abdullahbdseo.vercel.app"
                   },
                   {
                     "@type": "ListItem",
                     "position": 2,
                     "name": "Services",
-                    "item": "https://abdullahseo.com/services"
+                    "item": "https://abdullahbdseo.vercel.app/services"
                   },
                   {
                     "@type": "ListItem",
                     "position": 3,
                     "name": "Local SEO Service in Bangladesh",
-                    "item": "https://abdullahseo.com/services/local-seo-service-in-bangladesh"
+                    "item": "https://abdullahbdseo.vercel.app/services/local-seo-service-in-bangladesh"
                   }
                 ]
               },
               {
                 "@type": "LocalBusiness",
-                "@id": "https://abdullahseo.com/#localbusiness",
-                "name": "Abdullah Saleh - SEO Expert in Bangladesh",
-                "url": "https://abdullahseo.com",
+                "@id": "https://abdullahbdseo.vercel.app/#localbusiness",
+                "name": "Abdullahbdseo - SEO Expert in Bangladesh",
+                "url": "https://abdullahbdseo.vercel.app",
                 "telephone": "+8801670769816",
                 "address": {
                   "@type": "PostalAddress",
@@ -374,7 +374,7 @@ export default function LocalSeoServicePage() {
               },
               {
                 "@type": "FAQPage",
-                "@id": "https://abdullahseo.com/services/local-seo-service-in-bangladesh/#faq",
+                "@id": "https://abdullahbdseo.vercel.app/services/local-seo-service-in-bangladesh/#faq",
                 "mainEntity": faqs.map((f) => ({
                   "@type": "Question",
                   "name": f.q,

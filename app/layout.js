@@ -34,7 +34,7 @@ export const metadata = {
     title: `${siteSettings.site_name} | ${siteSettings.site_tagline}`,
     description: siteSettings.default_meta_description,
     url: "https://abdullahbdseo.vercel.app",
-    siteName: siteSettings.site_name,
+    siteName: "Abdullahbdseo",
     images: [
       {
         url: "/images/seo_hero_3d.png",
@@ -73,8 +73,8 @@ export default function RootLayout({ children }) {
       {
         "@type": ["ProfessionalService", "Organization", "LocalBusiness"],
         "@id": "https://abdullahbdseo.vercel.app/#organization",
-        "name": siteSettings.site_name,
-        "alternateName": ["Abdullah BD SEO", "Best SEO Expert in Bangladesh", "Abdullah Saleh SEO"],
+        "name": "Abdullahbdseo",
+        "alternateName": ["Abdullahbdseo", "Abdullah BD SEO", "Abdullah Saleh", "Best SEO Expert in Bangladesh", "Abdullah Saleh SEO"],
         "url": "https://abdullahbdseo.vercel.app",
         "logo": "https://abdullahbdseo.vercel.app/images/logo.svg",
         "image": "https://abdullahbdseo.vercel.app/images/abdullah.jpg",
@@ -158,8 +158,8 @@ export default function RootLayout({ children }) {
         "@type": "WebSite",
         "@id": "https://abdullahbdseo.vercel.app/#website",
         "url": "https://abdullahbdseo.vercel.app",
-        "name": siteSettings.site_name,
-        "alternateName": ["Abdullah BD SEO", "Abdullah Saleh SEO", "abdullahbdseo"],
+        "name": "Abdullahbdseo",
+        "alternateName": ["Abdullah BD SEO", "Abdullah Saleh", "Abdullah Saleh SEO"],
         "description": siteSettings.default_meta_description,
         "publisher": {
           "@id": "https://abdullahbdseo.vercel.app/#organization"
