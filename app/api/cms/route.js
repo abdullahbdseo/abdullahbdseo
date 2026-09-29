@@ -47,6 +47,17 @@ export async function GET(request) {
             });
           }
 
+          // Ensure newly published blog posts from lib/data.js are not lost if Firestore has older blogPosts
+          if (Array.isArray(result.blogPosts) && Array.isArray(staticData.blogPosts)) {
+            const existingBlogSlugs = new Set(result.blogPosts.map((p) => p.slug || p.id));
+            const newStaticPosts = staticData.blogPosts.filter(
+              (p) => !existingBlogSlugs.has(p.slug || p.id)
+            );
+            if (newStaticPosts.length > 0) {
+              result.blogPosts = [...newStaticPosts, ...result.blogPosts];
+            }
+          }
+
           if (!result.backlinkCalculator && staticData.backlinkCalculator) {
             result.backlinkCalculator = staticData.backlinkCalculator;
           }
