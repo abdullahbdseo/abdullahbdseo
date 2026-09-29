@@ -1655,5 +1655,16 @@ export function runDailyBlogEngine() {
 
 // Run when executed directly
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  runDailyBlogEngine();
+  runDailyBlogEngine().then(async (result) => {
+    if (result && result.success) {
+      // Auto-sync to Firestore after publish so new post appears immediately on frontend
+      try {
+        const { syncBlogPostsToFirestore } = await import("./sync-firestore-blogs.mjs");
+        await syncBlogPostsToFirestore();
+      } catch (syncErr) {
+        console.warn("[Daily Blog Engine] Firestore auto-sync skipped:", syncErr.message);
+        console.warn("[Daily Blog Engine] Run 'node scripts/sync-firestore-blogs.mjs' manually to sync.");
+      }
+    }
+  });
 }
