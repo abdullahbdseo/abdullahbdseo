@@ -72,6 +72,24 @@ export default function ToolsHubPage() {
       desc: "Analyze 1-word and 2-word semantic n-gram frequency, calculate reading ease, and prevent algorithmic keyword stuffing search penalties."
     },
     {
+      title: "Word Counter & SEO Analyzer",
+      href: "/tools/word-counter-seo-analyzer",
+      icon: "fa-solid fa-feather-pointed",
+      iconBg: "#ecfdf5",
+      iconColor: "#059669",
+      badge: "Real-Time Readability",
+      desc: "Analyze word count, character density, reading level, keyword frequency, and Google SERP length limits in real time."
+    },
+    {
+      title: "301 Redirect & .htaccess Suite",
+      href: "/tools/redirect-htaccess-generator",
+      icon: "fa-solid fa-arrow-right-arrow-left",
+      iconBg: "#fef3c7",
+      iconColor: "#d97706",
+      badge: "Server & Rewrite Rules",
+      desc: "Generate error-free Apache .htaccess, Nginx, and Cloudflare 301/302 redirects, HTTPS SSL enforcement, and WWW rewrite rules."
+    },
+    {
       title: "Robots.txt & Sitemap Suite",
       href: "/tools/robots-sitemap-generator",
       icon: "fa-solid fa-robot",
@@ -92,6 +110,15 @@ export default function ToolsHubPage() {
   ];
 
   const calcTools = [
+    {
+      title: "SEO ROI & Profit Calculator",
+      href: "/tools/seo-roi-calculator",
+      icon: "fa-solid fa-chart-line",
+      iconBg: "#eff6ff",
+      iconColor: "#2563eb",
+      badge: "🔥 Client ROI",
+      desc: "Model your projected organic search traffic growth, estimate net revenue returns, and calculate how much ad spend you save vs. Google Ads PPC."
+    },
     {
       title: "Custom Backlink Package Calculator",
       href: "/tools/backlink-package-calculator",
