@@ -7,7 +7,14 @@ import { blogPosts as staticBlogPosts, siteSettings as staticSiteSettings } from
 import { useLiveCMS } from "@/lib/useLiveCMS";
 
 export default function BlogPage() {
-  const blogPosts = useLiveCMS("blogPosts", staticBlogPosts) || staticBlogPosts;
+  const rawBlogPosts = useLiveCMS("blogPosts", staticBlogPosts) || staticBlogPosts;
+  // Always sort by date descending so the newest post is always featured (index 0),
+  // regardless of the order Firestore + static data merge returns.
+  const blogPosts = [...rawBlogPosts].sort((a, b) => {
+    const dateA = new Date(a.date || a.publish_date || 0);
+    const dateB = new Date(b.date || b.publish_date || 0);
+    return dateB - dateA;
+  });
   const siteSettings = useLiveCMS("siteSettings", staticSiteSettings) || staticSiteSettings;
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
