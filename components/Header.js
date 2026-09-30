@@ -70,7 +70,7 @@ export default function Header() {
                   {seoTools.map((t) => (
                     <Link key={t.slug} href={t.customPath || `/tools/${t.slug}`} className="dropdown-item">
                       <div className="dropdown-item-icon" style={{ background: t.bg, color: t.color }}>
-                        <i className={`fa-solid ${t.icon}`}></i>
+                        <i className={t.icon.includes("fa-brands") || t.icon.includes("fa-solid") || t.icon.includes("fa-regular") ? t.icon : `fa-solid ${t.icon}`}></i>
                       </div>
                       <div className="dropdown-item-text">
                         <strong>{t.title}</strong>
@@ -88,7 +88,7 @@ export default function Header() {
                   {roiTools.map((t) => (
                     <Link key={t.slug} href={`/tools/${t.slug}`} className="dropdown-item">
                       <div className="dropdown-item-icon" style={{ background: t.bg, color: t.color }}>
-                        <i className={`fa-solid ${t.icon}`}></i>
+                        <i className={t.icon.includes("fa-brands") || t.icon.includes("fa-solid") || t.icon.includes("fa-regular") ? t.icon : `fa-solid ${t.icon}`}></i>
                       </div>
                       <div className="dropdown-item-text">
                         <strong>{t.title}</strong>

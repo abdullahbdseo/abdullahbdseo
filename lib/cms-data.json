@@ -1392,6 +1392,15 @@
   ],
   "freeTools": [
     {
+      "slug": "serp-simulator",
+      "title": "Google SERP Simulator",
+      "desc": "SERP & snippet preview tool",
+      "icon": "fa-brands fa-google",
+      "color": "#2563eb",
+      "bg": "#eff6ff",
+      "category": "SEO & Technical"
+    },
+    {
       "slug": "high-da-backlinks",
       "title": "High DA Backlinks",
       "desc": "150+ Free High DA/DR Sites",
@@ -1408,15 +1417,6 @@
       "icon": "fa-code",
       "color": "#4338ca",
       "bg": "#e0e7ff",
-      "category": "SEO & Technical"
-    },
-    {
-      "slug": "serp-simulator",
-      "title": "Google SERP Simulator",
-      "desc": "Google & social card preview",
-      "icon": "fa-brands fa-google",
-      "color": "#d97706",
-      "bg": "#fef3c7",
       "category": "SEO & Technical"
     },
     {
