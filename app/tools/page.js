@@ -9,6 +9,15 @@ export const metadata = {
 export default function ToolsHubPage() {
   const seoTools = [
     {
+      title: "Google SERP Simulator & Snippet Preview",
+      href: "/tools/serp-simulator",
+      icon: "fa-brands fa-google",
+      iconBg: "#eff6ff",
+      iconColor: "#2563eb",
+      badge: "🔥 #1 Most Popular",
+      desc: "Pixel-accurate preview of your title, description & URL on Google Desktop, Mobile & AI Overview — plus Facebook, Twitter/X, LinkedIn & WhatsApp social cards with 1-click meta tag generator."
+    },
+    {
       title: "High DA Backlinks Database",
       href: "/high-da-backlinks",
       icon: "fa-solid fa-link",
@@ -43,15 +52,6 @@ export default function ToolsHubPage() {
       iconColor: "#7c3aed",
       badge: "PDF Proposals",
       desc: "Generate professional branded client SEO audit proposals and deliverables roadmap with 1-click printable PDF export."
-    },
-    {
-      title: "Meta Tag & OG Previewer",
-      href: "/tools/serp-simulator",
-      icon: "fa-brands fa-google",
-      iconBg: "#fef3c7",
-      iconColor: "#d97706",
-      badge: "SERP & Social Preview",
-      desc: "Simulate how your meta title, description, and OpenGraph tags appear on Google SERP, Facebook, Twitter (X), LinkedIn, and WhatsApp."
     },
     {
       title: "JSON-LD Schema Generator",

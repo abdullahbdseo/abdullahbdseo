@@ -1,14 +1,14 @@
 import { siteSettings } from "@/lib/data";
 
 export const metadata = {
-  title: `Google SERP Simulator & Snippet Preview | ${siteSettings.site_name}`,
-  description: `Preview exactly how your title tags, meta descriptions, and URL structures will look in Google desktop and mobile search results before publishing.`,
+  title: `Google SERP Simulator & Snippet Preview Tool | ${siteSettings.site_name}`,
+  description: `Pixel-accurate Google SERP simulator. Preview your title tags, meta descriptions, and URL on Google Desktop, Mobile & AI Overview — plus Facebook, Twitter/X, LinkedIn, and WhatsApp social cards. Free with 1-click meta tag generator.`,
   alternates: {
     canonical: "/tools/serp-simulator",
   },
   openGraph: {
-    title: `Google SERP Simulator & Snippet Preview | ${siteSettings.site_name}`,
-    description: `Preview exactly how your title tags, meta descriptions, and URL structures will look in Google desktop and mobile search results before publishing.`,
+    title: `Google SERP Simulator & Snippet Preview Tool | ${siteSettings.site_name}`,
+    description: `Pixel-accurate Google SERP simulator. Preview your title tags, meta descriptions, and URL on Google Desktop, Mobile & AI Overview — plus Facebook, Twitter/X, LinkedIn, and WhatsApp social cards. Free with 1-click meta tag generator.`,
     url: "/tools/serp-simulator",
     type: "website",
   },
