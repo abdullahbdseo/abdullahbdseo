@@ -46,6 +46,9 @@ export default function sitemap() {
     "/tools/seo-roi-calculator",
     "/tools/redirect-htaccess-generator",
     "/tools/word-counter-seo-analyzer",
+    "/tools/pagespeed-analyzer",
+    "/tools/url-slug-generator",
+    "/tools/disavow-file-generator",
   ].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: now,

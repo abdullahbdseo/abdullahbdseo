@@ -107,6 +107,33 @@ export default function ToolsHubPage() {
       iconColor: "#a21caf",
       badge: "Server Diagnostic",
       desc: "Inspect live HTTP response codes (200, 301, 302, 404, 500), server latency TTFB, SSL certificates, and critical security headers."
+    },
+    {
+      title: "Core Web Vitals & PageSpeed Diagnostics",
+      href: "/tools/pagespeed-analyzer",
+      icon: "fa-solid fa-gauge-high",
+      iconBg: "#ecfdf5",
+      iconColor: "#059669",
+      badge: "⚡ PageSpeed & Vitals",
+      desc: "Test mobile & desktop performance against official Google Core Web Vitals criteria (LCP, INP, CLS, TTFB) with actionable code fix suggestions."
+    },
+    {
+      title: "SEO Friendly URL Slug & Permalink Generator",
+      href: "/tools/url-slug-generator",
+      icon: "fa-solid fa-link",
+      iconBg: "#ede9fe",
+      iconColor: "#7c3aed",
+      badge: "Clean Permalinks",
+      desc: "Convert titles and keywords into clean, lowercase, stop-word stripped URL slugs with bulk multi-line conversion and CSV export."
+    },
+    {
+      title: "Google Search Console Disavow File Generator",
+      href: "/tools/disavow-file-generator",
+      icon: "fa-solid fa-shield-virus",
+      iconBg: "#fee2e2",
+      iconColor: "#dc2626",
+      badge: "🛡️ Spam Protection",
+      desc: "Format, clean, and export 100% compliant disavow.txt files to neutralize toxic backlink penalties in Google Search Console."
     }
   ];
 
