@@ -164,8 +164,8 @@ ${twitterHandle ? `<meta name="twitter:site" content="${twitterHandle}" />\n<met
           <Link href="/tools" style={{ display: "inline-flex", alignItems: "center", gap: "6px", color: "#2563eb", fontWeight: 700, fontSize: "0.83rem", textDecoration: "none", marginBottom: "14px" }}>
             <i className="fa-solid fa-arrow-left"></i> All Free SEO Tools
           </Link>
-          <div className="sub-badge" style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: "#eff6ff", color: "#2563eb", padding: "4px 14px", borderRadius: "4px", fontSize: "0.78rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", margin: "0 auto 12px" }}>
-            <i className="fa-brands fa-google"></i> Real-Time SERP & Social Preview
+          <div className="sub-badge" style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "#ffffff", border: "1px solid #e2e8f0", color: "#1e293b", padding: "5px 14px", borderRadius: "4px", fontSize: "0.8rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", margin: "0 auto 12px" }}>
+            <img src="/images/google-icon.svg" alt="Google" style={{ width: "16px", height: "16px", display: "inline-block" }} /> Real-Time SERP & Social Preview
           </div>
           <h1 style={{ fontSize: "2.4rem", fontWeight: 900, color: "#0f172a", margin: "0 0 10px", letterSpacing: "-0.025em", lineHeight: 1.2 }}>
             Google SERP Simulator & Snippet Preview Tool
@@ -341,8 +341,12 @@ ${twitterHandle ? `<meta name="twitter:site" content="${twitterHandle}" />\n<met
                   { id: "whatsapp", icon: "fa-brands fa-whatsapp", label: "WhatsApp", color: "#25d366" },
                 ].map((tab) => (
                   <button key={tab.id} onClick={() => setActivePlatform(tab.id)}
-                    style={{ padding: "11px 18px", border: "none", borderBottom: activePlatform === tab.id ? `2px solid ${tab.color}` : "2px solid transparent", background: "transparent", color: activePlatform === tab.id ? tab.color : "#64748b", fontWeight: 700, fontSize: "0.8rem", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "6px", whiteSpace: "nowrap", marginBottom: "-2px", transition: "all 0.15s" }}>
-                    <i className={tab.icon}></i> {tab.label}
+                    style={{ padding: "11px 18px", border: "none", borderBottom: activePlatform === tab.id ? `2px solid ${tab.color}` : "2px solid transparent", background: "transparent", color: activePlatform === tab.id ? tab.color : "#64748b", fontWeight: 700, fontSize: "0.8rem", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "7px", whiteSpace: "nowrap", marginBottom: "-2px", transition: "all 0.15s" }}>
+                    {tab.id === "google" ? (
+                      <img src="/images/google-icon.svg" alt="Google" style={{ width: "15px", height: "15px", display: "inline-block" }} />
+                    ) : (
+                      <i className={tab.icon}></i>
+                    )} {tab.label}
                   </button>
                 ))}
               </div>

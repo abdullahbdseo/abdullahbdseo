@@ -12,7 +12,8 @@ export default function ToolsHubPage() {
       title: "Google SERP Simulator & Snippet Preview",
       href: "/tools/serp-simulator",
       icon: "fa-brands fa-google",
-      iconBg: "#eff6ff",
+      iconImg: "/images/google-icon.svg",
+      iconBg: "#ffffff",
       iconColor: "#2563eb",
       badge: "🔥 #1 Most Popular",
       desc: "Pixel-accurate preview of your title, description & URL on Google Desktop, Mobile & AI Overview — plus Facebook, Twitter/X, LinkedIn & WhatsApp social cards with 1-click meta tag generator."
@@ -247,8 +248,12 @@ export default function ToolsHubPage() {
               {seoTools.map((tool, idx) => (
                 <article key={idx} className="tool-ref-card">
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "14px" }}>
-                    <div className="tool-ref-icon" style={{ background: tool.iconBg, color: tool.iconColor, margin: 0 }}>
-                      <i className={tool.icon}></i>
+                    <div className="tool-ref-icon" style={{ background: tool.iconBg, color: tool.iconColor, margin: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      {tool.iconImg ? (
+                        <img src={tool.iconImg} alt={tool.title} style={{ width: "22px", height: "22px", objectFit: "contain", display: "block" }} />
+                      ) : (
+                        <i className={tool.icon}></i>
+                      )}
                     </div>
                     <span style={{ fontSize: "0.75rem", padding: "3px 10px", background: "#f1f5f9", borderRadius: "4px", color: "#475569", fontWeight: 700 }}>
                       {tool.badge}

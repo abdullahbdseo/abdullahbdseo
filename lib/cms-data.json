@@ -1396,8 +1396,9 @@
       "title": "Google SERP Simulator",
       "desc": "SERP & snippet preview tool",
       "icon": "fa-brands fa-google",
+      "iconImg": "/images/google-icon.svg",
       "color": "#2563eb",
-      "bg": "#eff6ff",
+      "bg": "#ffffff",
       "category": "SEO & Technical"
     },
     {

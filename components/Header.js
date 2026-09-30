@@ -69,8 +69,12 @@ export default function Header() {
                   </span>
                   {seoTools.map((t) => (
                     <Link key={t.slug} href={t.customPath || `/tools/${t.slug}`} className="dropdown-item">
-                      <div className="dropdown-item-icon" style={{ background: t.bg, color: t.color }}>
-                        <i className={t.icon.includes("fa-brands") || t.icon.includes("fa-solid") || t.icon.includes("fa-regular") ? t.icon : `fa-solid ${t.icon}`}></i>
+                      <div className="dropdown-item-icon" style={{ background: t.bg, color: t.color, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        {t.iconImg ? (
+                          <img src={t.iconImg} alt={t.title} style={{ width: "20px", height: "20px", objectFit: "contain", display: "block" }} />
+                        ) : (
+                          <i className={t.icon.includes("fa-brands") || t.icon.includes("fa-solid") || t.icon.includes("fa-regular") ? t.icon : `fa-solid ${t.icon}`}></i>
+                        )}
                       </div>
                       <div className="dropdown-item-text">
                         <strong>{t.title}</strong>
@@ -87,8 +91,12 @@ export default function Header() {
                   </span>
                   {roiTools.map((t) => (
                     <Link key={t.slug} href={`/tools/${t.slug}`} className="dropdown-item">
-                      <div className="dropdown-item-icon" style={{ background: t.bg, color: t.color }}>
-                        <i className={t.icon.includes("fa-brands") || t.icon.includes("fa-solid") || t.icon.includes("fa-regular") ? t.icon : `fa-solid ${t.icon}`}></i>
+                      <div className="dropdown-item-icon" style={{ background: t.bg, color: t.color, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        {t.iconImg ? (
+                          <img src={t.iconImg} alt={t.title} style={{ width: "20px", height: "20px", objectFit: "contain", display: "block" }} />
+                        ) : (
+                          <i className={t.icon.includes("fa-brands") || t.icon.includes("fa-solid") || t.icon.includes("fa-regular") ? t.icon : `fa-solid ${t.icon}`}></i>
+                        )}
                       </div>
                       <div className="dropdown-item-text">
                         <strong>{t.title}</strong>
