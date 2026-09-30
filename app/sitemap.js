@@ -49,6 +49,7 @@ export default function sitemap() {
     "/tools/pagespeed-analyzer",
     "/tools/url-slug-generator",
     "/tools/disavow-file-generator",
+    "/tools/seo-content-optimizer",
   ].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: now,

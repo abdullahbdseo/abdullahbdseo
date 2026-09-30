@@ -19,6 +19,15 @@ export default function ToolsHubPage() {
       desc: "Pixel-accurate preview of your title, description & URL on Google Desktop, Mobile & AI Overview — plus Facebook, Twitter/X, LinkedIn & WhatsApp social cards with 1-click meta tag generator."
     },
     {
+      title: "On-Page SEO Content Optimizer & Live Grader",
+      href: "/tools/seo-content-optimizer",
+      icon: "fa-solid fa-file-circle-check",
+      iconBg: "#ede9fe",
+      iconColor: "#7c3aed",
+      badge: "✨ Live Content Grader",
+      desc: "Real-time content scanner checking 20+ ranking factors: Focus keyword placement in Title, Meta, Slug, H1-H3 headings, keyword density, and readability with instant 0-100 SEO score."
+    },
+    {
       title: "High DA Backlinks Database",
       href: "/high-da-backlinks",
       icon: "fa-solid fa-link",
