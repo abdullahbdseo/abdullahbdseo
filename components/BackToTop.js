@@ -34,12 +34,12 @@ export default function BackToTop() {
       aria-label="Back to top"
       style={{
         position: "fixed",
-        bottom: "24px",
-        right: "24px",
+        bottom: "80px",
+        right: "26px",
         zIndex: 997,
         width: "44px",
         height: "44px",
-        borderRadius: "6px",
+        borderRadius: "4px",
         background: "linear-gradient(135deg, #0062d2, #2563eb)",
         color: "#ffffff",
         border: "1px solid rgba(255, 255, 255, 0.2)",

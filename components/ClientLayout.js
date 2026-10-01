@@ -6,8 +6,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SeoChecklistModal from "@/components/SeoChecklistModal";
 import BackToTop from "@/components/BackToTop";
-
-
+import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 
 export default function ClientLayout({ children }) {
   const pathname = usePathname();
@@ -35,6 +34,7 @@ export default function ClientLayout({ children }) {
       <main>{children}</main>
       <Footer />
       <SeoChecklistModal />
+      <FloatingWhatsApp />
       <BackToTop />
     </>
   );

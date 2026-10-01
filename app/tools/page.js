@@ -1,12 +1,12 @@
-import Link from "next/link";
-import { siteSettings } from "@/lib/data";
+"use client";
 
-export const metadata = {
-  title: `Free SEO & Marketing Tools Suite | ${siteSettings.site_name}`,
-  description: `Access free in-house utilities for deep SEO auditing, Open Graph previews, keyword clustering, canonical & hreflang generation, schema markup, and technical SEO analysis.`
-};
+import { useState, useMemo } from "react";
+import Link from "next/link";
 
 export default function ToolsHubPage() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeCategory, setActiveCategory] = useState("all"); // 'all' | 'seo' | 'calc' | 'popular'
+
   const seoTools = [
     {
       title: "Google SERP Simulator & Snippet Preview",
@@ -16,6 +16,7 @@ export default function ToolsHubPage() {
       iconBg: "#ffffff",
       iconColor: "#2563eb",
       badge: "🔥 #1 Most Popular",
+      isPopular: true,
       desc: "Pixel-accurate preview of your title, description & URL on Google Desktop, Mobile & AI Overview — plus Facebook, Twitter/X, LinkedIn & WhatsApp social cards with 1-click meta tag generator."
     },
     {
@@ -25,7 +26,37 @@ export default function ToolsHubPage() {
       iconBg: "#ede9fe",
       iconColor: "#7c3aed",
       badge: "✨ Live Content Grader",
+      isPopular: true,
       desc: "Real-time content scanner checking 20+ ranking factors: Focus keyword placement in Title, Meta, Slug, H1-H3 headings, keyword density, and readability with instant 0-100 SEO score."
+    },
+    {
+      title: "Open Graph & Social Card Meta Generator",
+      href: "/tools/open-graph-meta-generator",
+      icon: "fa-solid fa-share-nodes",
+      iconBg: "#e0f2fe",
+      iconColor: "#0284c7",
+      badge: "✨ Social Preview",
+      isPopular: true,
+      desc: "Generate pixel-accurate Open Graph, Twitter/X, Facebook, LinkedIn, WhatsApp & Discord preview tags with live cards and 1-click HTML/Next.js export."
+    },
+    {
+      title: "Canonical & Hreflang Tag Generator",
+      href: "/tools/canonical-hreflang-generator",
+      icon: "fa-solid fa-earth-americas",
+      iconBg: "#ede9fe",
+      iconColor: "#7c3aed",
+      badge: "🌍 Multi-Language SEO",
+      desc: "Prevent duplicate content issues and generate Google-compliant rel=canonical and multi-language hreflang tags with bulk CSV import and XML sitemaps."
+    },
+    {
+      title: "SEO Keyword Clustering & Grouping Tool",
+      href: "/tools/keyword-clustering-tool",
+      icon: "fa-solid fa-diagram-project",
+      iconBg: "#dcfce7",
+      iconColor: "#15803d",
+      badge: "🎯 Topic Hubs & Silos",
+      isPopular: true,
+      desc: "Cluster 100s of keywords into semantic topic clusters and search intent silos. Export structured content briefs to CSV, Markdown, and JSON."
     },
     {
       title: "High DA Backlinks Database",
@@ -43,6 +74,7 @@ export default function ToolsHubPage() {
       iconBg: "#ecfdf5",
       iconColor: "#059669",
       badge: "70+ Point Audit",
+      isPopular: true,
       desc: "Perform a forensic 70+ point technical & on-page SEO inspection. Get instant grades, critical issue diagnosis, and a downloadable 12-sheet Excel audit report."
     },
     {
@@ -143,33 +175,6 @@ export default function ToolsHubPage() {
       iconColor: "#dc2626",
       badge: "🛡️ Spam Protection",
       desc: "Format, clean, and export 100% compliant disavow.txt files to neutralize toxic backlink penalties in Google Search Console."
-    },
-    {
-      title: "Open Graph & Social Card Meta Generator",
-      href: "/tools/open-graph-meta-generator",
-      icon: "fa-solid fa-share-nodes",
-      iconBg: "#e0f2fe",
-      iconColor: "#0284c7",
-      badge: "✨ Social Preview",
-      desc: "Generate pixel-accurate Open Graph, Twitter/X, Facebook, LinkedIn, WhatsApp & Discord preview tags with live cards and 1-click HTML/Next.js export."
-    },
-    {
-      title: "Canonical & Hreflang Tag Generator",
-      href: "/tools/canonical-hreflang-generator",
-      icon: "fa-solid fa-earth-americas",
-      iconBg: "#ede9fe",
-      iconColor: "#7c3aed",
-      badge: "🌍 Multi-Language SEO",
-      desc: "Prevent duplicate content issues and generate Google-compliant rel=canonical and multi-language hreflang tags with bulk CSV import and XML sitemaps."
-    },
-    {
-      title: "SEO Keyword Clustering & Grouping Tool",
-      href: "/tools/keyword-clustering-tool",
-      icon: "fa-solid fa-diagram-project",
-      iconBg: "#dcfce7",
-      iconColor: "#15803d",
-      badge: "🎯 Topic Hubs & Silos",
-      desc: "Cluster 100s of keywords into semantic topic clusters and search intent silos. Export structured content briefs to CSV, Markdown, and JSON."
     }
   ];
 
@@ -181,6 +186,7 @@ export default function ToolsHubPage() {
       iconBg: "#eff6ff",
       iconColor: "#2563eb",
       badge: "🔥 Client ROI",
+      isPopular: true,
       desc: "Model your projected organic search traffic growth, estimate net revenue returns, and calculate how much ad spend you save vs. Google Ads PPC."
     },
     {
@@ -190,6 +196,7 @@ export default function ToolsHubPage() {
       iconBg: "#eff6ff",
       iconColor: "#2563eb",
       badge: "🔥 Live Pricing",
+      isPopular: true,
       desc: "Configure custom link velocity across Profile Creation, Web 2.0, Bookmarks, and Guest Posts with real-time pricing and 1-click order fulfillment."
     },
     {
@@ -239,6 +246,42 @@ export default function ToolsHubPage() {
     }
   ];
 
+  // Assign stable sequential numbers (#01 to #25)
+  const allIndexedTools = useMemo(() => {
+    const list = [];
+    seoTools.forEach((t, i) => {
+      list.push({ ...t, number: i + 1, category: "seo" });
+    });
+    calcTools.forEach((t, i) => {
+      list.push({ ...t, number: seoTools.length + i + 1, category: "calc" });
+    });
+    return list;
+  }, []);
+
+  // Filtered tools based on search & category
+  const filteredTools = useMemo(() => {
+    return allIndexedTools.filter((tool) => {
+      // Category filter
+      if (activeCategory === "seo" && tool.category !== "seo") return false;
+      if (activeCategory === "calc" && tool.category !== "calc") return false;
+      if (activeCategory === "popular" && !tool.isPopular) return false;
+
+      // Search query filter
+      if (searchQuery.trim()) {
+        const query = searchQuery.toLowerCase().trim();
+        const matchesTitle = tool.title.toLowerCase().includes(query);
+        const matchesDesc = tool.desc.toLowerCase().includes(query);
+        const matchesBadge = tool.badge.toLowerCase().includes(query);
+        return matchesTitle || matchesDesc || matchesBadge;
+      }
+
+      return true;
+    });
+  }, [allIndexedTools, activeCategory, searchQuery]);
+
+  const seoFiltered = useMemo(() => filteredTools.filter(t => t.category === "seo"), [filteredTools]);
+  const calcFiltered = useMemo(() => filteredTools.filter(t => t.category === "calc"), [filteredTools]);
+
   return (
     <div className="tool-page-wrapper">
       {/* Header Section */}
@@ -247,32 +290,113 @@ export default function ToolsHubPage() {
           
           {/* Breadcrumb Navigation */}
           <nav aria-label="Breadcrumb" style={{ marginBottom: "20px", display: "inline-flex" }}>
-            <ol style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "6px 14px", borderRadius: "6px", background: "#ffffff", border: "1px solid #e2e8f0", fontSize: "0.85rem", fontWeight: 600, color: "#64748b", listStyle: "none", margin: 0 }}>
+            <ol style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "6px 14px", borderRadius: "4px", background: "#ffffff", border: "1px solid #e2e8f0", fontSize: "0.85rem", fontWeight: 600, color: "#64748b", listStyle: "none", margin: 0 }}>
               <li style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
                 <Link href="/" style={{ color: "#475569", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "4px" }}>
                   <i className="fa-solid fa-house" style={{ fontSize: "0.78rem" }}></i> Home
                 </Link>
               </li>
               <li><i className="fa-solid fa-angle-right" style={{ fontSize: "0.72rem", color: "#94a3b8" }}></i></li>
-              <li style={{ color: "#0f172a", fontWeight: 700 }}>Free SEO &amp; Growth Tools</li>
+              <li style={{ color: "#0f172a", fontWeight: 700 }}>Free SEO &amp; Growth Tools ({allIndexedTools.length})</li>
             </ol>
           </nav>
 
           {/* Title & Subtitle */}
-          <div style={{ textAlign: "center", maxWidth: "800px", margin: "0 auto" }}>
+          <div style={{ textAlign: "center", maxWidth: "820px", margin: "0 auto" }}>
             <div className="sub-badge" style={{ marginBottom: "14px" }}>
-              <i className="fa-solid fa-toolbox"></i> 100% Free · No Sign-up Required · Client-Side Fast
+              <i className="fa-solid fa-toolbox"></i> 100% Free · No Sign-up Required · 25 Production Utilities
             </div>
             <h1 className="page-title" style={{ fontSize: "2.8rem" }}>
               Free SEO &amp; Growth Marketing Tools Suite
             </h1>
             <p className="page-subtitle">
-              Professional diagnostic utilities and data-driven ROI calculators designed for founders, technical marketers, and SEO specialists. Instant results with zero fluff.
+              Professional diagnostic utilities, technical SEO generators, and data-driven ROI calculators designed for founders, marketers, and webmasters.
             </p>
           </div>
 
+          {/* Interactive Live Search & Category Filter Bar */}
+          <div style={{ maxWidth: "860px", margin: "32px auto 0 auto", backgroundColor: "#ffffff", padding: "16px 20px", borderRadius: "4px", border: "1px solid #e2e8f0", boxShadow: "0 4px 20px rgba(15, 23, 42, 0.06)" }}>
+            <div style={{ display: "flex", gap: "12px", alignItems: "center", marginBottom: "14px", position: "relative" }}>
+              <i className="fa-solid fa-magnifying-glass" style={{ position: "absolute", left: "14px", top: "14px", color: "#94a3b8", fontSize: "15px" }}></i>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search across 25 free tools (e.g., SERP, Schema, Hreflang, Backlink, ROI, Cluster)..."
+                style={{
+                  width: "100%",
+                  padding: "12px 38px 12px 42px",
+                  borderRadius: "4px",
+                  border: "1px solid #cbd5e1",
+                  fontSize: "14px",
+                  color: "#0f172a",
+                  boxSizing: "border-box",
+                  outline: "none"
+                }}
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery("")}
+                  style={{
+                    position: "absolute",
+                    right: "12px",
+                    top: "12px",
+                    background: "none",
+                    border: "none",
+                    color: "#94a3b8",
+                    cursor: "pointer",
+                    fontSize: "14px"
+                  }}
+                  title="Clear search"
+                >
+                  <i className="fa-solid fa-xmark"></i>
+                </button>
+              )}
+            </div>
+
+            {/* Filter Chips */}
+            <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between" }}>
+              <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                {[
+                  { id: "all", label: `All Tools (${allIndexedTools.length})`, icon: "fa-solid fa-border-all" },
+                  { id: "seo", label: `Technical SEO (${seoTools.length})`, icon: "fa-solid fa-magnifying-glass-chart" },
+                  { id: "calc", label: `Calculators & ROI (${calcTools.length})`, icon: "fa-solid fa-calculator" },
+                  { id: "popular", label: `🔥 Most Popular (7)`, icon: "fa-solid fa-fire" },
+                ].map((chip) => (
+                  <button
+                    key={chip.id}
+                    type="button"
+                    onClick={() => setActiveCategory(chip.id)}
+                    style={{
+                      padding: "6px 12px",
+                      borderRadius: "4px",
+                      border: "1px solid",
+                      borderColor: activeCategory === chip.id ? "#2563eb" : "#e2e8f0",
+                      backgroundColor: activeCategory === chip.id ? "#2563eb" : "#f8fafc",
+                      color: activeCategory === chip.id ? "#ffffff" : "#475569",
+                      fontWeight: activeCategory === chip.id ? 700 : 600,
+                      fontSize: "12px",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "6px",
+                      transition: "all 0.15s ease"
+                    }}
+                  >
+                    <i className={chip.icon}></i> {chip.label}
+                  </button>
+                ))}
+              </div>
+
+              <span style={{ fontSize: "12px", color: "#64748b", fontWeight: 600 }}>
+                Showing <strong>{filteredTools.length}</strong> of {allIndexedTools.length}
+              </span>
+            </div>
+          </div>
+
           {/* Trust Value Badges */}
-          <div style={{ display: "flex", justifyContent: "center", gap: "24px", marginTop: "28px", flexWrap: "wrap" }}>
+          <div style={{ display: "flex", justifyContent: "center", gap: "24px", marginTop: "24px", flexWrap: "wrap" }}>
             <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", fontSize: "0.85rem", color: "#334155", fontWeight: 600 }}>
               <i className="fa-solid fa-circle-check text-success"></i> Google Guideline Compliant
             </div>
@@ -291,108 +415,144 @@ export default function ToolsHubPage() {
       <section className="section-padding" style={{ paddingTop: "10px" }}>
         <div className="container" style={{ maxWidth: "1140px", margin: "0 auto", padding: "0 20px" }}>
           
-          {/* ================= SECTION 1: SEO & TECHNICAL OPTIMIZATION TOOLS ================= */}
-          <div style={{ marginBottom: "56px" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "26px", paddingBottom: "14px", borderBottom: "2px solid #e2e8f0" }}>
-              <span style={{ width: "36px", height: "36px", borderRadius: "4px", background: "#eff6ff", color: "#2563eb", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.1rem" }}>
-                <i className="fa-solid fa-magnifying-glass-chart"></i>
-              </span>
-              <div>
-                <h2 style={{ fontSize: "1.45rem", fontWeight: 800, color: "#0f172a", margin: 0 }}>
-                  Technical SEO &amp; Optimization Utilities
-                </h2>
-                <span style={{ fontSize: "0.85rem", color: "#64748b" }}>
-                  Audit on-page SEO health, generate JSON-LD schema, simulate Google SERP snippets, and verify crawler directives.
-                </span>
-              </div>
+          {/* No results empty state */}
+          {filteredTools.length === 0 && (
+            <div style={{ textAlign: "center", padding: "64px 20px", backgroundColor: "#ffffff", borderRadius: "4px", border: "1px solid #e2e8f0", margin: "20px 0" }}>
+              <i className="fa-solid fa-magnifying-glass" style={{ fontSize: "40px", color: "#cbd5e1", marginBottom: "16px", display: "block" }}></i>
+              <h3 style={{ fontSize: "1.2rem", fontWeight: 700, color: "#0f172a", marginBottom: "8px" }}>
+                No tools matched your search query &ldquo;{searchQuery}&rdquo;
+              </h3>
+              <p style={{ color: "#64748b", fontSize: "14px", marginBottom: "18px" }}>
+                Try searching for a different keyword or reset filters to see all 25 tools.
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchQuery("");
+                  setActiveCategory("all");
+                }}
+                style={{
+                  backgroundColor: "#2563eb",
+                  color: "#ffffff",
+                  border: "none",
+                  borderRadius: "4px",
+                  padding: "8px 18px",
+                  fontSize: "13px",
+                  fontWeight: 600,
+                  cursor: "pointer"
+                }}
+              >
+                Reset All Filters
+              </button>
             </div>
+          )}
 
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "24px" }}>
-              {seoTools.map((tool, idx) => (
-                <article key={idx} className="tool-ref-card">
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                      <div className="tool-ref-icon" style={{ background: tool.iconBg, color: tool.iconColor, margin: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                        {tool.iconImg ? (
-                          <img src={tool.iconImg} alt={tool.title} style={{ width: "22px", height: "22px", objectFit: "contain", display: "block" }} />
-                        ) : (
-                          <i className={tool.icon}></i>
-                        )}
+          {/* ================= SECTION 1: SEO & TECHNICAL OPTIMIZATION TOOLS ================= */}
+          {seoFiltered.length > 0 && (
+            <div style={{ marginBottom: "56px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "26px", paddingBottom: "14px", borderBottom: "2px solid #e2e8f0" }}>
+                <span style={{ width: "36px", height: "36px", borderRadius: "4px", background: "#eff6ff", color: "#2563eb", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.1rem" }}>
+                  <i className="fa-solid fa-magnifying-glass-chart"></i>
+                </span>
+                <div>
+                  <h2 style={{ fontSize: "1.45rem", fontWeight: 800, color: "#0f172a", margin: 0 }}>
+                    Technical SEO &amp; Optimization Utilities ({seoFiltered.length})
+                  </h2>
+                  <span style={{ fontSize: "0.85rem", color: "#64748b" }}>
+                    Audit on-page SEO health, generate JSON-LD schema, simulate Google SERP snippets, and verify crawler directives.
+                  </span>
+                </div>
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "24px" }}>
+                {seoFiltered.map((tool) => (
+                  <article key={tool.slug} className="tool-ref-card">
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                        <div className="tool-ref-icon" style={{ background: tool.iconBg, color: tool.iconColor, margin: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          {tool.iconImg ? (
+                            <img src={tool.iconImg} alt={tool.title} style={{ width: "22px", height: "22px", objectFit: "contain", display: "block" }} />
+                          ) : (
+                            <i className={tool.icon}></i>
+                          )}
+                        </div>
+                        <span style={{ fontSize: "0.78rem", fontWeight: 800, color: "#2563eb", background: "#eff6ff", border: "1px solid #dbeafe", padding: "2px 8px", borderRadius: "4px" }}>
+                          #{String(tool.number).padStart(2, "0")}
+                        </span>
                       </div>
-                      <span style={{ fontSize: "0.78rem", fontWeight: 800, color: "#2563eb", background: "#eff6ff", border: "1px solid #dbeafe", padding: "2px 8px", borderRadius: "4px" }}>
-                        #{String(idx + 1).padStart(2, "0")}
+                      <span style={{ fontSize: "0.75rem", padding: "3px 10px", background: "#f1f5f9", borderRadius: "4px", color: "#475569", fontWeight: 700 }}>
+                        {tool.badge}
                       </span>
                     </div>
-                    <span style={{ fontSize: "0.75rem", padding: "3px 10px", background: "#f1f5f9", borderRadius: "4px", color: "#475569", fontWeight: 700 }}>
-                      {tool.badge}
-                    </span>
-                  </div>
-                  <h3 className="tool-ref-title">
-                    <Link href={tool.href}>{tool.title}</Link>
-                  </h3>
-                  <p className="tool-ref-desc">
-                    {tool.desc}
-                  </p>
-                  <div className="tool-ref-footer">
-                    <Link href={tool.href} className="tool-ref-link">
-                      Launch Free Tool <i className="fa-solid fa-arrow-right"></i>
-                    </Link>
-                  </div>
-                </article>
-              ))}
+                    <h3 className="tool-ref-title">
+                      <Link href={tool.href}>{tool.title}</Link>
+                    </h3>
+                    <p className="tool-ref-desc">
+                      {tool.desc}
+                    </p>
+                    <div className="tool-ref-footer">
+                      <Link href={tool.href} className="tool-ref-link">
+                        Launch Free Tool <i className="fa-solid fa-arrow-right"></i>
+                      </Link>
+                    </div>
+                  </article>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* ================= SECTION 2: MARKETING & ROI CALCULATORS ================= */}
-          <div style={{ marginBottom: "50px" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "26px", paddingBottom: "14px", borderBottom: "2px solid #e2e8f0" }}>
-              <span style={{ width: "36px", height: "36px", borderRadius: "4px", background: "#ecfdf5", color: "#059669", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.1rem" }}>
-                <i className="fa-solid fa-calculator"></i>
-              </span>
-              <div>
-                <h2 style={{ fontSize: "1.45rem", fontWeight: 800, color: "#0f172a", margin: 0 }}>
-                  Marketing ROI &amp; Investment Calculators
-                </h2>
-                <span style={{ fontSize: "0.85rem", color: "#64748b" }}>
-                  Model paid search &amp; social advertising returns, estimate development budgets, and project AI labor savings.
+          {calcFiltered.length > 0 && (
+            <div style={{ marginBottom: "50px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "26px", paddingBottom: "14px", borderBottom: "2px solid #e2e8f0" }}>
+                <span style={{ width: "36px", height: "36px", borderRadius: "4px", background: "#ecfdf5", color: "#059669", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.1rem" }}>
+                  <i className="fa-solid fa-calculator"></i>
                 </span>
+                <div>
+                  <h2 style={{ fontSize: "1.45rem", fontWeight: 800, color: "#0f172a", margin: 0 }}>
+                    Marketing ROI &amp; Investment Calculators ({calcFiltered.length})
+                  </h2>
+                  <span style={{ fontSize: "0.85rem", color: "#64748b" }}>
+                    Model paid search &amp; social advertising returns, estimate development budgets, and project AI labor savings.
+                  </span>
+                </div>
               </div>
-            </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "24px" }}>
-              {calcTools.map((tool, idx) => (
-                <article key={idx} className="tool-ref-card">
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                      <div className="tool-ref-icon" style={{ background: tool.iconBg, color: tool.iconColor, margin: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                        <i className={tool.icon}></i>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "24px" }}>
+                {calcFiltered.map((tool) => (
+                  <article key={tool.slug} className="tool-ref-card">
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                        <div className="tool-ref-icon" style={{ background: tool.iconBg, color: tool.iconColor, margin: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          <i className={tool.icon}></i>
+                        </div>
+                        <span style={{ fontSize: "0.78rem", fontWeight: 800, color: "#059669", background: "#ecfdf5", border: "1px solid #a7f3d0", padding: "2px 8px", borderRadius: "4px" }}>
+                          #{String(tool.number).padStart(2, "0")}
+                        </span>
                       </div>
-                      <span style={{ fontSize: "0.78rem", fontWeight: 800, color: "#059669", background: "#ecfdf5", border: "1px solid #a7f3d0", padding: "2px 8px", borderRadius: "4px" }}>
-                        #{String(seoTools.length + idx + 1).padStart(2, "0")}
+                      <span style={{ fontSize: "0.75rem", padding: "3px 10px", background: "#f1f5f9", borderRadius: "4px", color: "#475569", fontWeight: 700 }}>
+                        {tool.badge}
                       </span>
                     </div>
-                    <span style={{ fontSize: "0.75rem", padding: "3px 10px", background: "#f1f5f9", borderRadius: "4px", color: "#475569", fontWeight: 700 }}>
-                      {tool.badge}
-                    </span>
-                  </div>
-                  <h3 className="tool-ref-title">
-                    <Link href={tool.href}>{tool.title}</Link>
-                  </h3>
-                  <p className="tool-ref-desc">
-                    {tool.desc}
-                  </p>
-                  <div className="tool-ref-footer">
-                    <Link href={tool.href} className="tool-ref-link">
-                      Launch Free Calculator <i className="fa-solid fa-arrow-right"></i>
-                    </Link>
-                  </div>
-                </article>
-              ))}
+                    <h3 className="tool-ref-title">
+                      <Link href={tool.href}>{tool.title}</Link>
+                    </h3>
+                    <p className="tool-ref-desc">
+                      {tool.desc}
+                    </p>
+                    <div className="tool-ref-footer">
+                      <Link href={tool.href} className="tool-ref-link">
+                        Launch Free Calculator <i className="fa-solid fa-arrow-right"></i>
+                      </Link>
+                    </div>
+                  </article>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Custom SEO & Consultation Banner */}
-          <div style={{ marginTop: "40px", background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)", borderRadius: "6px", padding: "44px 36px", textAlign: "center", color: "#ffffff", boxShadow: "0 10px 30px rgba(15, 23, 42, 0.2)" }}>
+          <div style={{ marginTop: "40px", background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)", borderRadius: "4px", padding: "44px 36px", textAlign: "center", color: "#ffffff", boxShadow: "0 10px 30px rgba(15, 23, 42, 0.2)" }}>
             <h2 style={{ fontSize: "1.9rem", fontWeight: 800, margin: "0 0 12px", color: "#ffffff" }}>
               Need a Custom Technical SEO Audit or Dedicated Organic Strategy?
             </h2>

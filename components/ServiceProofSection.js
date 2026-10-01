@@ -105,7 +105,7 @@ export default function ServiceProofSection({
               style={{
                 background: "#ffffff",
                 border: "1px solid #e2e8f0",
-                borderRadius: "6px",
+                borderRadius: "4px",
                 padding: "24px",
                 boxShadow: "0 4px 16px rgba(15, 23, 42, 0.04)",
                 display: "flex",
@@ -149,7 +149,7 @@ export default function ServiceProofSection({
                     gap: "10px",
                     background: "#f8fafc",
                     border: "1px solid #e2e8f0",
-                    borderRadius: "6px",
+                    borderRadius: "4px",
                     padding: "14px",
                     marginBottom: "16px",
                   }}
