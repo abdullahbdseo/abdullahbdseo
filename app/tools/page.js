@@ -310,13 +310,18 @@ export default function ToolsHubPage() {
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "24px" }}>
               {seoTools.map((tool, idx) => (
                 <article key={idx} className="tool-ref-card">
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "14px" }}>
-                    <div className="tool-ref-icon" style={{ background: tool.iconBg, color: tool.iconColor, margin: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                      {tool.iconImg ? (
-                        <img src={tool.iconImg} alt={tool.title} style={{ width: "22px", height: "22px", objectFit: "contain", display: "block" }} />
-                      ) : (
-                        <i className={tool.icon}></i>
-                      )}
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                      <div className="tool-ref-icon" style={{ background: tool.iconBg, color: tool.iconColor, margin: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        {tool.iconImg ? (
+                          <img src={tool.iconImg} alt={tool.title} style={{ width: "22px", height: "22px", objectFit: "contain", display: "block" }} />
+                        ) : (
+                          <i className={tool.icon}></i>
+                        )}
+                      </div>
+                      <span style={{ fontSize: "0.78rem", fontWeight: 800, color: "#2563eb", background: "#eff6ff", border: "1px solid #dbeafe", padding: "2px 8px", borderRadius: "4px" }}>
+                        #{String(idx + 1).padStart(2, "0")}
+                      </span>
                     </div>
                     <span style={{ fontSize: "0.75rem", padding: "3px 10px", background: "#f1f5f9", borderRadius: "4px", color: "#475569", fontWeight: 700 }}>
                       {tool.badge}
@@ -357,9 +362,14 @@ export default function ToolsHubPage() {
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "24px" }}>
               {calcTools.map((tool, idx) => (
                 <article key={idx} className="tool-ref-card">
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "14px" }}>
-                    <div className="tool-ref-icon" style={{ background: tool.iconBg, color: tool.iconColor, margin: 0 }}>
-                      <i className={tool.icon}></i>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                      <div className="tool-ref-icon" style={{ background: tool.iconBg, color: tool.iconColor, margin: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <i className={tool.icon}></i>
+                      </div>
+                      <span style={{ fontSize: "0.78rem", fontWeight: 800, color: "#059669", background: "#ecfdf5", border: "1px solid #a7f3d0", padding: "2px 8px", borderRadius: "4px" }}>
+                        #{String(seoTools.length + idx + 1).padStart(2, "0")}
+                      </span>
                     </div>
                     <span style={{ fontSize: "0.75rem", padding: "3px 10px", background: "#f1f5f9", borderRadius: "4px", color: "#475569", fontWeight: 700 }}>
                       {tool.badge}
