@@ -16,8 +16,25 @@ export default function Header() {
     setToolsDropdownOpen(false);
   }, [pathname]);
 
-  const seoTools = freeTools.filter(t => t.category === "SEO & Technical");
-  const roiTools = freeTools.filter(t => t.category === "Calculators & ROI");
+  // 25 Tools distributed evenly across 2 balanced columns (13 on left, 12 on right)
+  const col1Slugs = [
+    "serp-simulator",
+    "seo-content-optimizer",
+    "open-graph-meta-generator",
+    "canonical-hreflang-generator",
+    "keyword-clustering-tool",
+    "high-da-backlinks",
+    "deep-seo-audit",
+    "website-seo-analyzer",
+    "seo-audit-report-generator",
+    "schema-markup-generator",
+    "keyword-density-checker",
+    "word-counter-seo-analyzer",
+    "url-slug-generator"
+  ];
+
+  const seoTools = freeTools.filter(t => col1Slugs.includes(t.slug));
+  const roiTools = freeTools.filter(t => !col1Slugs.includes(t.slug));
 
   return (
     <header className="digi-header">
@@ -51,10 +68,10 @@ export default function Header() {
               Tools <i className="fa-solid fa-chevron-down nav-caret"></i>
             </Link>
 
-            <div className={`digi-nav-dropdown ${toolsDropdownOpen ? "show" : ""}`} style={{ maxHeight: "85vh", overflowY: "auto" }}>
+            <div className={`digi-nav-dropdown ${toolsDropdownOpen ? "show" : ""}`} style={{ maxHeight: "80vh", overflowY: "auto" }}>
               <div className="dropdown-header">
                 <span className="dropdown-header-title">
-                  <i className="fa-solid fa-toolbox" style={{ color: "#2563eb", marginRight: "6px" }}></i> Free SEO &amp; Growth Tools
+                  <i className="fa-solid fa-toolbox" style={{ color: "#2563eb", marginRight: "6px" }}></i> Free SEO &amp; Growth Tools ({freeTools.length})
                 </span>
                 <Link href="/tools" className="dropdown-all-link">
                   View All {freeTools.length} Tools <i className="fa-solid fa-arrow-right" style={{ fontSize: "0.72rem", marginLeft: "4px" }}></i>
@@ -62,16 +79,16 @@ export default function Header() {
               </div>
 
               <div className="dropdown-grid">
-                {/* Column 1: SEO & Technical */}
+                {/* Column 1: SEO & Content Tools (13 items) */}
                 <div className="dropdown-col">
                   <span className="dropdown-cat-title">
-                    <i className="fa-solid fa-magnifying-glass-chart" style={{ color: "#2563eb", marginRight: "4px" }}></i> SEO &amp; Technical
+                    <i className="fa-solid fa-magnifying-glass-chart" style={{ color: "#2563eb", marginRight: "4px" }}></i> SEO &amp; Content Optimization
                   </span>
                   {seoTools.map((t) => (
                     <Link key={t.slug} href={t.customPath || `/tools/${t.slug}`} className="dropdown-item">
                       <div className="dropdown-item-icon" style={{ background: t.bg, color: t.color, display: "flex", alignItems: "center", justifyContent: "center" }}>
                         {t.iconImg ? (
-                          <img src={t.iconImg} alt={t.title} style={{ width: "20px", height: "20px", objectFit: "contain", display: "block" }} />
+                          <img src={t.iconImg} alt={t.title} style={{ width: "18px", height: "18px", objectFit: "contain", display: "block" }} />
                         ) : (
                           <i className={t.icon.includes("fa-brands") || t.icon.includes("fa-solid") || t.icon.includes("fa-regular") ? t.icon : `fa-solid ${t.icon}`}></i>
                         )}
@@ -84,16 +101,16 @@ export default function Header() {
                   ))}
                 </div>
 
-                {/* Column 2: Calculators & ROI */}
+                {/* Column 2: Technical, Server & ROI (12 items) */}
                 <div className="dropdown-col">
                   <span className="dropdown-cat-title">
-                    <i className="fa-solid fa-calculator" style={{ color: "#059669", marginRight: "4px" }}></i> Calculators &amp; ROI
+                    <i className="fa-solid fa-calculator" style={{ color: "#059669", marginRight: "4px" }}></i> Technical, Server &amp; ROI
                   </span>
                   {roiTools.map((t) => (
                     <Link key={t.slug} href={`/tools/${t.slug}`} className="dropdown-item">
                       <div className="dropdown-item-icon" style={{ background: t.bg, color: t.color, display: "flex", alignItems: "center", justifyContent: "center" }}>
                         {t.iconImg ? (
-                          <img src={t.iconImg} alt={t.title} style={{ width: "20px", height: "20px", objectFit: "contain", display: "block" }} />
+                          <img src={t.iconImg} alt={t.title} style={{ width: "18px", height: "18px", objectFit: "contain", display: "block" }} />
                         ) : (
                           <i className={t.icon.includes("fa-brands") || t.icon.includes("fa-solid") || t.icon.includes("fa-regular") ? t.icon : `fa-solid ${t.icon}`}></i>
                         )}
