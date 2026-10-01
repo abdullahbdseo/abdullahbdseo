@@ -1411,6 +1411,33 @@
       "category": "SEO & Technical"
     },
     {
+      "slug": "open-graph-meta-generator",
+      "title": "Open Graph Meta Generator",
+      "desc": "Social preview card builder",
+      "icon": "fa-solid fa-share-nodes",
+      "color": "#0284c7",
+      "bg": "#e0f2fe",
+      "category": "SEO & Technical"
+    },
+    {
+      "slug": "canonical-hreflang-generator",
+      "title": "Canonical & Hreflang Tags",
+      "desc": "Multi-language & duplicate SEO",
+      "icon": "fa-solid fa-earth-americas",
+      "color": "#7c3aed",
+      "bg": "#ede9fe",
+      "category": "SEO & Technical"
+    },
+    {
+      "slug": "keyword-clustering-tool",
+      "title": "Keyword Clustering Tool",
+      "desc": "Semantic topic hubs & silos",
+      "icon": "fa-solid fa-diagram-project",
+      "color": "#15803d",
+      "bg": "#dcfce7",
+      "category": "SEO & Technical"
+    },
+    {
       "slug": "high-da-backlinks",
       "title": "High DA Backlinks",
       "desc": "150+ Free High DA/DR Sites",
@@ -1419,6 +1446,33 @@
       "bg": "#e0f2fe",
       "category": "SEO & Technical",
       "customPath": "/high-da-backlinks"
+    },
+    {
+      "slug": "deep-seo-audit",
+      "title": "Deep SEO Audit & Report",
+      "desc": "70+ point technical SEO check",
+      "icon": "fa-magnifying-glass-chart",
+      "color": "#059669",
+      "bg": "#ecfdf5",
+      "category": "SEO & Technical"
+    },
+    {
+      "slug": "website-seo-analyzer",
+      "title": "Website SEO Analyzer",
+      "desc": "Live page audit & health score",
+      "icon": "fa-chart-pie",
+      "color": "#1d4ed8",
+      "bg": "#dbeafe",
+      "category": "SEO & Technical"
+    },
+    {
+      "slug": "seo-audit-report-generator",
+      "title": "SEO Audit Proposal Generator",
+      "desc": "Client SEO proposals & PDF export",
+      "icon": "fa-file-invoice",
+      "color": "#7c3aed",
+      "bg": "#ede9fe",
+      "category": "SEO & Technical"
     },
     {
       "slug": "schema-markup-generator",
@@ -1431,7 +1485,7 @@
     },
     {
       "slug": "robots-sitemap-generator",
-      "title": "Robots.txt & Sitemap Builder",
+      "title": "Robots.txt & Sitemap Suite",
       "desc": "Crawler rules & XML maps generator",
       "icon": "fa-robot",
       "color": "#334155",
@@ -1448,12 +1502,30 @@
       "category": "SEO & Technical"
     },
     {
+      "slug": "word-counter-seo-analyzer",
+      "title": "Word Counter & SEO Analyzer",
+      "desc": "Live density & reading level",
+      "icon": "fa-solid fa-feather-pointed",
+      "color": "#059669",
+      "bg": "#ecfdf5",
+      "category": "SEO & Technical"
+    },
+    {
       "slug": "http-header-checker",
       "title": "HTTP 301 & SSL Checker",
       "desc": "Redirect tracer & response codes",
       "icon": "fa-network-wired",
       "color": "#a21caf",
       "bg": "#fae8ff",
+      "category": "SEO & Technical"
+    },
+    {
+      "slug": "redirect-htaccess-generator",
+      "title": "301 Redirect & .htaccess Suite",
+      "desc": "Server rewrite rules generator",
+      "icon": "fa-solid fa-arrow-right-arrow-left",
+      "color": "#d97706",
+      "bg": "#fef3c7",
       "category": "SEO & Technical"
     },
     {
@@ -1482,6 +1554,15 @@
       "color": "#dc2626",
       "bg": "#fee2e2",
       "category": "SEO & Technical"
+    },
+    {
+      "slug": "seo-roi-calculator",
+      "title": "SEO ROI & Profit Calculator",
+      "desc": "Model organic traffic & net revenue",
+      "icon": "fa-solid fa-chart-line",
+      "color": "#2563eb",
+      "bg": "#eff6ff",
+      "category": "Calculators & ROI"
     },
     {
       "slug": "backlink-package-calculator",
