@@ -50,6 +50,9 @@ export default function sitemap() {
     "/tools/url-slug-generator",
     "/tools/disavow-file-generator",
     "/tools/seo-content-optimizer",
+    "/tools/open-graph-meta-generator",
+    "/tools/canonical-hreflang-generator",
+    "/tools/keyword-clustering-tool",
   ].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: now,

@@ -3,7 +3,7 @@ import { siteSettings } from "@/lib/data";
 
 export const metadata = {
   title: `Free SEO & Marketing Tools Suite | ${siteSettings.site_name}`,
-  description: `Access 15 free in-house utilities for deep SEO auditing, technical analysis, schema markup, SERP preview, robots & sitemap building, and ROI calculation.`
+  description: `Access free in-house utilities for deep SEO auditing, Open Graph previews, keyword clustering, canonical & hreflang generation, schema markup, and technical SEO analysis.`
 };
 
 export default function ToolsHubPage() {
@@ -143,6 +143,33 @@ export default function ToolsHubPage() {
       iconColor: "#dc2626",
       badge: "🛡️ Spam Protection",
       desc: "Format, clean, and export 100% compliant disavow.txt files to neutralize toxic backlink penalties in Google Search Console."
+    },
+    {
+      title: "Open Graph & Social Card Meta Generator",
+      href: "/tools/open-graph-meta-generator",
+      icon: "fa-solid fa-share-nodes",
+      iconBg: "#e0f2fe",
+      iconColor: "#0284c7",
+      badge: "✨ Social Preview",
+      desc: "Generate pixel-accurate Open Graph, Twitter/X, Facebook, LinkedIn, WhatsApp & Discord preview tags with live cards and 1-click HTML/Next.js export."
+    },
+    {
+      title: "Canonical & Hreflang Tag Generator",
+      href: "/tools/canonical-hreflang-generator",
+      icon: "fa-solid fa-earth-americas",
+      iconBg: "#ede9fe",
+      iconColor: "#7c3aed",
+      badge: "🌍 Multi-Language SEO",
+      desc: "Prevent duplicate content issues and generate Google-compliant rel=canonical and multi-language hreflang tags with bulk CSV import and XML sitemaps."
+    },
+    {
+      title: "SEO Keyword Clustering & Grouping Tool",
+      href: "/tools/keyword-clustering-tool",
+      icon: "fa-solid fa-diagram-project",
+      iconBg: "#dcfce7",
+      iconColor: "#15803d",
+      badge: "🎯 Topic Hubs & Silos",
+      desc: "Cluster 100s of keywords into semantic topic clusters and search intent silos. Export structured content briefs to CSV, Markdown, and JSON."
     }
   ];
 
