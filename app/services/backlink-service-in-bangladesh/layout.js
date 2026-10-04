@@ -12,6 +12,11 @@ export const metadata = {
     url: "/services/backlink-service-in-bangladesh",
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: `Backlink Service in Bangladesh | High DA Link Building`,
+    description: `Top High DA Backlink Service in Bangladesh by ${siteSettings.expert_name}. 100% white-hat manual outreach, DR 50-90+ guest posts, and permanent PageRank authority.`,
+  },
 };
 
 export default function BacklinkServiceLayout({ children }) {

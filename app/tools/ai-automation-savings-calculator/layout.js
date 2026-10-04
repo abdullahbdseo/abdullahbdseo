@@ -12,8 +12,12 @@ export const metadata = {
     url: "/tools/ai-automation-savings-calculator",
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: `AI & Automation ROI Savings Calculator | ${siteSettings.site_name}`,
+    description: `Calculate hours saved, operational cost reductions, and annual financial returns by integrating AI workflows, automated lead nurturing, and CRM systems.`,
+  },
 };
-
 export default function AiAutomationSavingsCalculatorLayout({ children }) {
   return children;
 }

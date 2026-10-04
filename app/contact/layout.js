@@ -12,6 +12,11 @@ export const metadata = {
     url: "/contact",
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: `Contact ${siteSettings.expert_name} | Free SEO Consultation & Audit`,
+    description: `Contact ${siteSettings.expert_name}, top SEO specialist in Bangladesh. Book a free 30-minute SEO audit & consultation to discuss your business growth strategy today.`,
+  },
 };
 
 export default function ContactLayout({ children }) {

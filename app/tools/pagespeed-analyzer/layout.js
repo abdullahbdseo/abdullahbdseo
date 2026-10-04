@@ -12,8 +12,12 @@ export const metadata = {
     url: "/tools/pagespeed-analyzer",
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: `Core Web Vitals & PageSpeed Diagnostics | Free SEO Tool`,
+    description: `Audit mobile & desktop Core Web Vitals (LCP, INP, CLS, FCP, TTFB) with actionable code fix recommendations.`,
+  },
 };
-
 export default function PageSpeedAnalyzerLayout({ children }) {
   return children;
 }

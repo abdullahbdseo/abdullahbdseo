@@ -12,8 +12,12 @@ export const metadata = {
     url: "/tools/http-header-checker",
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: `Free HTTP Header & Status Code Checker | ${siteSettings.site_name}`,
+    description: `Inspect live server response HTTP headers, 301/302 redirect chains, canonical tags, SSL security, and response headers for any webpage.`,
+  },
 };
-
 export default function HttpHeaderCheckerLayout({ children }) {
   return children;
 }

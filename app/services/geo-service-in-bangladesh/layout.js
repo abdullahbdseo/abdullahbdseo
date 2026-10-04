@@ -12,6 +12,11 @@ export const metadata = {
     url: "/services/geo-service-in-bangladesh",
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: `GEO Service in Bangladesh | Generative Engine Ranking`,
+    description: `Get cited & recommended by AI engines. Enterprise GEO services in Bangladesh to optimize brand visibility across Google Gemini, ChatGPT, Claude & Perplexity.`,
+  },
 };
 
 export default function GeoLayout({ children }) {

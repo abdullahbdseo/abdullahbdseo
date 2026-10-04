@@ -12,8 +12,12 @@ export const metadata = {
     url: "/tools/disavow-file-generator",
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: `Google Disavow File Generator (disavow.txt) | Free SEO Tool`,
+    description: `Format and export Google-compliant disavow.txt files to protect your site against negative SEO and toxic spam backlinks.`,
+  },
 };
-
 export default function DisavowFileGeneratorLayout({ children }) {
   return children;
 }

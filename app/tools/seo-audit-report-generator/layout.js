@@ -12,8 +12,12 @@ export const metadata = {
     url: "/tools/seo-audit-report-generator",
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: `SEO Audit Report Generator (Download PDF) | ${siteSettings.site_name}`,
+    description: `Generate professional, client-ready, downloadable SEO audit reports with actionable technical fixes, prioritized recommendations, and score breakdowns.`,
+  },
 };
-
 export default function SeoAuditReportGeneratorLayout({ children }) {
   return children;
 }

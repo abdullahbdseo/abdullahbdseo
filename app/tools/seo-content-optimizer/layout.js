@@ -12,8 +12,12 @@ export const metadata = {
     url: "/tools/seo-content-optimizer",
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: `On-Page SEO Content Optimizer & Live Grader | Free SEO Tool`,
+    description: `Audit your written content for focus keyword placement in H1-H3, meta tags, URL slug, keyword density, and readability with instant 0-100 SEO scoring.`,
+  },
 };
-
 export default function SeoContentOptimizerLayout({ children }) {
   return children;
 }

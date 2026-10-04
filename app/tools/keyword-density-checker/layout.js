@@ -12,8 +12,12 @@ export const metadata = {
     url: "/tools/keyword-density-checker",
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: `Free Keyword Density & TF-IDF Checker | ${siteSettings.site_name}`,
+    description: `Analyze keyword frequency, 1-word, 2-word, and 3-word n-gram density ratios in your articles to prevent keyword stuffing and optimize for semantic search.`,
+  },
 };
-
 export default function KeywordDensityCheckerLayout({ children }) {
   return children;
 }

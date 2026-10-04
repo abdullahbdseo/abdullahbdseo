@@ -2,7 +2,16 @@ import { siteSettings } from "@/lib/data";
 
 export const metadata = {
   title: `Terms of Service | ${siteSettings.site_name} SEO Services`,
-  description: `Review the Terms of Service for ${siteSettings.site_name} SEO Consulting. Understand client agreements, project milestones, deliverables, and service guidelines.`
+  description: `Review the Terms of Service for ${siteSettings.site_name} SEO Consulting. Understand client agreements, project milestones, deliverables, and service guidelines.`,
+  alternates: {
+    canonical: "/terms",
+  },
+  openGraph: {
+    title: `Terms of Service | ${siteSettings.site_name} SEO Services`,
+    description: `Review the Terms of Service for ${siteSettings.site_name} SEO Consulting. Understand client agreements, project milestones, deliverables, and service guidelines.`,
+    url: "/terms",
+    type: "website",
+  },
 };
 
 export default function TermsPage() {

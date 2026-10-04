@@ -33,6 +33,11 @@ export async function generateMetadata({ params }) {
       url: `/high-da-backlinks/${post.slug}`,
       type: "article",
     },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
   };
 }
 

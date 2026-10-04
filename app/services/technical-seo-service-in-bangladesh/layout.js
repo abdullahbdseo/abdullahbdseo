@@ -12,6 +12,11 @@ export const metadata = {
     url: "/services/technical-seo-service-in-bangladesh",
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: `Technical SEO Service in Bangladesh | ${siteSettings.expert_name}`,
+    description: `Fix crawling bottlenecks, slow site speed, indexing errors, and structured data schemas with Bangladesh's premier Technical SEO Specialist, ${siteSettings.expert_name}.`,
+  },
 };
 
 export default function TechnicalSeoLayout({ children }) {

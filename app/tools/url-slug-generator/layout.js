@@ -12,8 +12,12 @@ export const metadata = {
     url: "/tools/url-slug-generator",
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: `SEO Friendly URL Slug & Permalink Generator | Free SEO Tool`,
+    description: `Convert titles, headlines, and keywords into clean, lowercase, stopword-free URL slugs and permalinks.`,
+  },
 };
-
 export default function UrlSlugGeneratorLayout({ children }) {
   return children;
 }

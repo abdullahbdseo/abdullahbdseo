@@ -12,8 +12,12 @@ export const metadata = {
     url: "/tools/word-counter-seo-analyzer",
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: `Word Counter & SEO Content Analyzer | Real-Time Readability`,
+    description: `Free online word counter, character counter, SEO meta title & description length checker, keyword density analyzer, and Flesch reading ease calculator.`,
+  },
 };
-
 export default function WordCounterSeoAnalyzerLayout({ children }) {
   return children;
 }

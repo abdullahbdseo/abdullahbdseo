@@ -12,6 +12,11 @@ export const metadata = {
     url: "/services/aeo-service-in-bangladesh",
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: `AEO Service in Bangladesh | Answer Engine Optimization`,
+    description: `Capture Google Featured Snippets, voice search answers, and Zero-Click searches with structured Answer Engine Optimization (AEO) services in Bangladesh.`,
+  },
 };
 
 export default function AeoLayout({ children }) {

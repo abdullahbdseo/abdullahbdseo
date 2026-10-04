@@ -12,6 +12,11 @@ export const metadata = {
     url: "/services/ai-seo-service-in-bangladesh",
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: `AI SEO Service in Bangladesh | Next-Gen LLM Search Rank`,
+    description: `Future-proof your brand for AI search engines (ChatGPT, Perplexity, Google AI Overviews). Semantic entity optimization & AI search rankings in Bangladesh.`,
+  },
 };
 
 export default function AiSeoLayout({ children }) {

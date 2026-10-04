@@ -2,7 +2,16 @@ import { siteSettings } from "@/lib/data";
 
 export const metadata = {
   title: `Refund & Cancellation Policy | ${siteSettings.site_name}`,
-  description: `Understand our refund and cancellation policies for monthly SEO retainers, technical audits, and digital marketing consulting services by ${siteSettings.expert_name}.`
+  description: `Understand our refund and cancellation policies for monthly SEO retainers, technical audits, and digital marketing consulting services by ${siteSettings.expert_name}.`,
+  alternates: {
+    canonical: "/refund-policy",
+  },
+  openGraph: {
+    title: `Refund & Cancellation Policy | ${siteSettings.site_name}`,
+    description: `Understand our refund and cancellation policies for monthly SEO retainers, technical audits, and digital marketing consulting services by ${siteSettings.expert_name}.`,
+    url: "/refund-policy",
+    type: "website",
+  },
 };
 
 export default function RefundPolicyPage() {

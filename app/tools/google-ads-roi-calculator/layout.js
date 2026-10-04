@@ -12,8 +12,12 @@ export const metadata = {
     url: "/tools/google-ads-roi-calculator",
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: `Google Ads ROI & ROAS Calculator | ${siteSettings.site_name}`,
+    description: `Calculate your Google Ads Return on Investment (ROI), Return on Ad Spend (ROAS), Cost Per Acquisition (CPA), and compare paid vs. organic SEO profitability.`,
+  },
 };
-
 export default function GoogleAdsRoiCalculatorLayout({ children }) {
   return children;
 }

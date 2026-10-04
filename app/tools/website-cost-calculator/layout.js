@@ -12,8 +12,12 @@ export const metadata = {
     url: "/tools/website-cost-calculator",
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: `Website & SEO Cost Calculator Bangladesh | ${siteSettings.site_name}`,
+    description: `Calculate the estimated budget for custom website development, e-commerce stores, and monthly SEO campaigns in Bangladesh with our interactive cost estimator.`,
+  },
 };
-
 export default function WebsiteCostCalculatorLayout({ children }) {
   return children;
 }

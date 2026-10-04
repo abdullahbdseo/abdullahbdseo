@@ -12,6 +12,11 @@ export const metadata = {
     url: "/blog",
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: `SEO & AI Search Optimization Blog | ${siteSettings.site_name}`,
+    description: `Actionable SEO guides, AI search algorithm updates, and technical ranking strategies by ${siteSettings.expert_name}, leading SEO expert in Bangladesh.`,
+  },
 };
 
 export default function BlogLayout({ children }) {

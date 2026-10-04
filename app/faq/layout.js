@@ -12,6 +12,11 @@ export const metadata = {
     url: "/faq",
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: `SEO FAQs & Answers | ${siteSettings.expert_name} SEO Consultant`,
+    description: `Get answers to frequently asked questions about SEO services, technical audits, pricing, ranking timelines, and AI search optimization in Bangladesh.`,
+  },
 };
 
 export default function FaqLayout({ children }) {

@@ -20,6 +20,16 @@ export default function ToolsHubPage() {
       desc: "Pixel-accurate preview of your title, description & URL on Google Desktop, Mobile & AI Overview — plus Facebook, Twitter/X, LinkedIn & WhatsApp social cards with 1-click meta tag generator."
     },
     {
+      title: "URL & Slug Duplicate Checker",
+      href: "/tools/url-slug-duplicate-checker",
+      icon: "fa-solid fa-copy",
+      iconBg: "#fef2f2",
+      iconColor: "#dc2626",
+      badge: "🔍 Duplicate Detector",
+      isPopular: false,
+      desc: "Instantly detect exact duplicate URLs, near-duplicate permalinks (Levenshtein similarity), and slug conflicts that cause canonicalization issues and organic rank dilution."
+    },
+    {
       title: "On-Page SEO Content Optimizer & Live Grader",
       href: "/tools/seo-content-optimizer",
       icon: "fa-solid fa-file-circle-check",
@@ -304,7 +314,7 @@ export default function ToolsHubPage() {
           {/* Title & Subtitle */}
           <div style={{ textAlign: "center", maxWidth: "820px", margin: "0 auto" }}>
             <div className="sub-badge" style={{ marginBottom: "14px" }}>
-              <i className="fa-solid fa-toolbox"></i> 100% Free · No Sign-up Required · 25 Production Utilities
+              <i className="fa-solid fa-toolbox"></i> 100% Free · No Sign-up Required · 26 Production Utilities
             </div>
             <h1 className="page-title" style={{ fontSize: "2.8rem" }}>
               Free SEO &amp; Growth Marketing Tools Suite
@@ -322,7 +332,7 @@ export default function ToolsHubPage() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search across 25 free tools (e.g., SERP, Schema, Hreflang, Backlink, ROI, Cluster)..."
+                placeholder="Search across 26 free tools (e.g., SERP, Schema, Hreflang, Backlink, ROI, Cluster, Duplicates)..."
                 style={{
                   width: "100%",
                   padding: "12px 38px 12px 42px",
@@ -423,7 +433,7 @@ export default function ToolsHubPage() {
                 No tools matched your search query &ldquo;{searchQuery}&rdquo;
               </h3>
               <p style={{ color: "#64748b", fontSize: "14px", marginBottom: "18px" }}>
-                Try searching for a different keyword or reset filters to see all 25 tools.
+                Try searching for a different keyword or reset filters to see all 26 tools.
               </p>
               <button
                 type="button"

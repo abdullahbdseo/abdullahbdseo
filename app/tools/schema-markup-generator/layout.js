@@ -12,8 +12,12 @@ export const metadata = {
     url: "/tools/schema-markup-generator",
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: `Free JSON-LD Schema Markup Generator | ${siteSettings.site_name}`,
+    description: `Easily generate Google-compliant JSON-LD structured data for Organization, LocalBusiness, FAQPage, Article, Person, and Product schemas to earn Rich Snippets.`,
+  },
 };
-
 export default function SchemaMarkupGeneratorLayout({ children }) {
   return children;
 }

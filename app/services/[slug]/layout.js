@@ -25,6 +25,11 @@ export async function generateMetadata({ params }) {
       url: `/services/${service.slug}`,
       type: "website",
     },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
   };
 }
 

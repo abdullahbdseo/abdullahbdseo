@@ -2,7 +2,16 @@ import { siteSettings } from "@/lib/data";
 
 export const metadata = {
   title: `Privacy Policy | ${siteSettings.site_name} SEO Services`,
-  description: `Read the official Privacy Policy for ${siteSettings.site_name} SEO Services. Learn how we collect, protect, and handle your data with complete transparency.`
+  description: `Read the official Privacy Policy for ${siteSettings.site_name} SEO Services. Learn how we collect, protect, and handle your data with complete transparency.`,
+  alternates: {
+    canonical: "/privacy-policy",
+  },
+  openGraph: {
+    title: `Privacy Policy | ${siteSettings.site_name} SEO Services`,
+    description: `Read the official Privacy Policy for ${siteSettings.site_name} SEO Services. Learn how we collect, protect, and handle your data with complete transparency.`,
+    url: "/privacy-policy",
+    type: "website",
+  },
 };
 
 export default function PrivacyPolicyPage() {
