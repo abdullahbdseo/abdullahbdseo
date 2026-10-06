@@ -53,17 +53,26 @@ export default function sitemap() {
     "/tools/open-graph-meta-generator",
     "/tools/canonical-hreflang-generator",
     "/tools/keyword-clustering-tool",
+    "/tools/url-slug-duplicate-checker",
   ].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: now,
     changeFrequency:
       route === "" || route === "/blog"
         ? "daily"
-        : route.startsWith("/tools")
+        : route.startsWith("/tools") || route === "/services"
         ? "weekly"
         : "monthly",
     priority:
-      route === "" ? 1.0 : route === "/services" ? 0.9 : route.startsWith("/tools") ? 0.85 : 0.7,
+      route === ""
+        ? 1.0
+        : route === "/services"
+        ? 0.9
+        : ["/about", "/contact", "/pricing", "/portfolio", "/blog", "/tools"].includes(route)
+        ? 0.85
+        : route.startsWith("/tools")
+        ? 0.85
+        : 0.7,
   }));
 
 

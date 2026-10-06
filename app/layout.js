@@ -121,6 +121,7 @@ export default function RootLayout({ children }) {
           "worstRating": "1"
         },
         "sameAs": [
+          "https://abdullahbdseo.com",
           siteSettings.social_linkedin,
           siteSettings.social_twitter,
           siteSettings.social_facebook,
@@ -149,6 +150,7 @@ export default function RootLayout({ children }) {
           "E-Commerce Organic Scaling"
         ],
         "sameAs": [
+          "https://abdullahbdseo.com",
           siteSettings.social_linkedin,
           siteSettings.social_twitter,
           siteSettings.social_facebook,
@@ -230,9 +232,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/images/favicon.png" type="image/png" sizes="192x192" />
-        <link rel="apple-touch-icon" href="/images/logo-icon.png" sizes="180x180" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
