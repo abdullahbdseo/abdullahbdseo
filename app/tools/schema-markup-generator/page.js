@@ -4,20 +4,33 @@ import { useState, useMemo, useRef } from "react";
 import Link from "next/link";
 import ToolFaqAccordion from "@/components/ToolFaqAccordion";
 
+const SCHEMA_MODULES = [
+  { id: "website", label: "WebSite & Sitelinks", icon: "fa-globe", badge: "Core", desc: "Site entity & SearchAction template" },
+  { id: "organization", label: "Organization & Brand", icon: "fa-building", badge: "Knowledge Graph", desc: "Entity NAP, logo, sameAs Wikidata" },
+  { id: "localBusiness", label: "Local Business / NAP", icon: "fa-shop", badge: "Google Maps", desc: "Geo coordinates, hours, review stars" },
+  { id: "person", label: "Founder / E-E-A-T Author", icon: "fa-user-tie", badge: "Author Trust", desc: "Credentials, bio, knowsAbout skills" },
+  { id: "services", label: "Services Catalog", icon: "fa-briefcase", badge: "Service Graph", desc: "Service offerings and pricing" },
+  { id: "products", label: "Products & Offers", icon: "fa-box-open", badge: "Shopping", desc: "E-com items, SKUs, and stock" },
+  { id: "faqs", label: "FAQ Page Accordion", icon: "fa-circle-question", badge: "SERP Drops", desc: "Interactive expandable Q&A pairs" },
+  { id: "breadcrumbs", label: "Breadcrumbs Trail", icon: "fa-folder-tree", badge: "SERP Trail", desc: "Hierarchical site navigation levels" },
+  { id: "webpage", label: "WebPage & Article", icon: "fa-newspaper", badge: "Content", desc: "Page headline, image, article data" }
+];
+
 export default function SchemaMarkupGenerator() {
-  const [activeTab, setActiveTab] = useState("code"); // 'code', 'serp_preview', 'graph_tree', 'health'
+  const [activeTab, setActiveTab] = useState("code"); // 'code', 'serp_preview', 'graph_tree'
   const [copiedScript, setCopiedScript] = useState(false);
   const [copiedRaw, setCopiedRaw] = useState(false);
   const [isMinified, setIsMinified] = useState(false);
   const [previewDevice, setPreviewDevice] = useState("desktop");
   const [toastMessage, setToastMessage] = useState("");
+  const [activeSection, setActiveSection] = useState("website");
 
   const showToast = (msg) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(""), 2800);
   };
 
-  // MODULE INCLUSION TOGGLES (User can enable/disable any module into the single complete master graph)
+  // MODULE INCLUSION TOGGLES (Checking a module adds its data to the unified master schema)
   const [enabledModules, setEnabledModules] = useState({
     website: true,
     organization: true,
@@ -30,8 +43,39 @@ export default function SchemaMarkupGenerator() {
     webpage: true
   });
 
-  const toggleModule = (key) => {
-    setEnabledModules((prev) => ({ ...prev, [key]: !prev[key] }));
+  const toggleModule = (id) => {
+    setEnabledModules((prev) => ({ ...prev, [id]: !prev[id] }));
+    setActiveSection(id);
+  };
+
+  const selectAll = () => {
+    setEnabledModules({
+      website: true,
+      organization: true,
+      localBusiness: true,
+      person: true,
+      services: true,
+      products: true,
+      faqs: true,
+      breadcrumbs: true,
+      webpage: true
+    });
+    showToast("Selected all schema sections!");
+  };
+
+  const deselectAll = () => {
+    setEnabledModules({
+      website: true,
+      organization: true,
+      localBusiness: false,
+      person: false,
+      services: false,
+      products: false,
+      faqs: false,
+      breadcrumbs: false,
+      webpage: false
+    });
+    showToast("Minimal Core selected!");
   };
 
   // Section Refs for smooth scrolling
@@ -47,13 +91,14 @@ export default function SchemaMarkupGenerator() {
     webpage: useRef(null)
   };
 
-  const scrollToSection = (key) => {
-    if (sectionRefs[key]?.current) {
-      sectionRefs[key].current.scrollIntoView({ behavior: "smooth", block: "start" });
+  const scrollToSection = (id) => {
+    setActiveSection(id);
+    if (sectionRefs[id]?.current) {
+      sectionRefs[id].current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
 
-  // 1. WEBSITE & SITELINKS SEARCH STATE
+  // 1. WEBSITE DATA
   const [websiteData, setWebsiteData] = useState({
     name: "Abdullah Saleh - Best SEO Expert in Bangladesh",
     alternateName: "AbdullahBD SEO & Growth Solutions",
@@ -63,7 +108,7 @@ export default function SchemaMarkupGenerator() {
     inLanguage: "en-US"
   });
 
-  // 2. ORGANIZATION & KNOWLEDGE GRAPH STATE
+  // 2. ORGANIZATION DATA
   const [orgData, setOrgData] = useState({
     subType: "Corporation",
     name: "Abdullah SEO & Growth Agency",
@@ -87,12 +132,11 @@ export default function SchemaMarkupGenerator() {
       "https://linkedin.com/in/abdullah-saleh-seo",
       "https://youtube.com/@abdullahbdseo",
       "https://github.com/abdullahbdseo",
-      "https://www.wikidata.org/wiki/Q000000",
-      "https://crunchbase.com/organization/abdullah-seo"
+      "https://www.wikidata.org/wiki/Q000000"
     ]
   });
 
-  // 3. LOCAL BUSINESS & NAP STATE
+  // 3. LOCAL BUSINESS DATA
   const [localBizData, setLocalBizData] = useState({
     subType: "ProfessionalService",
     name: "Abdullah Saleh - Premier SEO Clinic & Office",
@@ -115,7 +159,7 @@ export default function SchemaMarkupGenerator() {
     reviewCount: "48"
   });
 
-  // 4. PERSON / AUTHOR E-E-A-T STATE
+  // 4. PERSON DATA
   const [personData, setPersonData] = useState({
     name: "Abdullah Saleh",
     jobTitle: "Lead SEO Strategist & AI Search Architect",
@@ -125,7 +169,7 @@ export default function SchemaMarkupGenerator() {
     email: "abdullahbd.seo@gmail.com",
     telephone: "+880 1670-769816",
     alumniOf: "University of Dhaka",
-    knowsAbout: "Technical SEO, Core Web Vitals, GEO (Generative Engine Optimization), AI Search Citations, Entity Schema, Python SEO Automation, Knowledge Graphs",
+    knowsAbout: "Technical SEO, Core Web Vitals, GEO (Generative Engine Optimization), AI Search Citations, Entity Schema, Python SEO Automation",
     sameAs: [
       "https://linkedin.com/in/abdullah-saleh-seo",
       "https://twitter.com/abdullahsaleh_seo",
@@ -134,7 +178,7 @@ export default function SchemaMarkupGenerator() {
     ]
   });
 
-  // 5. CORE SERVICES STATE
+  // 5. SERVICES DATA
   const [servicesList, setServicesList] = useState([
     {
       name: "Generative Engine Optimization (GEO) & AI Citation Service",
@@ -156,7 +200,7 @@ export default function SchemaMarkupGenerator() {
     }
   ]);
 
-  // 6. PRODUCTS & PRICING PACKAGES STATE
+  // 6. PRODUCTS DATA
   const [productsList, setProductsList] = useState([
     {
       name: "Complete Technical SEO & AI Audit Report Package",
@@ -172,7 +216,7 @@ export default function SchemaMarkupGenerator() {
     }
   ]);
 
-  // 7. FAQS STATE
+  // 7. FAQS DATA
   const [faqList, setFaqList] = useState([
     {
       question: "What is Generative Engine Optimization (GEO) and how does it differ from traditional SEO?",
@@ -188,14 +232,14 @@ export default function SchemaMarkupGenerator() {
     }
   ]);
 
-  // 8. BREADCRUMBS STATE
+  // 8. BREADCRUMBS DATA
   const [breadcrumbsList, setBreadcrumbsList] = useState([
     { position: 1, name: "Home", url: "https://abdullahbdseo.vercel.app" },
     { position: 2, name: "Services", url: "https://abdullahbdseo.vercel.app/services" },
     { position: 3, name: "Technical SEO Service", url: "https://abdullahbdseo.vercel.app/services/technical-seo-service-in-bangladesh" }
   ]);
 
-  // 9. CURRENT WEBPAGE & ARTICLE STATE
+  // 9. WEBPAGE & ARTICLE DATA
   const [webpageData, setWebpageData] = useState({
     title: "Best SEO Expert in Bangladesh & Organic Business Growth Specialist",
     url: "https://abdullahbdseo.vercel.app",
@@ -209,9 +253,7 @@ export default function SchemaMarkupGenerator() {
   });
 
   // Dynamic Item Handlers
-  const addService = () => {
-    setServicesList([...servicesList, { name: "", serviceType: "", description: "", url: "", price: "", currency: "USD", areaServed: "Global" }]);
-  };
+  const addService = () => setServicesList([...servicesList, { name: "", serviceType: "", description: "", url: "", price: "", currency: "USD", areaServed: "Global" }]);
   const updateService = (idx, field, val) => {
     const updated = [...servicesList];
     updated[idx][field] = val;
@@ -219,9 +261,7 @@ export default function SchemaMarkupGenerator() {
   };
   const removeService = (idx) => setServicesList(servicesList.filter((_, i) => i !== idx));
 
-  const addProduct = () => {
-    setProductsList([...productsList, { name: "", image: "", description: "", sku: "", gtin13: "", price: "", currency: "USD", availability: "InStock", ratingValue: "5.0", reviewCount: "10" }]);
-  };
+  const addProduct = () => setProductsList([...productsList, { name: "", image: "", description: "", sku: "", gtin13: "", price: "", currency: "USD", availability: "InStock", ratingValue: "5.0", reviewCount: "10" }]);
   const updateProduct = (idx, field, val) => {
     const updated = [...productsList];
     updated[idx][field] = val;
@@ -237,9 +277,7 @@ export default function SchemaMarkupGenerator() {
   };
   const removeFaq = (idx) => setFaqList(faqList.filter((_, i) => i !== idx));
 
-  const addBreadcrumb = () => {
-    setBreadcrumbsList([...breadcrumbsList, { position: breadcrumbsList.length + 1, name: "", url: "https://" }]);
-  };
+  const addBreadcrumb = () => setBreadcrumbsList([...breadcrumbsList, { position: breadcrumbsList.length + 1, name: "", url: "https://" }]);
   const updateBreadcrumb = (idx, field, val) => {
     const updated = [...breadcrumbsList];
     updated[idx][field] = val;
@@ -249,7 +287,7 @@ export default function SchemaMarkupGenerator() {
     setBreadcrumbsList(breadcrumbsList.filter((_, i) => i !== idx).map((b, i) => ({ ...b, position: i + 1 })));
   };
 
-  // Helper to clean empty/undefined keys recursively
+  // Helper to clean empty keys
   function cleanObject(obj) {
     if (Array.isArray(obj)) {
       const cleaned = obj.map(cleanObject).filter(v => v !== undefined && v !== null && v !== "");
@@ -269,23 +307,6 @@ export default function SchemaMarkupGenerator() {
     }
     return obj;
   }
-
-  // Preset Configurations
-  const applyPreset = (presetName) => {
-    if (presetName === "agency") {
-      setEnabledModules({ website: true, organization: true, localBusiness: true, person: true, services: true, products: false, faqs: true, breadcrumbs: true, webpage: true });
-      showToast("Loaded 'Full Agency / Professional Business' Preset!");
-    } else if (presetName === "ecommerce") {
-      setEnabledModules({ website: true, organization: true, localBusiness: false, person: false, services: false, products: true, faqs: true, breadcrumbs: true, webpage: true });
-      showToast("Loaded 'E-Commerce Online Store' Preset!");
-    } else if (presetName === "localClinic") {
-      setEnabledModules({ website: true, organization: true, localBusiness: true, person: true, services: true, products: false, faqs: true, breadcrumbs: true, webpage: true });
-      showToast("Loaded 'Local Clinic / Practice' Preset!");
-    } else if (presetName === "editorial") {
-      setEnabledModules({ website: true, organization: true, localBusiness: false, person: true, services: false, products: false, faqs: true, breadcrumbs: true, webpage: true });
-      showToast("Loaded 'News & Blog Publisher' Preset!");
-    }
-  };
 
   // GENERATE COMPLETE UNIFIED MASTER @GRAPH JSON-LD
   const completeUnifiedSchema = useMemo(() => {
@@ -449,7 +470,7 @@ export default function SchemaMarkupGenerator() {
       });
     }
 
-    // 6. Products Catalog & Offers
+    // 6. Products Catalog
     if (enabledModules.products && productsList.length > 0) {
       productsList.filter(p => p.name && p.name.trim() !== "").forEach((prod, idx) => {
         graph.push({
@@ -479,7 +500,7 @@ export default function SchemaMarkupGenerator() {
       });
     }
 
-    // 7. BreadcrumbList
+    // 7. Breadcrumbs
     if (enabledModules.breadcrumbs && breadcrumbsList.length > 0) {
       graph.push({
         "@type": "BreadcrumbList",
@@ -493,7 +514,7 @@ export default function SchemaMarkupGenerator() {
       });
     }
 
-    // 8. FAQPage Entity
+    // 8. FAQPage
     if (enabledModules.faqs && faqList.length > 0) {
       const validFaqs = faqList.filter(f => f.question && f.question.trim() !== "");
       if (validFaqs.length > 0) {
@@ -513,9 +534,8 @@ export default function SchemaMarkupGenerator() {
       }
     }
 
-    // 9. WebPage & Article / BlogPosting Entity
+    // 9. WebPage & Article
     if (enabledModules.webpage && webpageData.url) {
-      // Primary image object
       if (webpageData.primaryImage) {
         graph.push({
           "@type": "ImageObject",
@@ -525,7 +545,6 @@ export default function SchemaMarkupGenerator() {
         });
       }
 
-      // WebPage Node
       graph.push({
         "@type": "WebPage",
         "@id": webpageId,
@@ -538,7 +557,6 @@ export default function SchemaMarkupGenerator() {
         "breadcrumb": enabledModules.breadcrumbs ? { "@id": breadcrumbId } : undefined
       });
 
-      // If marked as Article / Blog post
       if (webpageData.isArticle) {
         graph.push({
           "@type": "BlogPosting",
@@ -578,14 +596,14 @@ export default function SchemaMarkupGenerator() {
   const copyScript = () => {
     navigator.clipboard.writeText(scriptTagOutput);
     setCopiedScript(true);
-    showToast("Master <script> code copied! Paste in HTML <head>");
+    showToast("Master <script> snippet copied!");
     setTimeout(() => setCopiedScript(false), 2000);
   };
 
   const copyRawJson = () => {
     navigator.clipboard.writeText(jsonString);
     setCopiedRaw(true);
-    showToast("Master JSON-LD copied to clipboard!");
+    showToast("Master JSON-LD object copied!");
     setTimeout(() => setCopiedRaw(false), 2000);
   };
 
@@ -607,239 +625,209 @@ export default function SchemaMarkupGenerator() {
       
       {/* Toast Notification */}
       {toastMessage && (
-        <div style={{ position: "fixed", bottom: "24px", right: "24px", background: "#0f172a", color: "#ffffff", padding: "12px 20px", borderRadius: "4px", fontSize: "0.85rem", fontWeight: 700, boxShadow: "0 10px 25px rgba(0,0,0,0.25)", zIndex: 9999, display: "flex", alignItems: "center", gap: "10px", border: "1px solid #334155" }}>
+        <div style={{ position: "fixed", bottom: "24px", right: "24px", background: "#0f172a", color: "#ffffff", padding: "10px 18px", borderRadius: "4px", fontSize: "0.82rem", fontWeight: 700, boxShadow: "0 10px 25px rgba(0,0,0,0.25)", zIndex: 9999, display: "flex", alignItems: "center", gap: "8px", border: "1px solid #334155" }}>
           <i className="fa-solid fa-circle-check text-success"></i> {toastMessage}
         </div>
       )}
 
       {/* HEADER HERO */}
-      <section className="page-header-section" style={{ paddingBottom: "22px", background: "#ffffff", borderBottom: "1px solid #e2e8f0" }}>
+      <section className="page-header-section" style={{ paddingBottom: "20px", background: "#ffffff", borderBottom: "1px solid #e2e8f0" }}>
         <div className="container text-center">
           <Link href="/tools" className="tool-back-link">
             <i className="fa-solid fa-arrow-left"></i> All SEO Tools
           </Link>
           <div className="sub-badge mt-2" style={{ borderRadius: "4px" }}>
-            <i className="fa-solid fa-diagram-project"></i> Complete Website Knowledge Graph Builder
+            <i className="fa-solid fa-diagram-project"></i> Complete Website Master Schema Generator
           </div>
           <h1 className="page-title">All-in-One Master Schema Markup Generator</h1>
           <p className="page-subtitle max-w-3xl mx-auto">
-            Build ONE complete, interconnected JSON-LD schema for your entire website. Connect WebSite, Organization, Author, Local Business, Services, Products, FAQs, and Breadcrumbs in a single master <code>@graph</code> snippet.
+            Select the options you need from the left sidebar — all inputs stay on one unified page, and generate <strong>one complete connected master schema</strong> for your entire website.
           </p>
-
-          {/* Quick Presets Bar */}
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "10px", flexWrap: "wrap", marginTop: "18px" }}>
-            <span style={{ fontSize: "0.82rem", fontWeight: 800, color: "#0f172a" }}>
-              <i className="fa-solid fa-wand-magic-sparkles text-primary"></i> 1-Click Complete Presets:
-            </span>
-            <button type="button" onClick={() => applyPreset("agency")} style={{ padding: "6px 12px", background: "#eff6ff", color: "#2563eb", border: "1px solid #bfdbfe", borderRadius: "4px", fontSize: "0.78rem", fontWeight: 700, cursor: "pointer" }}>
-              🏢 SEO &amp; Digital Agency
-            </button>
-            <button type="button" onClick={() => applyPreset("ecommerce")} style={{ padding: "6px 12px", background: "#ecfdf5", color: "#059669", border: "1px solid #a7f3d0", borderRadius: "4px", fontSize: "0.78rem", fontWeight: 700, cursor: "pointer" }}>
-              🛒 E-Commerce Store
-            </button>
-            <button type="button" onClick={() => applyPreset("localClinic")} style={{ padding: "6px 12px", background: "#fffbeb", color: "#b45309", border: "1px solid #fde68a", borderRadius: "4px", fontSize: "0.78rem", fontWeight: 700, cursor: "pointer" }}>
-              📍 Local Practice / Clinic
-            </button>
-            <button type="button" onClick={() => applyPreset("editorial")} style={{ padding: "6px 12px", background: "#faf5ff", color: "#7e22ce", border: "1px solid #e9d5ff", borderRadius: "4px", fontSize: "0.78rem", fontWeight: 700, cursor: "pointer" }}>
-              📰 Blog &amp; Publisher
-            </button>
-          </div>
         </div>
       </section>
 
-      {/* MAIN WORKSPACE */}
+      {/* WORKSPACE */}
       <section className="section-padding" style={{ paddingTop: "20px" }}>
-        <div className="container" style={{ maxWidth: "1420px" }}>
+        <div className="container" style={{ maxWidth: "1440px" }}>
 
-          {/* QUICK MODULE JUMP BAR */}
-          <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "12px 16px", marginBottom: "20px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
-              <span style={{ fontSize: "0.82rem", fontWeight: 800, color: "#0f172a", marginRight: "4px" }}>
-                <i className="fa-solid fa-layer-group text-primary"></i> Master Schema Modules ({activeModuleCount}/9 Active):
-              </span>
-              {[
-                { key: "website", label: "WebSite", icon: "fa-globe" },
-                { key: "organization", label: "Organization", icon: "fa-building" },
-                { key: "localBusiness", label: "Local Business", icon: "fa-shop" },
-                { key: "person", label: "Author / Person", icon: "fa-user-tie" },
-                { key: "services", label: "Services", icon: "fa-briefcase" },
-                { key: "products", label: "Products", icon: "fa-box-open" },
-                { key: "faqs", label: "FAQ Page", icon: "fa-circle-question" },
-                { key: "breadcrumbs", label: "Breadcrumbs", icon: "fa-folder-tree" },
-                { key: "webpage", label: "Page & Article", icon: "fa-newspaper" }
-              ].map((m) => (
-                <button
-                  key={m.key}
-                  type="button"
-                  onClick={() => scrollToSection(m.key)}
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "5px",
-                    padding: "4px 8px",
-                    borderRadius: "4px",
-                    fontSize: "0.75rem",
-                    fontWeight: 700,
-                    border: enabledModules[m.key] ? "1px solid #2563eb" : "1px solid #cbd5e1",
-                    background: enabledModules[m.key] ? "#eff6ff" : "#f1f5f9",
-                    color: enabledModules[m.key] ? "#2563eb" : "#64748b",
-                    cursor: "pointer"
-                  }}
-                >
-                  <i className={`fa-solid ${m.icon}`} style={{ fontSize: "0.7rem" }}></i>
-                  {m.label}
-                  <span style={{ fontSize: "0.65rem", padding: "1px 4px", borderRadius: "4px", background: enabledModules[m.key] ? "#2563eb" : "#94a3b8", color: "#ffffff" }}>
-                    {enabledModules[m.key] ? "ON" : "OFF"}
-                  </span>
+          {/* THREE-COLUMN WORKSPACE: LEFT SELECTOR, MIDDLE FORMS, RIGHT COMPACT OUTPUT */}
+          <div style={{ display: "grid", gridTemplateColumns: "240px 1.25fr 0.85fr", gap: "18px", alignItems: "start" }}>
+
+            {/* 1. LEFT SIDEBAR: INTERACTIVE SCHEMA SELECTOR WITH CHECKBOXES */}
+            <div style={{ position: "sticky", top: "18px", background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "14px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
+                <strong style={{ fontSize: "0.82rem", color: "#0f172a" }}>
+                  <i className="fa-solid fa-list-check text-primary"></i> Include Modules ({activeModuleCount}/9):
+                </strong>
+              </div>
+
+              {/* Select / Deselect All */}
+              <div style={{ display: "flex", gap: "6px", marginBottom: "12px" }}>
+                <button type="button" onClick={selectAll} style={{ flex: 1, padding: "4px 0", fontSize: "0.7rem", fontWeight: 700, background: "#eff6ff", color: "#2563eb", border: "1px solid #bfdbfe", borderRadius: "4px", cursor: "pointer" }}>
+                  Select All
                 </button>
-              ))}
+                <button type="button" onClick={deselectAll} style={{ flex: 1, padding: "4px 0", fontSize: "0.7rem", fontWeight: 700, background: "#f8fafc", color: "#64748b", border: "1px solid #e2e8f0", borderRadius: "4px", cursor: "pointer" }}>
+                  Core Only
+                </button>
+              </div>
+
+              {/* Module List with Checkboxes and Click to Jump */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+                {SCHEMA_MODULES.map((item) => (
+                  <div
+                    key={item.id}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      padding: "6px 8px",
+                      borderRadius: "4px",
+                      background: enabledModules[item.id] ? (activeSection === item.id ? "#eff6ff" : "#f8fafc") : "transparent",
+                      border: activeSection === item.id ? "1px solid #2563eb" : (enabledModules[item.id] ? "1px solid #e2e8f0" : "1px solid transparent"),
+                      cursor: "pointer",
+                      transition: "all 0.15s ease"
+                    }}
+                  >
+                    <label style={{ display: "flex", alignItems: "center", gap: "7px", cursor: "pointer", flexGrow: 1 }}>
+                      <input
+                        type="checkbox"
+                        checked={enabledModules[item.id]}
+                        onChange={() => toggleModule(item.id)}
+                        style={{ cursor: "pointer", width: "14px", height: "14px" }}
+                      />
+                      <span
+                        onClick={() => scrollToSection(item.id)}
+                        style={{ fontSize: "0.78rem", fontWeight: enabledModules[item.id] ? 700 : 500, color: enabledModules[item.id] ? "#0f172a" : "#94a3b8" }}
+                      >
+                        <i className={`fa-solid ${item.icon}`} style={{ width: "14px", marginRight: "4px", color: enabledModules[item.id] ? "#2563eb" : "#cbd5e1" }}></i>
+                        {item.label}
+                      </span>
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => scrollToSection(item.id)}
+                      title="Jump to form section"
+                      style={{ background: "none", border: "none", color: "#94a3b8", cursor: "pointer", padding: "2px 4px", fontSize: "0.7rem" }}
+                    >
+                      <i className="fa-solid fa-arrow-right"></i>
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            <div style={{ display: "flex", gap: "8px" }}>
-              <button
-                type="button"
-                onClick={copyRawJson}
-                className="btn btn-outline btn-sm"
-                style={{ borderRadius: "4px", fontSize: "0.76rem", padding: "5px 10px" }}
-              >
-                <i className="fa-solid fa-brackets-curly"></i> Copy JSON
-              </button>
-              <button
-                type="button"
-                onClick={copyScript}
-                className="btn btn-primary btn-sm"
-                style={{ borderRadius: "4px", fontSize: "0.76rem", padding: "5px 12px" }}
-              >
-                {copiedScript ? <><i className="fa-solid fa-check"></i> Copied!</> : <><i className="fa-solid fa-copy"></i> Copy Full &lt;script&gt;</>}
-              </button>
-            </div>
-          </div>
+            {/* 2. MIDDLE COLUMN: ALL FORM SECTIONS TOGETHER ON ONE PAGE */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
 
-          {/* 2-COLUMN MASTER WORKBENCH */}
-          <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "24px", alignItems: "start" }}>
-
-            {/* LEFT COLUMN: ALL-IN-ONE SINGLE PAGE FORM SECTIONS */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-
-              {/* 1. WEBSITE & SEARCHACTION SECTION */}
-              <div ref={sectionRefs.website} style={{ background: "#ffffff", border: enabledModules.website ? "1px solid #2563eb" : "1px solid #e2e8f0", borderRadius: "4px", padding: "20px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px", paddingBottom: "10px", borderBottom: "1px solid #f1f5f9" }}>
+              {/* 1. WEBSITE SECTION */}
+              <div ref={sectionRefs.website} style={{ background: "#ffffff", border: enabledModules.website ? "1px solid #2563eb" : "1px solid #e2e8f0", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <div style={{ width: "28px", height: "28px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem" }}>
+                    <div style={{ width: "24px", height: "24px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.78rem" }}>
                       <i className="fa-solid fa-globe"></i>
                     </div>
-                    <div>
-                      <h3 style={{ fontSize: "1rem", fontWeight: 800, color: "#0f172a", margin: 0 }}>
-                        1. WebSite &amp; Sitelinks Searchbox
-                      </h3>
-                      <span style={{ fontSize: "0.72rem", color: "#64748b" }}>Root domain entity with Google SearchAction template</span>
-                    </div>
+                    <strong style={{ fontSize: "0.92rem", color: "#0f172a" }}>1. WebSite &amp; Sitelinks Searchbox</strong>
                   </div>
-                  <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.78rem", fontWeight: 700, color: enabledModules.website ? "#2563eb" : "#64748b", cursor: "pointer" }}>
+                  <label style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "0.75rem", fontWeight: 700, color: enabledModules.website ? "#2563eb" : "#64748b", cursor: "pointer" }}>
                     <input type="checkbox" checked={enabledModules.website} onChange={() => toggleModule("website")} />
-                    Include in Master Graph
+                    Include in Schema
                   </label>
                 </div>
 
                 {enabledModules.website && (
-                  <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
                       <div className="form-group">
-                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.78rem" }}>WebSite Name *</label>
+                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>WebSite Name *</label>
                         <input
                           type="text"
                           className="form-input"
                           value={websiteData.name}
                           onChange={(e) => setWebsiteData({ ...websiteData, name: e.target.value })}
-                          style={{ borderRadius: "4px" }}
+                          style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
                         />
                       </div>
                       <div className="form-group">
-                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.78rem" }}>Canonical Root URL *</label>
+                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Canonical Root URL *</label>
                         <input
                           type="url"
                           className="form-input"
                           value={websiteData.url}
                           onChange={(e) => setWebsiteData({ ...websiteData, url: e.target.value })}
-                          style={{ borderRadius: "4px" }}
+                          style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
                         />
                       </div>
                     </div>
                     <div className="form-group">
-                      <label className="form-label" style={{ fontWeight: 700, fontSize: "0.78rem" }}>Sitelinks Search Query URL Template</label>
+                      <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Sitelinks Search Query Template</label>
                       <input
                         type="text"
                         className="form-input"
                         value={websiteData.searchTarget}
                         onChange={(e) => setWebsiteData({ ...websiteData, searchTarget: e.target.value })}
-                        style={{ borderRadius: "4px" }}
+                        style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
                       />
                     </div>
                   </div>
                 )}
               </div>
 
-              {/* 2. ORGANIZATION & KNOWLEDGE GRAPH SECTION */}
-              <div ref={sectionRefs.organization} style={{ background: "#ffffff", border: enabledModules.organization ? "1px solid #2563eb" : "1px solid #e2e8f0", borderRadius: "4px", padding: "20px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px", paddingBottom: "10px", borderBottom: "1px solid #f1f5f9" }}>
+              {/* 2. ORGANIZATION SECTION */}
+              <div ref={sectionRefs.organization} style={{ background: "#ffffff", border: enabledModules.organization ? "1px solid #2563eb" : "1px solid #e2e8f0", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <div style={{ width: "28px", height: "28px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem" }}>
+                    <div style={{ width: "24px", height: "24px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.78rem" }}>
                       <i className="fa-solid fa-building"></i>
                     </div>
-                    <div>
-                      <h3 style={{ fontSize: "1rem", fontWeight: 800, color: "#0f172a", margin: 0 }}>
-                        2. Organization &amp; Brand Knowledge Graph
-                      </h3>
-                      <span style={{ fontSize: "0.72rem", color: "#64748b" }}>Entity name, logo, contact points, and Wikidata / Social sameAs</span>
-                    </div>
+                    <strong style={{ fontSize: "0.92rem", color: "#0f172a" }}>2. Organization &amp; Brand Entity</strong>
                   </div>
-                  <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.78rem", fontWeight: 700, color: enabledModules.organization ? "#2563eb" : "#64748b", cursor: "pointer" }}>
+                  <label style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "0.75rem", fontWeight: 700, color: enabledModules.organization ? "#2563eb" : "#64748b", cursor: "pointer" }}>
                     <input type="checkbox" checked={enabledModules.organization} onChange={() => toggleModule("organization")} />
-                    Include in Master Graph
+                    Include in Schema
                   </label>
                 </div>
 
                 {enabledModules.organization && (
-                  <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                    <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "10px" }}>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                    <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "8px" }}>
                       <div className="form-group">
-                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.78rem" }}>Organization Brand Name *</label>
+                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Brand Display Name *</label>
                         <input
                           type="text"
                           className="form-input"
                           value={orgData.name}
                           onChange={(e) => setOrgData({ ...orgData, name: e.target.value })}
-                          style={{ borderRadius: "4px" }}
+                          style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
                         />
                       </div>
                       <div className="form-group">
-                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.78rem" }}>Brand Logo Image URL *</label>
+                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Brand Logo Image URL *</label>
                         <input
                           type="url"
                           className="form-input"
                           value={orgData.logo}
                           onChange={(e) => setOrgData({ ...orgData, logo: e.target.value })}
-                          style={{ borderRadius: "4px" }}
+                          style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
                         />
                       </div>
                     </div>
 
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px" }}>
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "6px" }}>
                       <input
                         type="text"
                         placeholder="Founder Name"
                         className="form-input"
                         value={orgData.founderName}
                         onChange={(e) => setOrgData({ ...orgData, founderName: e.target.value })}
-                        style={{ borderRadius: "4px", fontSize: "0.8rem" }}
+                        style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "6px 8px" }}
                       />
                       <input
                         type="text"
-                        placeholder="Phone Number"
+                        placeholder="Support Phone"
                         className="form-input"
                         value={orgData.phone}
                         onChange={(e) => setOrgData({ ...orgData, phone: e.target.value })}
-                        style={{ borderRadius: "4px", fontSize: "0.8rem" }}
+                        style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "6px 8px" }}
                       />
                       <input
                         type="email"
@@ -847,67 +835,58 @@ export default function SchemaMarkupGenerator() {
                         className="form-input"
                         value={orgData.email}
                         onChange={(e) => setOrgData({ ...orgData, email: e.target.value })}
-                        style={{ borderRadius: "4px", fontSize: "0.8rem" }}
+                        style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "6px 8px" }}
                       />
                     </div>
 
                     <div className="form-group">
-                      <label className="form-label" style={{ fontWeight: 700, fontSize: "0.78rem" }}>Wikidata &amp; Social Authority Profiles (sameAs)</label>
+                      <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Wikidata &amp; Social Authority Profiles (sameAs)</label>
                       <textarea
                         rows={2}
                         className="form-textarea"
                         value={orgData.sameAs.join("\n")}
                         onChange={(e) => setOrgData({ ...orgData, sameAs: e.target.value.split("\n") })}
-                        style={{ borderRadius: "4px", fontSize: "0.78rem", fontFamily: "monospace" }}
+                        style={{ borderRadius: "4px", fontSize: "0.75rem", fontFamily: "monospace" }}
                       />
                     </div>
                   </div>
                 )}
               </div>
 
-              {/* 3. LOCAL BUSINESS & PHYSICAL NAP */}
-              <div ref={sectionRefs.localBusiness} style={{ background: "#ffffff", border: enabledModules.localBusiness ? "1px solid #2563eb" : "1px solid #e2e8f0", borderRadius: "4px", padding: "20px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px", paddingBottom: "10px", borderBottom: "1px solid #f1f5f9" }}>
+              {/* 3. LOCAL BUSINESS SECTION */}
+              <div ref={sectionRefs.localBusiness} style={{ background: "#ffffff", border: enabledModules.localBusiness ? "1px solid #2563eb" : "1px solid #e2e8f0", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <div style={{ width: "28px", height: "28px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem" }}>
+                    <div style={{ width: "24px", height: "24px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.78rem" }}>
                       <i className="fa-solid fa-shop"></i>
                     </div>
-                    <div>
-                      <h3 style={{ fontSize: "1rem", fontWeight: 800, color: "#0f172a", margin: 0 }}>
-                        3. Local Business &amp; Physical Office NAP
-                      </h3>
-                      <span style={{ fontSize: "0.72rem", color: "#64748b" }}>Geo coordinates, street address, opening hours, review stars</span>
-                    </div>
+                    <strong style={{ fontSize: "0.92rem", color: "#0f172a" }}>3. Local Business &amp; Office NAP</strong>
                   </div>
-                  <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.78rem", fontWeight: 700, color: enabledModules.localBusiness ? "#2563eb" : "#64748b", cursor: "pointer" }}>
+                  <label style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "0.75rem", fontWeight: 700, color: enabledModules.localBusiness ? "#2563eb" : "#64748b", cursor: "pointer" }}>
                     <input type="checkbox" checked={enabledModules.localBusiness} onChange={() => toggleModule("localBusiness")} />
-                    Include in Master Graph
+                    Include in Schema
                   </label>
                 </div>
 
                 {enabledModules.localBusiness && (
-                  <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
-                      <div className="form-group">
-                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.78rem" }}>Business Display Name *</label>
-                        <input
-                          type="text"
-                          className="form-input"
-                          value={localBizData.name}
-                          onChange={(e) => setLocalBizData({ ...localBizData, name: e.target.value })}
-                          style={{ borderRadius: "4px" }}
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.78rem" }}>Phone Number *</label>
-                        <input
-                          type="text"
-                          className="form-input"
-                          value={localBizData.phone}
-                          onChange={(e) => setLocalBizData({ ...localBizData, phone: e.target.value })}
-                          style={{ borderRadius: "4px" }}
-                        />
-                      </div>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+                      <input
+                        type="text"
+                        placeholder="Business Name *"
+                        className="form-input"
+                        value={localBizData.name}
+                        onChange={(e) => setLocalBizData({ ...localBizData, name: e.target.value })}
+                        style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
+                      />
+                      <input
+                        type="text"
+                        placeholder="Phone *"
+                        className="form-input"
+                        value={localBizData.phone}
+                        onChange={(e) => setLocalBizData({ ...localBizData, phone: e.target.value })}
+                        style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
+                      />
                     </div>
 
                     <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", gap: "6px" }}>
@@ -917,7 +896,7 @@ export default function SchemaMarkupGenerator() {
                         className="form-input"
                         value={localBizData.street}
                         onChange={(e) => setLocalBizData({ ...localBizData, street: e.target.value })}
-                        style={{ borderRadius: "4px", fontSize: "0.8rem" }}
+                        style={{ borderRadius: "4px", fontSize: "0.78rem" }}
                       />
                       <input
                         type="text"
@@ -925,7 +904,7 @@ export default function SchemaMarkupGenerator() {
                         className="form-input"
                         value={localBizData.city}
                         onChange={(e) => setLocalBizData({ ...localBizData, city: e.target.value })}
-                        style={{ borderRadius: "4px", fontSize: "0.8rem" }}
+                        style={{ borderRadius: "4px", fontSize: "0.78rem" }}
                       />
                       <input
                         type="text"
@@ -933,34 +912,34 @@ export default function SchemaMarkupGenerator() {
                         className="form-input"
                         value={localBizData.postalCode}
                         onChange={(e) => setLocalBizData({ ...localBizData, postalCode: e.target.value })}
-                        style={{ borderRadius: "4px", fontSize: "0.8rem" }}
+                        style={{ borderRadius: "4px", fontSize: "0.78rem" }}
                       />
                       <input
                         type="text"
-                        placeholder="Country (BD)"
+                        placeholder="Country"
                         className="form-input"
                         value={localBizData.country}
                         onChange={(e) => setLocalBizData({ ...localBizData, country: e.target.value })}
-                        style={{ borderRadius: "4px", fontSize: "0.8rem" }}
+                        style={{ borderRadius: "4px", fontSize: "0.78rem" }}
                       />
                     </div>
 
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px" }}>
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "6px" }}>
                       <input
                         type="text"
-                        placeholder="Latitude (23.7937)"
+                        placeholder="Lat (23.7937)"
                         className="form-input"
                         value={localBizData.latitude}
                         onChange={(e) => setLocalBizData({ ...localBizData, latitude: e.target.value })}
-                        style={{ borderRadius: "4px", fontSize: "0.8rem" }}
+                        style={{ borderRadius: "4px", fontSize: "0.78rem" }}
                       />
                       <input
                         type="text"
-                        placeholder="Longitude (90.4043)"
+                        placeholder="Long (90.4043)"
                         className="form-input"
                         value={localBizData.longitude}
                         onChange={(e) => setLocalBizData({ ...localBizData, longitude: e.target.value })}
-                        style={{ borderRadius: "4px", fontSize: "0.8rem" }}
+                        style={{ borderRadius: "4px", fontSize: "0.78rem" }}
                       />
                       <input
                         type="text"
@@ -968,132 +947,101 @@ export default function SchemaMarkupGenerator() {
                         className="form-input"
                         value={`${localBizData.ratingValue} (${localBizData.reviewCount} reviews)`}
                         readOnly
-                        style={{ borderRadius: "4px", fontSize: "0.8rem", background: "#f8fafc" }}
+                        style={{ borderRadius: "4px", fontSize: "0.78rem", background: "#f8fafc" }}
                       />
                     </div>
                   </div>
                 )}
               </div>
 
-              {/* 4. PERSON / FOUNDER E-E-A-T SECTION */}
-              <div ref={sectionRefs.person} style={{ background: "#ffffff", border: enabledModules.person ? "1px solid #2563eb" : "1px solid #e2e8f0", borderRadius: "4px", padding: "20px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px", paddingBottom: "10px", borderBottom: "1px solid #f1f5f9" }}>
+              {/* 4. PERSON SECTION */}
+              <div ref={sectionRefs.person} style={{ background: "#ffffff", border: enabledModules.person ? "1px solid #2563eb" : "1px solid #e2e8f0", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <div style={{ width: "28px", height: "28px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem" }}>
+                    <div style={{ width: "24px", height: "24px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.78rem" }}>
                       <i className="fa-solid fa-user-tie"></i>
                     </div>
-                    <div>
-                      <h3 style={{ fontSize: "1rem", fontWeight: 800, color: "#0f172a", margin: 0 }}>
-                        4. Founder &amp; Author E-E-A-T Profile
-                      </h3>
-                      <span style={{ fontSize: "0.72rem", color: "#64748b" }}>Expert credentials, job role, alumni, and knowsAbout skills</span>
-                    </div>
+                    <strong style={{ fontSize: "0.92rem", color: "#0f172a" }}>4. Founder / Author E-E-A-T</strong>
                   </div>
-                  <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.78rem", fontWeight: 700, color: enabledModules.person ? "#2563eb" : "#64748b", cursor: "pointer" }}>
+                  <label style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "0.75rem", fontWeight: 700, color: enabledModules.person ? "#2563eb" : "#64748b", cursor: "pointer" }}>
                     <input type="checkbox" checked={enabledModules.person} onChange={() => toggleModule("person")} />
-                    Include in Master Graph
+                    Include in Schema
                   </label>
                 </div>
 
                 {enabledModules.person && (
-                  <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
-                      <div className="form-group">
-                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.78rem" }}>Author Full Name *</label>
-                        <input
-                          type="text"
-                          className="form-input"
-                          value={personData.name}
-                          onChange={(e) => setPersonData({ ...personData, name: e.target.value })}
-                          style={{ borderRadius: "4px" }}
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.78rem" }}>Job Title / Professional Role</label>
-                        <input
-                          type="text"
-                          className="form-input"
-                          value={personData.jobTitle}
-                          onChange={(e) => setPersonData({ ...personData, jobTitle: e.target.value })}
-                          style={{ borderRadius: "4px" }}
-                        />
-                      </div>
-                    </div>
-
-                    <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "10px" }}>
-                      <div className="form-group">
-                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.78rem" }}>Bio / Portfolio URL</label>
-                        <input
-                          type="url"
-                          className="form-input"
-                          value={personData.url}
-                          onChange={(e) => setPersonData({ ...personData, url: e.target.value })}
-                          style={{ borderRadius: "4px" }}
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.78rem" }}>Photo URL</label>
-                        <input
-                          type="url"
-                          className="form-input"
-                          value={personData.image}
-                          onChange={(e) => setPersonData({ ...personData, image: e.target.value })}
-                          style={{ borderRadius: "4px" }}
-                        />
-                      </div>
-                    </div>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+                    <input
+                      type="text"
+                      placeholder="Author Full Name *"
+                      className="form-input"
+                      value={personData.name}
+                      onChange={(e) => setPersonData({ ...personData, name: e.target.value })}
+                      style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
+                    />
+                    <input
+                      type="text"
+                      placeholder="Job Title"
+                      className="form-input"
+                      value={personData.jobTitle}
+                      onChange={(e) => setPersonData({ ...personData, jobTitle: e.target.value })}
+                      style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
+                    />
+                    <input
+                      type="url"
+                      placeholder="Bio Page URL"
+                      className="form-input"
+                      value={personData.url}
+                      onChange={(e) => setPersonData({ ...personData, url: e.target.value })}
+                      style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
+                    />
+                    <input
+                      type="url"
+                      placeholder="Headshot Photo URL"
+                      className="form-input"
+                      value={personData.image}
+                      onChange={(e) => setPersonData({ ...personData, image: e.target.value })}
+                      style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
+                    />
                   </div>
                 )}
               </div>
 
-              {/* 5. SERVICES CATALOG SECTION */}
-              <div ref={sectionRefs.services} style={{ background: "#ffffff", border: enabledModules.services ? "1px solid #2563eb" : "1px solid #e2e8f0", borderRadius: "4px", padding: "20px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px", paddingBottom: "10px", borderBottom: "1px solid #f1f5f9" }}>
+              {/* 5. SERVICES SECTION */}
+              <div ref={sectionRefs.services} style={{ background: "#ffffff", border: enabledModules.services ? "1px solid #2563eb" : "1px solid #e2e8f0", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <div style={{ width: "28px", height: "28px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem" }}>
+                    <div style={{ width: "24px", height: "24px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.78rem" }}>
                       <i className="fa-solid fa-briefcase"></i>
                     </div>
-                    <div>
-                      <h3 style={{ fontSize: "1rem", fontWeight: 800, color: "#0f172a", margin: 0 }}>
-                        5. Core Services Catalog ({servicesList.length} Offerings)
-                      </h3>
-                      <span style={{ fontSize: "0.72rem", color: "#64748b" }}>Direct service packages linked to your Organization provider node</span>
-                    </div>
+                    <strong style={{ fontSize: "0.92rem", color: "#0f172a" }}>5. Services Catalog ({servicesList.length})</strong>
                   </div>
-                  <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.78rem", fontWeight: 700, color: enabledModules.services ? "#2563eb" : "#64748b", cursor: "pointer" }}>
+                  <label style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "0.75rem", fontWeight: 700, color: enabledModules.services ? "#2563eb" : "#64748b", cursor: "pointer" }}>
                     <input type="checkbox" checked={enabledModules.services} onChange={() => toggleModule("services")} />
-                    Include in Master Graph
+                    Include in Schema
                   </label>
                 </div>
 
                 {enabledModules.services && (
                   <div>
                     {servicesList.map((srv, idx) => (
-                      <div key={idx} style={{ padding: "12px", border: "1px solid #e2e8f0", borderRadius: "4px", background: "#f8fafc", marginBottom: "10px" }}>
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
-                          <strong style={{ fontSize: "0.8rem", color: "#0f172a" }}>Service #{idx + 1}</strong>
-                          {servicesList.length > 1 && (
-                            <button type="button" onClick={() => removeService(idx)} style={{ background: "none", border: "none", color: "#ef4444", fontSize: "0.75rem", cursor: "pointer" }}>
-                              <i className="fa-solid fa-trash"></i>
-                            </button>
-                          )}
-                        </div>
-                        <div style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr 1fr", gap: "8px", marginBottom: "6px" }}>
+                      <div key={idx} style={{ padding: "10px", border: "1px solid #e2e8f0", borderRadius: "4px", background: "#f8fafc", marginBottom: "8px" }}>
+                        <div style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr 1fr 24px", gap: "6px", alignItems: "center" }}>
                           <input
                             type="text"
                             placeholder="Service Name *"
                             className="form-input"
                             value={srv.name}
                             onChange={(e) => updateService(idx, "name", e.target.value)}
-                            style={{ borderRadius: "4px", fontSize: "0.8rem" }}
+                            style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "5px 7px" }}
                           />
                           <input
                             type="text"
-                            placeholder="Service Category"
+                            placeholder="Category"
                             className="form-input"
                             value={srv.serviceType}
                             onChange={(e) => updateService(idx, "serviceType", e.target.value)}
-                            style={{ borderRadius: "4px", fontSize: "0.8rem" }}
+                            style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "5px 7px" }}
                           />
                           <input
                             type="text"
@@ -1101,66 +1049,50 @@ export default function SchemaMarkupGenerator() {
                             className="form-input"
                             value={srv.price}
                             onChange={(e) => updateService(idx, "price", e.target.value)}
-                            style={{ borderRadius: "4px", fontSize: "0.8rem" }}
+                            style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "5px 7px" }}
                           />
+                          {servicesList.length > 1 && (
+                            <button type="button" onClick={() => removeService(idx)} style={{ background: "none", border: "none", color: "#ef4444", cursor: "pointer", padding: 0 }}>
+                              <i className="fa-solid fa-trash" style={{ fontSize: "0.7rem" }}></i>
+                            </button>
+                          )}
                         </div>
-                        <input
-                          type="url"
-                          placeholder="Service Landing Page URL"
-                          className="form-input"
-                          value={srv.url}
-                          onChange={(e) => updateService(idx, "url", e.target.value)}
-                          style={{ borderRadius: "4px", fontSize: "0.78rem" }}
-                        />
                       </div>
                     ))}
-                    <button type="button" onClick={addService} className="btn btn-outline btn-sm" style={{ width: "100%", borderRadius: "4px" }}>
-                      <i className="fa-solid fa-plus"></i> Add Another Service Offering
+                    <button type="button" onClick={addService} className="btn btn-outline btn-sm" style={{ width: "100%", borderRadius: "4px", fontSize: "0.75rem", padding: "5px" }}>
+                      <i className="fa-solid fa-plus"></i> Add Service
                     </button>
                   </div>
                 )}
               </div>
 
-              {/* 6. PRODUCTS & PRICING PACKAGES SECTION */}
-              <div ref={sectionRefs.products} style={{ background: "#ffffff", border: enabledModules.products ? "1px solid #2563eb" : "1px solid #e2e8f0", borderRadius: "4px", padding: "20px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px", paddingBottom: "10px", borderBottom: "1px solid #f1f5f9" }}>
+              {/* 6. PRODUCTS SECTION */}
+              <div ref={sectionRefs.products} style={{ background: "#ffffff", border: enabledModules.products ? "1px solid #2563eb" : "1px solid #e2e8f0", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <div style={{ width: "28px", height: "28px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem" }}>
+                    <div style={{ width: "24px", height: "24px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.78rem" }}>
                       <i className="fa-solid fa-box-open"></i>
                     </div>
-                    <div>
-                      <h3 style={{ fontSize: "1rem", fontWeight: 800, color: "#0f172a", margin: 0 }}>
-                        6. Products &amp; Pricing Packages
-                      </h3>
-                      <span style={{ fontSize: "0.72rem", color: "#64748b" }}>Google Shopping eligible offers, SKUs, and aggregate reviews</span>
-                    </div>
+                    <strong style={{ fontSize: "0.92rem", color: "#0f172a" }}>6. Products &amp; Offers</strong>
                   </div>
-                  <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.78rem", fontWeight: 700, color: enabledModules.products ? "#2563eb" : "#64748b", cursor: "pointer" }}>
+                  <label style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "0.75rem", fontWeight: 700, color: enabledModules.products ? "#2563eb" : "#64748b", cursor: "pointer" }}>
                     <input type="checkbox" checked={enabledModules.products} onChange={() => toggleModule("products")} />
-                    Include in Master Graph
+                    Include in Schema
                   </label>
                 </div>
 
                 {enabledModules.products && (
                   <div>
                     {productsList.map((prod, idx) => (
-                      <div key={idx} style={{ padding: "12px", border: "1px solid #e2e8f0", borderRadius: "4px", background: "#f8fafc", marginBottom: "10px" }}>
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
-                          <strong style={{ fontSize: "0.8rem", color: "#0f172a" }}>Product #{idx + 1}</strong>
-                          {productsList.length > 1 && (
-                            <button type="button" onClick={() => removeProduct(idx)} style={{ background: "none", border: "none", color: "#ef4444", fontSize: "0.75rem", cursor: "pointer" }}>
-                              <i className="fa-solid fa-trash"></i>
-                            </button>
-                          )}
-                        </div>
-                        <div style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr 1fr", gap: "8px", marginBottom: "6px" }}>
+                      <div key={idx} style={{ padding: "10px", border: "1px solid #e2e8f0", borderRadius: "4px", background: "#f8fafc", marginBottom: "8px" }}>
+                        <div style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr 1fr", gap: "6px" }}>
                           <input
                             type="text"
                             placeholder="Product Title *"
                             className="form-input"
                             value={prod.name}
                             onChange={(e) => updateProduct(idx, "name", e.target.value)}
-                            style={{ borderRadius: "4px", fontSize: "0.8rem" }}
+                            style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "5px 7px" }}
                           />
                           <input
                             type="text"
@@ -1168,28 +1100,20 @@ export default function SchemaMarkupGenerator() {
                             className="form-input"
                             value={prod.price}
                             onChange={(e) => updateProduct(idx, "price", e.target.value)}
-                            style={{ borderRadius: "4px", fontSize: "0.8rem" }}
+                            style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "5px 7px" }}
                           />
                           <input
                             type="text"
-                            placeholder="SKU"
+                            placeholder="SKU Code"
                             className="form-input"
                             value={prod.sku}
                             onChange={(e) => updateProduct(idx, "sku", e.target.value)}
-                            style={{ borderRadius: "4px", fontSize: "0.8rem" }}
+                            style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "5px 7px" }}
                           />
                         </div>
-                        <input
-                          type="url"
-                          placeholder="Product Image URL"
-                          className="form-input"
-                          value={prod.image}
-                          onChange={(e) => updateProduct(idx, "image", e.target.value)}
-                          style={{ borderRadius: "4px", fontSize: "0.78rem" }}
-                        />
                       </div>
                     ))}
-                    <button type="button" onClick={addProduct} className="btn btn-outline btn-sm" style={{ width: "100%", borderRadius: "4px" }}>
+                    <button type="button" onClick={addProduct} className="btn btn-outline btn-sm" style={{ width: "100%", borderRadius: "4px", fontSize: "0.75rem", padding: "5px" }}>
                       <i className="fa-solid fa-plus"></i> Add Product
                     </button>
                   </div>
@@ -1197,94 +1121,84 @@ export default function SchemaMarkupGenerator() {
               </div>
 
               {/* 7. FAQS SECTION */}
-              <div ref={sectionRefs.faqs} style={{ background: "#ffffff", border: enabledModules.faqs ? "1px solid #2563eb" : "1px solid #e2e8f0", borderRadius: "4px", padding: "20px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px", paddingBottom: "10px", borderBottom: "1px solid #f1f5f9" }}>
+              <div ref={sectionRefs.faqs} style={{ background: "#ffffff", border: enabledModules.faqs ? "1px solid #2563eb" : "1px solid #e2e8f0", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <div style={{ width: "28px", height: "28px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem" }}>
+                    <div style={{ width: "24px", height: "24px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.78rem" }}>
                       <i className="fa-solid fa-circle-question"></i>
                     </div>
-                    <div>
-                      <h3 style={{ fontSize: "1rem", fontWeight: 800, color: "#0f172a", margin: 0 }}>
-                        7. Frequently Asked Questions (FAQPage)
-                      </h3>
-                      <span style={{ fontSize: "0.72rem", color: "#64748b" }}>Expandable dropdown accordions in Google SERP results</span>
-                    </div>
+                    <strong style={{ fontSize: "0.92rem", color: "#0f172a" }}>7. Frequently Asked Questions</strong>
                   </div>
-                  <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.78rem", fontWeight: 700, color: enabledModules.faqs ? "#2563eb" : "#64748b", cursor: "pointer" }}>
+                  <label style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "0.75rem", fontWeight: 700, color: enabledModules.faqs ? "#2563eb" : "#64748b", cursor: "pointer" }}>
                     <input type="checkbox" checked={enabledModules.faqs} onChange={() => toggleModule("faqs")} />
-                    Include in Master Graph
+                    Include in Schema
                   </label>
                 </div>
 
                 {enabledModules.faqs && (
                   <div>
                     {faqList.map((faq, idx) => (
-                      <div key={idx} style={{ padding: "10px", border: "1px solid #e2e8f0", borderRadius: "4px", background: "#f8fafc", marginBottom: "8px" }}>
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
-                          <strong style={{ fontSize: "0.78rem", color: "#0f172a" }}>Q#{idx + 1}</strong>
+                      <div key={idx} style={{ padding: "8px", border: "1px solid #e2e8f0", borderRadius: "4px", background: "#f8fafc", marginBottom: "6px" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "3px" }}>
+                          <strong style={{ fontSize: "0.75rem" }}>Q#{idx + 1}</strong>
                           {faqList.length > 1 && (
-                            <button type="button" onClick={() => removeFaq(idx)} style={{ background: "none", border: "none", color: "#ef4444", fontSize: "0.72rem", cursor: "pointer" }}>
+                            <button type="button" onClick={() => removeFaq(idx)} style={{ background: "none", border: "none", color: "#ef4444", fontSize: "0.7rem", cursor: "pointer" }}>
                               <i className="fa-solid fa-trash"></i>
                             </button>
                           )}
                         </div>
                         <input
                           type="text"
-                          placeholder="Question *"
+                          placeholder="Question"
                           className="form-input mb-1"
                           value={faq.question}
                           onChange={(e) => updateFaq(idx, "question", e.target.value)}
-                          style={{ borderRadius: "4px", fontSize: "0.78rem" }}
+                          style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "4px 6px" }}
                         />
                         <textarea
                           rows={2}
-                          placeholder="Answer text *"
+                          placeholder="Answer"
                           className="form-textarea"
                           value={faq.answer}
                           onChange={(e) => updateFaq(idx, "answer", e.target.value)}
-                          style={{ borderRadius: "4px", fontSize: "0.78rem" }}
+                          style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "4px 6px" }}
                         />
                       </div>
                     ))}
-                    <button type="button" onClick={addFaq} className="btn btn-outline btn-sm" style={{ width: "100%", borderRadius: "4px" }}>
-                      <i className="fa-solid fa-plus"></i> Add Question &amp; Answer
+                    <button type="button" onClick={addFaq} className="btn btn-outline btn-sm" style={{ width: "100%", borderRadius: "4px", fontSize: "0.75rem", padding: "5px" }}>
+                      <i className="fa-solid fa-plus"></i> Add Question
                     </button>
                   </div>
                 )}
               </div>
 
               {/* 8. BREADCRUMBS SECTION */}
-              <div ref={sectionRefs.breadcrumbs} style={{ background: "#ffffff", border: enabledModules.breadcrumbs ? "1px solid #2563eb" : "1px solid #e2e8f0", borderRadius: "4px", padding: "20px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px", paddingBottom: "10px", borderBottom: "1px solid #f1f5f9" }}>
+              <div ref={sectionRefs.breadcrumbs} style={{ background: "#ffffff", border: enabledModules.breadcrumbs ? "1px solid #2563eb" : "1px solid #e2e8f0", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <div style={{ width: "28px", height: "28px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem" }}>
+                    <div style={{ width: "24px", height: "24px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.78rem" }}>
                       <i className="fa-solid fa-folder-tree"></i>
                     </div>
-                    <div>
-                      <h3 style={{ fontSize: "1rem", fontWeight: 800, color: "#0f172a", margin: 0 }}>
-                        8. Breadcrumb Navigation Trail
-                      </h3>
-                      <span style={{ fontSize: "0.72rem", color: "#64748b" }}>Hierarchical navigation levels replacing ugly URLs on SERPs</span>
-                    </div>
+                    <strong style={{ fontSize: "0.92rem", color: "#0f172a" }}>8. Breadcrumbs Hierarchy</strong>
                   </div>
-                  <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.78rem", fontWeight: 700, color: enabledModules.breadcrumbs ? "#2563eb" : "#64748b", cursor: "pointer" }}>
+                  <label style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "0.75rem", fontWeight: 700, color: enabledModules.breadcrumbs ? "#2563eb" : "#64748b", cursor: "pointer" }}>
                     <input type="checkbox" checked={enabledModules.breadcrumbs} onChange={() => toggleModule("breadcrumbs")} />
-                    Include in Master Graph
+                    Include in Schema
                   </label>
                 </div>
 
                 {enabledModules.breadcrumbs && (
                   <div>
                     {breadcrumbsList.map((crumb, idx) => (
-                      <div key={idx} style={{ display: "grid", gridTemplateColumns: "40px 1.5fr 2fr 30px", gap: "6px", alignItems: "center", marginBottom: "6px" }}>
-                        <span style={{ fontSize: "0.75rem", fontWeight: 800, textAlign: "center", background: "#f1f5f9", padding: "6px 0", borderRadius: "4px" }}>#{crumb.position}</span>
+                      <div key={idx} style={{ display: "grid", gridTemplateColumns: "35px 1.5fr 2fr 24px", gap: "5px", alignItems: "center", marginBottom: "5px" }}>
+                        <span style={{ fontSize: "0.72rem", fontWeight: 800, textAlign: "center", background: "#f1f5f9", padding: "5px 0", borderRadius: "4px" }}>#{crumb.position}</span>
                         <input
                           type="text"
-                          placeholder="Tier Name"
+                          placeholder="Name"
                           className="form-input"
                           value={crumb.name}
                           onChange={(e) => updateBreadcrumb(idx, "name", e.target.value)}
-                          style={{ borderRadius: "4px", fontSize: "0.78rem" }}
+                          style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "4px 6px" }}
                         />
                         <input
                           type="url"
@@ -1292,70 +1206,63 @@ export default function SchemaMarkupGenerator() {
                           className="form-input"
                           value={crumb.url}
                           onChange={(e) => updateBreadcrumb(idx, "url", e.target.value)}
-                          style={{ borderRadius: "4px", fontSize: "0.78rem" }}
+                          style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "4px 6px" }}
                         />
                         {breadcrumbsList.length > 1 && (
-                          <button type="button" onClick={() => removeBreadcrumb(idx)} style={{ background: "#fee2e2", border: "1px solid #fca5a5", color: "#b91c1c", borderRadius: "4px", height: "30px", cursor: "pointer" }}>
+                          <button type="button" onClick={() => removeBreadcrumb(idx)} style={{ background: "none", border: "none", color: "#b91c1c", cursor: "pointer" }}>
                             <i className="fa-solid fa-trash" style={{ fontSize: "0.65rem" }}></i>
                           </button>
                         )}
                       </div>
                     ))}
-                    <button type="button" onClick={addBreadcrumb} className="btn btn-outline btn-sm" style={{ width: "100%", borderRadius: "4px", marginTop: "4px" }}>
-                      <i className="fa-solid fa-plus"></i> Add Breadcrumb Level
+                    <button type="button" onClick={addBreadcrumb} className="btn btn-outline btn-sm" style={{ width: "100%", borderRadius: "4px", fontSize: "0.75rem", padding: "5px", marginTop: "3px" }}>
+                      <i className="fa-solid fa-plus"></i> Add Level
                     </button>
                   </div>
                 )}
               </div>
 
-              {/* 9. WEBPAGE & BLOGPOSTING SECTION */}
-              <div ref={sectionRefs.webpage} style={{ background: "#ffffff", border: enabledModules.webpage ? "1px solid #2563eb" : "1px solid #e2e8f0", borderRadius: "4px", padding: "20px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px", paddingBottom: "10px", borderBottom: "1px solid #f1f5f9" }}>
+              {/* 9. WEBPAGE & ARTICLE SECTION */}
+              <div ref={sectionRefs.webpage} style={{ background: "#ffffff", border: enabledModules.webpage ? "1px solid #2563eb" : "1px solid #e2e8f0", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <div style={{ width: "28px", height: "28px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem" }}>
+                    <div style={{ width: "24px", height: "24px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.78rem" }}>
                       <i className="fa-solid fa-newspaper"></i>
                     </div>
-                    <div>
-                      <h3 style={{ fontSize: "1rem", fontWeight: 800, color: "#0f172a", margin: 0 }}>
-                        9. Current WebPage &amp; BlogPosting Content
-                      </h3>
-                      <span style={{ fontSize: "0.72rem", color: "#64748b" }}>Article headline, featured image, and author linking</span>
-                    </div>
+                    <strong style={{ fontSize: "0.92rem", color: "#0f172a" }}>9. WebPage &amp; Article Content</strong>
                   </div>
-                  <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.78rem", fontWeight: 700, color: enabledModules.webpage ? "#2563eb" : "#64748b", cursor: "pointer" }}>
+                  <label style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "0.75rem", fontWeight: 700, color: enabledModules.webpage ? "#2563eb" : "#64748b", cursor: "pointer" }}>
                     <input type="checkbox" checked={enabledModules.webpage} onChange={() => toggleModule("webpage")} />
-                    Include in Master Graph
+                    Include in Schema
                   </label>
                 </div>
 
                 {enabledModules.webpage && (
-                  <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                    <div className="form-group">
-                      <label className="form-label" style={{ fontWeight: 700, fontSize: "0.78rem" }}>Page Title / Headline *</label>
-                      <input
-                        type="text"
-                        className="form-input"
-                        value={webpageData.title}
-                        onChange={(e) => setWebpageData({ ...webpageData, title: e.target.value })}
-                        style={{ borderRadius: "4px" }}
-                      />
-                    </div>
-                    <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "8px" }}>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                    <input
+                      type="text"
+                      placeholder="Page Headline / Title *"
+                      className="form-input"
+                      value={webpageData.title}
+                      onChange={(e) => setWebpageData({ ...webpageData, title: e.target.value })}
+                      style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
+                    />
+                    <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "6px" }}>
                       <input
                         type="url"
-                        placeholder="Page Canonical URL *"
+                        placeholder="Canonical Page URL *"
                         className="form-input"
                         value={webpageData.url}
                         onChange={(e) => setWebpageData({ ...webpageData, url: e.target.value })}
-                        style={{ borderRadius: "4px", fontSize: "0.8rem" }}
+                        style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "5px 7px" }}
                       />
                       <input
                         type="url"
-                        placeholder="Primary Featured Image URL"
+                        placeholder="Featured Image URL"
                         className="form-input"
                         value={webpageData.primaryImage}
                         onChange={(e) => setWebpageData({ ...webpageData, primaryImage: e.target.value })}
-                        style={{ borderRadius: "4px", fontSize: "0.8rem" }}
+                        style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "5px 7px" }}
                       />
                     </div>
                   </div>
@@ -1364,15 +1271,15 @@ export default function SchemaMarkupGenerator() {
 
             </div>
 
-            {/* RIGHT COLUMN: LIVE WORKBENCH (OUTPUT CODE & PREVIEWS) */}
-            <div style={{ position: "sticky", top: "20px", display: "flex", flexDirection: "column", gap: "14px" }}>
+            {/* 3. RIGHT COLUMN: COMPACT LIVE CODE OUTPUT & SERP PREVIEW */}
+            <div style={{ position: "sticky", top: "18px", display: "flex", flexDirection: "column", gap: "10px" }}>
 
               {/* View Switcher Tabs */}
-              <div style={{ display: "flex", gap: "4px", background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "4px" }}>
+              <div style={{ display: "flex", gap: "3px", background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "3px" }}>
                 {[
                   { id: "code", label: "Master JSON-LD", icon: "fa-code" },
                   { id: "serp_preview", label: "SERP Preview", icon: "fa-eye" },
-                  { id: "graph_tree", label: "Entity Graph", icon: "fa-diagram-project" }
+                  { id: "graph_tree", label: "Entity Tree", icon: "fa-diagram-project" }
                 ].map((t) => (
                   <button
                     key={t.id}
@@ -1380,9 +1287,9 @@ export default function SchemaMarkupGenerator() {
                     onClick={() => setActiveTab(t.id)}
                     style={{
                       flex: 1,
-                      padding: "7px 10px",
+                      padding: "5px 6px",
                       borderRadius: "4px",
-                      fontSize: "0.78rem",
+                      fontSize: "0.75rem",
                       fontWeight: 700,
                       border: "none",
                       background: activeTab === t.id ? "#2563eb" : "transparent",
@@ -1395,130 +1302,108 @@ export default function SchemaMarkupGenerator() {
                 ))}
               </div>
 
-              {/* TAB 1: MASTER JSON-LD CODE OUTPUT */}
+              {/* COMPACT CODE OUTPUT BOX */}
               {activeTab === "code" && (
-                <div className="schema-output-box" style={{ borderRadius: "4px" }}>
-                  <div className="code-header" style={{ padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div className="schema-output-box" style={{ borderRadius: "4px", boxShadow: "0 2px 10px rgba(15,23,42,0.06)" }}>
+                  <div className="code-header" style={{ padding: "8px 12px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span className="code-title" style={{ fontSize: "0.75rem" }}>
+                      <i className="fa-solid fa-file-code text-primary"></i> Master @graph ({activeModuleCount} Nodes)
+                    </span>
                     <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                      <span className="code-title" style={{ fontSize: "0.8rem" }}>
-                        <i className="fa-solid fa-file-code text-primary"></i> Master @graph Array ({activeModuleCount} Nodes)
-                      </span>
+                      <label style={{ fontSize: "0.7rem", color: "#94a3b8", display: "flex", alignItems: "center", gap: "3px", cursor: "pointer" }}>
+                        <input type="checkbox" checked={isMinified} onChange={(e) => setIsMinified(e.target.checked)} /> Minify
+                      </label>
+                      <button
+                        type="button"
+                        onClick={copyRawJson}
+                        style={{ padding: "3px 6px", fontSize: "0.7rem", fontWeight: 700, background: "#334155", color: "#e2e8f0", border: "1px solid #475569", borderRadius: "4px", cursor: "pointer" }}
+                      >
+                        {copiedRaw ? "✓" : "Copy JSON"}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={copyScript}
+                        style={{ padding: "3px 8px", fontSize: "0.7rem", fontWeight: 700, background: "#2563eb", color: "#ffffff", border: "none", borderRadius: "4px", cursor: "pointer" }}
+                      >
+                        {copiedScript ? "✓ Copied!" : "Copy <script>"}
+                      </button>
                     </div>
-                    <label style={{ fontSize: "0.72rem", color: "#94a3b8", display: "flex", alignItems: "center", gap: "4px", cursor: "pointer" }}>
-                      <input type="checkbox" checked={isMinified} onChange={(e) => setIsMinified(e.target.checked)} /> Minify
-                    </label>
                   </div>
 
-                  <pre className="code-block" style={{ maxHeight: "540px", overflowY: "auto", margin: 0, padding: "14px" }}>
-                    <code style={{ fontSize: "0.78rem", lineHeight: 1.5 }}>{scriptTagOutput}</code>
+                  <pre className="code-block" style={{ maxHeight: "380px", overflowY: "auto", margin: 0, padding: "10px 12px" }}>
+                    <code style={{ fontSize: "0.75rem", lineHeight: 1.45 }}>{scriptTagOutput}</code>
                   </pre>
 
-                  <div style={{ padding: "10px 14px", background: "#1e293b", borderTop: "1px solid #334155", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "8px" }}>
-                    <span style={{ fontSize: "0.72rem", color: "#94a3b8" }}>
-                      Payload: ~{(scriptTagOutput.length / 1024).toFixed(2)} KB
+                  <div style={{ padding: "8px 12px", background: "#1e293b", borderTop: "1px solid #334155", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "6px" }}>
+                    <span style={{ fontSize: "0.7rem", color: "#94a3b8" }}>
+                      Size: ~{(scriptTagOutput.length / 1024).toFixed(2)} KB
                     </span>
-                    <div style={{ display: "flex", gap: "10px" }}>
-                      <a href="https://search.google.com/test/rich-results" target="_blank" rel="noopener noreferrer" style={{ fontSize: "0.75rem", color: "#60a5fa", fontWeight: 700 }}>
-                        Google Rich Results <i className="fa-solid fa-arrow-up-right-from-square" style={{ fontSize: "0.68rem" }}></i>
-                      </a>
-                      <a href="https://validator.schema.org" target="_blank" rel="noopener noreferrer" style={{ fontSize: "0.75rem", color: "#34d399", fontWeight: 700 }}>
-                        Schema.org <i className="fa-solid fa-arrow-up-right-from-square" style={{ fontSize: "0.68rem" }}></i>
+                    <div style={{ display: "flex", gap: "8px" }}>
+                      <button type="button" onClick={downloadJson} style={{ background: "none", border: "none", color: "#94a3b8", fontSize: "0.72rem", cursor: "pointer", padding: 0 }}>
+                        <i className="fa-solid fa-download"></i> Save .html
+                      </button>
+                      <a href="https://search.google.com/test/rich-results" target="_blank" rel="noopener noreferrer" style={{ fontSize: "0.72rem", color: "#60a5fa", fontWeight: 700 }}>
+                        Google Test <i className="fa-solid fa-arrow-up-right-from-square" style={{ fontSize: "0.62rem" }}></i>
                       </a>
                     </div>
                   </div>
                 </div>
               )}
 
-              {/* TAB 2: SERP PREVIEW */}
+              {/* SERP PREVIEW BOX */}
               {activeTab === "serp_preview" && (
-                <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
-                    <strong style={{ fontSize: "0.82rem", color: "#0f172a" }}>
-                      <i className="fa-brands fa-google text-primary"></i> Simulated Google Rich Result
-                    </strong>
+                <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "14px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px", paddingBottom: "6px", borderBottom: "1px solid #f1f5f9" }}>
+                    <strong style={{ fontSize: "0.78rem", color: "#0f172a" }}>Google SERP Simulation</strong>
                     <div style={{ display: "flex", gap: "3px" }}>
-                      <button type="button" onClick={() => setPreviewDevice("desktop")} style={{ padding: "3px 6px", borderRadius: "4px", fontSize: "0.72rem", background: previewDevice === "desktop" ? "#e2e8f0" : "transparent", border: "1px solid #cbd5e1", cursor: "pointer" }}><i className="fa-solid fa-desktop"></i></button>
-                      <button type="button" onClick={() => setPreviewDevice("mobile")} style={{ padding: "3px 6px", borderRadius: "4px", fontSize: "0.72rem", background: previewDevice === "mobile" ? "#e2e8f0" : "transparent", border: "1px solid #cbd5e1", cursor: "pointer" }}><i className="fa-solid fa-mobile-screen"></i></button>
+                      <button type="button" onClick={() => setPreviewDevice("desktop")} style={{ padding: "2px 5px", borderRadius: "4px", fontSize: "0.68rem", background: previewDevice === "desktop" ? "#e2e8f0" : "transparent", border: "1px solid #cbd5e1" }}><i className="fa-solid fa-desktop"></i></button>
+                      <button type="button" onClick={() => setPreviewDevice("mobile")} style={{ padding: "2px 5px", borderRadius: "4px", fontSize: "0.68rem", background: previewDevice === "mobile" ? "#e2e8f0" : "transparent", border: "1px solid #cbd5e1" }}><i className="fa-solid fa-mobile-screen"></i></button>
                     </div>
                   </div>
 
-                  <div style={{ maxWidth: previewDevice === "mobile" ? "320px" : "100%", margin: "0 auto", background: "#ffffff", padding: "12px", border: previewDevice === "mobile" ? "1px solid #cbd5e1" : "none", borderRadius: "4px" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.75rem", color: "#4d5156", marginBottom: "4px" }}>
-                      <span style={{ width: "16px", height: "16px", background: "#f1f3f4", borderRadius: "50%", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.6rem" }}>
-                        <i className="fa-solid fa-globe"></i>
-                      </span>
+                  <div style={{ padding: "8px", background: "#ffffff", border: previewDevice === "mobile" ? "1px solid #cbd5e1" : "none", borderRadius: "4px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "0.72rem", color: "#4d5156", marginBottom: "2px" }}>
+                      <span style={{ width: "14px", height: "14px", background: "#f1f3f4", borderRadius: "50%", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.55rem" }}><i className="fa-solid fa-globe"></i></span>
                       <span style={{ fontWeight: 600, color: "#202124" }}>{orgData.name || "abdullahbdseo.vercel.app"}</span>
-                      {enabledModules.breadcrumbs && (
-                        <>
-                          <span>›</span>
-                          <span>Services</span>
-                        </>
-                      )}
+                      {enabledModules.breadcrumbs && <><span>›</span><span>Services</span></>}
                     </div>
 
-                    <h3 style={{ fontSize: "1.1rem", fontWeight: 400, color: "#1a0dab", margin: "0 0 4px", lineHeight: 1.3 }}>
+                    <h4 style={{ fontSize: "0.95rem", fontWeight: 400, color: "#1a0dab", margin: "0 0 3px", lineHeight: 1.25 }}>
                       {webpageData.title || websiteData.name}
-                    </h3>
+                    </h4>
 
                     {enabledModules.localBusiness && (
-                      <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.75rem", color: "#70757a", margin: "4px 0" }}>
-                        <div style={{ color: "#e37400", display: "flex", gap: "2px" }}>
-                          <i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i>
-                        </div>
-                        <span style={{ fontWeight: 700, color: "#202124" }}>5.0</span>
+                      <div style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "0.7rem", color: "#70757a", margin: "2px 0" }}>
+                        <div style={{ color: "#e37400", display: "flex", gap: "1px" }}><i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i></div>
+                        <span style={{ fontWeight: 700, color: "#202124" }}>5.0 (48)</span>
                         <span>•</span>
-                        <span>48 client reviews</span>
-                        <span>•</span>
-                        <span style={{ color: "#188038", fontWeight: 700 }}>Open Now (09:00 - 18:00)</span>
+                        <span style={{ color: "#188038", fontWeight: 700 }}>Open</span>
                       </div>
                     )}
 
-                    <p style={{ fontSize: "0.82rem", color: "#4d5156", lineHeight: 1.45, margin: "4px 0 0" }}>
+                    <p style={{ fontSize: "0.75rem", color: "#4d5156", lineHeight: 1.4, margin: "3px 0 0" }}>
                       {webpageData.description || orgData.description}
                     </p>
-
-                    {enabledModules.faqs && faqList.length > 0 && (
-                      <div style={{ marginTop: "10px", borderTop: "1px solid #f1f3f4", paddingTop: "6px" }}>
-                        {faqList.slice(0, 3).map((f, i) => (
-                          <div key={i} style={{ padding: "4px 0", fontSize: "0.78rem", display: "flex", justifyContent: "space-between", color: "#202124" }}>
-                            <span>{f.question || "Frequently Asked Question"}</span>
-                            <i className="fa-solid fa-chevron-down" style={{ fontSize: "0.65rem", color: "#70757a" }}></i>
-                          </div>
-                        ))}
-                      </div>
-                    )}
                   </div>
                 </div>
               )}
 
-              {/* TAB 3: ENTITY GRAPH TREE */}
+              {/* ENTITY TREE BOX */}
               {activeTab === "graph_tree" && (
-                <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
-                  <strong style={{ fontSize: "0.85rem", color: "#0f172a", display: "block", marginBottom: "12px" }}>
-                    <i className="fa-solid fa-diagram-project text-primary"></i> Master Entity Relationship Graph
+                <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "14px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
+                  <strong style={{ fontSize: "0.78rem", color: "#0f172a", display: "block", marginBottom: "8px" }}>
+                    Connected Master Graph Nodes ({activeModuleCount} Active)
                   </strong>
-                  
-                  <div style={{ display: "flex", flexDirection: "column", gap: "8px", fontSize: "0.78rem" }}>
-                    <div style={{ padding: "8px 10px", background: "#eff6ff", border: "1px solid #bfdbfe", borderRadius: "4px", color: "#1e40af", fontWeight: 700 }}>
-                      🌐 WebSite Node: <code>/#website</code>
-                    </div>
-                    <div style={{ paddingLeft: "16px", borderLeft: "2px solid #cbd5e1", marginLeft: "10px", display: "flex", flexDirection: "column", gap: "6px" }}>
-                      <div style={{ padding: "6px 8px", background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px" }}>
-                        🏢 Publisher: <code>/#organization</code>
-                      </div>
-                      <div style={{ padding: "6px 8px", background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px" }}>
-                        👤 Founder / Author: <code>/#/schema/person/author</code>
-                      </div>
-                      <div style={{ padding: "6px 8px", background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px" }}>
-                        📍 Physical Office: <code>/#localbusiness</code>
-                      </div>
-                      <div style={{ padding: "6px 8px", background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px" }}>
-                        💼 Service &amp; Product Catalogs: <code>/#service-1</code>, <code>/#product-1</code>
-                      </div>
-                      <div style={{ padding: "6px 8px", background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px" }}>
-                        📄 WebPage &amp; FAQ Accordion: <code>/#webpage</code>, <code>/#faq</code>
-                      </div>
-                    </div>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "4px", fontSize: "0.72rem" }}>
+                    {enabledModules.website && <div style={{ padding: "4px 6px", background: "#eff6ff", borderRadius: "4px", color: "#1e40af" }}>🌐 <strong>WebSite:</strong> <code>/#website</code></div>}
+                    {enabledModules.organization && <div style={{ padding: "4px 6px", background: "#f8fafc", borderRadius: "4px" }}>🏢 <strong>Organization:</strong> <code>/#organization</code></div>}
+                    {enabledModules.person && <div style={{ padding: "4px 6px", background: "#f8fafc", borderRadius: "4px" }}>👤 <strong>Author / Founder:</strong> <code>/#/schema/person/author</code></div>}
+                    {enabledModules.localBusiness && <div style={{ padding: "4px 6px", background: "#f8fafc", borderRadius: "4px" }}>📍 <strong>Local Office:</strong> <code>/#localbusiness</code></div>}
+                    {enabledModules.services && <div style={{ padding: "4px 6px", background: "#f8fafc", borderRadius: "4px" }}>💼 <strong>Services:</strong> <code>/#service-1</code>, <code>/#service-2</code></div>}
+                    {enabledModules.products && <div style={{ padding: "4px 6px", background: "#f8fafc", borderRadius: "4px" }}>🛍️ <strong>Products:</strong> <code>/#product-1</code></div>}
+                    {enabledModules.faqs && <div style={{ padding: "4px 6px", background: "#f8fafc", borderRadius: "4px" }}>❓ <strong>FAQPage:</strong> <code>/#faq</code></div>}
+                    {enabledModules.breadcrumbs && <div style={{ padding: "4px 6px", background: "#f8fafc", borderRadius: "4px" }}>🧭 <strong>Breadcrumbs:</strong> <code>/#breadcrumb</code></div>}
+                    {enabledModules.webpage && <div style={{ padding: "4px 6px", background: "#f8fafc", borderRadius: "4px" }}>📄 <strong>WebPage:</strong> <code>/#webpage</code></div>}
                   </div>
                 </div>
               )}
@@ -1575,7 +1460,7 @@ export default function SchemaMarkupGenerator() {
               },
               {
                 q: "Can I selectively include or exclude certain modules from the complete schema?",
-                a: "Yes! Every module has an 'Include in Master Graph' toggle checkbox. If your site does not sell products or does not have physical local business hours, simply uncheck those modules and the generator will clean and adjust the master @graph code in real time."
+                a: "Yes! Every module has an 'Include in Master Graph' toggle checkbox on the left and on the section header. If your site does not sell products or does not have physical local business hours, simply uncheck those modules and the generator will clean and adjust the master @graph code in real time."
               },
               {
                 q: "Where should I paste the generated master schema code?",
