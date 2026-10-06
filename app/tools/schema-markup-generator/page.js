@@ -1,101 +1,34 @@
 "use client";
 
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo } from "react";
 import Link from "next/link";
 import ToolFaqAccordion from "@/components/ToolFaqAccordion";
 
-const SCHEMA_MODULES = [
-  { id: "website", label: "WebSite & Sitelinks", icon: "fa-globe", badge: "Core", desc: "Site entity & SearchAction template" },
-  { id: "organization", label: "Organization & Brand", icon: "fa-building", badge: "Knowledge Graph", desc: "Entity NAP, logo, sameAs Wikidata" },
-  { id: "localBusiness", label: "Local Business / NAP", icon: "fa-shop", badge: "Google Maps", desc: "Geo coordinates, hours, review stars" },
-  { id: "person", label: "Founder / E-E-A-T Author", icon: "fa-user-tie", badge: "Author Trust", desc: "Credentials, bio, knowsAbout skills" },
-  { id: "services", label: "Services Catalog", icon: "fa-briefcase", badge: "Service Graph", desc: "Service offerings and pricing" },
-  { id: "products", label: "Products & Offers", icon: "fa-box-open", badge: "Shopping", desc: "E-com items, SKUs, and stock" },
-  { id: "faqs", label: "FAQ Page Accordion", icon: "fa-circle-question", badge: "SERP Drops", desc: "Interactive expandable Q&A pairs" },
-  { id: "breadcrumbs", label: "Breadcrumbs Trail", icon: "fa-folder-tree", badge: "SERP Trail", desc: "Hierarchical site navigation levels" },
-  { id: "webpage", label: "WebPage & Article", icon: "fa-newspaper", badge: "Content", desc: "Page headline, image, article data" }
+const SCHEMA_TYPES = [
+  { id: "website", label: "WebSite & Sitelinks", icon: "fa-globe", badge: "Core", desc: "Site entity & SearchAction" },
+  { id: "organization", label: "Organization & Brand", icon: "fa-building", badge: "Knowledge Graph", desc: "Entity NAP, logo, sameAs" },
+  { id: "localBusiness", label: "Local Business / NAP", icon: "fa-shop", badge: "Google Maps", desc: "Geo coordinates, hours, reviews" },
+  { id: "person", label: "Founder / Author (E-E-A-T)", icon: "fa-user-tie", badge: "Author Trust", desc: "Credentials, bio, knowsAbout" },
+  { id: "services", label: "Services Catalog", icon: "fa-briefcase", badge: "Service Graph", desc: "Offerings, pricing & area" },
+  { id: "products", label: "Product & Offers", icon: "fa-box-open", badge: "Shopping", desc: "E-com items, SKUs, stock" },
+  { id: "faqs", label: "FAQ Page Accordion", icon: "fa-circle-question", badge: "Rich Snippet", desc: "Expandable Q&A pairs" },
+  { id: "breadcrumbs", label: "Breadcrumbs Trail", icon: "fa-folder-tree", badge: "SERP Trail", desc: "Navigation hierarchy levels" },
+  { id: "webpage", label: "Article / WebPage", icon: "fa-newspaper", badge: "Content", desc: "Headline, author, publisher" },
+  { id: "masterGraph", label: "All-in-One Master Graph", icon: "fa-diagram-project", badge: "Complete @graph", desc: "Full connected website schema" }
 ];
 
 export default function SchemaMarkupGenerator() {
-  const [activeTab, setActiveTab] = useState("code"); // 'code', 'serp_preview', 'graph_tree'
+  const [selectedType, setSelectedType] = useState("website");
+  const [activeOutputTab, setActiveOutputTab] = useState("code"); // 'code', 'serp_preview', 'graph_tree'
   const [copiedScript, setCopiedScript] = useState(false);
   const [copiedRaw, setCopiedRaw] = useState(false);
   const [isMinified, setIsMinified] = useState(false);
   const [previewDevice, setPreviewDevice] = useState("desktop");
   const [toastMessage, setToastMessage] = useState("");
-  const [activeSection, setActiveSection] = useState("website");
 
   const showToast = (msg) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(""), 2800);
-  };
-
-  // MODULE INCLUSION TOGGLES (Checking a module adds its data to the unified master schema)
-  const [enabledModules, setEnabledModules] = useState({
-    website: true,
-    organization: true,
-    localBusiness: true,
-    person: true,
-    services: true,
-    products: true,
-    faqs: true,
-    breadcrumbs: true,
-    webpage: true
-  });
-
-  const toggleModule = (id) => {
-    setEnabledModules((prev) => ({ ...prev, [id]: !prev[id] }));
-    setActiveSection(id);
-  };
-
-  const selectAll = () => {
-    setEnabledModules({
-      website: true,
-      organization: true,
-      localBusiness: true,
-      person: true,
-      services: true,
-      products: true,
-      faqs: true,
-      breadcrumbs: true,
-      webpage: true
-    });
-    showToast("Selected all schema sections!");
-  };
-
-  const deselectAll = () => {
-    setEnabledModules({
-      website: true,
-      organization: true,
-      localBusiness: false,
-      person: false,
-      services: false,
-      products: false,
-      faqs: false,
-      breadcrumbs: false,
-      webpage: false
-    });
-    showToast("Minimal Core selected!");
-  };
-
-  // Section Refs for smooth scrolling
-  const sectionRefs = {
-    website: useRef(null),
-    organization: useRef(null),
-    localBusiness: useRef(null),
-    person: useRef(null),
-    services: useRef(null),
-    products: useRef(null),
-    faqs: useRef(null),
-    breadcrumbs: useRef(null),
-    webpage: useRef(null)
-  };
-
-  const scrollToSection = (id) => {
-    setActiveSection(id);
-    if (sectionRefs[id]?.current) {
-      sectionRefs[id].current.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
   };
 
   // 1. WEBSITE DATA
@@ -119,141 +52,151 @@ export default function SchemaMarkupGenerator() {
     description: "Enterprise technical SEO consultancy, Generative Engine Optimization (GEO), and high-intent backlink strategies.",
     foundingDate: "2019-01-15",
     founderName: "Abdullah Saleh",
-    email: "abdullahbd.seo@gmail.com",
-    phone: "+880 1670-769816",
-    street: "Level 4, IT Valley, Silicon Tower",
+    phone: "+8801700000000",
+    email: "contact@abdullahbdseo.com",
+    street: "Level 4, House 12, Road 4, Sector 3, Uttara",
     city: "Dhaka",
     region: "Dhaka Division",
-    postalCode: "1212",
+    postalCode: "1230",
     country: "BD",
     sameAs: [
       "https://facebook.com/abdullahbdseo",
-      "https://twitter.com/abdullahsaleh_seo",
-      "https://linkedin.com/in/abdullah-saleh-seo",
+      "https://twitter.com/abdullahbdseo",
+      "https://linkedin.com/in/abdullahbdseo",
       "https://youtube.com/@abdullahbdseo",
       "https://github.com/abdullahbdseo",
-      "https://www.wikidata.org/wiki/Q000000"
+      "https://www.wikidata.org/wiki/Q00000000"
     ]
   });
 
   // 3. LOCAL BUSINESS DATA
   const [localBizData, setLocalBizData] = useState({
     subType: "ProfessionalService",
-    name: "Abdullah Saleh - Premier SEO Clinic & Office",
-    image: "https://abdullahbdseo.vercel.app/images/abdullah.jpg",
-    phone: "+880 1670-769816",
-    email: "abdullahbd.seo@gmail.com",
-    street: "Road 11, Block D, Banani",
+    name: "Abdullah Saleh - SEO Agency Dhaka",
+    url: "https://abdullahbdseo.vercel.app",
+    phone: "+8801700000000",
+    email: "contact@abdullahbdseo.com",
+    priceRange: "$$$",
+    image: "https://abdullahbdseo.vercel.app/images/office.jpg",
+    street: "Sector 3, Uttara",
     city: "Dhaka",
     region: "Dhaka",
-    postalCode: "1213",
+    postalCode: "1230",
     country: "BD",
-    latitude: "23.7937",
-    longitude: "90.4043",
-    hasMap: "https://maps.google.com/?q=23.7937,90.4043",
-    priceRange: "$$",
-    areaServed: "Bangladesh, United States, United Kingdom, Australia, Canada, UAE",
+    latitude: "23.8759",
+    longitude: "90.3795",
+    hasMap: "https://maps.google.com/?cid=1234567890",
     opensTime: "09:00",
     closesTime: "18:00",
-    ratingValue: "5.0",
-    reviewCount: "48"
+    ratingValue: "4.9",
+    reviewCount: "127",
+    areaServed: "Bangladesh, USA, UK, Canada, Australia, UAE"
   });
 
-  // 4. PERSON DATA
+  // 4. PERSON / AUTHOR DATA (E-E-A-T)
   const [personData, setPersonData] = useState({
     name: "Abdullah Saleh",
-    jobTitle: "Lead SEO Strategist & AI Search Architect",
-    url: "https://abdullahbdseo.vercel.app/about",
+    jobTitle: "Founder & Principal Technical SEO Consultant",
+    url: "https://abdullahbdseo.vercel.app",
     image: "https://abdullahbdseo.vercel.app/images/abdullah.jpg",
-    description: "Experienced Organic Business Growth Specialist and Technical SEO Expert helping global businesses dominate Google Search and Generative AI engines.",
-    email: "abdullahbd.seo@gmail.com",
-    telephone: "+880 1670-769816",
+    description: "Top-rated SEO consultant in Bangladesh specializing in Enterprise Technical SEO, GEO & AI Overviews Citations, and algorithmic penalty recoveries.",
+    email: "abdullah@abdullahbdseo.com",
+    telephone: "+8801700000000",
     alumniOf: "University of Dhaka",
-    knowsAbout: "Technical SEO, Core Web Vitals, GEO (Generative Engine Optimization), AI Search Citations, Entity Schema, Python SEO Automation",
+    knowsAbout: "Technical SEO, Generative Engine Optimization, Backlink Strategy, Schema Markup, Core Web Vitals",
     sameAs: [
-      "https://linkedin.com/in/abdullah-saleh-seo",
-      "https://twitter.com/abdullahsaleh_seo",
-      "https://github.com/abdullahbdseo",
-      "https://facebook.com/abdullahbdseo"
+      "https://linkedin.com/in/abdullahbdseo",
+      "https://twitter.com/abdullahbdseo",
+      "https://facebook.com/abdullahbdseo",
+      "https://github.com/abdullahbdseo"
     ]
   });
 
   // 5. SERVICES DATA
   const [servicesList, setServicesList] = useState([
     {
-      name: "Generative Engine Optimization (GEO) & AI Citation Service",
-      serviceType: "AI Search Optimization",
-      description: "Reverse-engineer AI search models and optimize brand entity authority to win prominent citations in Google AI Overviews, ChatGPT Search, and Perplexity AI.",
-      url: "https://abdullahbdseo.vercel.app/services/geo-service-in-bangladesh",
-      price: "750.00",
+      name: "Enterprise Technical SEO & Core Web Vitals Audit",
+      serviceType: "ProfessionalService",
+      description: "Complete 180+ point technical audit resolving indexation, crawl budget, render pipeline, and schema gaps.",
+      url: "https://abdullahbdseo.vercel.app/services/technical-seo-service-in-bangladesh",
+      price: "499",
       currency: "USD",
-      areaServed: "Global"
+      areaServed: "Worldwide"
     },
     {
-      name: "Enterprise Technical SEO & Core Web Vitals Audit",
-      serviceType: "Technical SEO Auditing",
-      description: "Comprehensive 150-point technical audit eliminating indexation barriers, JavaScript rendering blockers, and crawl budget bottlenecks.",
-      url: "https://abdullahbdseo.vercel.app/services/technical-seo-service-in-bangladesh",
-      price: "499.00",
+      name: "Generative Engine Optimization (GEO & AI Search)",
+      serviceType: "ConsultingService",
+      description: "Structured citation modeling and schema engineering for Google Gemini, SearchGPT, and Claude AI Overviews.",
+      url: "https://abdullahbdseo.vercel.app/services/geo-service-in-bangladesh",
+      price: "799",
       currency: "USD",
-      areaServed: "Global"
+      areaServed: "Worldwide"
+    },
+    {
+      name: "High DA Contextual Backlink Outreach",
+      serviceType: "MarketingService",
+      description: "Hand-curated, DR 70+ editorial backlinks on real niche authority publications with natural anchor distributions.",
+      url: "https://abdullahbdseo.vercel.app/services/backlink-service-in-bangladesh",
+      price: "350",
+      currency: "USD",
+      areaServed: "Worldwide"
     }
   ]);
 
   // 6. PRODUCTS DATA
   const [productsList, setProductsList] = useState([
     {
-      name: "Complete Technical SEO & AI Audit Report Package",
-      image: "https://abdullahbdseo.vercel.app/images/blog_chatgpt_search_opt.jpg",
-      description: "In-depth diagnostic audit delivered in 7 business days with prioritized developer task sheet and 1-on-1 strategy walkthrough call.",
-      sku: "SEO-AUDIT-2026",
-      gtin13: "8801234567890",
-      price: "499.00",
+      name: "Ultimate Technical SEO Checklist & Audit Template 2026",
+      image: "https://abdullahbdseo.vercel.app/images/products/seo-checklist.jpg",
+      description: "Interactive Notion & Google Sheets checklist covering crawl budgets, indexation traps, and GEO AI citation blueprints.",
+      sku: "SEO-CHK-2026",
+      gtin13: "9781234567897",
+      price: "49.00",
       currency: "USD",
       availability: "InStock",
-      ratingValue: "4.9",
-      reviewCount: "124"
+      ratingValue: "5.0",
+      reviewCount: "48"
     }
   ]);
 
   // 7. FAQS DATA
   const [faqList, setFaqList] = useState([
     {
-      question: "What is Generative Engine Optimization (GEO) and how does it differ from traditional SEO?",
-      answer: "GEO focuses on structuring content, entities, and schema markup so large language models like ChatGPT Search, Google AI Overviews, and Perplexity extract and cite your website as an authoritative source, whereas traditional SEO focuses primarily on blue link rankings."
+      question: "Why is JSON-LD schema markup essential for 2026 SEO & AI Search?",
+      answer: "JSON-LD schema gives search engine crawlers and LLM models (Google Gemini, SearchGPT, Claude) explicit semantic facts about your entity, author credentials, services, and content hierarchy without relying on ambiguous HTML scraping."
     },
     {
-      question: "How does JSON-LD schema markup help with AI Chatbot citations?",
-      answer: "JSON-LD schema provides explicit semantic entity facts (Organization, sameAs, Author, FAQ, Service) directly to AI search crawlers like OAI-SearchBot and Googlebot, dramatically reducing hallucination and increasing citation probability."
+      question: "How does this schema generator connect entities into one cohesive graph?",
+      answer: "It creates unique URI identifiers (@id nodes) for your WebSite, Organization, Author, Services, and Articles, linking them together in a single structured @graph array so search engines recognize them as one unified Knowledge Graph entity."
     },
     {
-      question: "Where should I paste the generated JSON-LD code?",
-      answer: "Paste the generated <script type=\"application/ld+json\"> code inside the <head> section of your HTML document, or inject it via Next.js Metadata API or Google Tag Manager."
+      question: "Where should I place the generated schema code in my website?",
+      answer: "Place the generated <script type='application/ld+json'> snippet inside the <head> section or right before the closing </body> tag of your HTML or in your Next.js/WordPress header template."
     }
   ]);
 
   // 8. BREADCRUMBS DATA
   const [breadcrumbsList, setBreadcrumbsList] = useState([
     { position: 1, name: "Home", url: "https://abdullahbdseo.vercel.app" },
-    { position: 2, name: "Services", url: "https://abdullahbdseo.vercel.app/services" },
-    { position: 3, name: "Technical SEO Service", url: "https://abdullahbdseo.vercel.app/services/technical-seo-service-in-bangladesh" }
+    { position: 2, name: "Free SEO Tools", url: "https://abdullahbdseo.vercel.app/tools" },
+    { position: 3, name: "JSON-LD Schema Markup Generator", url: "https://abdullahbdseo.vercel.app/tools/schema-markup-generator" }
   ]);
 
   // 9. WEBPAGE & ARTICLE DATA
   const [webpageData, setWebpageData] = useState({
-    title: "Best SEO Expert in Bangladesh & Organic Business Growth Specialist",
-    url: "https://abdullahbdseo.vercel.app",
-    description: "Top-rated SEO expert in Bangladesh with 6+ years experience. Drive organic traffic, #1 Google rankings, and sales with data-driven Technical & Local SEO.",
-    primaryImage: "https://abdullahbdseo.vercel.app/images/blog_chatgpt_search_opt.jpg",
-    datePublished: "2024-01-01",
-    dateModified: "2026-10-06",
+    title: "Complete JSON-LD Schema Markup Generator for Modern SEO & AI Search",
+    description: "Generate validated JSON-LD schema markup for WebSite, Local Business, Organization, Person, Services, Products, FAQs, and Articles in one click.",
+    url: "https://abdullahbdseo.vercel.app/tools/schema-markup-generator",
+    primaryImage: "https://abdullahbdseo.vercel.app/images/schema-generator-banner.jpg",
+    datePublished: "2026-01-10T08:00:00+06:00",
+    dateModified: "2026-10-06T12:00:00+06:00",
     isArticle: true,
     articleSection: "SEO & Growth",
     keywords: "SEO Expert Bangladesh, GEO Optimization, Technical SEO, AI SEO, Abdullah Saleh"
   });
 
   // Dynamic Item Handlers
-  const addService = () => setServicesList([...servicesList, { name: "", serviceType: "", description: "", url: "", price: "", currency: "USD", areaServed: "Global" }]);
+  const addService = () => setServicesList([...servicesList, { name: "", serviceType: "ProfessionalService", description: "", url: "", price: "", currency: "USD", areaServed: "Worldwide" }]);
   const updateService = (idx, field, val) => {
     const updated = [...servicesList];
     updated[idx][field] = val;
@@ -308,221 +251,230 @@ export default function SchemaMarkupGenerator() {
     return obj;
   }
 
-  // GENERATE COMPLETE UNIFIED MASTER @GRAPH JSON-LD
-  const completeUnifiedSchema = useMemo(() => {
-    const domain = websiteData.url.replace(/\/+$/, "");
+  // GENERATE SCHEMA OUTPUT BASED ON SELECTED TYPE
+  const generatedSchema = useMemo(() => {
+    const domain = (websiteData.url || "https://example.com").replace(/\/+$/, "");
     const orgId = `${domain}/#organization`;
     const websiteId = `${domain}/#website`;
     const authorId = `${domain}/#/schema/person/author`;
-    const webpageId = `${webpageData.url}/#webpage`;
-    const primaryImageId = `${webpageData.url}/#primaryimage`;
-    const breadcrumbId = `${webpageData.url}/#breadcrumb`;
+    const webpageId = `${webpageData.url || domain}/#webpage`;
+    const primaryImageId = `${webpageData.url || domain}/#primaryimage`;
+    const breadcrumbId = `${webpageData.url || domain}/#breadcrumb`;
 
-    const graph = [];
-
-    // 1. WebSite Entity
-    if (enabledModules.website && websiteData.url) {
-      graph.push({
-        "@type": "WebSite",
-        "@id": websiteId,
-        "url": domain,
-        "name": websiteData.name,
-        "alternateName": websiteData.alternateName || undefined,
-        "description": websiteData.description || undefined,
-        "inLanguage": websiteData.inLanguage || "en-US",
-        "publisher": enabledModules.organization ? { "@id": orgId } : undefined,
-        "potentialAction": websiteData.searchTarget ? [
-          {
-            "@type": "SearchAction",
-            "target": {
-              "@type": "EntryPoint",
-              "urlTemplate": websiteData.searchTarget
-            },
-            "query-input": "required name=search_term_string"
-          }
-        ] : undefined
-      });
-    }
-
-    // 2. Organization Entity
-    if (enabledModules.organization && orgData.name) {
-      graph.push({
-        "@type": orgData.subType || "Organization",
-        "@id": orgId,
-        "name": orgData.name,
-        "legalName": orgData.legalName || undefined,
-        "alternateName": orgData.alternateName || undefined,
-        "url": domain,
-        "logo": orgData.logo ? {
-          "@type": "ImageObject",
-          "@id": `${domain}/#logo`,
-          "url": orgData.logo,
-          "caption": orgData.name
-        } : undefined,
-        "image": orgData.logo ? { "@id": `${domain}/#logo` } : undefined,
-        "description": orgData.description || undefined,
-        "foundingDate": orgData.foundingDate || undefined,
-        "founder": (enabledModules.person && personData.name) ? { "@id": authorId } : (orgData.founderName ? { "@type": "Person", "name": orgData.founderName } : undefined),
-        "contactPoint": (orgData.phone || orgData.email) ? {
-          "@type": "ContactPoint",
-          "telephone": orgData.phone || undefined,
-          "contactType": "customer service",
-          "email": orgData.email || undefined,
-          "availableLanguage": ["English", "Bengali"]
-        } : undefined,
-        "address": (orgData.street || orgData.city) ? {
-          "@type": "PostalAddress",
-          "streetAddress": orgData.street || undefined,
-          "addressLocality": orgData.city || undefined,
-          "addressRegion": orgData.region || undefined,
-          "postalCode": orgData.postalCode || undefined,
-          "addressCountry": orgData.country || undefined
-        } : undefined,
-        "sameAs": orgData.sameAs.filter(url => url && url.trim() !== "")
-      });
-    }
-
-    // 3. Local Business Entity
-    if (enabledModules.localBusiness && localBizData.name) {
-      graph.push({
-        "@type": localBizData.subType || "LocalBusiness",
-        "@id": `${domain}/#localbusiness`,
-        "name": localBizData.name,
-        "image": localBizData.image ? [localBizData.image] : undefined,
-        "url": domain,
-        "telephone": localBizData.phone,
-        "email": localBizData.email || undefined,
-        "priceRange": localBizData.priceRange || "$$",
-        "parentOrganization": enabledModules.organization ? { "@id": orgId } : undefined,
-        "areaServed": localBizData.areaServed ? localBizData.areaServed.split(",").map(s => s.trim()) : undefined,
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": localBizData.street || undefined,
-          "addressLocality": localBizData.city || undefined,
-          "addressRegion": localBizData.region || undefined,
-          "postalCode": localBizData.postalCode || undefined,
-          "addressCountry": localBizData.country || undefined
-        },
-        "geo": (localBizData.latitude && localBizData.longitude) ? {
-          "@type": "GeoCoordinates",
-          "latitude": parseFloat(localBizData.latitude) || localBizData.latitude,
-          "longitude": parseFloat(localBizData.longitude) || localBizData.longitude
-        } : undefined,
-        "hasMap": localBizData.hasMap || undefined,
-        "openingHoursSpecification": [
-          {
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-            "opens": localBizData.opensTime || "09:00",
-            "closes": localBizData.closesTime || "18:00"
-          }
-        ],
-        "aggregateRating": (localBizData.ratingValue && localBizData.reviewCount) ? {
-          "@type": "AggregateRating",
-          "ratingValue": localBizData.ratingValue,
-          "reviewCount": localBizData.reviewCount,
-          "bestRating": "5",
-          "worstRating": "1"
-        } : undefined
-      });
-    }
-
-    // 4. Person / Author E-E-A-T Entity
-    if (enabledModules.person && personData.name) {
-      graph.push({
-        "@type": "Person",
-        "@id": authorId,
-        "name": personData.name,
-        "jobTitle": personData.jobTitle || undefined,
-        "worksFor": enabledModules.organization ? { "@id": orgId } : undefined,
-        "url": personData.url || undefined,
-        "image": personData.image || undefined,
-        "description": personData.description || undefined,
-        "email": personData.email ? `mailto:${personData.email}` : undefined,
-        "telephone": personData.telephone || undefined,
-        "alumniOf": personData.alumniOf ? {
-          "@type": "EducationalOrganization",
-          "name": personData.alumniOf
-        } : undefined,
-        "knowsAbout": personData.knowsAbout ? personData.knowsAbout.split(",").map(k => k.trim()) : undefined,
-        "sameAs": personData.sameAs.filter(url => url && url.trim() !== "")
-      });
-    }
-
-    // 5. Services Catalog
-    if (enabledModules.services && servicesList.length > 0) {
-      servicesList.filter(s => s.name && s.name.trim() !== "").forEach((service, idx) => {
-        graph.push({
-          "@type": "Service",
-          "@id": `${service.url || domain}/#service-${idx + 1}`,
-          "name": service.name,
-          "serviceType": service.serviceType || undefined,
-          "description": service.description || undefined,
-          "provider": enabledModules.organization ? { "@id": orgId } : undefined,
-          "url": service.url || undefined,
-          "areaServed": service.areaServed ? { "@type": "Country", "name": service.areaServed } : undefined,
-          "offers": service.price ? {
-            "@type": "Offer",
-            "price": service.price,
-            "priceCurrency": service.currency || "USD"
-          } : undefined
+    switch (selectedType) {
+      case "website":
+        return cleanObject({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "@id": websiteId,
+          "url": domain,
+          "name": websiteData.name,
+          "alternateName": websiteData.alternateName || undefined,
+          "description": websiteData.description || undefined,
+          "inLanguage": websiteData.inLanguage || "en-US",
+          "potentialAction": websiteData.searchTarget ? [
+            {
+              "@type": "SearchAction",
+              "target": {
+                "@type": "EntryPoint",
+                "urlTemplate": websiteData.searchTarget
+              },
+              "query-input": "required name=search_term_string"
+            }
+          ] : undefined
         });
-      });
-    }
 
-    // 6. Products Catalog
-    if (enabledModules.products && productsList.length > 0) {
-      productsList.filter(p => p.name && p.name.trim() !== "").forEach((prod, idx) => {
-        graph.push({
-          "@type": "Product",
-          "@id": `${domain}/#product-${idx + 1}`,
-          "name": prod.name,
-          "image": prod.image ? [prod.image] : undefined,
-          "description": prod.description || undefined,
-          "brand": enabledModules.organization ? { "@id": orgId } : undefined,
-          "sku": prod.sku || undefined,
-          "gtin13": prod.gtin13 || undefined,
-          "offers": {
-            "@type": "Offer",
-            "url": domain,
-            "price": prod.price || "0.00",
-            "priceCurrency": prod.currency || "USD",
-            "availability": `https://schema.org/${prod.availability || "InStock"}`,
-            "seller": enabledModules.organization ? { "@id": orgId } : undefined
+      case "organization":
+        return cleanObject({
+          "@context": "https://schema.org",
+          "@type": orgData.subType || "Organization",
+          "@id": orgId,
+          "name": orgData.name,
+          "legalName": orgData.legalName || undefined,
+          "alternateName": orgData.alternateName || undefined,
+          "url": orgData.url || domain,
+          "logo": orgData.logo ? {
+            "@type": "ImageObject",
+            "@id": `${domain}/#logo`,
+            "url": orgData.logo,
+            "caption": orgData.name
+          } : undefined,
+          "description": orgData.description || undefined,
+          "foundingDate": orgData.foundingDate || undefined,
+          "founder": orgData.founderName ? { "@type": "Person", "name": orgData.founderName } : undefined,
+          "contactPoint": (orgData.phone || orgData.email) ? {
+            "@type": "ContactPoint",
+            "telephone": orgData.phone || undefined,
+            "contactType": "customer service",
+            "email": orgData.email || undefined,
+            "availableLanguage": ["English", "Bengali"]
+          } : undefined,
+          "address": (orgData.street || orgData.city) ? {
+            "@type": "PostalAddress",
+            "streetAddress": orgData.street || undefined,
+            "addressLocality": orgData.city || undefined,
+            "addressRegion": orgData.region || undefined,
+            "postalCode": orgData.postalCode || undefined,
+            "addressCountry": orgData.country || undefined
+          } : undefined,
+          "sameAs": orgData.sameAs.filter(url => url && url.trim() !== "")
+        });
+
+      case "localBusiness":
+        return cleanObject({
+          "@context": "https://schema.org",
+          "@type": localBizData.subType || "LocalBusiness",
+          "@id": `${domain}/#localbusiness`,
+          "name": localBizData.name,
+          "image": localBizData.image ? [localBizData.image] : undefined,
+          "url": localBizData.url || domain,
+          "telephone": localBizData.phone,
+          "email": localBizData.email || undefined,
+          "priceRange": localBizData.priceRange || "$$",
+          "areaServed": localBizData.areaServed ? localBizData.areaServed.split(",").map(s => s.trim()) : undefined,
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": localBizData.street || undefined,
+            "addressLocality": localBizData.city || undefined,
+            "addressRegion": localBizData.region || undefined,
+            "postalCode": localBizData.postalCode || undefined,
+            "addressCountry": localBizData.country || undefined
           },
-          "aggregateRating": (prod.ratingValue && prod.reviewCount) ? {
+          "geo": (localBizData.latitude && localBizData.longitude) ? {
+            "@type": "GeoCoordinates",
+            "latitude": parseFloat(localBizData.latitude) || localBizData.latitude,
+            "longitude": parseFloat(localBizData.longitude) || localBizData.longitude
+          } : undefined,
+          "hasMap": localBizData.hasMap || undefined,
+          "openingHoursSpecification": [
+            {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+              "opens": localBizData.opensTime || "09:00",
+              "closes": localBizData.closesTime || "18:00"
+            }
+          ],
+          "aggregateRating": (localBizData.ratingValue && localBizData.reviewCount) ? {
             "@type": "AggregateRating",
-            "ratingValue": prod.ratingValue,
-            "reviewCount": prod.reviewCount,
-            "bestRating": "5"
+            "ratingValue": localBizData.ratingValue,
+            "reviewCount": localBizData.reviewCount,
+            "bestRating": "5",
+            "worstRating": "1"
           } : undefined
         });
-      });
-    }
 
-    // 7. Breadcrumbs
-    if (enabledModules.breadcrumbs && breadcrumbsList.length > 0) {
-      graph.push({
-        "@type": "BreadcrumbList",
-        "@id": breadcrumbId,
-        "itemListElement": breadcrumbsList.filter(b => b.name && b.name.trim() !== "").map((b, i) => ({
-          "@type": "ListItem",
-          "position": i + 1,
-          "name": b.name.trim(),
-          "item": b.url ? b.url.trim() : undefined
-        }))
-      });
-    }
+      case "person":
+        return cleanObject({
+          "@context": "https://schema.org",
+          "@type": "Person",
+          "@id": authorId,
+          "name": personData.name,
+          "jobTitle": personData.jobTitle || undefined,
+          "url": personData.url || domain,
+          "image": personData.image || undefined,
+          "description": personData.description || undefined,
+          "email": personData.email ? `mailto:${personData.email}` : undefined,
+          "telephone": personData.telephone || undefined,
+          "alumniOf": personData.alumniOf ? {
+            "@type": "EducationalOrganization",
+            "name": personData.alumniOf
+          } : undefined,
+          "knowsAbout": personData.knowsAbout ? personData.knowsAbout.split(",").map(k => k.trim()) : undefined,
+          "sameAs": personData.sameAs.filter(url => url && url.trim() !== "")
+        });
 
-    // 8. FAQPage
-    if (enabledModules.faqs && faqList.length > 0) {
-      const validFaqs = faqList.filter(f => f.question && f.question.trim() !== "");
-      if (validFaqs.length > 0) {
-        graph.push({
+      case "services":
+        if (servicesList.length === 1) {
+          const s = servicesList[0];
+          return cleanObject({
+            "@context": "https://schema.org",
+            "@type": s.serviceType || "Service",
+            "name": s.name,
+            "description": s.description || undefined,
+            "url": s.url || domain,
+            "areaServed": s.areaServed ? { "@type": "AdministrativeArea", "name": s.areaServed } : undefined,
+            "offers": s.price ? {
+              "@type": "Offer",
+              "price": s.price,
+              "priceCurrency": s.currency || "USD"
+            } : undefined
+          });
+        }
+        return cleanObject({
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          "itemListElement": servicesList.filter(s => s.name).map((s, i) => ({
+            "@type": "ListItem",
+            "position": i + 1,
+            "item": {
+              "@type": s.serviceType || "Service",
+              "name": s.name,
+              "description": s.description || undefined,
+              "url": s.url || domain,
+              "areaServed": s.areaServed ? { "@type": "AdministrativeArea", "name": s.areaServed } : undefined,
+              "offers": s.price ? {
+                "@type": "Offer",
+                "price": s.price,
+                "priceCurrency": s.currency || "USD"
+              } : undefined
+            }
+          }))
+        });
+
+      case "products":
+        if (productsList.length === 1) {
+          const p = productsList[0];
+          return cleanObject({
+            "@context": "https://schema.org",
+            "@type": "Product",
+            "name": p.name,
+            "image": p.image ? [p.image] : undefined,
+            "description": p.description || undefined,
+            "sku": p.sku || undefined,
+            "gtin13": p.gtin13 || undefined,
+            "offers": {
+              "@type": "Offer",
+              "price": p.price || "0.00",
+              "priceCurrency": p.currency || "USD",
+              "availability": p.availability ? `https://schema.org/${p.availability}` : "https://schema.org/InStock"
+            },
+            "aggregateRating": (p.ratingValue && p.reviewCount) ? {
+              "@type": "AggregateRating",
+              "ratingValue": p.ratingValue,
+              "reviewCount": p.reviewCount,
+              "bestRating": "5",
+              "worstRating": "1"
+            } : undefined
+          });
+        }
+        return cleanObject({
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          "itemListElement": productsList.filter(p => p.name).map((p, i) => ({
+            "@type": "ListItem",
+            "position": i + 1,
+            "item": {
+              "@type": "Product",
+              "name": p.name,
+              "image": p.image ? [p.image] : undefined,
+              "description": p.description || undefined,
+              "sku": p.sku || undefined,
+              "offers": {
+                "@type": "Offer",
+                "price": p.price || "0.00",
+                "priceCurrency": p.currency || "USD",
+                "availability": p.availability ? `https://schema.org/${p.availability}` : "https://schema.org/InStock"
+              }
+            }
+          }))
+        });
+
+      case "faqs": {
+        const validFaqs = faqList.filter(f => f.question && f.question.trim() !== "");
+        return cleanObject({
+          "@context": "https://schema.org",
           "@type": "FAQPage",
-          "@id": `${webpageData.url}/#faq`,
-          "isPartOf": enabledModules.webpage ? { "@id": webpageId } : undefined,
-          "mainEntity": validFaqs.map((faq) => ({
+          "mainEntity": validFaqs.map(faq => ({
             "@type": "Question",
             "name": faq.question.trim(),
             "acceptedAnswer": {
@@ -532,62 +484,318 @@ export default function SchemaMarkupGenerator() {
           }))
         });
       }
-    }
 
-    // 9. WebPage & Article
-    if (enabledModules.webpage && webpageData.url) {
-      if (webpageData.primaryImage) {
-        graph.push({
-          "@type": "ImageObject",
-          "@id": primaryImageId,
-          "url": webpageData.primaryImage,
-          "caption": webpageData.title
+      case "breadcrumbs":
+        return cleanObject({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": breadcrumbsList.filter(b => b.name && b.name.trim() !== "").map((b, i) => ({
+            "@type": "ListItem",
+            "position": i + 1,
+            "name": b.name.trim(),
+            "item": b.url ? b.url.trim() : undefined
+          }))
         });
-      }
 
-      graph.push({
-        "@type": "WebPage",
-        "@id": webpageId,
-        "url": webpageData.url,
-        "name": webpageData.title,
-        "description": webpageData.description || undefined,
-        "isPartOf": enabledModules.website ? { "@id": websiteId } : undefined,
-        "about": enabledModules.organization ? { "@id": orgId } : undefined,
-        "primaryImageOfPage": webpageData.primaryImage ? { "@id": primaryImageId } : undefined,
-        "breadcrumb": enabledModules.breadcrumbs ? { "@id": breadcrumbId } : undefined
-      });
-
-      if (webpageData.isArticle) {
-        graph.push({
-          "@type": "BlogPosting",
-          "@id": `${webpageData.url}/#article`,
-          "isPartOf": { "@id": webpageId },
+      case "webpage":
+        return cleanObject({
+          "@context": "https://schema.org",
+          "@type": webpageData.isArticle ? "Article" : "WebPage",
           "headline": webpageData.title,
+          "name": webpageData.title,
+          "url": webpageData.url,
           "description": webpageData.description || undefined,
+          "image": webpageData.primaryImage || undefined,
           "datePublished": webpageData.datePublished || undefined,
           "dateModified": webpageData.dateModified || webpageData.datePublished || undefined,
-          "mainEntityOfPage": webpageId,
           "articleSection": webpageData.articleSection || undefined,
           "keywords": webpageData.keywords || undefined,
-          "author": enabledModules.person ? { "@id": authorId } : undefined,
-          "publisher": enabledModules.organization ? { "@id": orgId } : undefined,
-          "image": webpageData.primaryImage ? { "@id": primaryImageId } : undefined
+          "author": personData.name ? {
+            "@type": "Person",
+            "name": personData.name,
+            "url": personData.url || undefined
+          } : undefined,
+          "publisher": orgData.name ? {
+            "@type": "Organization",
+            "name": orgData.name,
+            "logo": orgData.logo ? { "@type": "ImageObject", "url": orgData.logo } : undefined
+          } : undefined
+        });
+
+      case "masterGraph":
+      default: {
+        const graph = [];
+
+        // 1. WebSite
+        if (websiteData.url) {
+          graph.push({
+            "@type": "WebSite",
+            "@id": websiteId,
+            "url": domain,
+            "name": websiteData.name,
+            "alternateName": websiteData.alternateName || undefined,
+            "description": websiteData.description || undefined,
+            "inLanguage": websiteData.inLanguage || "en-US",
+            "publisher": { "@id": orgId },
+            "potentialAction": websiteData.searchTarget ? [
+              {
+                "@type": "SearchAction",
+                "target": {
+                  "@type": "EntryPoint",
+                  "urlTemplate": websiteData.searchTarget
+                },
+                "query-input": "required name=search_term_string"
+              }
+            ] : undefined
+          });
+        }
+
+        // 2. Organization
+        if (orgData.name) {
+          graph.push({
+            "@type": orgData.subType || "Organization",
+            "@id": orgId,
+            "name": orgData.name,
+            "legalName": orgData.legalName || undefined,
+            "alternateName": orgData.alternateName || undefined,
+            "url": domain,
+            "logo": orgData.logo ? {
+              "@type": "ImageObject",
+              "@id": `${domain}/#logo`,
+              "url": orgData.logo,
+              "caption": orgData.name
+            } : undefined,
+            "image": orgData.logo ? { "@id": `${domain}/#logo` } : undefined,
+            "description": orgData.description || undefined,
+            "foundingDate": orgData.foundingDate || undefined,
+            "founder": personData.name ? { "@id": authorId } : undefined,
+            "contactPoint": (orgData.phone || orgData.email) ? {
+              "@type": "ContactPoint",
+              "telephone": orgData.phone || undefined,
+              "contactType": "customer service",
+              "email": orgData.email || undefined,
+              "availableLanguage": ["English", "Bengali"]
+            } : undefined,
+            "address": (orgData.street || orgData.city) ? {
+              "@type": "PostalAddress",
+              "streetAddress": orgData.street || undefined,
+              "addressLocality": orgData.city || undefined,
+              "addressRegion": orgData.region || undefined,
+              "postalCode": orgData.postalCode || undefined,
+              "addressCountry": orgData.country || undefined
+            } : undefined,
+            "sameAs": orgData.sameAs.filter(url => url && url.trim() !== "")
+          });
+        }
+
+        // 3. Local Business
+        if (localBizData.name) {
+          graph.push({
+            "@type": localBizData.subType || "LocalBusiness",
+            "@id": `${domain}/#localbusiness`,
+            "name": localBizData.name,
+            "image": localBizData.image ? [localBizData.image] : undefined,
+            "url": domain,
+            "telephone": localBizData.phone,
+            "email": localBizData.email || undefined,
+            "priceRange": localBizData.priceRange || "$$",
+            "parentOrganization": { "@id": orgId },
+            "areaServed": localBizData.areaServed ? localBizData.areaServed.split(",").map(s => s.trim()) : undefined,
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": localBizData.street || undefined,
+              "addressLocality": localBizData.city || undefined,
+              "addressRegion": localBizData.region || undefined,
+              "postalCode": localBizData.postalCode || undefined,
+              "addressCountry": localBizData.country || undefined
+            },
+            "geo": (localBizData.latitude && localBizData.longitude) ? {
+              "@type": "GeoCoordinates",
+              "latitude": parseFloat(localBizData.latitude) || localBizData.latitude,
+              "longitude": parseFloat(localBizData.longitude) || localBizData.longitude
+            } : undefined,
+            "hasMap": localBizData.hasMap || undefined,
+            "openingHoursSpecification": [
+              {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+                "opens": localBizData.opensTime || "09:00",
+                "closes": localBizData.closesTime || "18:00"
+              }
+            ],
+            "aggregateRating": (localBizData.ratingValue && localBizData.reviewCount) ? {
+              "@type": "AggregateRating",
+              "ratingValue": localBizData.ratingValue,
+              "reviewCount": localBizData.reviewCount,
+              "bestRating": "5",
+              "worstRating": "1"
+            } : undefined
+          });
+        }
+
+        // 4. Person
+        if (personData.name) {
+          graph.push({
+            "@type": "Person",
+            "@id": authorId,
+            "name": personData.name,
+            "jobTitle": personData.jobTitle || undefined,
+            "worksFor": { "@id": orgId },
+            "url": personData.url || undefined,
+            "image": personData.image || undefined,
+            "description": personData.description || undefined,
+            "email": personData.email ? `mailto:${personData.email}` : undefined,
+            "telephone": personData.telephone || undefined,
+            "alumniOf": personData.alumniOf ? {
+              "@type": "EducationalOrganization",
+              "name": personData.alumniOf
+            } : undefined,
+            "knowsAbout": personData.knowsAbout ? personData.knowsAbout.split(",").map(k => k.trim()) : undefined,
+            "sameAs": personData.sameAs.filter(url => url && url.trim() !== "")
+          });
+        }
+
+        // 5. Services
+        servicesList.forEach((s, idx) => {
+          if (s.name && s.name.trim() !== "") {
+            graph.push({
+              "@type": s.serviceType || "Service",
+              "@id": `${domain}/#service-${idx + 1}`,
+              "name": s.name,
+              "description": s.description || undefined,
+              "provider": { "@id": orgId },
+              "serviceType": s.serviceType || undefined,
+              "url": s.url || domain,
+              "areaServed": s.areaServed ? { "@type": "AdministrativeArea", "name": s.areaServed } : undefined,
+              "offers": s.price ? {
+                "@type": "Offer",
+                "price": s.price,
+                "priceCurrency": s.currency || "USD",
+                "availability": "https://schema.org/InStock"
+              } : undefined
+            });
+          }
+        });
+
+        // 6. Products
+        productsList.forEach((p, idx) => {
+          if (p.name && p.name.trim() !== "") {
+            graph.push({
+              "@type": "Product",
+              "@id": `${domain}/#product-${idx + 1}`,
+              "name": p.name,
+              "image": p.image ? [p.image] : undefined,
+              "description": p.description || undefined,
+              "sku": p.sku || undefined,
+              "gtin13": p.gtin13 || undefined,
+              "brand": { "@id": orgId },
+              "offers": {
+                "@type": "Offer",
+                "price": p.price || "0.00",
+                "priceCurrency": p.currency || "USD",
+                "availability": p.availability ? `https://schema.org/${p.availability}` : "https://schema.org/InStock",
+                "url": domain,
+                "seller": { "@id": orgId }
+              },
+              "aggregateRating": (p.ratingValue && p.reviewCount) ? {
+                "@type": "AggregateRating",
+                "ratingValue": p.ratingValue,
+                "reviewCount": p.reviewCount,
+                "bestRating": "5",
+                "worstRating": "1"
+              } : undefined
+            });
+          }
+        });
+
+        // 7. Breadcrumbs
+        if (breadcrumbsList.length > 0) {
+          graph.push({
+            "@type": "BreadcrumbList",
+            "@id": breadcrumbId,
+            "itemListElement": breadcrumbsList.filter(b => b.name && b.name.trim() !== "").map((b, i) => ({
+              "@type": "ListItem",
+              "position": i + 1,
+              "name": b.name.trim(),
+              "item": b.url ? b.url.trim() : undefined
+            }))
+          });
+        }
+
+        // 8. FAQPage
+        const validFaqs = faqList.filter(f => f.question && f.question.trim() !== "");
+        if (validFaqs.length > 0) {
+          graph.push({
+            "@type": "FAQPage",
+            "@id": `${webpageData.url}/#faq`,
+            "isPartOf": { "@id": webpageId },
+            "mainEntity": validFaqs.map((faq) => ({
+              "@type": "Question",
+              "name": faq.question.trim(),
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": faq.answer.trim()
+              }
+            }))
+          });
+        }
+
+        // 9. WebPage & Article
+        if (webpageData.url) {
+          if (webpageData.primaryImage) {
+            graph.push({
+              "@type": "ImageObject",
+              "@id": primaryImageId,
+              "url": webpageData.primaryImage,
+              "caption": webpageData.title
+            });
+          }
+
+          graph.push({
+            "@type": "WebPage",
+            "@id": webpageId,
+            "url": webpageData.url,
+            "name": webpageData.title,
+            "description": webpageData.description || undefined,
+            "isPartOf": { "@id": websiteId },
+            "about": { "@id": orgId },
+            "primaryImageOfPage": webpageData.primaryImage ? { "@id": primaryImageId } : undefined,
+            "breadcrumb": { "@id": breadcrumbId }
+          });
+
+          if (webpageData.isArticle) {
+            graph.push({
+              "@type": "BlogPosting",
+              "@id": `${webpageData.url}/#article`,
+              "isPartOf": { "@id": webpageId },
+              "headline": webpageData.title,
+              "description": webpageData.description || undefined,
+              "datePublished": webpageData.datePublished || undefined,
+              "dateModified": webpageData.dateModified || webpageData.datePublished || undefined,
+              "mainEntityOfPage": webpageId,
+              "articleSection": webpageData.articleSection || undefined,
+              "keywords": webpageData.keywords || undefined,
+              "author": personData.name ? { "@id": authorId } : undefined,
+              "publisher": { "@id": orgId },
+              "image": webpageData.primaryImage ? { "@id": primaryImageId } : undefined
+            });
+          }
+        }
+
+        return cleanObject({
+          "@context": "https://schema.org",
+          "@graph": graph
         });
       }
     }
-
-    return cleanObject({
-      "@context": "https://schema.org",
-      "@graph": graph
-    });
   }, [
-    enabledModules, websiteData, orgData, localBizData, personData,
+    selectedType, websiteData, orgData, localBizData, personData,
     servicesList, productsList, faqList, breadcrumbsList, webpageData
   ]);
 
   const jsonString = isMinified
-    ? JSON.stringify(completeUnifiedSchema)
-    : JSON.stringify(completeUnifiedSchema, null, 2);
+    ? JSON.stringify(generatedSchema)
+    : JSON.stringify(generatedSchema, null, 2);
 
   const scriptTagOutput = isMinified
     ? `<script type="application/ld+json">${jsonString}</script>`
@@ -596,14 +804,14 @@ export default function SchemaMarkupGenerator() {
   const copyScript = () => {
     navigator.clipboard.writeText(scriptTagOutput);
     setCopiedScript(true);
-    showToast("Master <script> snippet copied!");
+    showToast("Copied <script> tag to clipboard!");
     setTimeout(() => setCopiedScript(false), 2000);
   };
 
   const copyRawJson = () => {
     navigator.clipboard.writeText(jsonString);
     setCopiedRaw(true);
-    showToast("Master JSON-LD object copied!");
+    showToast("Copied JSON-LD object to clipboard!");
     setTimeout(() => setCopiedRaw(false), 2000);
   };
 
@@ -612,129 +820,159 @@ export default function SchemaMarkupGenerator() {
     const fileUrl = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = fileUrl;
-    a.download = "complete-website-master-schema.html";
+    a.download = `${selectedType}-schema.html`;
     a.click();
     URL.revokeObjectURL(fileUrl);
-    showToast("Downloaded complete-website-master-schema.html");
+    showToast(`Downloaded ${selectedType}-schema.html`);
   };
 
-  const activeModuleCount = Object.values(enabledModules).filter(Boolean).length;
+  const jsonByteSize = new Blob([scriptTagOutput]).size;
+  const currentItem = SCHEMA_TYPES.find(t => t.id === selectedType) || SCHEMA_TYPES[0];
+
+  const faqItems = [
+    {
+      q: "How does selecting a Schema Type on the left update the code?",
+      a: "Selecting any Schema Type on the left instantly swaps the editor form and simultaneously generates the exact, validated JSON-LD schema code on the right code section without needing to reload the page."
+    },
+    {
+      q: "Can I generate a single schema or a full interconnected website schema?",
+      a: "Yes! You can choose individual schema types (like LocalBusiness, Article, FAQ, or WebSite) to get standalone schema markup, or select 'All-in-One Master Graph' to get a complete interconnected @graph schema for your entire website."
+    },
+    {
+      q: "Is the generated schema compliant with Google's Rich Results and AI search engines?",
+      a: "Yes. All schema output adheres strictly to Schema.org standards and Google's Rich Results Guidelines for 2026, making it fully optimized for Google Gemini, SearchGPT, and traditional SERPs."
+    }
+  ];
 
   return (
-    <div className="tool-single-page" style={{ background: "#f8fafc" }}>
-      
-      {/* Toast Notification */}
+    <>
+      {/* TOAST NOTIFICATION */}
       {toastMessage && (
-        <div style={{ position: "fixed", bottom: "24px", right: "24px", background: "#0f172a", color: "#ffffff", padding: "10px 18px", borderRadius: "4px", fontSize: "0.82rem", fontWeight: 700, boxShadow: "0 10px 25px rgba(0,0,0,0.25)", zIndex: 9999, display: "flex", alignItems: "center", gap: "8px", border: "1px solid #334155" }}>
-          <i className="fa-solid fa-circle-check text-success"></i> {toastMessage}
+        <div style={{
+          position: "fixed",
+          bottom: "24px",
+          right: "24px",
+          zIndex: 9999,
+          background: "#0f172a",
+          color: "#ffffff",
+          padding: "10px 18px",
+          borderRadius: "4px",
+          fontSize: "0.85rem",
+          fontWeight: 600,
+          boxShadow: "0 10px 25px -5px rgba(0,0,0,0.3)",
+          border: "1px solid #334155",
+          display: "flex",
+          alignItems: "center",
+          gap: "8px"
+        }}>
+          <i className="fa-solid fa-circle-check text-success"></i>
+          {toastMessage}
         </div>
       )}
 
-      {/* HEADER HERO */}
-      <section className="page-header-section" style={{ paddingBottom: "20px", background: "#ffffff", borderBottom: "1px solid #e2e8f0" }}>
-        <div className="container text-center">
-          <Link href="/tools" className="tool-back-link">
-            <i className="fa-solid fa-arrow-left"></i> All SEO Tools
-          </Link>
-          <div className="sub-badge mt-2" style={{ borderRadius: "4px" }}>
-            <i className="fa-solid fa-diagram-project"></i> Complete Website Master Schema Generator
+      {/* HERO SECTION */}
+      <section className="tool-hero-section">
+        <div className="container">
+          <div className="text-center" style={{ maxWidth: "860px", margin: "0 auto" }}>
+            <span className="badge badge-primary mb-3">
+              <i className="fa-solid fa-code me-1"></i> Schema.org &amp; AI Search Engine Ready
+            </span>
+            <h1 className="hero-title" style={{ fontSize: "2.1rem", marginBottom: "12px", lineHeight: "1.25" }}>
+              JSON-LD Schema Markup Generator
+            </h1>
+            <p className="hero-desc" style={{ fontSize: "0.95rem", color: "#64748b", margin: "0 auto" }}>
+              Select a schema type from the left option list to instantly configure and generate clean, validated JSON-LD code for your website in real-time.
+            </p>
           </div>
-          <h1 className="page-title">All-in-One Master Schema Markup Generator</h1>
-          <p className="page-subtitle max-w-3xl mx-auto">
-            Select the options you need from the left sidebar — all inputs stay on one unified page, and generate <strong>one complete connected master schema</strong> for your entire website.
-          </p>
         </div>
       </section>
 
-      {/* WORKSPACE */}
+      {/* WORKSPACE SECTION */}
       <section className="section-padding" style={{ paddingTop: "20px" }}>
         <div className="container" style={{ maxWidth: "1440px" }}>
 
-          {/* THREE-COLUMN WORKSPACE: LEFT SELECTOR, MIDDLE FORMS, RIGHT COMPACT OUTPUT */}
+          {/* THREE-COLUMN WORKSPACE: LEFT SELECTOR, MIDDLE FORM, RIGHT COMPACT OUTPUT */}
           <div style={{ display: "grid", gridTemplateColumns: "240px 1.25fr 0.85fr", gap: "18px", alignItems: "start" }}>
 
-            {/* 1. LEFT SIDEBAR: INTERACTIVE SCHEMA SELECTOR WITH CHECKBOXES */}
+            {/* 1. LEFT SIDEBAR: SINGLE-SELECT SCHEMA OPTION MENU */}
             <div style={{ position: "sticky", top: "18px", background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "14px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
-                <strong style={{ fontSize: "0.82rem", color: "#0f172a" }}>
-                  <i className="fa-solid fa-list-check text-primary"></i> Include Modules ({activeModuleCount}/9):
+              <div style={{ marginBottom: "12px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
+                <strong style={{ fontSize: "0.82rem", color: "#0f172a", display: "flex", alignItems: "center", gap: "6px" }}>
+                  <i className="fa-solid fa-list-ul text-primary"></i> Schema Type:
                 </strong>
+                <span style={{ fontSize: "0.7rem", color: "#64748b" }}>Click an option to switch</span>
               </div>
 
-              {/* Select / Deselect All */}
-              <div style={{ display: "flex", gap: "6px", marginBottom: "12px" }}>
-                <button type="button" onClick={selectAll} style={{ flex: 1, padding: "4px 0", fontSize: "0.7rem", fontWeight: 700, background: "#eff6ff", color: "#2563eb", border: "1px solid #bfdbfe", borderRadius: "4px", cursor: "pointer" }}>
-                  Select All
-                </button>
-                <button type="button" onClick={deselectAll} style={{ flex: 1, padding: "4px 0", fontSize: "0.7rem", fontWeight: 700, background: "#f8fafc", color: "#64748b", border: "1px solid #e2e8f0", borderRadius: "4px", cursor: "pointer" }}>
-                  Core Only
-                </button>
-              </div>
-
-              {/* Module List with Checkboxes and Click to Jump */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
-                {SCHEMA_MODULES.map((item) => (
-                  <div
-                    key={item.id}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      padding: "6px 8px",
-                      borderRadius: "4px",
-                      background: enabledModules[item.id] ? (activeSection === item.id ? "#eff6ff" : "#f8fafc") : "transparent",
-                      border: activeSection === item.id ? "1px solid #2563eb" : (enabledModules[item.id] ? "1px solid #e2e8f0" : "1px solid transparent"),
-                      cursor: "pointer",
-                      transition: "all 0.15s ease"
-                    }}
-                  >
-                    <label style={{ display: "flex", alignItems: "center", gap: "7px", cursor: "pointer", flexGrow: 1 }}>
-                      <input
-                        type="checkbox"
-                        checked={enabledModules[item.id]}
-                        onChange={() => toggleModule(item.id)}
-                        style={{ cursor: "pointer", width: "14px", height: "14px" }}
-                      />
-                      <span
-                        onClick={() => scrollToSection(item.id)}
-                        style={{ fontSize: "0.78rem", fontWeight: enabledModules[item.id] ? 700 : 500, color: enabledModules[item.id] ? "#0f172a" : "#94a3b8" }}
-                      >
-                        <i className={`fa-solid ${item.icon}`} style={{ width: "14px", marginRight: "4px", color: enabledModules[item.id] ? "#2563eb" : "#cbd5e1" }}></i>
-                        {item.label}
-                      </span>
-                    </label>
+              {/* Single Select Option List */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                {SCHEMA_TYPES.map((item) => {
+                  const isSelected = selectedType === item.id;
+                  const isMaster = item.id === "masterGraph";
+                  return (
                     <button
+                      key={item.id}
                       type="button"
-                      onClick={() => scrollToSection(item.id)}
-                      title="Jump to form section"
-                      style={{ background: "none", border: "none", color: "#94a3b8", cursor: "pointer", padding: "2px 4px", fontSize: "0.7rem" }}
+                      onClick={() => setSelectedType(item.id)}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        padding: "7px 9px",
+                        borderRadius: "4px",
+                        background: isSelected ? (isMaster ? "#fef3c7" : "#eff6ff") : (isMaster ? "#fffbeb" : "transparent"),
+                        border: isSelected ? (isMaster ? "1px solid #d97706" : "1px solid #2563eb") : (isMaster ? "1px dashed #f59e0b" : "1px solid transparent"),
+                        cursor: "pointer",
+                        textAlign: "left",
+                        width: "100%",
+                        transition: "all 0.15s ease"
+                      }}
                     >
-                      <i className="fa-solid fa-arrow-right"></i>
+                      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                        <i
+                          className={`fa-solid ${item.icon}`}
+                          style={{
+                            width: "14px",
+                            color: isSelected ? (isMaster ? "#b45309" : "#2563eb") : (isMaster ? "#d97706" : "#64748b"),
+                            fontSize: "0.82rem"
+                          }}
+                        ></i>
+                        <span
+                          style={{
+                            fontSize: "0.78rem",
+                            fontWeight: isSelected ? 700 : 500,
+                            color: isSelected ? (isMaster ? "#92400e" : "#1e40af") : "#334155"
+                          }}
+                        >
+                          {item.label}
+                        </span>
+                      </div>
+                      {isSelected ? (
+                        <i className={`fa-solid fa-circle-check ${isMaster ? "text-warning" : "text-primary"}`} style={{ fontSize: "0.75rem" }}></i>
+                      ) : (
+                        <i className="fa-solid fa-chevron-right" style={{ fontSize: "0.65rem", color: "#cbd5e1" }}></i>
+                      )}
                     </button>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
 
-            {/* 2. MIDDLE COLUMN: ALL FORM SECTIONS TOGETHER ON ONE PAGE */}
+            {/* 2. MIDDLE COLUMN: ACTIVE SCHEMA FORM */}
             <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
 
-              {/* 1. WEBSITE SECTION */}
-              <div ref={sectionRefs.website} style={{ background: "#ffffff", border: enabledModules.website ? "1px solid #2563eb" : "1px solid #e2e8f0", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <div style={{ width: "24px", height: "24px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.78rem" }}>
+              {/* 1. WEBSITE FORM */}
+              {selectedType === "website" && (
+                <div style={{ background: "#ffffff", border: "1px solid #2563eb", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
+                    <div style={{ width: "26px", height: "26px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem" }}>
                       <i className="fa-solid fa-globe"></i>
                     </div>
-                    <strong style={{ fontSize: "0.92rem", color: "#0f172a" }}>1. WebSite &amp; Sitelinks Searchbox</strong>
+                    <div>
+                      <strong style={{ fontSize: "0.95rem", color: "#0f172a", display: "block" }}>WebSite &amp; Sitelinks Searchbox</strong>
+                      <span style={{ fontSize: "0.72rem", color: "#64748b" }}>Declares the main site entity and search action endpoint</span>
+                    </div>
                   </div>
-                  <label style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "0.75rem", fontWeight: 700, color: enabledModules.website ? "#2563eb" : "#64748b", cursor: "pointer" }}>
-                    <input type="checkbox" checked={enabledModules.website} onChange={() => toggleModule("website")} />
-                    Include in Schema
-                  </label>
-                </div>
 
-                {enabledModules.website && (
                   <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
                       <div className="form-group">
@@ -748,7 +986,20 @@ export default function SchemaMarkupGenerator() {
                         />
                       </div>
                       <div className="form-group">
-                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Canonical Root URL *</label>
+                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Alternate / Short Name</label>
+                        <input
+                          type="text"
+                          className="form-input"
+                          value={websiteData.alternateName}
+                          onChange={(e) => setWebsiteData({ ...websiteData, alternateName: e.target.value })}
+                          style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
+                        />
+                      </div>
+                    </div>
+
+                    <div style={{ display: "grid", gridTemplateColumns: "1.2fr 0.8fr", gap: "8px" }}>
+                      <div className="form-group">
+                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Canonical URL *</label>
                         <input
                           type="url"
                           className="form-input"
@@ -757,9 +1008,20 @@ export default function SchemaMarkupGenerator() {
                           style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
                         />
                       </div>
+                      <div className="form-group">
+                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Language</label>
+                        <input
+                          type="text"
+                          className="form-input"
+                          value={websiteData.inLanguage}
+                          onChange={(e) => setWebsiteData({ ...websiteData, inLanguage: e.target.value })}
+                          style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
+                        />
+                      </div>
                     </div>
+
                     <div className="form-group">
-                      <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Sitelinks Search Query Template</label>
+                      <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Sitelinks SearchBox Target URL</label>
                       <input
                         type="text"
                         className="form-input"
@@ -767,31 +1029,40 @@ export default function SchemaMarkupGenerator() {
                         onChange={(e) => setWebsiteData({ ...websiteData, searchTarget: e.target.value })}
                         style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
                       />
+                      <small style={{ fontSize: "0.68rem", color: "#94a3b8" }}>Use <code>&#123;search_term_string&#125;</code> as query placeholder.</small>
+                    </div>
+
+                    <div className="form-group">
+                      <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Site Description</label>
+                      <textarea
+                        className="form-input"
+                        rows="2"
+                        value={websiteData.description}
+                        onChange={(e) => setWebsiteData({ ...websiteData, description: e.target.value })}
+                        style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
+                      ></textarea>
                     </div>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
 
-              {/* 2. ORGANIZATION SECTION */}
-              <div ref={sectionRefs.organization} style={{ background: "#ffffff", border: enabledModules.organization ? "1px solid #2563eb" : "1px solid #e2e8f0", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <div style={{ width: "24px", height: "24px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.78rem" }}>
+              {/* 2. ORGANIZATION FORM */}
+              {selectedType === "organization" && (
+                <div style={{ background: "#ffffff", border: "1px solid #2563eb", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
+                    <div style={{ width: "26px", height: "26px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem" }}>
                       <i className="fa-solid fa-building"></i>
                     </div>
-                    <strong style={{ fontSize: "0.92rem", color: "#0f172a" }}>2. Organization &amp; Brand Entity</strong>
+                    <div>
+                      <strong style={{ fontSize: "0.95rem", color: "#0f172a", display: "block" }}>Organization &amp; Brand Entity</strong>
+                      <span style={{ fontSize: "0.72rem", color: "#64748b" }}>Builds Google Knowledge Graph and brand authority</span>
+                    </div>
                   </div>
-                  <label style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "0.75rem", fontWeight: 700, color: enabledModules.organization ? "#2563eb" : "#64748b", cursor: "pointer" }}>
-                    <input type="checkbox" checked={enabledModules.organization} onChange={() => toggleModule("organization")} />
-                    Include in Schema
-                  </label>
-                </div>
 
-                {enabledModules.organization && (
                   <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                    <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "8px" }}>
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
                       <div className="form-group">
-                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Brand Display Name *</label>
+                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Organization Name *</label>
                         <input
                           type="text"
                           className="form-input"
@@ -801,7 +1072,24 @@ export default function SchemaMarkupGenerator() {
                         />
                       </div>
                       <div className="form-group">
-                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Brand Logo Image URL *</label>
+                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Schema Sub-Type</label>
+                        <select
+                          className="form-input"
+                          value={orgData.subType}
+                          onChange={(e) => setOrgData({ ...orgData, subType: e.target.value })}
+                          style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
+                        >
+                          <option value="Organization">Organization</option>
+                          <option value="Corporation">Corporation</option>
+                          <option value="EducationalOrganization">Educational Organization</option>
+                          <option value="NGO">NGO / Non-Profit</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div style={{ display: "grid", gridTemplateColumns: "1.2fr 0.8fr", gap: "8px" }}>
+                      <div className="form-group">
+                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Official Logo URL</label>
                         <input
                           type="url"
                           className="form-input"
@@ -810,685 +1098,955 @@ export default function SchemaMarkupGenerator() {
                           style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
                         />
                       </div>
+                      <div className="form-group">
+                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Founding Date</label>
+                        <input
+                          type="date"
+                          className="form-input"
+                          value={orgData.foundingDate}
+                          onChange={(e) => setOrgData({ ...orgData, foundingDate: e.target.value })}
+                          style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
+                        />
+                      </div>
                     </div>
 
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "6px" }}>
-                      <input
-                        type="text"
-                        placeholder="Founder Name"
-                        className="form-input"
-                        value={orgData.founderName}
-                        onChange={(e) => setOrgData({ ...orgData, founderName: e.target.value })}
-                        style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "6px 8px" }}
-                      />
-                      <input
-                        type="text"
-                        placeholder="Support Phone"
-                        className="form-input"
-                        value={orgData.phone}
-                        onChange={(e) => setOrgData({ ...orgData, phone: e.target.value })}
-                        style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "6px 8px" }}
-                      />
-                      <input
-                        type="email"
-                        placeholder="Support Email"
-                        className="form-input"
-                        value={orgData.email}
-                        onChange={(e) => setOrgData({ ...orgData, email: e.target.value })}
-                        style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "6px 8px" }}
-                      />
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+                      <div className="form-group">
+                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Founder Name</label>
+                        <input
+                          type="text"
+                          className="form-input"
+                          value={orgData.founderName}
+                          onChange={(e) => setOrgData({ ...orgData, founderName: e.target.value })}
+                          style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Contact Phone</label>
+                        <input
+                          type="text"
+                          className="form-input"
+                          value={orgData.phone}
+                          onChange={(e) => setOrgData({ ...orgData, phone: e.target.value })}
+                          style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
+                        />
+                      </div>
+                    </div>
+
+                    <div style={{ display: "grid", gridTemplateColumns: "1.2fr 0.8fr", gap: "8px" }}>
+                      <div className="form-group">
+                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Street Address</label>
+                        <input
+                          type="text"
+                          className="form-input"
+                          value={orgData.street}
+                          onChange={(e) => setOrgData({ ...orgData, street: e.target.value })}
+                          style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>City &amp; Country</label>
+                        <div style={{ display: "flex", gap: "4px" }}>
+                          <input
+                            type="text"
+                            className="form-input"
+                            placeholder="City"
+                            value={orgData.city}
+                            onChange={(e) => setOrgData({ ...orgData, city: e.target.value })}
+                            style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
+                          />
+                          <input
+                            type="text"
+                            className="form-input"
+                            placeholder="BD"
+                            value={orgData.country}
+                            onChange={(e) => setOrgData({ ...orgData, country: e.target.value })}
+                            style={{ width: "60px", borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
+                          />
+                        </div>
+                      </div>
                     </div>
 
                     <div className="form-group">
-                      <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Wikidata &amp; Social Authority Profiles (sameAs)</label>
+                      <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>SameAs Social Profiles &amp; Wikidata</label>
                       <textarea
-                        rows={2}
-                        className="form-textarea"
+                        className="form-input"
+                        rows="3"
                         value={orgData.sameAs.join("\n")}
                         onChange={(e) => setOrgData({ ...orgData, sameAs: e.target.value.split("\n") })}
-                        style={{ borderRadius: "4px", fontSize: "0.75rem", fontFamily: "monospace" }}
-                      />
+                        placeholder="One URL per line (Wikipedia, Wikidata, LinkedIn, Twitter...)"
+                        style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "6px 8px" }}
+                      ></textarea>
                     </div>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
 
-              {/* 3. LOCAL BUSINESS SECTION */}
-              <div ref={sectionRefs.localBusiness} style={{ background: "#ffffff", border: enabledModules.localBusiness ? "1px solid #2563eb" : "1px solid #e2e8f0", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <div style={{ width: "24px", height: "24px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.78rem" }}>
+              {/* 3. LOCAL BUSINESS FORM */}
+              {selectedType === "localBusiness" && (
+                <div style={{ background: "#ffffff", border: "1px solid #2563eb", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
+                    <div style={{ width: "26px", height: "26px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem" }}>
                       <i className="fa-solid fa-shop"></i>
                     </div>
-                    <strong style={{ fontSize: "0.92rem", color: "#0f172a" }}>3. Local Business &amp; Office NAP</strong>
+                    <div>
+                      <strong style={{ fontSize: "0.95rem", color: "#0f172a", display: "block" }}>Local Business / NAP Entity</strong>
+                      <span style={{ fontSize: "0.72rem", color: "#64748b" }}>Rank in Google 3-Pack Maps and local searches</span>
+                    </div>
                   </div>
-                  <label style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "0.75rem", fontWeight: 700, color: enabledModules.localBusiness ? "#2563eb" : "#64748b", cursor: "pointer" }}>
-                    <input type="checkbox" checked={enabledModules.localBusiness} onChange={() => toggleModule("localBusiness")} />
-                    Include in Schema
-                  </label>
-                </div>
 
-                {enabledModules.localBusiness && (
                   <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                    <div style={{ display: "grid", gridTemplateColumns: "1.2fr 0.8fr", gap: "8px" }}>
+                      <div className="form-group">
+                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Business Name *</label>
+                        <input
+                          type="text"
+                          className="form-input"
+                          value={localBizData.name}
+                          onChange={(e) => setLocalBizData({ ...localBizData, name: e.target.value })}
+                          style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Business Sub-Type</label>
+                        <select
+                          className="form-input"
+                          value={localBizData.subType}
+                          onChange={(e) => setLocalBizData({ ...localBizData, subType: e.target.value })}
+                          style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
+                        >
+                          <option value="LocalBusiness">LocalBusiness (General)</option>
+                          <option value="ProfessionalService">ProfessionalService</option>
+                          <option value="MedicalBusiness">MedicalBusiness / Clinic</option>
+                          <option value="Restaurant">Restaurant / Food</option>
+                          <option value="LegalService">LegalService / Law Firm</option>
+                          <option value="RealEstateAgent">RealEstateAgent</option>
+                        </select>
+                      </div>
+                    </div>
+
                     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
-                      <input
-                        type="text"
-                        placeholder="Business Name *"
-                        className="form-input"
-                        value={localBizData.name}
-                        onChange={(e) => setLocalBizData({ ...localBizData, name: e.target.value })}
-                        style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
-                      />
-                      <input
-                        type="text"
-                        placeholder="Phone *"
-                        className="form-input"
-                        value={localBizData.phone}
-                        onChange={(e) => setLocalBizData({ ...localBizData, phone: e.target.value })}
-                        style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
-                      />
+                      <div className="form-group">
+                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Phone Number *</label>
+                        <input
+                          type="text"
+                          className="form-input"
+                          value={localBizData.phone}
+                          onChange={(e) => setLocalBizData({ ...localBizData, phone: e.target.value })}
+                          style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Price Range ($ / $$ / $$$)</label>
+                        <input
+                          type="text"
+                          className="form-input"
+                          value={localBizData.priceRange}
+                          onChange={(e) => setLocalBizData({ ...localBizData, priceRange: e.target.value })}
+                          style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
+                        />
+                      </div>
                     </div>
 
-                    <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", gap: "6px" }}>
-                      <input
-                        type="text"
-                        placeholder="Street Address"
-                        className="form-input"
-                        value={localBizData.street}
-                        onChange={(e) => setLocalBizData({ ...localBizData, street: e.target.value })}
-                        style={{ borderRadius: "4px", fontSize: "0.78rem" }}
-                      />
-                      <input
-                        type="text"
-                        placeholder="City"
-                        className="form-input"
-                        value={localBizData.city}
-                        onChange={(e) => setLocalBizData({ ...localBizData, city: e.target.value })}
-                        style={{ borderRadius: "4px", fontSize: "0.78rem" }}
-                      />
-                      <input
-                        type="text"
-                        placeholder="Postal Code"
-                        className="form-input"
-                        value={localBizData.postalCode}
-                        onChange={(e) => setLocalBizData({ ...localBizData, postalCode: e.target.value })}
-                        style={{ borderRadius: "4px", fontSize: "0.78rem" }}
-                      />
-                      <input
-                        type="text"
-                        placeholder="Country"
-                        className="form-input"
-                        value={localBizData.country}
-                        onChange={(e) => setLocalBizData({ ...localBizData, country: e.target.value })}
-                        style={{ borderRadius: "4px", fontSize: "0.78rem" }}
-                      />
-                    </div>
-
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "6px" }}>
-                      <input
-                        type="text"
-                        placeholder="Lat (23.7937)"
-                        className="form-input"
-                        value={localBizData.latitude}
-                        onChange={(e) => setLocalBizData({ ...localBizData, latitude: e.target.value })}
-                        style={{ borderRadius: "4px", fontSize: "0.78rem" }}
-                      />
-                      <input
-                        type="text"
-                        placeholder="Long (90.4043)"
-                        className="form-input"
-                        value={localBizData.longitude}
-                        onChange={(e) => setLocalBizData({ ...localBizData, longitude: e.target.value })}
-                        style={{ borderRadius: "4px", fontSize: "0.78rem" }}
-                      />
-                      <input
-                        type="text"
-                        placeholder="Rating (5.0 / 48 reviews)"
-                        className="form-input"
-                        value={`${localBizData.ratingValue} (${localBizData.reviewCount} reviews)`}
-                        readOnly
-                        style={{ borderRadius: "4px", fontSize: "0.78rem", background: "#f8fafc" }}
-                      />
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px" }}>
+                      <div className="form-group">
+                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Latitude</label>
+                        <input
+                          type="text"
+                          className="form-input"
+                          value={localBizData.latitude}
+                          onChange={(e) => setLocalBizData({ ...localBizData, latitude: e.target.value })}
+                          style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Longitude</label>
+                        <input
+                          type="text"
+                          className="form-input"
+                          value={localBizData.longitude}
+                          onChange={(e) => setLocalBizData({ ...localBizData, longitude: e.target.value })}
+                          style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Review Rating / Count</label>
+                        <div style={{ display: "flex", gap: "4px" }}>
+                          <input
+                            type="text"
+                            className="form-input"
+                            value={localBizData.ratingValue}
+                            placeholder="4.9"
+                            onChange={(e) => setLocalBizData({ ...localBizData, ratingValue: e.target.value })}
+                            style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
+                          />
+                          <input
+                            type="text"
+                            className="form-input"
+                            value={localBizData.reviewCount}
+                            placeholder="120"
+                            onChange={(e) => setLocalBizData({ ...localBizData, reviewCount: e.target.value })}
+                            style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
+                          />
+                        </div>
+                      </div>
                     </div>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
 
-              {/* 4. PERSON SECTION */}
-              <div ref={sectionRefs.person} style={{ background: "#ffffff", border: enabledModules.person ? "1px solid #2563eb" : "1px solid #e2e8f0", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <div style={{ width: "24px", height: "24px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.78rem" }}>
+              {/* 4. PERSON / AUTHOR FORM */}
+              {selectedType === "person" && (
+                <div style={{ background: "#ffffff", border: "1px solid #2563eb", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
+                    <div style={{ width: "26px", height: "26px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem" }}>
                       <i className="fa-solid fa-user-tie"></i>
                     </div>
-                    <strong style={{ fontSize: "0.92rem", color: "#0f172a" }}>4. Founder / Author E-E-A-T</strong>
-                  </div>
-                  <label style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "0.75rem", fontWeight: 700, color: enabledModules.person ? "#2563eb" : "#64748b", cursor: "pointer" }}>
-                    <input type="checkbox" checked={enabledModules.person} onChange={() => toggleModule("person")} />
-                    Include in Schema
-                  </label>
-                </div>
-
-                {enabledModules.person && (
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
-                    <input
-                      type="text"
-                      placeholder="Author Full Name *"
-                      className="form-input"
-                      value={personData.name}
-                      onChange={(e) => setPersonData({ ...personData, name: e.target.value })}
-                      style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
-                    />
-                    <input
-                      type="text"
-                      placeholder="Job Title"
-                      className="form-input"
-                      value={personData.jobTitle}
-                      onChange={(e) => setPersonData({ ...personData, jobTitle: e.target.value })}
-                      style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
-                    />
-                    <input
-                      type="url"
-                      placeholder="Bio Page URL"
-                      className="form-input"
-                      value={personData.url}
-                      onChange={(e) => setPersonData({ ...personData, url: e.target.value })}
-                      style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
-                    />
-                    <input
-                      type="url"
-                      placeholder="Headshot Photo URL"
-                      className="form-input"
-                      value={personData.image}
-                      onChange={(e) => setPersonData({ ...personData, image: e.target.value })}
-                      style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
-                    />
-                  </div>
-                )}
-              </div>
-
-              {/* 5. SERVICES SECTION */}
-              <div ref={sectionRefs.services} style={{ background: "#ffffff", border: enabledModules.services ? "1px solid #2563eb" : "1px solid #e2e8f0", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <div style={{ width: "24px", height: "24px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.78rem" }}>
-                      <i className="fa-solid fa-briefcase"></i>
+                    <div>
+                      <strong style={{ fontSize: "0.95rem", color: "#0f172a", display: "block" }}>Founder / Author Entity (E-E-A-T)</strong>
+                      <span style={{ fontSize: "0.72rem", color: "#64748b" }}>Anchor individual author trustworthiness for Google quality raters</span>
                     </div>
-                    <strong style={{ fontSize: "0.92rem", color: "#0f172a" }}>5. Services Catalog ({servicesList.length})</strong>
                   </div>
-                  <label style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "0.75rem", fontWeight: 700, color: enabledModules.services ? "#2563eb" : "#64748b", cursor: "pointer" }}>
-                    <input type="checkbox" checked={enabledModules.services} onChange={() => toggleModule("services")} />
-                    Include in Schema
-                  </label>
-                </div>
 
-                {enabledModules.services && (
-                  <div>
-                    {servicesList.map((srv, idx) => (
-                      <div key={idx} style={{ padding: "10px", border: "1px solid #e2e8f0", borderRadius: "4px", background: "#f8fafc", marginBottom: "8px" }}>
-                        <div style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr 1fr 24px", gap: "6px", alignItems: "center" }}>
-                          <input
-                            type="text"
-                            placeholder="Service Name *"
-                            className="form-input"
-                            value={srv.name}
-                            onChange={(e) => updateService(idx, "name", e.target.value)}
-                            style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "5px 7px" }}
-                          />
-                          <input
-                            type="text"
-                            placeholder="Category"
-                            className="form-input"
-                            value={srv.serviceType}
-                            onChange={(e) => updateService(idx, "serviceType", e.target.value)}
-                            style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "5px 7px" }}
-                          />
-                          <input
-                            type="text"
-                            placeholder="Price ($750.00)"
-                            className="form-input"
-                            value={srv.price}
-                            onChange={(e) => updateService(idx, "price", e.target.value)}
-                            style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "5px 7px" }}
-                          />
+                  <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+                      <div className="form-group">
+                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Person Full Name *</label>
+                        <input
+                          type="text"
+                          className="form-input"
+                          value={personData.name}
+                          onChange={(e) => setPersonData({ ...personData, name: e.target.value })}
+                          style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Job Title / Role</label>
+                        <input
+                          type="text"
+                          className="form-input"
+                          value={personData.jobTitle}
+                          onChange={(e) => setPersonData({ ...personData, jobTitle: e.target.value })}
+                          style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
+                        />
+                      </div>
+                    </div>
+
+                    <div style={{ display: "grid", gridTemplateColumns: "1.2fr 0.8fr", gap: "8px" }}>
+                      <div className="form-group">
+                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Author Bio / Profile Page URL</label>
+                        <input
+                          type="url"
+                          className="form-input"
+                          value={personData.url}
+                          onChange={(e) => setPersonData({ ...personData, url: e.target.value })}
+                          style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Alumni / Education</label>
+                        <input
+                          type="text"
+                          className="form-input"
+                          value={personData.alumniOf}
+                          onChange={(e) => setPersonData({ ...personData, alumniOf: e.target.value })}
+                          style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group">
+                      <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>KnowsAbout (Skills / Topics comma-separated)</label>
+                      <input
+                        type="text"
+                        className="form-input"
+                        value={personData.knowsAbout}
+                        onChange={(e) => setPersonData({ ...personData, knowsAbout: e.target.value })}
+                        style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* 5. SERVICES FORM */}
+              {selectedType === "services" && (
+                <div style={{ background: "#ffffff", border: "1px solid #2563eb", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <div style={{ width: "26px", height: "26px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem" }}>
+                        <i className="fa-solid fa-briefcase"></i>
+                      </div>
+                      <div>
+                        <strong style={{ fontSize: "0.95rem", color: "#0f172a", display: "block" }}>Services Catalog</strong>
+                        <span style={{ fontSize: "0.72rem", color: "#64748b" }}>Define commercial offerings and pricing</span>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={addService}
+                      style={{ padding: "4px 8px", fontSize: "0.72rem", background: "#eff6ff", color: "#2563eb", border: "1px solid #bfdbfe", borderRadius: "4px", cursor: "pointer", fontWeight: 700 }}
+                    >
+                      <i className="fa-solid fa-plus me-1"></i> Add Service
+                    </button>
+                  </div>
+
+                  <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                    {servicesList.map((srv, sIdx) => (
+                      <div key={sIdx} style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "12px" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
+                          <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "#2563eb" }}>Service #{sIdx + 1}</span>
                           {servicesList.length > 1 && (
-                            <button type="button" onClick={() => removeService(idx)} style={{ background: "none", border: "none", color: "#ef4444", cursor: "pointer", padding: 0 }}>
-                              <i className="fa-solid fa-trash" style={{ fontSize: "0.7rem" }}></i>
+                            <button
+                              type="button"
+                              onClick={() => removeService(sIdx)}
+                              style={{ background: "none", border: "none", color: "#ef4444", cursor: "pointer", fontSize: "0.72rem" }}
+                            >
+                              <i className="fa-solid fa-trash me-1"></i> Remove
                             </button>
                           )}
                         </div>
+                        <div style={{ display: "grid", gridTemplateColumns: "1.2fr 0.8fr", gap: "8px", marginBottom: "6px" }}>
+                          <input
+                            type="text"
+                            className="form-input"
+                            placeholder="Service Name *"
+                            value={srv.name}
+                            onChange={(e) => updateService(sIdx, "name", e.target.value)}
+                            style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "5px 7px" }}
+                          />
+                          <input
+                            type="text"
+                            className="form-input"
+                            placeholder="Starting Price ($499)"
+                            value={srv.price}
+                            onChange={(e) => updateService(sIdx, "price", e.target.value)}
+                            style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "5px 7px" }}
+                          />
+                        </div>
+                        <textarea
+                          className="form-input"
+                          rows="2"
+                          placeholder="Service description..."
+                          value={srv.description}
+                          onChange={(e) => updateService(sIdx, "description", e.target.value)}
+                          style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "5px 7px" }}
+                        ></textarea>
                       </div>
                     ))}
-                    <button type="button" onClick={addService} className="btn btn-outline btn-sm" style={{ width: "100%", borderRadius: "4px", fontSize: "0.75rem", padding: "5px" }}>
-                      <i className="fa-solid fa-plus"></i> Add Service
+                  </div>
+                </div>
+              )}
+
+              {/* 6. PRODUCTS FORM */}
+              {selectedType === "products" && (
+                <div style={{ background: "#ffffff", border: "1px solid #2563eb", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <div style={{ width: "26px", height: "26px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem" }}>
+                        <i className="fa-solid fa-box-open"></i>
+                      </div>
+                      <div>
+                        <strong style={{ fontSize: "0.95rem", color: "#0f172a", display: "block" }}>Products &amp; Offers</strong>
+                        <span style={{ fontSize: "0.72rem", color: "#64748b" }}>E-commerce products, SKUs, and stock</span>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={addProduct}
+                      style={{ padding: "4px 8px", fontSize: "0.72rem", background: "#eff6ff", color: "#2563eb", border: "1px solid #bfdbfe", borderRadius: "4px", cursor: "pointer", fontWeight: 700 }}
+                    >
+                      <i className="fa-solid fa-plus me-1"></i> Add Product
                     </button>
                   </div>
-                )}
-              </div>
 
-              {/* 6. PRODUCTS SECTION */}
-              <div ref={sectionRefs.products} style={{ background: "#ffffff", border: enabledModules.products ? "1px solid #2563eb" : "1px solid #e2e8f0", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <div style={{ width: "24px", height: "24px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.78rem" }}>
-                      <i className="fa-solid fa-box-open"></i>
-                    </div>
-                    <strong style={{ fontSize: "0.92rem", color: "#0f172a" }}>6. Products &amp; Offers</strong>
-                  </div>
-                  <label style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "0.75rem", fontWeight: 700, color: enabledModules.products ? "#2563eb" : "#64748b", cursor: "pointer" }}>
-                    <input type="checkbox" checked={enabledModules.products} onChange={() => toggleModule("products")} />
-                    Include in Schema
-                  </label>
-                </div>
-
-                {enabledModules.products && (
-                  <div>
-                    {productsList.map((prod, idx) => (
-                      <div key={idx} style={{ padding: "10px", border: "1px solid #e2e8f0", borderRadius: "4px", background: "#f8fafc", marginBottom: "8px" }}>
-                        <div style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr 1fr", gap: "6px" }}>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                    {productsList.map((prd, pIdx) => (
+                      <div key={pIdx} style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "12px" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
+                          <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "#2563eb" }}>Product #{pIdx + 1}</span>
+                          {productsList.length > 1 && (
+                            <button
+                              type="button"
+                              onClick={() => removeProduct(pIdx)}
+                              style={{ background: "none", border: "none", color: "#ef4444", cursor: "pointer", fontSize: "0.72rem" }}
+                            >
+                              <i className="fa-solid fa-trash me-1"></i> Remove
+                            </button>
+                          )}
+                        </div>
+                        <div style={{ display: "grid", gridTemplateColumns: "1.2fr 0.8fr", gap: "8px", marginBottom: "6px" }}>
                           <input
                             type="text"
+                            className="form-input"
                             placeholder="Product Title *"
-                            className="form-input"
-                            value={prod.name}
-                            onChange={(e) => updateProduct(idx, "name", e.target.value)}
+                            value={prd.name}
+                            onChange={(e) => updateProduct(pIdx, "name", e.target.value)}
                             style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "5px 7px" }}
                           />
                           <input
                             type="text"
-                            placeholder="Price (499.00)"
                             className="form-input"
-                            value={prod.price}
-                            onChange={(e) => updateProduct(idx, "price", e.target.value)}
+                            placeholder="Price ($49.00)"
+                            value={prd.price}
+                            onChange={(e) => updateProduct(pIdx, "price", e.target.value)}
+                            style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "5px 7px" }}
+                          />
+                        </div>
+                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", marginBottom: "6px" }}>
+                          <input
+                            type="text"
+                            className="form-input"
+                            placeholder="SKU"
+                            value={prd.sku}
+                            onChange={(e) => updateProduct(pIdx, "sku", e.target.value)}
                             style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "5px 7px" }}
                           />
                           <input
-                            type="text"
-                            placeholder="SKU Code"
+                            type="url"
                             className="form-input"
-                            value={prod.sku}
-                            onChange={(e) => updateProduct(idx, "sku", e.target.value)}
+                            placeholder="Image URL"
+                            value={prd.image}
+                            onChange={(e) => updateProduct(pIdx, "image", e.target.value)}
                             style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "5px 7px" }}
                           />
                         </div>
                       </div>
                     ))}
-                    <button type="button" onClick={addProduct} className="btn btn-outline btn-sm" style={{ width: "100%", borderRadius: "4px", fontSize: "0.75rem", padding: "5px" }}>
-                      <i className="fa-solid fa-plus"></i> Add Product
+                  </div>
+                </div>
+              )}
+
+              {/* 7. FAQS FORM */}
+              {selectedType === "faqs" && (
+                <div style={{ background: "#ffffff", border: "1px solid #2563eb", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <div style={{ width: "26px", height: "26px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem" }}>
+                        <i className="fa-solid fa-circle-question"></i>
+                      </div>
+                      <div>
+                        <strong style={{ fontSize: "0.95rem", color: "#0f172a", display: "block" }}>FAQ Page Accordion</strong>
+                        <span style={{ fontSize: "0.72rem", color: "#64748b" }}>Interactive Q&amp;A rich snippets in search results</span>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={addFaq}
+                      style={{ padding: "4px 8px", fontSize: "0.72rem", background: "#eff6ff", color: "#2563eb", border: "1px solid #bfdbfe", borderRadius: "4px", cursor: "pointer", fontWeight: 700 }}
+                    >
+                      <i className="fa-solid fa-plus me-1"></i> Add Question
                     </button>
                   </div>
-                )}
-              </div>
 
-              {/* 7. FAQS SECTION */}
-              <div ref={sectionRefs.faqs} style={{ background: "#ffffff", border: enabledModules.faqs ? "1px solid #2563eb" : "1px solid #e2e8f0", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <div style={{ width: "24px", height: "24px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.78rem" }}>
-                      <i className="fa-solid fa-circle-question"></i>
-                    </div>
-                    <strong style={{ fontSize: "0.92rem", color: "#0f172a" }}>7. Frequently Asked Questions</strong>
-                  </div>
-                  <label style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "0.75rem", fontWeight: 700, color: enabledModules.faqs ? "#2563eb" : "#64748b", cursor: "pointer" }}>
-                    <input type="checkbox" checked={enabledModules.faqs} onChange={() => toggleModule("faqs")} />
-                    Include in Schema
-                  </label>
-                </div>
-
-                {enabledModules.faqs && (
-                  <div>
-                    {faqList.map((faq, idx) => (
-                      <div key={idx} style={{ padding: "8px", border: "1px solid #e2e8f0", borderRadius: "4px", background: "#f8fafc", marginBottom: "6px" }}>
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "3px" }}>
-                          <strong style={{ fontSize: "0.75rem" }}>Q#{idx + 1}</strong>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                    {faqList.map((faq, fIdx) => (
+                      <div key={fIdx} style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "12px" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
+                          <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "#2563eb" }}>Question #{fIdx + 1}</span>
                           {faqList.length > 1 && (
-                            <button type="button" onClick={() => removeFaq(idx)} style={{ background: "none", border: "none", color: "#ef4444", fontSize: "0.7rem", cursor: "pointer" }}>
-                              <i className="fa-solid fa-trash"></i>
+                            <button
+                              type="button"
+                              onClick={() => removeFaq(fIdx)}
+                              style={{ background: "none", border: "none", color: "#ef4444", cursor: "pointer", fontSize: "0.72rem" }}
+                            >
+                              <i className="fa-solid fa-trash me-1"></i> Remove
                             </button>
                           )}
                         </div>
                         <input
                           type="text"
-                          placeholder="Question"
-                          className="form-input mb-1"
+                          className="form-input mb-2"
+                          placeholder="What is your question? *"
                           value={faq.question}
-                          onChange={(e) => updateFaq(idx, "question", e.target.value)}
-                          style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "4px 6px" }}
+                          onChange={(e) => updateFaq(fIdx, "question", e.target.value)}
+                          style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "5px 7px" }}
                         />
                         <textarea
-                          rows={2}
-                          placeholder="Answer"
-                          className="form-textarea"
+                          className="form-input"
+                          rows="2"
+                          placeholder="Comprehensive factual answer..."
                           value={faq.answer}
-                          onChange={(e) => updateFaq(idx, "answer", e.target.value)}
-                          style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "4px 6px" }}
-                        />
+                          onChange={(e) => updateFaq(fIdx, "answer", e.target.value)}
+                          style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "5px 7px" }}
+                        ></textarea>
                       </div>
                     ))}
-                    <button type="button" onClick={addFaq} className="btn btn-outline btn-sm" style={{ width: "100%", borderRadius: "4px", fontSize: "0.75rem", padding: "5px" }}>
-                      <i className="fa-solid fa-plus"></i> Add Question
+                  </div>
+                </div>
+              )}
+
+              {/* 8. BREADCRUMBS FORM */}
+              {selectedType === "breadcrumbs" && (
+                <div style={{ background: "#ffffff", border: "1px solid #2563eb", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <div style={{ width: "26px", height: "26px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem" }}>
+                        <i className="fa-solid fa-folder-tree"></i>
+                      </div>
+                      <div>
+                        <strong style={{ fontSize: "0.95rem", color: "#0f172a", display: "block" }}>Breadcrumbs Trail</strong>
+                        <span style={{ fontSize: "0.72rem", color: "#64748b" }}>Hierarchical site navigation breadcrumb snippets</span>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={addBreadcrumb}
+                      style={{ padding: "4px 8px", fontSize: "0.72rem", background: "#eff6ff", color: "#2563eb", border: "1px solid #bfdbfe", borderRadius: "4px", cursor: "pointer", fontWeight: 700 }}
+                    >
+                      <i className="fa-solid fa-plus me-1"></i> Add Level
                     </button>
                   </div>
-                )}
-              </div>
 
-              {/* 8. BREADCRUMBS SECTION */}
-              <div ref={sectionRefs.breadcrumbs} style={{ background: "#ffffff", border: enabledModules.breadcrumbs ? "1px solid #2563eb" : "1px solid #e2e8f0", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <div style={{ width: "24px", height: "24px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.78rem" }}>
-                      <i className="fa-solid fa-folder-tree"></i>
-                    </div>
-                    <strong style={{ fontSize: "0.92rem", color: "#0f172a" }}>8. Breadcrumbs Hierarchy</strong>
-                  </div>
-                  <label style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "0.75rem", fontWeight: 700, color: enabledModules.breadcrumbs ? "#2563eb" : "#64748b", cursor: "pointer" }}>
-                    <input type="checkbox" checked={enabledModules.breadcrumbs} onChange={() => toggleModule("breadcrumbs")} />
-                    Include in Schema
-                  </label>
-                </div>
-
-                {enabledModules.breadcrumbs && (
-                  <div>
-                    {breadcrumbsList.map((crumb, idx) => (
-                      <div key={idx} style={{ display: "grid", gridTemplateColumns: "35px 1.5fr 2fr 24px", gap: "5px", alignItems: "center", marginBottom: "5px" }}>
-                        <span style={{ fontSize: "0.72rem", fontWeight: 800, textAlign: "center", background: "#f1f5f9", padding: "5px 0", borderRadius: "4px" }}>#{crumb.position}</span>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                    {breadcrumbsList.map((bc, bIdx) => (
+                      <div key={bIdx} style={{ display: "flex", alignItems: "center", gap: "8px", background: "#f8fafc", padding: "8px", borderRadius: "4px", border: "1px solid #e2e8f0" }}>
+                        <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "#64748b", minWidth: "20px" }}>#{bc.position}</span>
                         <input
                           type="text"
-                          placeholder="Name"
                           className="form-input"
-                          value={crumb.name}
-                          onChange={(e) => updateBreadcrumb(idx, "name", e.target.value)}
-                          style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "4px 6px" }}
+                          placeholder="Page Name"
+                          value={bc.name}
+                          onChange={(e) => updateBreadcrumb(bIdx, "name", e.target.value)}
+                          style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "5px 7px", flex: "1" }}
                         />
                         <input
                           type="url"
-                          placeholder="URL"
                           className="form-input"
-                          value={crumb.url}
-                          onChange={(e) => updateBreadcrumb(idx, "url", e.target.value)}
-                          style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "4px 6px" }}
+                          placeholder="https://example.com/url"
+                          value={bc.url}
+                          onChange={(e) => updateBreadcrumb(bIdx, "url", e.target.value)}
+                          style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "5px 7px", flex: "1.5" }}
                         />
                         {breadcrumbsList.length > 1 && (
-                          <button type="button" onClick={() => removeBreadcrumb(idx)} style={{ background: "none", border: "none", color: "#b91c1c", cursor: "pointer" }}>
-                            <i className="fa-solid fa-trash" style={{ fontSize: "0.65rem" }}></i>
+                          <button
+                            type="button"
+                            onClick={() => removeBreadcrumb(bIdx)}
+                            style={{ background: "none", border: "none", color: "#ef4444", cursor: "pointer", fontSize: "0.72rem" }}
+                          >
+                            <i className="fa-solid fa-trash"></i>
                           </button>
                         )}
                       </div>
                     ))}
-                    <button type="button" onClick={addBreadcrumb} className="btn btn-outline btn-sm" style={{ width: "100%", borderRadius: "4px", fontSize: "0.75rem", padding: "5px", marginTop: "3px" }}>
-                      <i className="fa-solid fa-plus"></i> Add Level
-                    </button>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
 
-              {/* 9. WEBPAGE & ARTICLE SECTION */}
-              <div ref={sectionRefs.webpage} style={{ background: "#ffffff", border: enabledModules.webpage ? "1px solid #2563eb" : "1px solid #e2e8f0", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <div style={{ width: "24px", height: "24px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.78rem" }}>
+              {/* 9. ARTICLE / WEBPAGE FORM */}
+              {selectedType === "webpage" && (
+                <div style={{ background: "#ffffff", border: "1px solid #2563eb", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
+                    <div style={{ width: "26px", height: "26px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem" }}>
                       <i className="fa-solid fa-newspaper"></i>
                     </div>
-                    <strong style={{ fontSize: "0.92rem", color: "#0f172a" }}>9. WebPage &amp; Article Content</strong>
+                    <div>
+                      <strong style={{ fontSize: "0.95rem", color: "#0f172a", display: "block" }}>Article / WebPage Entity</strong>
+                      <span style={{ fontSize: "0.72rem", color: "#64748b" }}>Optimize blog posts, news, and editorial content</span>
+                    </div>
                   </div>
-                  <label style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "0.75rem", fontWeight: 700, color: enabledModules.webpage ? "#2563eb" : "#64748b", cursor: "pointer" }}>
-                    <input type="checkbox" checked={enabledModules.webpage} onChange={() => toggleModule("webpage")} />
-                    Include in Schema
+
+                  <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                    <div className="form-group">
+                      <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Article Headline / Title *</label>
+                      <input
+                        type="text"
+                        className="form-input"
+                        value={webpageData.title}
+                        onChange={(e) => setWebpageData({ ...webpageData, title: e.target.value })}
+                        style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
+                      />
+                    </div>
+
+                    <div style={{ display: "grid", gridTemplateColumns: "1.2fr 0.8fr", gap: "8px" }}>
+                      <div className="form-group">
+                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Article URL</label>
+                        <input
+                          type="url"
+                          className="form-input"
+                          value={webpageData.url}
+                          onChange={(e) => setWebpageData({ ...webpageData, url: e.target.value })}
+                          style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Featured Image URL</label>
+                        <input
+                          type="url"
+                          className="form-input"
+                          value={webpageData.primaryImage}
+                          onChange={(e) => setWebpageData({ ...webpageData, primaryImage: e.target.value })}
+                          style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
+                        />
+                      </div>
+                    </div>
+
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+                      <div className="form-group">
+                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Date Published</label>
+                        <input
+                          type="text"
+                          className="form-input"
+                          value={webpageData.datePublished}
+                          onChange={(e) => setWebpageData({ ...webpageData, datePublished: e.target.value })}
+                          style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label" style={{ fontWeight: 700, fontSize: "0.76rem" }}>Category / Section</label>
+                        <input
+                          type="text"
+                          className="form-input"
+                          value={webpageData.articleSection}
+                          onChange={(e) => setWebpageData({ ...webpageData, articleSection: e.target.value })}
+                          style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* 10. ALL-IN-ONE MASTER GRAPH OVERVIEW */}
+              {selectedType === "masterGraph" && (
+                <div style={{ background: "#ffffff", border: "1px solid #d97706", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(217,119,6,0.08)" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px", paddingBottom: "8px", borderBottom: "1px solid #fef3c7" }}>
+                    <div style={{ width: "26px", height: "26px", background: "#fef3c7", color: "#d97706", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem" }}>
+                      <i className="fa-solid fa-diagram-project"></i>
+                    </div>
+                    <div>
+                      <strong style={{ fontSize: "0.95rem", color: "#92400e", display: "block" }}>All-in-One Master Website Graph</strong>
+                      <span style={{ fontSize: "0.72rem", color: "#b45309" }}>Combines all entity nodes into a single interconnected schema</span>
+                    </div>
+                  </div>
+
+                  <div style={{ background: "#fffbeb", border: "1px solid #fde68a", borderRadius: "4px", padding: "12px", marginBottom: "14px" }}>
+                    <p style={{ fontSize: "0.78rem", color: "#92400e", margin: 0, lineHeight: "1.5" }}>
+                      <strong>Active Master Graph Mode:</strong> This generates a complete single <code>@graph</code> array linking your <strong>WebSite, Organization, LocalBusiness, Author, Services, Products, FAQs, Breadcrumbs, and Article</strong> together using <code>@id</code> URI nodes. Edit any individual schema on the left and the master graph updates automatically!
+                    </p>
+                  </div>
+
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "8px" }}>
+                    {SCHEMA_TYPES.filter(t => t.id !== "masterGraph").map((item) => (
+                      <div
+                        key={item.id}
+                        onClick={() => setSelectedType(item.id)}
+                        style={{
+                          background: "#f8fafc",
+                          border: "1px solid #e2e8f0",
+                          borderRadius: "4px",
+                          padding: "8px 10px",
+                          cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "8px"
+                        }}
+                      >
+                        <i className={`fa-solid ${item.icon} text-primary`} style={{ fontSize: "0.75rem" }}></i>
+                        <span style={{ fontSize: "0.74rem", fontWeight: 600, color: "#0f172a" }}>{item.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+            </div>
+
+            {/* 3. RIGHT COLUMN: COMPACT OUTPUT & COPY SECTION */}
+            <div style={{ position: "sticky", top: "18px", display: "flex", flexDirection: "column", gap: "12px" }}>
+
+              <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "14px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
+
+                {/* Compact Header */}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px", paddingBottom: "6px", borderBottom: "1px solid #f1f5f9" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                    <span style={{ fontSize: "0.82rem", fontWeight: 700, color: "#0f172a" }}>
+                      <i className={`fa-solid ${currentItem.icon} text-primary`}></i> {currentItem.label}
+                    </span>
+                    <span style={{ fontSize: "0.68rem", background: "#f1f5f9", padding: "1px 5px", borderRadius: "4px", color: "#64748b" }}>
+                      {(jsonByteSize / 1024).toFixed(1)} KB
+                    </span>
+                  </div>
+
+                  {/* Minify Toggle */}
+                  <label style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "0.7rem", color: "#64748b", cursor: "pointer" }}>
+                    <input
+                      type="checkbox"
+                      checked={isMinified}
+                      onChange={() => setIsMinified(!isMinified)}
+                      style={{ cursor: "pointer", width: "12px", height: "12px" }}
+                    />
+                    Minify
                   </label>
                 </div>
 
-                {enabledModules.webpage && (
-                  <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                    <input
-                      type="text"
-                      placeholder="Page Headline / Title *"
-                      className="form-input"
-                      value={webpageData.title}
-                      onChange={(e) => setWebpageData({ ...webpageData, title: e.target.value })}
-                      style={{ borderRadius: "4px", fontSize: "0.8rem", padding: "6px 8px" }}
-                    />
-                    <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "6px" }}>
-                      <input
-                        type="url"
-                        placeholder="Canonical Page URL *"
-                        className="form-input"
-                        value={webpageData.url}
-                        onChange={(e) => setWebpageData({ ...webpageData, url: e.target.value })}
-                        style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "5px 7px" }}
-                      />
-                      <input
-                        type="url"
-                        placeholder="Featured Image URL"
-                        className="form-input"
-                        value={webpageData.primaryImage}
-                        onChange={(e) => setWebpageData({ ...webpageData, primaryImage: e.target.value })}
-                        style={{ borderRadius: "4px", fontSize: "0.78rem", padding: "5px 7px" }}
-                      />
-                    </div>
-                  </div>
-                )}
-              </div>
-
-            </div>
-
-            {/* 3. RIGHT COLUMN: COMPACT LIVE CODE OUTPUT & SERP PREVIEW */}
-            <div style={{ position: "sticky", top: "18px", display: "flex", flexDirection: "column", gap: "10px" }}>
-
-              {/* View Switcher Tabs */}
-              <div style={{ display: "flex", gap: "3px", background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "3px" }}>
-                {[
-                  { id: "code", label: "Master JSON-LD", icon: "fa-code" },
-                  { id: "serp_preview", label: "SERP Preview", icon: "fa-eye" },
-                  { id: "graph_tree", label: "Entity Tree", icon: "fa-diagram-project" }
-                ].map((t) => (
+                {/* Sub Tabs: Code, SERP Preview, Graph Visual */}
+                <div style={{ display: "flex", gap: "4px", marginBottom: "8px" }}>
                   <button
-                    key={t.id}
                     type="button"
-                    onClick={() => setActiveTab(t.id)}
+                    onClick={() => setActiveOutputTab("code")}
                     style={{
                       flex: 1,
-                      padding: "5px 6px",
-                      borderRadius: "4px",
-                      fontSize: "0.75rem",
+                      padding: "4px 0",
+                      fontSize: "0.72rem",
                       fontWeight: 700,
-                      border: "none",
-                      background: activeTab === t.id ? "#2563eb" : "transparent",
-                      color: activeTab === t.id ? "#ffffff" : "#64748b",
+                      background: activeOutputTab === "code" ? "#0f172a" : "#f8fafc",
+                      color: activeOutputTab === "code" ? "#ffffff" : "#64748b",
+                      border: "1px solid #e2e8f0",
+                      borderRadius: "4px",
                       cursor: "pointer"
                     }}
                   >
-                    <i className={`fa-solid ${t.icon}`}></i> {t.label}
+                    JSON-LD Code
                   </button>
-                ))}
-              </div>
+                  <button
+                    type="button"
+                    onClick={() => setActiveOutputTab("serp_preview")}
+                    style={{
+                      flex: 1,
+                      padding: "4px 0",
+                      fontSize: "0.72rem",
+                      fontWeight: 700,
+                      background: activeOutputTab === "serp_preview" ? "#0f172a" : "#f8fafc",
+                      color: activeOutputTab === "serp_preview" ? "#ffffff" : "#64748b",
+                      border: "1px solid #e2e8f0",
+                      borderRadius: "4px",
+                      cursor: "pointer"
+                    }}
+                  >
+                    Google SERP
+                  </button>
+                </div>
 
-              {/* COMPACT CODE OUTPUT BOX */}
-              {activeTab === "code" && (
-                <div className="schema-output-box" style={{ borderRadius: "4px", boxShadow: "0 2px 10px rgba(15,23,42,0.06)" }}>
-                  <div className="code-header" style={{ padding: "8px 12px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <span className="code-title" style={{ fontSize: "0.75rem" }}>
-                      <i className="fa-solid fa-file-code text-primary"></i> Master @graph ({activeModuleCount} Nodes)
-                    </span>
-                    <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                      <label style={{ fontSize: "0.7rem", color: "#94a3b8", display: "flex", alignItems: "center", gap: "3px", cursor: "pointer" }}>
-                        <input type="checkbox" checked={isMinified} onChange={(e) => setIsMinified(e.target.checked)} /> Minify
-                      </label>
-                      <button
-                        type="button"
-                        onClick={copyRawJson}
-                        style={{ padding: "3px 6px", fontSize: "0.7rem", fontWeight: 700, background: "#334155", color: "#e2e8f0", border: "1px solid #475569", borderRadius: "4px", cursor: "pointer" }}
-                      >
-                        {copiedRaw ? "✓" : "Copy JSON"}
-                      </button>
+                {/* TAB 1: CODE CONTAINER (COMPACT HEIGHT) */}
+                {activeOutputTab === "code" && (
+                  <div>
+                    <pre
+                      style={{
+                        background: "#090d16",
+                        color: "#38bdf8",
+                        padding: "10px",
+                        borderRadius: "4px",
+                        fontSize: "0.72rem",
+                        lineHeight: "1.4",
+                        maxHeight: "360px",
+                        overflowY: "auto",
+                        fontFamily: "monospace",
+                        margin: "0 0 10px 0",
+                        whiteSpace: "pre-wrap",
+                        wordBreak: "break-all",
+                        border: "1px solid #1e293b"
+                      }}
+                    >
+                      {scriptTagOutput}
+                    </pre>
+
+                    {/* Copy & Action Buttons */}
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px", marginBottom: "6px" }}>
                       <button
                         type="button"
                         onClick={copyScript}
-                        style={{ padding: "3px 8px", fontSize: "0.7rem", fontWeight: 700, background: "#2563eb", color: "#ffffff", border: "none", borderRadius: "4px", cursor: "pointer" }}
+                        style={{
+                          padding: "6px 0",
+                          fontSize: "0.74rem",
+                          fontWeight: 700,
+                          background: copiedScript ? "#10b981" : "#2563eb",
+                          color: "#ffffff",
+                          border: "none",
+                          borderRadius: "4px",
+                          cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "5px"
+                        }}
                       >
-                        {copiedScript ? "✓ Copied!" : "Copy <script>"}
+                        <i className={`fa-solid ${copiedScript ? "fa-check" : "fa-copy"}`}></i>
+                        {copiedScript ? "Copied Snippet!" : "Copy <script>"}
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={copyRawJson}
+                        style={{
+                          padding: "6px 0",
+                          fontSize: "0.74rem",
+                          fontWeight: 700,
+                          background: copiedRaw ? "#10b981" : "#0f172a",
+                          color: "#ffffff",
+                          border: "none",
+                          borderRadius: "4px",
+                          cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "5px"
+                        }}
+                      >
+                        <i className={`fa-solid ${copiedRaw ? "fa-check" : "fa-code"}`}></i>
+                        {copiedRaw ? "Copied JSON!" : "Copy JSON"}
                       </button>
                     </div>
+
+                    <button
+                      type="button"
+                      onClick={downloadJson}
+                      style={{
+                        width: "100%",
+                        padding: "6px 0",
+                        fontSize: "0.72rem",
+                        fontWeight: 600,
+                        background: "#f8fafc",
+                        color: "#334155",
+                        border: "1px solid #cbd5e1",
+                        borderRadius: "4px",
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "5px"
+                      }}
+                    >
+                      <i className="fa-solid fa-download"></i>
+                      Download HTML Snippet
+                    </button>
                   </div>
+                )}
 
-                  <pre className="code-block" style={{ maxHeight: "380px", overflowY: "auto", margin: 0, padding: "10px 12px" }}>
-                    <code style={{ fontSize: "0.75rem", lineHeight: 1.45 }}>{scriptTagOutput}</code>
-                  </pre>
-
-                  <div style={{ padding: "8px 12px", background: "#1e293b", borderTop: "1px solid #334155", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "6px" }}>
-                    <span style={{ fontSize: "0.7rem", color: "#94a3b8" }}>
-                      Size: ~{(scriptTagOutput.length / 1024).toFixed(2)} KB
-                    </span>
-                    <div style={{ display: "flex", gap: "8px" }}>
-                      <button type="button" onClick={downloadJson} style={{ background: "none", border: "none", color: "#94a3b8", fontSize: "0.72rem", cursor: "pointer", padding: 0 }}>
-                        <i className="fa-solid fa-download"></i> Save .html
-                      </button>
-                      <a href="https://search.google.com/test/rich-results" target="_blank" rel="noopener noreferrer" style={{ fontSize: "0.72rem", color: "#60a5fa", fontWeight: 700 }}>
-                        Google Test <i className="fa-solid fa-arrow-up-right-from-square" style={{ fontSize: "0.62rem" }}></i>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* SERP PREVIEW BOX */}
-              {activeTab === "serp_preview" && (
-                <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "14px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px", paddingBottom: "6px", borderBottom: "1px solid #f1f5f9" }}>
-                    <strong style={{ fontSize: "0.78rem", color: "#0f172a" }}>Google SERP Simulation</strong>
-                    <div style={{ display: "flex", gap: "3px" }}>
-                      <button type="button" onClick={() => setPreviewDevice("desktop")} style={{ padding: "2px 5px", borderRadius: "4px", fontSize: "0.68rem", background: previewDevice === "desktop" ? "#e2e8f0" : "transparent", border: "1px solid #cbd5e1" }}><i className="fa-solid fa-desktop"></i></button>
-                      <button type="button" onClick={() => setPreviewDevice("mobile")} style={{ padding: "2px 5px", borderRadius: "4px", fontSize: "0.68rem", background: previewDevice === "mobile" ? "#e2e8f0" : "transparent", border: "1px solid #cbd5e1" }}><i className="fa-solid fa-mobile-screen"></i></button>
-                    </div>
-                  </div>
-
-                  <div style={{ padding: "8px", background: "#ffffff", border: previewDevice === "mobile" ? "1px solid #cbd5e1" : "none", borderRadius: "4px" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "0.72rem", color: "#4d5156", marginBottom: "2px" }}>
-                      <span style={{ width: "14px", height: "14px", background: "#f1f3f4", borderRadius: "50%", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.55rem" }}><i className="fa-solid fa-globe"></i></span>
-                      <span style={{ fontWeight: 600, color: "#202124" }}>{orgData.name || "abdullahbdseo.vercel.app"}</span>
-                      {enabledModules.breadcrumbs && <><span>›</span><span>Services</span></>}
-                    </div>
-
-                    <h4 style={{ fontSize: "0.95rem", fontWeight: 400, color: "#1a0dab", margin: "0 0 3px", lineHeight: 1.25 }}>
-                      {webpageData.title || websiteData.name}
-                    </h4>
-
-                    {enabledModules.localBusiness && (
-                      <div style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "0.7rem", color: "#70757a", margin: "2px 0" }}>
-                        <div style={{ color: "#e37400", display: "flex", gap: "1px" }}><i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i></div>
-                        <span style={{ fontWeight: 700, color: "#202124" }}>5.0 (48)</span>
-                        <span>•</span>
-                        <span style={{ color: "#188038", fontWeight: 700 }}>Open</span>
+                {/* TAB 2: SERP PREVIEW */}
+                {activeOutputTab === "serp_preview" && (
+                  <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "12px" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
+                      <span style={{ fontSize: "0.7rem", color: "#64748b" }}>Google Search Preview</span>
+                      <div style={{ display: "flex", gap: "4px" }}>
+                        <button
+                          type="button"
+                          onClick={() => setPreviewDevice("desktop")}
+                          style={{
+                            padding: "2px 6px",
+                            fontSize: "0.68rem",
+                            borderRadius: "4px",
+                            border: "1px solid #cbd5e1",
+                            background: previewDevice === "desktop" ? "#0f172a" : "#ffffff",
+                            color: previewDevice === "desktop" ? "#ffffff" : "#64748b",
+                            cursor: "pointer"
+                          }}
+                        >
+                          Desktop
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setPreviewDevice("mobile")}
+                          style={{
+                            padding: "2px 6px",
+                            fontSize: "0.68rem",
+                            borderRadius: "4px",
+                            border: "1px solid #cbd5e1",
+                            background: previewDevice === "mobile" ? "#0f172a" : "#ffffff",
+                            color: previewDevice === "mobile" ? "#ffffff" : "#64748b",
+                            cursor: "pointer"
+                          }}
+                        >
+                          Mobile
+                        </button>
                       </div>
-                    )}
+                    </div>
 
-                    <p style={{ fontSize: "0.75rem", color: "#4d5156", lineHeight: 1.4, margin: "3px 0 0" }}>
-                      {webpageData.description || orgData.description}
-                    </p>
+                    {/* Google SERP Snippet Box */}
+                    <div style={{ padding: "10px", background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "4px" }}>
+                        <div style={{ width: "16px", height: "16px", background: "#2563eb", borderRadius: "50%", display: "inline-flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: "0.55rem" }}>
+                          A
+                        </div>
+                        <span style={{ fontSize: "0.72rem", color: "#202124" }}>{websiteData.name.split("-")[0]}</span>
+                        <span style={{ fontSize: "0.68rem", color: "#5f6368" }}>{websiteData.url}</span>
+                      </div>
+
+                      <h3 style={{ fontSize: "0.95rem", color: "#1a0dab", margin: "0 0 4px 0", cursor: "pointer", textDecoration: "underline", fontWeight: 500, lineHeight: "1.3" }}>
+                        {webpageData.title}
+                      </h3>
+
+                      <p style={{ fontSize: "0.75rem", color: "#4d5156", margin: "0 0 6px 0", lineHeight: "1.4" }}>
+                        {webpageData.description}
+                      </p>
+
+                      {/* SERP Sitelinks or FAQs */}
+                      <div style={{ borderTop: "1px solid #e2e8f0", paddingTop: "6px", marginTop: "6px", display: "flex", flexDirection: "column", gap: "4px" }}>
+                        <div style={{ fontSize: "0.68rem", color: "#0f172a", fontWeight: 600 }}>
+                          <i className="fa-solid fa-star text-warning me-1"></i>
+                          Rating: {localBizData.ratingValue} - {localBizData.reviewCount} reviews - Price: {localBizData.priceRange}
+                        </div>
+                        {faqList.slice(0, 2).map((faq, i) => (
+                          <div key={i} style={{ fontSize: "0.68rem", color: "#1a0dab", paddingLeft: "8px", borderLeft: "2px solid #2563eb" }}>
+                            <strong>Q: {faq.question}</strong>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
-              {/* ENTITY TREE BOX */}
-              {activeTab === "graph_tree" && (
-                <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "14px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
-                  <strong style={{ fontSize: "0.78rem", color: "#0f172a", display: "block", marginBottom: "8px" }}>
-                    Connected Master Graph Nodes ({activeModuleCount} Active)
-                  </strong>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "4px", fontSize: "0.72rem" }}>
-                    {enabledModules.website && <div style={{ padding: "4px 6px", background: "#eff6ff", borderRadius: "4px", color: "#1e40af" }}>🌐 <strong>WebSite:</strong> <code>/#website</code></div>}
-                    {enabledModules.organization && <div style={{ padding: "4px 6px", background: "#f8fafc", borderRadius: "4px" }}>🏢 <strong>Organization:</strong> <code>/#organization</code></div>}
-                    {enabledModules.person && <div style={{ padding: "4px 6px", background: "#f8fafc", borderRadius: "4px" }}>👤 <strong>Author / Founder:</strong> <code>/#/schema/person/author</code></div>}
-                    {enabledModules.localBusiness && <div style={{ padding: "4px 6px", background: "#f8fafc", borderRadius: "4px" }}>📍 <strong>Local Office:</strong> <code>/#localbusiness</code></div>}
-                    {enabledModules.services && <div style={{ padding: "4px 6px", background: "#f8fafc", borderRadius: "4px" }}>💼 <strong>Services:</strong> <code>/#service-1</code>, <code>/#service-2</code></div>}
-                    {enabledModules.products && <div style={{ padding: "4px 6px", background: "#f8fafc", borderRadius: "4px" }}>🛍️ <strong>Products:</strong> <code>/#product-1</code></div>}
-                    {enabledModules.faqs && <div style={{ padding: "4px 6px", background: "#f8fafc", borderRadius: "4px" }}>❓ <strong>FAQPage:</strong> <code>/#faq</code></div>}
-                    {enabledModules.breadcrumbs && <div style={{ padding: "4px 6px", background: "#f8fafc", borderRadius: "4px" }}>🧭 <strong>Breadcrumbs:</strong> <code>/#breadcrumb</code></div>}
-                    {enabledModules.webpage && <div style={{ padding: "4px 6px", background: "#f8fafc", borderRadius: "4px" }}>📄 <strong>WebPage:</strong> <code>/#webpage</code></div>}
-                  </div>
+                {/* Rich Results & Validator Links */}
+                <div style={{ marginTop: "10px", display: "flex", gap: "6px" }}>
+                  <a
+                    href="https://validator.schema.org/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      flex: 1,
+                      textAlign: "center",
+                      padding: "5px 0",
+                      fontSize: "0.7rem",
+                      background: "#eff6ff",
+                      color: "#2563eb",
+                      border: "1px solid #bfdbfe",
+                      borderRadius: "4px",
+                      textDecoration: "none",
+                      fontWeight: 600
+                    }}
+                  >
+                    <i className="fa-solid fa-arrow-up-right-from-square me-1"></i> Schema.org Validator
+                  </a>
+                  <a
+                    href="https://search.google.com/test/rich-results"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      flex: 1,
+                      textAlign: "center",
+                      padding: "5px 0",
+                      fontSize: "0.7rem",
+                      background: "#eff6ff",
+                      color: "#2563eb",
+                      border: "1px solid #bfdbfe",
+                      borderRadius: "4px",
+                      textDecoration: "none",
+                      fontWeight: 600
+                    }}
+                  >
+                    <i className="fa-solid fa-google me-1"></i> Google Rich Results
+                  </a>
                 </div>
-              )}
+
+              </div>
 
             </div>
 
-          </div>
-
-          {/* RELATED TOOLS */}
-          <div className="tool-related-section" style={{ marginTop: "40px" }}>
-            <h3 style={{ fontSize: "1.3rem", fontWeight: 800, color: "#0f172a", margin: "0 0 6px" }}>
-              Explore Related SEO Tools
-            </h3>
-            <p style={{ fontSize: "0.9rem", color: "#64748b", margin: 0 }}>
-              Verify crawler directives, simulate snippets, and check server response headers.
-            </p>
-            <div className="related-tools-grid">
-              <div className="tool-ref-card" style={{ borderRadius: "4px" }}>
-                <div className="tool-ref-icon" style={{ background: "#fef3c7", color: "#d97706", borderRadius: "4px" }}>
-                  <i className="fa-brands fa-google"></i>
-                </div>
-                <h4 className="tool-ref-title"><Link href="/tools/serp-simulator">Google SERP Simulator</Link></h4>
-                <p className="tool-ref-desc">Preview meta title and description snippets with live pixel length limits.</p>
-                <div className="tool-ref-footer"><Link href="/tools/serp-simulator" className="tool-ref-link">Simulate SERP <i className="fa-solid fa-arrow-right"></i></Link></div>
-              </div>
-
-              <div className="tool-ref-card" style={{ borderRadius: "4px" }}>
-                <div className="tool-ref-icon" style={{ background: "#f1f5f9", color: "#334155", borderRadius: "4px" }}>
-                  <i className="fa-solid fa-robot"></i>
-                </div>
-                <h4 className="tool-ref-title"><Link href="/tools/robots-sitemap-generator">Robots.txt Builder</Link></h4>
-                <p className="tool-ref-desc">Generate bot crawler directives and compliant XML sitemaps.</p>
-                <div className="tool-ref-footer"><Link href="/tools/robots-sitemap-generator" className="tool-ref-link">Build Robots.txt <i className="fa-solid fa-arrow-right"></i></Link></div>
-              </div>
-
-              <div className="tool-ref-card" style={{ borderRadius: "4px" }}>
-                <div className="tool-ref-icon" style={{ background: "#dbeafe", color: "#1d4ed8", borderRadius: "4px" }}>
-                  <i className="fa-solid fa-magnifying-glass-chart"></i>
-                </div>
-                <h4 className="tool-ref-title"><Link href="/tools/deep-seo-audit">Deep SEO Audit Tool</Link></h4>
-                <p className="tool-ref-desc">Audit on-page SEO score, tags, headings, canonicals, and Core Web Vitals.</p>
-                <div className="tool-ref-footer"><Link href="/tools/deep-seo-audit" className="tool-ref-link">Run Audit <i className="fa-solid fa-arrow-right"></i></Link></div>
-              </div>
-            </div>
-          </div>
-
-          {/* FAQ Accordion Section */}
-          <ToolFaqAccordion
-            title="Schema.org & JSON-LD Rich Snippets FAQ"
-            faqs={[
-              {
-                q: "What is the All-in-One Master @graph Schema approach and why is it superior?",
-                a: "Instead of injecting multiple fragmented, isolated scripts across your site, the @graph master array links your WebSite, Organization, Author, Services, Products, FAQs, and Breadcrumbs together into one single connected Knowledge Graph. Search engines and AI models (ChatGPT, Gemini) can instantly resolve all entity relationships with 100% accuracy."
-              },
-              {
-                q: "Can I selectively include or exclude certain modules from the complete schema?",
-                a: "Yes! Every module has an 'Include in Master Graph' toggle checkbox on the left and on the section header. If your site does not sell products or does not have physical local business hours, simply uncheck those modules and the generator will clean and adjust the master @graph code in real time."
-              },
-              {
-                q: "Where should I paste the generated master schema code?",
-                a: "Paste the generated <script type=\"application/ld+json\"> snippet into the <head> section of your website layout. In Next.js, add it to your root layout.js or page metadata using dangerouslySetInnerHTML or next/script."
-              },
-              {
-                q: "How do I validate the master schema for Google Rich Results?",
-                a: "Click 'Google Rich Results' or 'Schema.org' in the code output box to test the payload directly on Google's official validator with zero errors."
-              }
-            ]}
-          />
-
-          {/* Consultation CTA Banner */}
-          <div className="tool-cta-box" style={{ borderRadius: "4px" }}>
-            <h4>Need Bespoke Schema &amp; Semantic Knowledge Graph SEO?</h4>
-            <p>We build connected entity graphs, product rich data, and automated schema pipelines.</p>
-            <div style={{ display: "flex", justifyContent: "center", gap: "12px", flexWrap: "wrap" }}>
-              <Link href="/contact" className="btn btn-primary btn-sm" style={{ borderRadius: "4px" }}>
-                <i className="fa-solid fa-comments"></i> Book Schema Consultation
-              </Link>
-              <Link href="/services/technical-seo-service-in-bangladesh" className="btn btn-outline btn-sm" style={{ borderRadius: "4px" }}>
-                Explore Technical SEO <i className="fa-solid fa-arrow-right"></i>
-              </Link>
-            </div>
           </div>
 
         </div>
       </section>
-    </div>
+
+      {/* EDUCATIONAL FAQ ACCORDION SECTION */}
+      <section className="section-padding" style={{ background: "#f8fafc", borderTop: "1px solid #e2e8f0" }}>
+        <div className="container" style={{ maxWidth: "860px" }}>
+          <div className="text-center mb-4">
+            <h2 style={{ fontSize: "1.4rem", fontWeight: 700, color: "#0f172a" }}>Frequently Asked Questions</h2>
+            <p style={{ fontSize: "0.85rem", color: "#64748b" }}>Everything you need to know about JSON-LD structured data and AI search optimization.</p>
+          </div>
+          <ToolFaqAccordion items={faqItems} />
+        </div>
+      </section>
+    </>
   );
 }
