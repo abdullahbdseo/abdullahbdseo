@@ -123,6 +123,7 @@ export default function RootLayout({ children }) {
         "sameAs": [
           siteSettings.social_linkedin,
           siteSettings.social_twitter,
+          siteSettings.social_facebook,
           siteSettings.social_github,
           siteSettings.social_youtube
         ].filter(Boolean)
@@ -150,6 +151,7 @@ export default function RootLayout({ children }) {
         "sameAs": [
           siteSettings.social_linkedin,
           siteSettings.social_twitter,
+          siteSettings.social_facebook,
           siteSettings.social_github,
           siteSettings.social_youtube
         ].filter(Boolean)

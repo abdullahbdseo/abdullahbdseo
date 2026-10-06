@@ -89,7 +89,13 @@ export default async function SingleBlogPostPage({ params }) {
     "author": {
       "@type": "Person",
       "name": post.author?.name || siteSettings.expert_name,
-      "jobTitle": post.author?.role || siteSettings.expert_title
+      "jobTitle": post.author?.role || siteSettings.expert_title,
+      "url": "https://abdullahbdseo.vercel.app",
+      "sameAs": [
+        siteSettings.social_linkedin,
+        siteSettings.social_twitter,
+        siteSettings.social_facebook
+      ].filter(Boolean)
     },
     "publisher": {
       "@type": "Organization",
