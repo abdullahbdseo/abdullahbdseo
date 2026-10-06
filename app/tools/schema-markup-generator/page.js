@@ -13,13 +13,19 @@ const SCHEMA_TYPES = [
   { id: "products", label: "Product & Offers", icon: "fa-box-open", badge: "Shopping", desc: "E-com items, SKUs, stock" },
   { id: "faqs", label: "FAQ Page Accordion", icon: "fa-circle-question", badge: "Rich Snippet", desc: "Expandable Q&A pairs" },
   { id: "breadcrumbs", label: "Breadcrumbs Trail", icon: "fa-folder-tree", badge: "SERP Trail", desc: "Navigation hierarchy levels" },
-  { id: "webpage", label: "Article / WebPage", icon: "fa-newspaper", badge: "Content", desc: "Headline, author, publisher" },
-  { id: "masterGraph", label: "All-in-One Master Graph", icon: "fa-diagram-project", badge: "Complete @graph", desc: "Full connected website schema" }
+  { id: "webpage", label: "Article / WebPage", icon: "fa-newspaper", badge: "Content", desc: "Headline, author, publisher" }
 ];
 
 export default function SchemaMarkupGenerator() {
-  const [selectedType, setSelectedType] = useState("website");
-  const [activeOutputTab, setActiveOutputTab] = useState("code"); // 'code', 'serp_preview', 'graph_tree'
+  // Active editor form in the middle column
+  const [activeEditor, setActiveEditor] = useState("webpage");
+
+  // Selected schemas to include in the code output (multi-select / one-by-one)
+  const [selectedSchemas, setSelectedSchemas] = useState({
+    webpage: true
+  });
+
+  const [activeOutputTab, setActiveOutputTab] = useState("code"); // 'code', 'serp_preview'
   const [copiedScript, setCopiedScript] = useState(false);
   const [copiedRaw, setCopiedRaw] = useState(false);
   const [isMinified, setIsMinified] = useState(false);
@@ -29,6 +35,37 @@ export default function SchemaMarkupGenerator() {
   const showToast = (msg) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(""), 2800);
+  };
+
+  // Toggle selection of a schema
+  const toggleSchemaSelection = (id, e) => {
+    if (e) e.stopPropagation();
+    setSelectedSchemas((prev) => {
+      const next = { ...prev, [id]: !prev[id] };
+      return next;
+    });
+  };
+
+  // Select/activate an editor form and ensure it is included
+  const handleSelectSchema = (id) => {
+    setActiveEditor(id);
+    setSelectedSchemas((prev) => ({
+      ...prev,
+      [id]: true
+    }));
+  };
+
+  const selectAll = () => {
+    const all = {};
+    SCHEMA_TYPES.forEach(t => { all[t.id] = true; });
+    setSelectedSchemas(all);
+    showToast("All schema types selected!");
+  };
+
+  const selectOnlyActive = () => {
+    const only = { [activeEditor]: true };
+    setSelectedSchemas(only);
+    showToast(`Selected only ${activeEditor}!`);
   };
 
   // 1. WEBSITE DATA
@@ -251,7 +288,7 @@ export default function SchemaMarkupGenerator() {
     return obj;
   }
 
-  // GENERATE SCHEMA OUTPUT BASED ON SELECTED TYPE
+  // GENERATE SCHEMA OUTPUT BASED ON ALL SELECTED SCHEMAS (ONE BY ONE / CUMULATIVE)
   const generatedSchema = useMemo(() => {
     const domain = (websiteData.url || "https://example.com").replace(/\/+$/, "");
     const orgId = `${domain}/#organization`;
@@ -261,182 +298,184 @@ export default function SchemaMarkupGenerator() {
     const primaryImageId = `${webpageData.url || domain}/#primaryimage`;
     const breadcrumbId = `${webpageData.url || domain}/#breadcrumb`;
 
-    switch (selectedType) {
-      case "website":
-        return cleanObject({
-          "@context": "https://schema.org",
-          "@type": "WebSite",
-          "@id": websiteId,
-          "url": domain,
-          "name": websiteData.name,
-          "alternateName": websiteData.alternateName || undefined,
-          "description": websiteData.description || undefined,
-          "inLanguage": websiteData.inLanguage || "en-US",
-          "potentialAction": websiteData.searchTarget ? [
-            {
-              "@type": "SearchAction",
-              "target": {
-                "@type": "EntryPoint",
-                "urlTemplate": websiteData.searchTarget
-              },
-              "query-input": "required name=search_term_string"
-            }
-          ] : undefined
-        });
+    const selectedKeys = Object.keys(selectedSchemas).filter(k => selectedSchemas[k]);
+    const activeKeys = selectedKeys.length > 0 ? selectedKeys : [activeEditor];
 
-      case "organization":
-        return cleanObject({
-          "@context": "https://schema.org",
-          "@type": orgData.subType || "Organization",
-          "@id": orgId,
-          "name": orgData.name,
-          "legalName": orgData.legalName || undefined,
-          "alternateName": orgData.alternateName || undefined,
-          "url": orgData.url || domain,
-          "logo": orgData.logo ? {
-            "@type": "ImageObject",
-            "@id": `${domain}/#logo`,
-            "url": orgData.logo,
-            "caption": orgData.name
-          } : undefined,
-          "description": orgData.description || undefined,
-          "foundingDate": orgData.foundingDate || undefined,
-          "founder": orgData.founderName ? { "@type": "Person", "name": orgData.founderName } : undefined,
-          "contactPoint": (orgData.phone || orgData.email) ? {
-            "@type": "ContactPoint",
-            "telephone": orgData.phone || undefined,
-            "contactType": "customer service",
-            "email": orgData.email || undefined,
-            "availableLanguage": ["English", "Bengali"]
-          } : undefined,
-          "address": (orgData.street || orgData.city) ? {
-            "@type": "PostalAddress",
-            "streetAddress": orgData.street || undefined,
-            "addressLocality": orgData.city || undefined,
-            "addressRegion": orgData.region || undefined,
-            "postalCode": orgData.postalCode || undefined,
-            "addressCountry": orgData.country || undefined
-          } : undefined,
-          "sameAs": orgData.sameAs.filter(url => url && url.trim() !== "")
-        });
+    const entities = [];
 
-      case "localBusiness":
-        return cleanObject({
-          "@context": "https://schema.org",
-          "@type": localBizData.subType || "LocalBusiness",
-          "@id": `${domain}/#localbusiness`,
-          "name": localBizData.name,
-          "image": localBizData.image ? [localBizData.image] : undefined,
-          "url": localBizData.url || domain,
-          "telephone": localBizData.phone,
-          "email": localBizData.email || undefined,
-          "priceRange": localBizData.priceRange || "$$",
-          "areaServed": localBizData.areaServed ? localBizData.areaServed.split(",").map(s => s.trim()) : undefined,
-          "address": {
-            "@type": "PostalAddress",
-            "streetAddress": localBizData.street || undefined,
-            "addressLocality": localBizData.city || undefined,
-            "addressRegion": localBizData.region || undefined,
-            "postalCode": localBizData.postalCode || undefined,
-            "addressCountry": localBizData.country || undefined
-          },
-          "geo": (localBizData.latitude && localBizData.longitude) ? {
-            "@type": "GeoCoordinates",
-            "latitude": parseFloat(localBizData.latitude) || localBizData.latitude,
-            "longitude": parseFloat(localBizData.longitude) || localBizData.longitude
-          } : undefined,
-          "hasMap": localBizData.hasMap || undefined,
-          "openingHoursSpecification": [
-            {
-              "@type": "OpeningHoursSpecification",
-              "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-              "opens": localBizData.opensTime || "09:00",
-              "closes": localBizData.closesTime || "18:00"
-            }
-          ],
-          "aggregateRating": (localBizData.ratingValue && localBizData.reviewCount) ? {
-            "@type": "AggregateRating",
-            "ratingValue": localBizData.ratingValue,
-            "reviewCount": localBizData.reviewCount,
-            "bestRating": "5",
-            "worstRating": "1"
-          } : undefined
-        });
+    // 1. WebSite
+    if (activeKeys.includes("website") && websiteData.url) {
+      entities.push({
+        "@type": "WebSite",
+        "@id": websiteId,
+        "url": domain,
+        "name": websiteData.name,
+        "alternateName": websiteData.alternateName || undefined,
+        "description": websiteData.description || undefined,
+        "inLanguage": websiteData.inLanguage || "en-US",
+        "publisher": activeKeys.includes("organization") ? { "@id": orgId } : undefined,
+        "potentialAction": websiteData.searchTarget ? [
+          {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": websiteData.searchTarget
+            },
+            "query-input": "required name=search_term_string"
+          }
+        ] : undefined
+      });
+    }
 
-      case "person":
-        return cleanObject({
-          "@context": "https://schema.org",
-          "@type": "Person",
-          "@id": authorId,
-          "name": personData.name,
-          "jobTitle": personData.jobTitle || undefined,
-          "url": personData.url || domain,
-          "image": personData.image || undefined,
-          "description": personData.description || undefined,
-          "email": personData.email ? `mailto:${personData.email}` : undefined,
-          "telephone": personData.telephone || undefined,
-          "alumniOf": personData.alumniOf ? {
-            "@type": "EducationalOrganization",
-            "name": personData.alumniOf
-          } : undefined,
-          "knowsAbout": personData.knowsAbout ? personData.knowsAbout.split(",").map(k => k.trim()) : undefined,
-          "sameAs": personData.sameAs.filter(url => url && url.trim() !== "")
-        });
+    // 2. Organization
+    if (activeKeys.includes("organization") && orgData.name) {
+      entities.push({
+        "@type": orgData.subType || "Organization",
+        "@id": orgId,
+        "name": orgData.name,
+        "legalName": orgData.legalName || undefined,
+        "alternateName": orgData.alternateName || undefined,
+        "url": orgData.url || domain,
+        "logo": orgData.logo ? {
+          "@type": "ImageObject",
+          "@id": `${domain}/#logo`,
+          "url": orgData.logo,
+          "caption": orgData.name
+        } : undefined,
+        "image": orgData.logo ? { "@id": `${domain}/#logo` } : undefined,
+        "description": orgData.description || undefined,
+        "foundingDate": orgData.foundingDate || undefined,
+        "founder": (activeKeys.includes("person") && personData.name) ? { "@id": authorId } : (orgData.founderName ? { "@type": "Person", "name": orgData.founderName } : undefined),
+        "contactPoint": (orgData.phone || orgData.email) ? {
+          "@type": "ContactPoint",
+          "telephone": orgData.phone || undefined,
+          "contactType": "customer service",
+          "email": orgData.email || undefined,
+          "availableLanguage": ["English", "Bengali"]
+        } : undefined,
+        "address": (orgData.street || orgData.city) ? {
+          "@type": "PostalAddress",
+          "streetAddress": orgData.street || undefined,
+          "addressLocality": orgData.city || undefined,
+          "addressRegion": orgData.region || undefined,
+          "postalCode": orgData.postalCode || undefined,
+          "addressCountry": orgData.country || undefined
+        } : undefined,
+        "sameAs": orgData.sameAs.filter(url => url && url.trim() !== "")
+      });
+    }
 
-      case "services":
-        if (servicesList.length === 1) {
-          const s = servicesList[0];
-          return cleanObject({
-            "@context": "https://schema.org",
+    // 3. Local Business
+    if (activeKeys.includes("localBusiness") && localBizData.name) {
+      entities.push({
+        "@type": localBizData.subType || "LocalBusiness",
+        "@id": `${domain}/#localbusiness`,
+        "name": localBizData.name,
+        "image": localBizData.image ? [localBizData.image] : undefined,
+        "url": localBizData.url || domain,
+        "telephone": localBizData.phone,
+        "email": localBizData.email || undefined,
+        "priceRange": localBizData.priceRange || "$$",
+        "parentOrganization": activeKeys.includes("organization") ? { "@id": orgId } : undefined,
+        "areaServed": localBizData.areaServed ? localBizData.areaServed.split(",").map(s => s.trim()) : undefined,
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": localBizData.street || undefined,
+          "addressLocality": localBizData.city || undefined,
+          "addressRegion": localBizData.region || undefined,
+          "postalCode": localBizData.postalCode || undefined,
+          "addressCountry": localBizData.country || undefined
+        },
+        "geo": (localBizData.latitude && localBizData.longitude) ? {
+          "@type": "GeoCoordinates",
+          "latitude": parseFloat(localBizData.latitude) || localBizData.latitude,
+          "longitude": parseFloat(localBizData.longitude) || localBizData.longitude
+        } : undefined,
+        "hasMap": localBizData.hasMap || undefined,
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+            "opens": localBizData.opensTime || "09:00",
+            "closes": localBizData.closesTime || "18:00"
+          }
+        ],
+        "aggregateRating": (localBizData.ratingValue && localBizData.reviewCount) ? {
+          "@type": "AggregateRating",
+          "ratingValue": localBizData.ratingValue,
+          "reviewCount": localBizData.reviewCount,
+          "bestRating": "5",
+          "worstRating": "1"
+        } : undefined
+      });
+    }
+
+    // 4. Person / Author
+    if (activeKeys.includes("person") && personData.name) {
+      entities.push({
+        "@type": "Person",
+        "@id": authorId,
+        "name": personData.name,
+        "jobTitle": personData.jobTitle || undefined,
+        "worksFor": activeKeys.includes("organization") ? { "@id": orgId } : undefined,
+        "url": personData.url || domain,
+        "image": personData.image || undefined,
+        "description": personData.description || undefined,
+        "email": personData.email ? `mailto:${personData.email}` : undefined,
+        "telephone": personData.telephone || undefined,
+        "alumniOf": personData.alumniOf ? {
+          "@type": "EducationalOrganization",
+          "name": personData.alumniOf
+        } : undefined,
+        "knowsAbout": personData.knowsAbout ? personData.knowsAbout.split(",").map(k => k.trim()) : undefined,
+        "sameAs": personData.sameAs.filter(url => url && url.trim() !== "")
+      });
+    }
+
+    // 5. Services
+    if (activeKeys.includes("services")) {
+      servicesList.forEach((s, idx) => {
+        if (s.name && s.name.trim() !== "") {
+          entities.push({
             "@type": s.serviceType || "Service",
+            "@id": `${domain}/#service-${idx + 1}`,
             "name": s.name,
             "description": s.description || undefined,
+            "provider": activeKeys.includes("organization") ? { "@id": orgId } : undefined,
+            "serviceType": s.serviceType || undefined,
             "url": s.url || domain,
             "areaServed": s.areaServed ? { "@type": "AdministrativeArea", "name": s.areaServed } : undefined,
             "offers": s.price ? {
               "@type": "Offer",
               "price": s.price,
-              "priceCurrency": s.currency || "USD"
+              "priceCurrency": s.currency || "USD",
+              "availability": "https://schema.org/InStock"
             } : undefined
           });
         }
-        return cleanObject({
-          "@context": "https://schema.org",
-          "@type": "ItemList",
-          "itemListElement": servicesList.filter(s => s.name).map((s, i) => ({
-            "@type": "ListItem",
-            "position": i + 1,
-            "item": {
-              "@type": s.serviceType || "Service",
-              "name": s.name,
-              "description": s.description || undefined,
-              "url": s.url || domain,
-              "areaServed": s.areaServed ? { "@type": "AdministrativeArea", "name": s.areaServed } : undefined,
-              "offers": s.price ? {
-                "@type": "Offer",
-                "price": s.price,
-                "priceCurrency": s.currency || "USD"
-              } : undefined
-            }
-          }))
-        });
+      });
+    }
 
-      case "products":
-        if (productsList.length === 1) {
-          const p = productsList[0];
-          return cleanObject({
-            "@context": "https://schema.org",
+    // 6. Products
+    if (activeKeys.includes("products")) {
+      productsList.forEach((p, idx) => {
+        if (p.name && p.name.trim() !== "") {
+          entities.push({
             "@type": "Product",
+            "@id": `${domain}/#product-${idx + 1}`,
             "name": p.name,
             "image": p.image ? [p.image] : undefined,
             "description": p.description || undefined,
             "sku": p.sku || undefined,
             "gtin13": p.gtin13 || undefined,
+            "brand": activeKeys.includes("organization") ? { "@id": orgId } : undefined,
             "offers": {
               "@type": "Offer",
               "price": p.price || "0.00",
               "priceCurrency": p.currency || "USD",
-              "availability": p.availability ? `https://schema.org/${p.availability}` : "https://schema.org/InStock"
+              "availability": p.availability ? `https://schema.org/${p.availability}` : "https://schema.org/InStock",
+              "url": domain,
+              "seller": activeKeys.includes("organization") ? { "@id": orgId } : undefined
             },
             "aggregateRating": (p.ratingValue && p.reviewCount) ? {
               "@type": "AggregateRating",
@@ -447,34 +486,17 @@ export default function SchemaMarkupGenerator() {
             } : undefined
           });
         }
-        return cleanObject({
-          "@context": "https://schema.org",
-          "@type": "ItemList",
-          "itemListElement": productsList.filter(p => p.name).map((p, i) => ({
-            "@type": "ListItem",
-            "position": i + 1,
-            "item": {
-              "@type": "Product",
-              "name": p.name,
-              "image": p.image ? [p.image] : undefined,
-              "description": p.description || undefined,
-              "sku": p.sku || undefined,
-              "offers": {
-                "@type": "Offer",
-                "price": p.price || "0.00",
-                "priceCurrency": p.currency || "USD",
-                "availability": p.availability ? `https://schema.org/${p.availability}` : "https://schema.org/InStock"
-              }
-            }
-          }))
-        });
+      });
+    }
 
-      case "faqs": {
-        const validFaqs = faqList.filter(f => f.question && f.question.trim() !== "");
-        return cleanObject({
-          "@context": "https://schema.org",
+    // 7. FAQs
+    if (activeKeys.includes("faqs")) {
+      const validFaqs = faqList.filter(f => f.question && f.question.trim() !== "");
+      if (validFaqs.length > 0) {
+        entities.push({
           "@type": "FAQPage",
-          "mainEntity": validFaqs.map(faq => ({
+          "@id": `${webpageData.url || domain}/#faq`,
+          "mainEntity": validFaqs.map((faq) => ({
             "@type": "Question",
             "name": faq.question.trim(),
             "acceptedAnswer": {
@@ -484,312 +506,78 @@ export default function SchemaMarkupGenerator() {
           }))
         });
       }
+    }
 
-      case "breadcrumbs":
-        return cleanObject({
-          "@context": "https://schema.org",
-          "@type": "BreadcrumbList",
-          "itemListElement": breadcrumbsList.filter(b => b.name && b.name.trim() !== "").map((b, i) => ({
-            "@type": "ListItem",
-            "position": i + 1,
-            "name": b.name.trim(),
-            "item": b.url ? b.url.trim() : undefined
-          }))
+    // 8. Breadcrumbs
+    if (activeKeys.includes("breadcrumbs") && breadcrumbsList.length > 0) {
+      entities.push({
+        "@type": "BreadcrumbList",
+        "@id": breadcrumbId,
+        "itemListElement": breadcrumbsList.filter(b => b.name && b.name.trim() !== "").map((b, i) => ({
+          "@type": "ListItem",
+          "position": i + 1,
+          "name": b.name.trim(),
+          "item": b.url ? b.url.trim() : undefined
+        }))
+      });
+    }
+
+    // 9. Article / WebPage
+    if (activeKeys.includes("webpage") && webpageData.url) {
+      if (webpageData.primaryImage) {
+        entities.push({
+          "@type": "ImageObject",
+          "@id": primaryImageId,
+          "url": webpageData.primaryImage,
+          "caption": webpageData.title
         });
+      }
 
-      case "webpage":
-        return cleanObject({
-          "@context": "https://schema.org",
-          "@type": webpageData.isArticle ? "Article" : "WebPage",
+      entities.push({
+        "@type": "WebPage",
+        "@id": webpageId,
+        "url": webpageData.url,
+        "name": webpageData.title,
+        "description": webpageData.description || undefined,
+        "isPartOf": activeKeys.includes("website") ? { "@id": websiteId } : undefined,
+        "about": activeKeys.includes("organization") ? { "@id": orgId } : undefined,
+        "primaryImageOfPage": webpageData.primaryImage ? { "@id": primaryImageId } : undefined,
+        "breadcrumb": activeKeys.includes("breadcrumbs") ? { "@id": breadcrumbId } : undefined
+      });
+
+      if (webpageData.isArticle) {
+        entities.push({
+          "@type": "Article",
+          "@id": `${webpageData.url}/#article`,
+          "isPartOf": { "@id": webpageId },
           "headline": webpageData.title,
-          "name": webpageData.title,
-          "url": webpageData.url,
           "description": webpageData.description || undefined,
-          "image": webpageData.primaryImage || undefined,
           "datePublished": webpageData.datePublished || undefined,
           "dateModified": webpageData.dateModified || webpageData.datePublished || undefined,
+          "mainEntityOfPage": webpageId,
           "articleSection": webpageData.articleSection || undefined,
           "keywords": webpageData.keywords || undefined,
-          "author": personData.name ? {
-            "@type": "Person",
-            "name": personData.name,
-            "url": personData.url || undefined
-          } : undefined,
-          "publisher": orgData.name ? {
-            "@type": "Organization",
-            "name": orgData.name,
-            "logo": orgData.logo ? { "@type": "ImageObject", "url": orgData.logo } : undefined
-          } : undefined
-        });
-
-      case "masterGraph":
-      default: {
-        const graph = [];
-
-        // 1. WebSite
-        if (websiteData.url) {
-          graph.push({
-            "@type": "WebSite",
-            "@id": websiteId,
-            "url": domain,
-            "name": websiteData.name,
-            "alternateName": websiteData.alternateName || undefined,
-            "description": websiteData.description || undefined,
-            "inLanguage": websiteData.inLanguage || "en-US",
-            "publisher": { "@id": orgId },
-            "potentialAction": websiteData.searchTarget ? [
-              {
-                "@type": "SearchAction",
-                "target": {
-                  "@type": "EntryPoint",
-                  "urlTemplate": websiteData.searchTarget
-                },
-                "query-input": "required name=search_term_string"
-              }
-            ] : undefined
-          });
-        }
-
-        // 2. Organization
-        if (orgData.name) {
-          graph.push({
-            "@type": orgData.subType || "Organization",
-            "@id": orgId,
-            "name": orgData.name,
-            "legalName": orgData.legalName || undefined,
-            "alternateName": orgData.alternateName || undefined,
-            "url": domain,
-            "logo": orgData.logo ? {
-              "@type": "ImageObject",
-              "@id": `${domain}/#logo`,
-              "url": orgData.logo,
-              "caption": orgData.name
-            } : undefined,
-            "image": orgData.logo ? { "@id": `${domain}/#logo` } : undefined,
-            "description": orgData.description || undefined,
-            "foundingDate": orgData.foundingDate || undefined,
-            "founder": personData.name ? { "@id": authorId } : undefined,
-            "contactPoint": (orgData.phone || orgData.email) ? {
-              "@type": "ContactPoint",
-              "telephone": orgData.phone || undefined,
-              "contactType": "customer service",
-              "email": orgData.email || undefined,
-              "availableLanguage": ["English", "Bengali"]
-            } : undefined,
-            "address": (orgData.street || orgData.city) ? {
-              "@type": "PostalAddress",
-              "streetAddress": orgData.street || undefined,
-              "addressLocality": orgData.city || undefined,
-              "addressRegion": orgData.region || undefined,
-              "postalCode": orgData.postalCode || undefined,
-              "addressCountry": orgData.country || undefined
-            } : undefined,
-            "sameAs": orgData.sameAs.filter(url => url && url.trim() !== "")
-          });
-        }
-
-        // 3. Local Business
-        if (localBizData.name) {
-          graph.push({
-            "@type": localBizData.subType || "LocalBusiness",
-            "@id": `${domain}/#localbusiness`,
-            "name": localBizData.name,
-            "image": localBizData.image ? [localBizData.image] : undefined,
-            "url": domain,
-            "telephone": localBizData.phone,
-            "email": localBizData.email || undefined,
-            "priceRange": localBizData.priceRange || "$$",
-            "parentOrganization": { "@id": orgId },
-            "areaServed": localBizData.areaServed ? localBizData.areaServed.split(",").map(s => s.trim()) : undefined,
-            "address": {
-              "@type": "PostalAddress",
-              "streetAddress": localBizData.street || undefined,
-              "addressLocality": localBizData.city || undefined,
-              "addressRegion": localBizData.region || undefined,
-              "postalCode": localBizData.postalCode || undefined,
-              "addressCountry": localBizData.country || undefined
-            },
-            "geo": (localBizData.latitude && localBizData.longitude) ? {
-              "@type": "GeoCoordinates",
-              "latitude": parseFloat(localBizData.latitude) || localBizData.latitude,
-              "longitude": parseFloat(localBizData.longitude) || localBizData.longitude
-            } : undefined,
-            "hasMap": localBizData.hasMap || undefined,
-            "openingHoursSpecification": [
-              {
-                "@type": "OpeningHoursSpecification",
-                "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-                "opens": localBizData.opensTime || "09:00",
-                "closes": localBizData.closesTime || "18:00"
-              }
-            ],
-            "aggregateRating": (localBizData.ratingValue && localBizData.reviewCount) ? {
-              "@type": "AggregateRating",
-              "ratingValue": localBizData.ratingValue,
-              "reviewCount": localBizData.reviewCount,
-              "bestRating": "5",
-              "worstRating": "1"
-            } : undefined
-          });
-        }
-
-        // 4. Person
-        if (personData.name) {
-          graph.push({
-            "@type": "Person",
-            "@id": authorId,
-            "name": personData.name,
-            "jobTitle": personData.jobTitle || undefined,
-            "worksFor": { "@id": orgId },
-            "url": personData.url || undefined,
-            "image": personData.image || undefined,
-            "description": personData.description || undefined,
-            "email": personData.email ? `mailto:${personData.email}` : undefined,
-            "telephone": personData.telephone || undefined,
-            "alumniOf": personData.alumniOf ? {
-              "@type": "EducationalOrganization",
-              "name": personData.alumniOf
-            } : undefined,
-            "knowsAbout": personData.knowsAbout ? personData.knowsAbout.split(",").map(k => k.trim()) : undefined,
-            "sameAs": personData.sameAs.filter(url => url && url.trim() !== "")
-          });
-        }
-
-        // 5. Services
-        servicesList.forEach((s, idx) => {
-          if (s.name && s.name.trim() !== "") {
-            graph.push({
-              "@type": s.serviceType || "Service",
-              "@id": `${domain}/#service-${idx + 1}`,
-              "name": s.name,
-              "description": s.description || undefined,
-              "provider": { "@id": orgId },
-              "serviceType": s.serviceType || undefined,
-              "url": s.url || domain,
-              "areaServed": s.areaServed ? { "@type": "AdministrativeArea", "name": s.areaServed } : undefined,
-              "offers": s.price ? {
-                "@type": "Offer",
-                "price": s.price,
-                "priceCurrency": s.currency || "USD",
-                "availability": "https://schema.org/InStock"
-              } : undefined
-            });
-          }
-        });
-
-        // 6. Products
-        productsList.forEach((p, idx) => {
-          if (p.name && p.name.trim() !== "") {
-            graph.push({
-              "@type": "Product",
-              "@id": `${domain}/#product-${idx + 1}`,
-              "name": p.name,
-              "image": p.image ? [p.image] : undefined,
-              "description": p.description || undefined,
-              "sku": p.sku || undefined,
-              "gtin13": p.gtin13 || undefined,
-              "brand": { "@id": orgId },
-              "offers": {
-                "@type": "Offer",
-                "price": p.price || "0.00",
-                "priceCurrency": p.currency || "USD",
-                "availability": p.availability ? `https://schema.org/${p.availability}` : "https://schema.org/InStock",
-                "url": domain,
-                "seller": { "@id": orgId }
-              },
-              "aggregateRating": (p.ratingValue && p.reviewCount) ? {
-                "@type": "AggregateRating",
-                "ratingValue": p.ratingValue,
-                "reviewCount": p.reviewCount,
-                "bestRating": "5",
-                "worstRating": "1"
-              } : undefined
-            });
-          }
-        });
-
-        // 7. Breadcrumbs
-        if (breadcrumbsList.length > 0) {
-          graph.push({
-            "@type": "BreadcrumbList",
-            "@id": breadcrumbId,
-            "itemListElement": breadcrumbsList.filter(b => b.name && b.name.trim() !== "").map((b, i) => ({
-              "@type": "ListItem",
-              "position": i + 1,
-              "name": b.name.trim(),
-              "item": b.url ? b.url.trim() : undefined
-            }))
-          });
-        }
-
-        // 8. FAQPage
-        const validFaqs = faqList.filter(f => f.question && f.question.trim() !== "");
-        if (validFaqs.length > 0) {
-          graph.push({
-            "@type": "FAQPage",
-            "@id": `${webpageData.url}/#faq`,
-            "isPartOf": { "@id": webpageId },
-            "mainEntity": validFaqs.map((faq) => ({
-              "@type": "Question",
-              "name": faq.question.trim(),
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": faq.answer.trim()
-              }
-            }))
-          });
-        }
-
-        // 9. WebPage & Article
-        if (webpageData.url) {
-          if (webpageData.primaryImage) {
-            graph.push({
-              "@type": "ImageObject",
-              "@id": primaryImageId,
-              "url": webpageData.primaryImage,
-              "caption": webpageData.title
-            });
-          }
-
-          graph.push({
-            "@type": "WebPage",
-            "@id": webpageId,
-            "url": webpageData.url,
-            "name": webpageData.title,
-            "description": webpageData.description || undefined,
-            "isPartOf": { "@id": websiteId },
-            "about": { "@id": orgId },
-            "primaryImageOfPage": webpageData.primaryImage ? { "@id": primaryImageId } : undefined,
-            "breadcrumb": { "@id": breadcrumbId }
-          });
-
-          if (webpageData.isArticle) {
-            graph.push({
-              "@type": "BlogPosting",
-              "@id": `${webpageData.url}/#article`,
-              "isPartOf": { "@id": webpageId },
-              "headline": webpageData.title,
-              "description": webpageData.description || undefined,
-              "datePublished": webpageData.datePublished || undefined,
-              "dateModified": webpageData.dateModified || webpageData.datePublished || undefined,
-              "mainEntityOfPage": webpageId,
-              "articleSection": webpageData.articleSection || undefined,
-              "keywords": webpageData.keywords || undefined,
-              "author": personData.name ? { "@id": authorId } : undefined,
-              "publisher": { "@id": orgId },
-              "image": webpageData.primaryImage ? { "@id": primaryImageId } : undefined
-            });
-          }
-        }
-
-        return cleanObject({
-          "@context": "https://schema.org",
-          "@graph": graph
+          "author": (activeKeys.includes("person") && personData.name) ? { "@id": authorId } : (personData.name ? { "@type": "Person", "name": personData.name } : undefined),
+          "publisher": (activeKeys.includes("organization") && orgData.name) ? { "@id": orgId } : (orgData.name ? { "@type": "Organization", "name": orgData.name } : undefined),
+          "image": webpageData.primaryImage ? { "@id": primaryImageId } : undefined
         });
       }
     }
+
+    // Output formatting:
+    if (entities.length === 1 && !entities[0]["@graph"]) {
+      return cleanObject({
+        "@context": "https://schema.org",
+        ...entities[0]
+      });
+    }
+
+    return cleanObject({
+      "@context": "https://schema.org",
+      "@graph": entities
+    });
   }, [
-    selectedType, websiteData, orgData, localBizData, personData,
+    selectedSchemas, activeEditor, websiteData, orgData, localBizData, personData,
     servicesList, productsList, faqList, breadcrumbsList, webpageData
   ]);
 
@@ -820,23 +608,24 @@ export default function SchemaMarkupGenerator() {
     const fileUrl = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = fileUrl;
-    a.download = `${selectedType}-schema.html`;
+    a.download = "schema-markup.html";
     a.click();
     URL.revokeObjectURL(fileUrl);
-    showToast(`Downloaded ${selectedType}-schema.html`);
+    showToast("Downloaded schema-markup.html");
   };
 
   const jsonByteSize = new Blob([scriptTagOutput]).size;
-  const currentItem = SCHEMA_TYPES.find(t => t.id === selectedType) || SCHEMA_TYPES[0];
+  const selectedCount = Object.keys(selectedSchemas).filter(k => selectedSchemas[k]).length;
+  const currentItem = SCHEMA_TYPES.find(t => t.id === activeEditor) || SCHEMA_TYPES[0];
 
   const faqItems = [
     {
-      q: "How does selecting a Schema Type on the left update the code?",
-      a: "Selecting any Schema Type on the left instantly swaps the editor form and simultaneously generates the exact, validated JSON-LD schema code on the right code section without needing to reload the page."
+      q: "How does one-by-one schema selection work?",
+      a: "You can click on any schema type on the left sidebar to edit its fields and include it in the output. As you select multiple schemas one by one, the right code section combines all of them into a complete validated JSON-LD schema."
     },
     {
-      q: "Can I generate a single schema or a full interconnected website schema?",
-      a: "Yes! You can choose individual schema types (like LocalBusiness, Article, FAQ, or WebSite) to get standalone schema markup, or select 'All-in-One Master Graph' to get a complete interconnected @graph schema for your entire website."
+      q: "Can I generate a single schema or multiple schemas together?",
+      a: "Yes! If you select only one schema type, you get a clean standalone JSON-LD object. If you select multiple schema types, they are connected into a unified Schema.org @graph array."
     },
     {
       q: "Is the generated schema compliant with Google's Rich Results and AI search engines?",
@@ -881,7 +670,7 @@ export default function SchemaMarkupGenerator() {
               JSON-LD Schema Markup Generator
             </h1>
             <p className="hero-desc" style={{ fontSize: "0.95rem", color: "#64748b", margin: "0 auto" }}>
-              Select a schema type from the left option list to instantly configure and generate clean, validated JSON-LD code for your website in real-time.
+              Select schema types from the left option list to configure and generate clean, validated JSON-LD code for your website in real-time.
             </p>
           </div>
         </div>
@@ -894,64 +683,88 @@ export default function SchemaMarkupGenerator() {
           {/* THREE-COLUMN WORKSPACE: LEFT SELECTOR, MIDDLE FORM, RIGHT COMPACT OUTPUT */}
           <div style={{ display: "grid", gridTemplateColumns: "240px 1.25fr 0.85fr", gap: "18px", alignItems: "start" }}>
 
-            {/* 1. LEFT SIDEBAR: SINGLE-SELECT SCHEMA OPTION MENU */}
+            {/* 1. LEFT SIDEBAR: SELECT SCHEMAS ONE BY ONE */}
             <div style={{ position: "sticky", top: "18px", background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "14px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
-              <div style={{ marginBottom: "12px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
-                <strong style={{ fontSize: "0.82rem", color: "#0f172a", display: "flex", alignItems: "center", gap: "6px" }}>
-                  <i className="fa-solid fa-list-ul text-primary"></i> Schema Type:
-                </strong>
-                <span style={{ fontSize: "0.7rem", color: "#64748b" }}>Click an option to switch</span>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px", paddingBottom: "6px", borderBottom: "1px solid #f1f5f9" }}>
+                <div>
+                  <strong style={{ fontSize: "0.82rem", color: "#0f172a", display: "flex", alignItems: "center", gap: "6px" }}>
+                    <i className="fa-solid fa-list-check text-primary"></i> Schema Type:
+                  </strong>
+                  <span style={{ fontSize: "0.7rem", color: "#64748b" }}>
+                    {selectedCount} of {SCHEMA_TYPES.length} selected
+                  </span>
+                </div>
               </div>
 
-              {/* Single Select Option List */}
+              {/* Quick Select All / Active Only */}
+              <div style={{ display: "flex", gap: "6px", marginBottom: "10px" }}>
+                <button
+                  type="button"
+                  onClick={selectAll}
+                  style={{ flex: 1, padding: "3px 0", fontSize: "0.68rem", fontWeight: 700, background: "#eff6ff", color: "#2563eb", border: "1px solid #bfdbfe", borderRadius: "4px", cursor: "pointer" }}
+                >
+                  Select All
+                </button>
+                <button
+                  type="button"
+                  onClick={selectOnlyActive}
+                  style={{ flex: 1, padding: "3px 0", fontSize: "0.68rem", fontWeight: 700, background: "#f8fafc", color: "#64748b", border: "1px solid #e2e8f0", borderRadius: "4px", cursor: "pointer" }}
+                >
+                  Only Active
+                </button>
+              </div>
+
+              {/* One by One Schema List */}
               <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
                 {SCHEMA_TYPES.map((item) => {
-                  const isSelected = selectedType === item.id;
-                  const isMaster = item.id === "masterGraph";
+                  const isChecked = !!selectedSchemas[item.id];
+                  const isEditing = activeEditor === item.id;
                   return (
-                    <button
+                    <div
                       key={item.id}
-                      type="button"
-                      onClick={() => setSelectedType(item.id)}
+                      onClick={() => handleSelectSchema(item.id)}
                       style={{
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "space-between",
                         padding: "7px 9px",
                         borderRadius: "4px",
-                        background: isSelected ? (isMaster ? "#fef3c7" : "#eff6ff") : (isMaster ? "#fffbeb" : "transparent"),
-                        border: isSelected ? (isMaster ? "1px solid #d97706" : "1px solid #2563eb") : (isMaster ? "1px dashed #f59e0b" : "1px solid transparent"),
+                        background: isEditing ? "#eff6ff" : (isChecked ? "#f8fafc" : "transparent"),
+                        border: isEditing ? "1px solid #2563eb" : (isChecked ? "1px solid #e2e8f0" : "1px solid transparent"),
                         cursor: "pointer",
-                        textAlign: "left",
-                        width: "100%",
                         transition: "all 0.15s ease"
                       }}
                     >
-                      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "8px", flex: 1 }}>
+                        <input
+                          type="checkbox"
+                          checked={isChecked}
+                          onChange={(e) => toggleSchemaSelection(item.id, e)}
+                          onClick={(e) => e.stopPropagation()}
+                          style={{ cursor: "pointer", width: "13px", height: "13px" }}
+                        />
                         <i
                           className={`fa-solid ${item.icon}`}
                           style={{
                             width: "14px",
-                            color: isSelected ? (isMaster ? "#b45309" : "#2563eb") : (isMaster ? "#d97706" : "#64748b"),
+                            color: isChecked ? "#2563eb" : "#94a3b8",
                             fontSize: "0.82rem"
                           }}
                         ></i>
                         <span
                           style={{
                             fontSize: "0.78rem",
-                            fontWeight: isSelected ? 700 : 500,
-                            color: isSelected ? (isMaster ? "#92400e" : "#1e40af") : "#334155"
+                            fontWeight: isEditing ? 700 : (isChecked ? 600 : 500),
+                            color: isEditing ? "#1e40af" : (isChecked ? "#0f172a" : "#64748b")
                           }}
                         >
                           {item.label}
                         </span>
                       </div>
-                      {isSelected ? (
-                        <i className={`fa-solid fa-circle-check ${isMaster ? "text-warning" : "text-primary"}`} style={{ fontSize: "0.75rem" }}></i>
-                      ) : (
-                        <i className="fa-solid fa-chevron-right" style={{ fontSize: "0.65rem", color: "#cbd5e1" }}></i>
+                      {isEditing && (
+                        <i className="fa-solid fa-circle-dot text-primary" style={{ fontSize: "0.7rem" }} title="Currently editing"></i>
                       )}
-                    </button>
+                    </div>
                   );
                 })}
               </div>
@@ -961,16 +774,22 @@ export default function SchemaMarkupGenerator() {
             <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
 
               {/* 1. WEBSITE FORM */}
-              {selectedType === "website" && (
+              {activeEditor === "website" && (
                 <div style={{ background: "#ffffff", border: "1px solid #2563eb", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
-                    <div style={{ width: "26px", height: "26px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem" }}>
-                      <i className="fa-solid fa-globe"></i>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <div style={{ width: "26px", height: "26px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem" }}>
+                        <i className="fa-solid fa-globe"></i>
+                      </div>
+                      <div>
+                        <strong style={{ fontSize: "0.95rem", color: "#0f172a", display: "block" }}>WebSite &amp; Sitelinks Searchbox</strong>
+                        <span style={{ fontSize: "0.72rem", color: "#64748b" }}>Declares the main site entity and search action endpoint</span>
+                      </div>
                     </div>
-                    <div>
-                      <strong style={{ fontSize: "0.95rem", color: "#0f172a", display: "block" }}>WebSite &amp; Sitelinks Searchbox</strong>
-                      <span style={{ fontSize: "0.72rem", color: "#64748b" }}>Declares the main site entity and search action endpoint</span>
-                    </div>
+                    <label style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "0.75rem", fontWeight: 700, color: selectedSchemas.website ? "#2563eb" : "#64748b", cursor: "pointer" }}>
+                      <input type="checkbox" checked={!!selectedSchemas.website} onChange={(e) => toggleSchemaSelection("website", e)} />
+                      Include in Code
+                    </label>
                   </div>
 
                   <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
@@ -1047,16 +866,22 @@ export default function SchemaMarkupGenerator() {
               )}
 
               {/* 2. ORGANIZATION FORM */}
-              {selectedType === "organization" && (
+              {activeEditor === "organization" && (
                 <div style={{ background: "#ffffff", border: "1px solid #2563eb", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
-                    <div style={{ width: "26px", height: "26px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem" }}>
-                      <i className="fa-solid fa-building"></i>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <div style={{ width: "26px", height: "26px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem" }}>
+                        <i className="fa-solid fa-building"></i>
+                      </div>
+                      <div>
+                        <strong style={{ fontSize: "0.95rem", color: "#0f172a", display: "block" }}>Organization &amp; Brand Entity</strong>
+                        <span style={{ fontSize: "0.72rem", color: "#64748b" }}>Builds Google Knowledge Graph and brand authority</span>
+                      </div>
                     </div>
-                    <div>
-                      <strong style={{ fontSize: "0.95rem", color: "#0f172a", display: "block" }}>Organization &amp; Brand Entity</strong>
-                      <span style={{ fontSize: "0.72rem", color: "#64748b" }}>Builds Google Knowledge Graph and brand authority</span>
-                    </div>
+                    <label style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "0.75rem", fontWeight: 700, color: selectedSchemas.organization ? "#2563eb" : "#64748b", cursor: "pointer" }}>
+                      <input type="checkbox" checked={!!selectedSchemas.organization} onChange={(e) => toggleSchemaSelection("organization", e)} />
+                      Include in Code
+                    </label>
                   </div>
 
                   <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
@@ -1183,16 +1008,22 @@ export default function SchemaMarkupGenerator() {
               )}
 
               {/* 3. LOCAL BUSINESS FORM */}
-              {selectedType === "localBusiness" && (
+              {activeEditor === "localBusiness" && (
                 <div style={{ background: "#ffffff", border: "1px solid #2563eb", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
-                    <div style={{ width: "26px", height: "26px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem" }}>
-                      <i className="fa-solid fa-shop"></i>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <div style={{ width: "26px", height: "26px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem" }}>
+                        <i className="fa-solid fa-shop"></i>
+                      </div>
+                      <div>
+                        <strong style={{ fontSize: "0.95rem", color: "#0f172a", display: "block" }}>Local Business / NAP Entity</strong>
+                        <span style={{ fontSize: "0.72rem", color: "#64748b" }}>Rank in Google 3-Pack Maps and local searches</span>
+                      </div>
                     </div>
-                    <div>
-                      <strong style={{ fontSize: "0.95rem", color: "#0f172a", display: "block" }}>Local Business / NAP Entity</strong>
-                      <span style={{ fontSize: "0.72rem", color: "#64748b" }}>Rank in Google 3-Pack Maps and local searches</span>
-                    </div>
+                    <label style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "0.75rem", fontWeight: 700, color: selectedSchemas.localBusiness ? "#2563eb" : "#64748b", cursor: "pointer" }}>
+                      <input type="checkbox" checked={!!selectedSchemas.localBusiness} onChange={(e) => toggleSchemaSelection("localBusiness", e)} />
+                      Include in Code
+                    </label>
                   </div>
 
                   <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
@@ -1296,16 +1127,22 @@ export default function SchemaMarkupGenerator() {
               )}
 
               {/* 4. PERSON / AUTHOR FORM */}
-              {selectedType === "person" && (
+              {activeEditor === "person" && (
                 <div style={{ background: "#ffffff", border: "1px solid #2563eb", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
-                    <div style={{ width: "26px", height: "26px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem" }}>
-                      <i className="fa-solid fa-user-tie"></i>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <div style={{ width: "26px", height: "26px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem" }}>
+                        <i className="fa-solid fa-user-tie"></i>
+                      </div>
+                      <div>
+                        <strong style={{ fontSize: "0.95rem", color: "#0f172a", display: "block" }}>Founder / Author Entity (E-E-A-T)</strong>
+                        <span style={{ fontSize: "0.72rem", color: "#64748b" }}>Anchor individual author trustworthiness for Google quality raters</span>
+                      </div>
                     </div>
-                    <div>
-                      <strong style={{ fontSize: "0.95rem", color: "#0f172a", display: "block" }}>Founder / Author Entity (E-E-A-T)</strong>
-                      <span style={{ fontSize: "0.72rem", color: "#64748b" }}>Anchor individual author trustworthiness for Google quality raters</span>
-                    </div>
+                    <label style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "0.75rem", fontWeight: 700, color: selectedSchemas.person ? "#2563eb" : "#64748b", cursor: "pointer" }}>
+                      <input type="checkbox" checked={!!selectedSchemas.person} onChange={(e) => toggleSchemaSelection("person", e)} />
+                      Include in Code
+                    </label>
                   </div>
 
                   <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
@@ -1370,7 +1207,7 @@ export default function SchemaMarkupGenerator() {
               )}
 
               {/* 5. SERVICES FORM */}
-              {selectedType === "services" && (
+              {activeEditor === "services" && (
                 <div style={{ background: "#ffffff", border: "1px solid #2563eb", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
@@ -1382,13 +1219,19 @@ export default function SchemaMarkupGenerator() {
                         <span style={{ fontSize: "0.72rem", color: "#64748b" }}>Define commercial offerings and pricing</span>
                       </div>
                     </div>
-                    <button
-                      type="button"
-                      onClick={addService}
-                      style={{ padding: "4px 8px", fontSize: "0.72rem", background: "#eff6ff", color: "#2563eb", border: "1px solid #bfdbfe", borderRadius: "4px", cursor: "pointer", fontWeight: 700 }}
-                    >
-                      <i className="fa-solid fa-plus me-1"></i> Add Service
-                    </button>
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                      <button
+                        type="button"
+                        onClick={addService}
+                        style={{ padding: "4px 8px", fontSize: "0.72rem", background: "#eff6ff", color: "#2563eb", border: "1px solid #bfdbfe", borderRadius: "4px", cursor: "pointer", fontWeight: 700 }}
+                      >
+                        <i className="fa-solid fa-plus me-1"></i> Add Service
+                      </button>
+                      <label style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "0.75rem", fontWeight: 700, color: selectedSchemas.services ? "#2563eb" : "#64748b", cursor: "pointer" }}>
+                        <input type="checkbox" checked={!!selectedSchemas.services} onChange={(e) => toggleSchemaSelection("services", e)} />
+                        Include in Code
+                      </label>
+                    </div>
                   </div>
 
                   <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
@@ -1439,7 +1282,7 @@ export default function SchemaMarkupGenerator() {
               )}
 
               {/* 6. PRODUCTS FORM */}
-              {selectedType === "products" && (
+              {activeEditor === "products" && (
                 <div style={{ background: "#ffffff", border: "1px solid #2563eb", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
@@ -1451,13 +1294,19 @@ export default function SchemaMarkupGenerator() {
                         <span style={{ fontSize: "0.72rem", color: "#64748b" }}>E-commerce products, SKUs, and stock</span>
                       </div>
                     </div>
-                    <button
-                      type="button"
-                      onClick={addProduct}
-                      style={{ padding: "4px 8px", fontSize: "0.72rem", background: "#eff6ff", color: "#2563eb", border: "1px solid #bfdbfe", borderRadius: "4px", cursor: "pointer", fontWeight: 700 }}
-                    >
-                      <i className="fa-solid fa-plus me-1"></i> Add Product
-                    </button>
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                      <button
+                        type="button"
+                        onClick={addProduct}
+                        style={{ padding: "4px 8px", fontSize: "0.72rem", background: "#eff6ff", color: "#2563eb", border: "1px solid #bfdbfe", borderRadius: "4px", cursor: "pointer", fontWeight: 700 }}
+                      >
+                        <i className="fa-solid fa-plus me-1"></i> Add Product
+                      </button>
+                      <label style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "0.75rem", fontWeight: 700, color: selectedSchemas.products ? "#2563eb" : "#64748b", cursor: "pointer" }}>
+                        <input type="checkbox" checked={!!selectedSchemas.products} onChange={(e) => toggleSchemaSelection("products", e)} />
+                        Include in Code
+                      </label>
+                    </div>
                   </div>
 
                   <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
@@ -1518,7 +1367,7 @@ export default function SchemaMarkupGenerator() {
               )}
 
               {/* 7. FAQS FORM */}
-              {selectedType === "faqs" && (
+              {activeEditor === "faqs" && (
                 <div style={{ background: "#ffffff", border: "1px solid #2563eb", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
@@ -1530,13 +1379,19 @@ export default function SchemaMarkupGenerator() {
                         <span style={{ fontSize: "0.72rem", color: "#64748b" }}>Interactive Q&amp;A rich snippets in search results</span>
                       </div>
                     </div>
-                    <button
-                      type="button"
-                      onClick={addFaq}
-                      style={{ padding: "4px 8px", fontSize: "0.72rem", background: "#eff6ff", color: "#2563eb", border: "1px solid #bfdbfe", borderRadius: "4px", cursor: "pointer", fontWeight: 700 }}
-                    >
-                      <i className="fa-solid fa-plus me-1"></i> Add Question
-                    </button>
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                      <button
+                        type="button"
+                        onClick={addFaq}
+                        style={{ padding: "4px 8px", fontSize: "0.72rem", background: "#eff6ff", color: "#2563eb", border: "1px solid #bfdbfe", borderRadius: "4px", cursor: "pointer", fontWeight: 700 }}
+                      >
+                        <i className="fa-solid fa-plus me-1"></i> Add Question
+                      </button>
+                      <label style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "0.75rem", fontWeight: 700, color: selectedSchemas.faqs ? "#2563eb" : "#64748b", cursor: "pointer" }}>
+                        <input type="checkbox" checked={!!selectedSchemas.faqs} onChange={(e) => toggleSchemaSelection("faqs", e)} />
+                        Include in Code
+                      </label>
+                    </div>
                   </div>
 
                   <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
@@ -1577,7 +1432,7 @@ export default function SchemaMarkupGenerator() {
               )}
 
               {/* 8. BREADCRUMBS FORM */}
-              {selectedType === "breadcrumbs" && (
+              {activeEditor === "breadcrumbs" && (
                 <div style={{ background: "#ffffff", border: "1px solid #2563eb", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
@@ -1589,13 +1444,19 @@ export default function SchemaMarkupGenerator() {
                         <span style={{ fontSize: "0.72rem", color: "#64748b" }}>Hierarchical site navigation breadcrumb snippets</span>
                       </div>
                     </div>
-                    <button
-                      type="button"
-                      onClick={addBreadcrumb}
-                      style={{ padding: "4px 8px", fontSize: "0.72rem", background: "#eff6ff", color: "#2563eb", border: "1px solid #bfdbfe", borderRadius: "4px", cursor: "pointer", fontWeight: 700 }}
-                    >
-                      <i className="fa-solid fa-plus me-1"></i> Add Level
-                    </button>
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                      <button
+                        type="button"
+                        onClick={addBreadcrumb}
+                        style={{ padding: "4px 8px", fontSize: "0.72rem", background: "#eff6ff", color: "#2563eb", border: "1px solid #bfdbfe", borderRadius: "4px", cursor: "pointer", fontWeight: 700 }}
+                      >
+                        <i className="fa-solid fa-plus me-1"></i> Add Level
+                      </button>
+                      <label style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "0.75rem", fontWeight: 700, color: selectedSchemas.breadcrumbs ? "#2563eb" : "#64748b", cursor: "pointer" }}>
+                        <input type="checkbox" checked={!!selectedSchemas.breadcrumbs} onChange={(e) => toggleSchemaSelection("breadcrumbs", e)} />
+                        Include in Code
+                      </label>
+                    </div>
                   </div>
 
                   <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
@@ -1634,16 +1495,22 @@ export default function SchemaMarkupGenerator() {
               )}
 
               {/* 9. ARTICLE / WEBPAGE FORM */}
-              {selectedType === "webpage" && (
+              {activeEditor === "webpage" && (
                 <div style={{ background: "#ffffff", border: "1px solid #2563eb", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
-                    <div style={{ width: "26px", height: "26px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem" }}>
-                      <i className="fa-solid fa-newspaper"></i>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px", paddingBottom: "8px", borderBottom: "1px solid #f1f5f9" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <div style={{ width: "26px", height: "26px", background: "#eff6ff", color: "#2563eb", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem" }}>
+                        <i className="fa-solid fa-newspaper"></i>
+                      </div>
+                      <div>
+                        <strong style={{ fontSize: "0.95rem", color: "#0f172a", display: "block" }}>Article / WebPage Entity</strong>
+                        <span style={{ fontSize: "0.72rem", color: "#64748b" }}>Optimize blog posts, news, and editorial content</span>
+                      </div>
                     </div>
-                    <div>
-                      <strong style={{ fontSize: "0.95rem", color: "#0f172a", display: "block" }}>Article / WebPage Entity</strong>
-                      <span style={{ fontSize: "0.72rem", color: "#64748b" }}>Optimize blog posts, news, and editorial content</span>
-                    </div>
+                    <label style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "0.75rem", fontWeight: 700, color: selectedSchemas.webpage ? "#2563eb" : "#64748b", cursor: "pointer" }}>
+                      <input type="checkbox" checked={!!selectedSchemas.webpage} onChange={(e) => toggleSchemaSelection("webpage", e)} />
+                      Include in Code
+                    </label>
                   </div>
 
                   <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
@@ -1707,49 +1574,6 @@ export default function SchemaMarkupGenerator() {
                 </div>
               )}
 
-              {/* 10. ALL-IN-ONE MASTER GRAPH OVERVIEW */}
-              {selectedType === "masterGraph" && (
-                <div style={{ background: "#ffffff", border: "1px solid #d97706", borderRadius: "4px", padding: "18px", boxShadow: "0 2px 8px rgba(217,119,6,0.08)" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px", paddingBottom: "8px", borderBottom: "1px solid #fef3c7" }}>
-                    <div style={{ width: "26px", height: "26px", background: "#fef3c7", color: "#d97706", borderRadius: "4px", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem" }}>
-                      <i className="fa-solid fa-diagram-project"></i>
-                    </div>
-                    <div>
-                      <strong style={{ fontSize: "0.95rem", color: "#92400e", display: "block" }}>All-in-One Master Website Graph</strong>
-                      <span style={{ fontSize: "0.72rem", color: "#b45309" }}>Combines all entity nodes into a single interconnected schema</span>
-                    </div>
-                  </div>
-
-                  <div style={{ background: "#fffbeb", border: "1px solid #fde68a", borderRadius: "4px", padding: "12px", marginBottom: "14px" }}>
-                    <p style={{ fontSize: "0.78rem", color: "#92400e", margin: 0, lineHeight: "1.5" }}>
-                      <strong>Active Master Graph Mode:</strong> This generates a complete single <code>@graph</code> array linking your <strong>WebSite, Organization, LocalBusiness, Author, Services, Products, FAQs, Breadcrumbs, and Article</strong> together using <code>@id</code> URI nodes. Edit any individual schema on the left and the master graph updates automatically!
-                    </p>
-                  </div>
-
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "8px" }}>
-                    {SCHEMA_TYPES.filter(t => t.id !== "masterGraph").map((item) => (
-                      <div
-                        key={item.id}
-                        onClick={() => setSelectedType(item.id)}
-                        style={{
-                          background: "#f8fafc",
-                          border: "1px solid #e2e8f0",
-                          borderRadius: "4px",
-                          padding: "8px 10px",
-                          cursor: "pointer",
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "8px"
-                        }}
-                      >
-                        <i className={`fa-solid ${item.icon} text-primary`} style={{ fontSize: "0.75rem" }}></i>
-                        <span style={{ fontSize: "0.74rem", fontWeight: 600, color: "#0f172a" }}>{item.label}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
             </div>
 
             {/* 3. RIGHT COLUMN: COMPACT OUTPUT & COPY SECTION */}
@@ -1761,7 +1585,7 @@ export default function SchemaMarkupGenerator() {
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px", paddingBottom: "6px", borderBottom: "1px solid #f1f5f9" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                     <span style={{ fontSize: "0.82rem", fontWeight: 700, color: "#0f172a" }}>
-                      <i className={`fa-solid ${currentItem.icon} text-primary`}></i> {currentItem.label}
+                      <i className={`fa-solid ${currentItem.icon} text-primary`}></i> {selectedCount > 1 ? `Combined Schema (${selectedCount})` : currentItem.label}
                     </span>
                     <span style={{ fontSize: "0.68rem", background: "#f1f5f9", padding: "1px 5px", borderRadius: "4px", color: "#64748b" }}>
                       {(jsonByteSize / 1024).toFixed(1)} KB
@@ -1780,7 +1604,7 @@ export default function SchemaMarkupGenerator() {
                   </label>
                 </div>
 
-                {/* Sub Tabs: Code, SERP Preview, Graph Visual */}
+                {/* Sub Tabs: Code, SERP Preview */}
                 <div style={{ display: "flex", gap: "4px", marginBottom: "8px" }}>
                   <button
                     type="button"
