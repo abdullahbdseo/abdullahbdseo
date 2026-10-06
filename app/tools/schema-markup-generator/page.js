@@ -26,7 +26,8 @@ export default function SchemaMarkupGenerator() {
   });
 
   const [activeOutputTab, setActiveOutputTab] = useState("code"); // 'code', 'serp_preview'
-  const [copiedScript, setCopiedScript] = useState(false);
+  const [codeFormat, setCodeFormat] = useState("html"); // 'html', 'nextjs', 'wordpress', 'raw'
+  const [copiedCode, setCopiedCode] = useState(false);
   const [copiedRaw, setCopiedRaw] = useState(false);
   const [isMinified, setIsMinified] = useState(false);
   const [previewDevice, setPreviewDevice] = useState("desktop");
@@ -66,6 +67,34 @@ export default function SchemaMarkupGenerator() {
     const only = { [activeEditor]: true };
     setSelectedSchemas(only);
     showToast(`Selected only ${activeEditor}!`);
+  };
+
+  // Quick Presets Application
+  const applyPreset = (presetKey) => {
+    switch (presetKey) {
+      case "agency":
+        setSelectedSchemas({ website: true, organization: true, services: true, faqs: true });
+        setActiveEditor("organization");
+        showToast("Agency Preset loaded (WebSite + Org + Services + FAQs)");
+        break;
+      case "ecommerce":
+        setSelectedSchemas({ website: true, organization: true, products: true, breadcrumbs: true });
+        setActiveEditor("products");
+        showToast("E-Commerce Preset loaded (WebSite + Org + Products + Breadcrumbs)");
+        break;
+      case "blog":
+        setSelectedSchemas({ website: true, person: true, webpage: true, faqs: true });
+        setActiveEditor("webpage");
+        showToast("Blog Post Preset loaded (WebSite + Author + Article + FAQs)");
+        break;
+      case "local":
+        setSelectedSchemas({ website: true, organization: true, localBusiness: true, faqs: true });
+        setActiveEditor("localBusiness");
+        showToast("Local Business Preset loaded (WebSite + Org + LocalBiz + FAQs)");
+        break;
+      default:
+        break;
+    }
   };
 
   // 1. WEBSITE DATA
@@ -581,51 +610,65 @@ export default function SchemaMarkupGenerator() {
     servicesList, productsList, faqList, breadcrumbsList, webpageData
   ]);
 
-  const jsonString = isMinified
-    ? JSON.stringify(generatedSchema)
-    : JSON.stringify(generatedSchema, null, 2);
+  const jsonRawString = useMemo(() => {
+    return isMinified
+      ? JSON.stringify(generatedSchema)
+      : JSON.stringify(generatedSchema, null, 2);
+  }, [generatedSchema, isMinified]);
 
-  const scriptTagOutput = isMinified
-    ? `<script type="application/ld+json">${jsonString}</script>`
-    : `<script type="application/ld+json">\n${jsonString}\n</script>`;
+  // Code formats
+  const formattedCodeOutput = useMemo(() => {
+    switch (codeFormat) {
+      case "nextjs":
+        return `// Next.js (App Router / Pages Router)\n<script\n  type="application/ld+json"\n  dangerouslySetInnerHTML={{\n    __html: JSON.stringify(${jsonRawString})\n  }}\n/>`;
+      case "wordpress":
+        return `<?php\n// Add to functions.php or header.php\nadd_action('wp_head', function() {\n?>\n<script type="application/ld+json">\n${jsonRawString}\n</script>\n<?php\n});`;
+      case "raw":
+        return jsonRawString;
+      case "html":
+      default:
+        return `<script type="application/ld+json">\n${jsonRawString}\n</script>`;
+    }
+  }, [codeFormat, jsonRawString]);
 
-  const copyScript = () => {
-    navigator.clipboard.writeText(scriptTagOutput);
-    setCopiedScript(true);
-    showToast("Copied <script> tag to clipboard!");
-    setTimeout(() => setCopiedScript(false), 2000);
+  const copyActiveCode = () => {
+    navigator.clipboard.writeText(formattedCodeOutput);
+    setCopiedCode(true);
+    showToast(`Copied ${codeFormat.toUpperCase()} snippet!`);
+    setTimeout(() => setCopiedCode(false), 2000);
   };
 
   const copyRawJson = () => {
-    navigator.clipboard.writeText(jsonString);
+    navigator.clipboard.writeText(jsonRawString);
     setCopiedRaw(true);
-    showToast("Copied JSON-LD object to clipboard!");
+    showToast("Copied pure JSON-LD object!");
     setTimeout(() => setCopiedRaw(false), 2000);
   };
 
-  const downloadJson = () => {
-    const blob = new Blob([scriptTagOutput], { type: "text/html" });
+  const downloadFile = () => {
+    const ext = codeFormat === "wordpress" ? "php" : (codeFormat === "nextjs" ? "jsx" : (codeFormat === "raw" ? "json" : "html"));
+    const blob = new Blob([formattedCodeOutput], { type: "text/plain" });
     const fileUrl = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = fileUrl;
-    a.download = "schema-markup.html";
+    a.download = `schema-markup.${ext}`;
     a.click();
     URL.revokeObjectURL(fileUrl);
-    showToast("Downloaded schema-markup.html");
+    showToast(`Downloaded schema-markup.${ext}`);
   };
 
-  const jsonByteSize = new Blob([scriptTagOutput]).size;
+  const jsonByteSize = new Blob([formattedCodeOutput]).size;
   const selectedCount = Object.keys(selectedSchemas).filter(k => selectedSchemas[k]).length;
   const currentItem = SCHEMA_TYPES.find(t => t.id === activeEditor) || SCHEMA_TYPES[0];
 
   const faqItems = [
     {
-      q: "How does one-by-one schema selection work?",
-      a: "You can click on any schema type on the left sidebar to edit its fields and include it in the output. As you select multiple schemas one by one, the right code section combines all of them into a complete validated JSON-LD schema."
+      q: "How do the Quick Presets work?",
+      a: "Clicking a preset (Agency, E-Com, Blog, Local) immediately selects the recommended combination of Schema entities (such as Organization, Services, and FAQs for Agencies) so you don't have to check them manually."
     },
     {
-      q: "Can I generate a single schema or multiple schemas together?",
-      a: "Yes! If you select only one schema type, you get a clean standalone JSON-LD object. If you select multiple schema types, they are connected into a unified Schema.org @graph array."
+      q: "How do I embed this schema into Next.js or WordPress?",
+      a: "Use the Format tabs above the code box! Switch to 'Next.js' for ready-to-paste dangerouslySetInnerHTML JSX code, or 'WordPress' for PHP functions.php hooks, or standard 'HTML' for direct script tags."
     },
     {
       q: "Is the generated schema compliant with Google's Rich Results and AI search engines?",
@@ -670,7 +713,7 @@ export default function SchemaMarkupGenerator() {
               JSON-LD Schema Markup Generator
             </h1>
             <p className="hero-desc" style={{ fontSize: "0.95rem", color: "#64748b", margin: "0 auto" }}>
-              Select schema types from the left option list to configure and generate clean, validated JSON-LD code for your website in real-time.
+              Select schema types or load presets to configure and generate clean, validated JSON-LD code for HTML, Next.js, and WordPress.
             </p>
           </div>
         </div>
@@ -683,32 +726,73 @@ export default function SchemaMarkupGenerator() {
           {/* THREE-COLUMN WORKSPACE: LEFT SELECTOR, MIDDLE FORM, RIGHT COMPACT OUTPUT */}
           <div style={{ display: "grid", gridTemplateColumns: "240px 1.25fr 0.85fr", gap: "18px", alignItems: "start" }}>
 
-            {/* 1. LEFT SIDEBAR: SELECT SCHEMAS ONE BY ONE */}
+            {/* 1. LEFT SIDEBAR: PRESETS & SELECT SCHEMAS */}
             <div style={{ position: "sticky", top: "18px", background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "14px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px", paddingBottom: "6px", borderBottom: "1px solid #f1f5f9" }}>
-                <div>
-                  <strong style={{ fontSize: "0.82rem", color: "#0f172a", display: "flex", alignItems: "center", gap: "6px" }}>
-                    <i className="fa-solid fa-list-check text-primary"></i> Schema Type:
+
+              {/* QUICK PRESETS */}
+              <div style={{ marginBottom: "12px", paddingBottom: "10px", borderBottom: "1px solid #f1f5f9" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
+                  <strong style={{ fontSize: "0.75rem", color: "#0f172a", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+                    <i className="fa-solid fa-bolt text-warning me-1"></i> Quick Presets:
                   </strong>
-                  <span style={{ fontSize: "0.7rem", color: "#64748b" }}>
-                    {selectedCount} of {SCHEMA_TYPES.length} selected
-                  </span>
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4px" }}>
+                  <button
+                    type="button"
+                    onClick={() => applyPreset("agency")}
+                    style={{ padding: "4px 6px", fontSize: "0.68rem", fontWeight: 600, background: "#f8fafc", color: "#334155", border: "1px solid #e2e8f0", borderRadius: "4px", cursor: "pointer", textAlign: "left" }}
+                  >
+                    🏢 Agency
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => applyPreset("ecommerce")}
+                    style={{ padding: "4px 6px", fontSize: "0.68rem", fontWeight: 600, background: "#f8fafc", color: "#334155", border: "1px solid #e2e8f0", borderRadius: "4px", cursor: "pointer", textAlign: "left" }}
+                  >
+                    🛒 E-Com
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => applyPreset("blog")}
+                    style={{ padding: "4px 6px", fontSize: "0.68rem", fontWeight: 600, background: "#f8fafc", color: "#334155", border: "1px solid #e2e8f0", borderRadius: "4px", cursor: "pointer", textAlign: "left" }}
+                  >
+                    📰 Blog Post
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => applyPreset("local")}
+                    style={{ padding: "4px 6px", fontSize: "0.68rem", fontWeight: 600, background: "#f8fafc", color: "#334155", border: "1px solid #e2e8f0", borderRadius: "4px", cursor: "pointer", textAlign: "left" }}
+                  >
+                    📍 Local Biz
+                  </button>
                 </div>
               </div>
 
+              {/* SCHEMA TYPES HEADER */}
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
+                <div>
+                  <strong style={{ fontSize: "0.8rem", color: "#0f172a" }}>
+                    <i className="fa-solid fa-list-check text-primary me-1"></i> Schema Types:
+                  </strong>
+                </div>
+                <span style={{ fontSize: "0.68rem", color: "#64748b", fontWeight: 600 }}>
+                  {selectedCount}/{SCHEMA_TYPES.length} active
+                </span>
+              </div>
+
               {/* Quick Select All / Active Only */}
-              <div style={{ display: "flex", gap: "6px", marginBottom: "10px" }}>
+              <div style={{ display: "flex", gap: "5px", marginBottom: "8px" }}>
                 <button
                   type="button"
                   onClick={selectAll}
-                  style={{ flex: 1, padding: "3px 0", fontSize: "0.68rem", fontWeight: 700, background: "#eff6ff", color: "#2563eb", border: "1px solid #bfdbfe", borderRadius: "4px", cursor: "pointer" }}
+                  style={{ flex: 1, padding: "3px 0", fontSize: "0.66rem", fontWeight: 700, background: "#eff6ff", color: "#2563eb", border: "1px solid #bfdbfe", borderRadius: "4px", cursor: "pointer" }}
                 >
                   Select All
                 </button>
                 <button
                   type="button"
                   onClick={selectOnlyActive}
-                  style={{ flex: 1, padding: "3px 0", fontSize: "0.68rem", fontWeight: 700, background: "#f8fafc", color: "#64748b", border: "1px solid #e2e8f0", borderRadius: "4px", cursor: "pointer" }}
+                  style={{ flex: 1, padding: "3px 0", fontSize: "0.66rem", fontWeight: 700, background: "#f8fafc", color: "#64748b", border: "1px solid #e2e8f0", borderRadius: "4px", cursor: "pointer" }}
                 >
                   Only Active
                 </button>
@@ -727,7 +811,7 @@ export default function SchemaMarkupGenerator() {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "space-between",
-                        padding: "7px 9px",
+                        padding: "6px 8px",
                         borderRadius: "4px",
                         background: isEditing ? "#eff6ff" : (isChecked ? "#f8fafc" : "transparent"),
                         border: isEditing ? "1px solid #2563eb" : (isChecked ? "1px solid #e2e8f0" : "1px solid transparent"),
@@ -735,7 +819,7 @@ export default function SchemaMarkupGenerator() {
                         transition: "all 0.15s ease"
                       }}
                     >
-                      <div style={{ display: "flex", alignItems: "center", gap: "8px", flex: 1 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "7px", flex: 1 }}>
                         <input
                           type="checkbox"
                           checked={isChecked}
@@ -748,12 +832,12 @@ export default function SchemaMarkupGenerator() {
                           style={{
                             width: "14px",
                             color: isChecked ? "#2563eb" : "#94a3b8",
-                            fontSize: "0.82rem"
+                            fontSize: "0.78rem"
                           }}
                         ></i>
                         <span
                           style={{
-                            fontSize: "0.78rem",
+                            fontSize: "0.76rem",
                             fontWeight: isEditing ? 700 : (isChecked ? 600 : 500),
                             color: isEditing ? "#1e40af" : (isChecked ? "#0f172a" : "#64748b")
                           }}
@@ -762,7 +846,7 @@ export default function SchemaMarkupGenerator() {
                         </span>
                       </div>
                       {isEditing && (
-                        <i className="fa-solid fa-circle-dot text-primary" style={{ fontSize: "0.7rem" }} title="Currently editing"></i>
+                        <i className="fa-solid fa-circle-dot text-primary" style={{ fontSize: "0.68rem" }} title="Currently editing"></i>
                       )}
                     </div>
                   );
@@ -1576,7 +1660,7 @@ export default function SchemaMarkupGenerator() {
 
             </div>
 
-            {/* 3. RIGHT COLUMN: COMPACT OUTPUT & COPY SECTION */}
+            {/* 3. RIGHT COLUMN: COMPACT OUTPUT & FORMATS */}
             <div style={{ position: "sticky", top: "18px", display: "flex", flexDirection: "column", gap: "12px" }}>
 
               <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "14px", boxShadow: "0 2px 8px rgba(15,23,42,0.03)" }}>
@@ -1604,7 +1688,7 @@ export default function SchemaMarkupGenerator() {
                   </label>
                 </div>
 
-                {/* Sub Tabs: Code, SERP Preview */}
+                {/* Sub Tabs: Code vs SERP Preview */}
                 <div style={{ display: "flex", gap: "4px", marginBottom: "8px" }}>
                   <button
                     type="button"
@@ -1621,7 +1705,7 @@ export default function SchemaMarkupGenerator() {
                       cursor: "pointer"
                     }}
                   >
-                    JSON-LD Code
+                    Schema Code
                   </button>
                   <button
                     type="button"
@@ -1642,9 +1726,40 @@ export default function SchemaMarkupGenerator() {
                   </button>
                 </div>
 
-                {/* TAB 1: CODE CONTAINER (COMPACT HEIGHT) */}
+                {/* TAB 1: CODE CONTAINER */}
                 {activeOutputTab === "code" && (
                   <div>
+                    {/* FORMAT SWITCHER PILLS (HTML / Next.js / WordPress / Raw JSON) */}
+                    <div style={{ display: "flex", gap: "3px", marginBottom: "6px", background: "#f1f5f9", padding: "2px", borderRadius: "4px" }}>
+                      {[
+                        { key: "html", label: "HTML Tag" },
+                        { key: "nextjs", label: "Next.js (JSX)" },
+                        { key: "wordpress", label: "WordPress PHP" },
+                        { key: "raw", label: "JSON" }
+                      ].map((fmt) => (
+                        <button
+                          key={fmt.key}
+                          type="button"
+                          onClick={() => setCodeFormat(fmt.key)}
+                          style={{
+                            flex: 1,
+                            padding: "3px 0",
+                            fontSize: "0.68rem",
+                            fontWeight: codeFormat === fmt.key ? 700 : 500,
+                            background: codeFormat === fmt.key ? "#ffffff" : "transparent",
+                            color: codeFormat === fmt.key ? "#2563eb" : "#64748b",
+                            border: "none",
+                            borderRadius: "4px",
+                            boxShadow: codeFormat === fmt.key ? "0 1px 3px rgba(0,0,0,0.1)" : "none",
+                            cursor: "pointer",
+                            transition: "all 0.15s ease"
+                          }}
+                        >
+                          {fmt.label}
+                        </button>
+                      ))}
+                    </div>
+
                     <pre
                       style={{
                         background: "#090d16",
@@ -1653,7 +1768,7 @@ export default function SchemaMarkupGenerator() {
                         borderRadius: "4px",
                         fontSize: "0.72rem",
                         lineHeight: "1.4",
-                        maxHeight: "360px",
+                        maxHeight: "340px",
                         overflowY: "auto",
                         fontFamily: "monospace",
                         margin: "0 0 10px 0",
@@ -1662,19 +1777,19 @@ export default function SchemaMarkupGenerator() {
                         border: "1px solid #1e293b"
                       }}
                     >
-                      {scriptTagOutput}
+                      {formattedCodeOutput}
                     </pre>
 
                     {/* Copy & Action Buttons */}
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px", marginBottom: "6px" }}>
+                    <div style={{ display: "grid", gridTemplateColumns: "1.2fr 0.8fr", gap: "6px", marginBottom: "6px" }}>
                       <button
                         type="button"
-                        onClick={copyScript}
+                        onClick={copyActiveCode}
                         style={{
                           padding: "6px 0",
                           fontSize: "0.74rem",
                           fontWeight: 700,
-                          background: copiedScript ? "#10b981" : "#2563eb",
+                          background: copiedCode ? "#10b981" : "#2563eb",
                           color: "#ffffff",
                           border: "none",
                           borderRadius: "4px",
@@ -1685,8 +1800,8 @@ export default function SchemaMarkupGenerator() {
                           gap: "5px"
                         }}
                       >
-                        <i className={`fa-solid ${copiedScript ? "fa-check" : "fa-copy"}`}></i>
-                        {copiedScript ? "Copied Snippet!" : "Copy <script>"}
+                        <i className={`fa-solid ${copiedCode ? "fa-check" : "fa-copy"}`}></i>
+                        {copiedCode ? "Copied Snippet!" : `Copy ${codeFormat.toUpperCase()}`}
                       </button>
 
                       <button
@@ -1714,7 +1829,7 @@ export default function SchemaMarkupGenerator() {
 
                     <button
                       type="button"
-                      onClick={downloadJson}
+                      onClick={downloadFile}
                       style={{
                         width: "100%",
                         padding: "6px 0",
@@ -1732,7 +1847,7 @@ export default function SchemaMarkupGenerator() {
                       }}
                     >
                       <i className="fa-solid fa-download"></i>
-                      Download HTML Snippet
+                      Download {codeFormat.toUpperCase()} File
                     </button>
                   </div>
                 )}
