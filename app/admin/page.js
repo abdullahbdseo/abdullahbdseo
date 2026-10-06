@@ -305,6 +305,17 @@ export default function AdminDashboardPage() {
               <div style={{ fontSize: "11px", color: "#64748b", fontWeight: "normal" }}>Rates, packages & retainers</div>
             </div>
           </Link>
+
+          <Link href="/admin/analytics" className="admin-action-btn" style={{ borderLeft: "3px solid #10b981" }}>
+            <i className="fa-solid fa-bolt" style={{ color: "#10b981" }}></i>
+            <div>
+              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                <span>Website Audits</span>
+                <span style={{ background: "#ecfdf5", color: "#047857", fontSize: "10px", fontWeight: 800, padding: "1px 5px", borderRadius: "3px" }}>LIVE</span>
+              </div>
+              <div style={{ fontSize: "11px", color: "#64748b", fontWeight: "normal" }}>Who is auditing what website</div>
+            </div>
+          </Link>
         </div>
       </div>
 

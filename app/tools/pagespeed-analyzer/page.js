@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import ToolFaqAccordion from "@/components/ToolFaqAccordion";
+import { logToolUsage } from "@/lib/toolTracker";
 
 export default function PageSpeedAnalyzer() {
   const [url, setUrl] = useState("https://abdullahbdseo.com");
@@ -97,6 +98,14 @@ export default function PageSpeedAnalyzer() {
           opportunities,
           timestamp: new Date().toLocaleTimeString()
         });
+
+        logToolUsage(
+          "Core Web Vitals & PageSpeed Analyzer",
+          clean,
+          `LCP ${lcpVal} | FCP ${fcpVal} | CLS ${clsVal} (${targetDevice})`,
+          score,
+          { device: targetDevice, lcp: lcpVal, cls: clsVal, fcp: fcpVal, ttfb: ttfbVal }
+        );
       } else {
         throw new Error("PageSpeed API error");
       }
@@ -153,6 +162,14 @@ export default function PageSpeedAnalyzer() {
         ],
         timestamp: new Date().toLocaleTimeString()
       });
+
+      logToolUsage(
+        "Core Web Vitals & PageSpeed Analyzer",
+        clean,
+        `Score: ${baseScore}/100 | LCP ${isFast ? "1.4s" : "3.2s"} (${targetDevice})`,
+        baseScore,
+        { device: targetDevice, simulated: true }
+      );
     } finally {
       setLoading(false);
       setHasAudited(true);

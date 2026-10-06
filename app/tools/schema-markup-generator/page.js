@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import ToolFaqAccordion from "@/components/ToolFaqAccordion";
+import { logToolUsage } from "@/lib/toolTracker";
 
 const SCHEMA_TYPES = [
   { id: "website", label: "WebSite & Sitelinks", icon: "fa-globe", badge: "Core", desc: "Site entity & SearchAction" },
@@ -636,6 +637,14 @@ export default function SchemaMarkupGenerator() {
     setCopiedCode(true);
     showToast(`Copied ${codeFormat.toUpperCase()} snippet!`);
     setTimeout(() => setCopiedCode(false), 2000);
+    const activeTypes = Object.keys(selectedSchemas).filter(k => selectedSchemas[k]);
+    logToolUsage(
+      "Schema Markup Generator",
+      websiteData.url || webpageData.url || orgData.url || "",
+      `Generated schema: ${activeTypes.join(", ")} (${codeFormat.toUpperCase()})`,
+      100,
+      { format: codeFormat, types: activeTypes }
+    );
   };
 
   const copyRawJson = () => {
@@ -643,6 +652,14 @@ export default function SchemaMarkupGenerator() {
     setCopiedRaw(true);
     showToast("Copied pure JSON-LD object!");
     setTimeout(() => setCopiedRaw(false), 2000);
+    const activeTypes = Object.keys(selectedSchemas).filter(k => selectedSchemas[k]);
+    logToolUsage(
+      "Schema Markup Generator",
+      websiteData.url || webpageData.url || orgData.url || "",
+      `Copied Raw JSON-LD: ${activeTypes.join(", ")}`,
+      100,
+      { format: "raw_json", types: activeTypes }
+    );
   };
 
   const downloadFile = () => {
@@ -655,6 +672,14 @@ export default function SchemaMarkupGenerator() {
     a.click();
     URL.revokeObjectURL(fileUrl);
     showToast(`Downloaded schema-markup.${ext}`);
+    const activeTypes = Object.keys(selectedSchemas).filter(k => selectedSchemas[k]);
+    logToolUsage(
+      "Schema Markup Generator",
+      websiteData.url || webpageData.url || orgData.url || "",
+      `Downloaded ${ext.toUpperCase()} Schema file: ${activeTypes.join(", ")}`,
+      100,
+      { format: ext, types: activeTypes }
+    );
   };
 
   const jsonByteSize = new Blob([formattedCodeOutput]).size;

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { DB } from "@/lib/db";
 
 export async function POST(req) {
   try {
@@ -45,6 +46,44 @@ export async function POST(req) {
       "referrer-policy": headers["referrer-policy"] || null
     };
 
+    // Extract client IP and user agent
+    const forwardedFor = req.headers.get("x-forwarded-for");
+    const ip = forwardedFor ? forwardedFor.split(",")[0].trim() : (req.headers.get("x-real-ip") || "127.0.0.1");
+    const userAgent = req.headers.get("user-agent") || "";
+    const isMobile = /mobile|iphone|android/i.test(userAgent);
+    const country = req.headers.get("x-vercel-ip-country") || "BD";
+
+    let targetDomain = "";
+    try {
+      targetDomain = new URL(targetUrl).hostname.replace(/^www\./, "");
+    } catch (e) {
+      targetDomain = targetUrl;
+    }
+
+    // Auto-record tool usage log
+    try {
+      await DB.addToolUsageLog({
+        toolName: "HTTP Header & SSL Checker",
+        toolSlug: "http-check",
+        targetUrl,
+        targetDomain,
+        inputSummary: `HTTP ${response.status} (${response.statusText || "OK"}) - ${responseTime}ms`,
+        score: response.status >= 200 && response.status < 400 ? response.status : null,
+        ip,
+        country,
+        device: isMobile ? "Mobile" : "Desktop",
+        userAgent,
+        meta: {
+          status: response.status,
+          isSecure,
+          responseTimeMs: responseTime,
+          server: headers["server"] || "Hidden",
+        },
+      });
+    } catch (logErr) {
+      console.error("Failed to log http check audit:", logErr);
+    }
+
     return NextResponse.json({
       success: true,
       url: targetUrl,
@@ -62,3 +101,4 @@ export async function POST(req) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }
+

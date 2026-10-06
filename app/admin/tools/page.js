@@ -135,6 +135,26 @@ export default function AdminToolsPage() {
 
         <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
           <Link
+            href="/admin/analytics"
+            className="btn-admin"
+            style={{
+              background: "#ecfdf5",
+              border: "1px solid #a7f3d0",
+              color: "#047857",
+              fontWeight: 700,
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "8px",
+              padding: "8px 16px",
+              borderRadius: "4px",
+              textDecoration: "none"
+            }}
+          >
+            <i className="fa-solid fa-chart-line"></i>
+            <span>Live Audit Telemetry</span>
+          </Link>
+
+          <Link
             href="/admin/backlink-calculator"
             className="btn-admin"
             style={{

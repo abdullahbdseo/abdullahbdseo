@@ -11,7 +11,7 @@ const navGroups = [
     label: "Overview",
     items: [
       { href: "/admin", label: "Dashboard", icon: "fa-chart-pie", exact: true },
-      { href: "/admin/analytics", label: "Analytics & Logs", icon: "fa-chart-line" },
+      { href: "/admin/analytics", label: "Website Audits & Logs", icon: "fa-bolt" },
     ],
   },
   {

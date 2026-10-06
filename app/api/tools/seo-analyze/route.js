@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { DB } from "@/lib/db";
 
 // ── Helper: extract all regex matches ──────────────────────────────────────
 function matchAll(html, regex) {
@@ -458,7 +459,7 @@ export async function POST(req) {
     // ─────────────────────────────────────────────────────────────────────────
     // RETURN COMPREHENSIVE DATA
     // ─────────────────────────────────────────────────────────────────────────
-    return NextResponse.json({
+    const auditResponseData = {
       success: true,
       url: targetUrl,
       finalUrl,
@@ -558,7 +559,32 @@ export async function POST(req) {
         snippet: robotsTxt.content ? robotsTxt.content.substring(0, 800) : "",
       },
       sitemap: sitemapXml,
-    });
+    };
+
+    // Auto-record audit in DB for Admin Panel Intelligence
+    try {
+      const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || req.headers.get("x-real-ip") || "127.0.0.1";
+      const ua = req.headers.get("user-agent") || "";
+      let device = "Desktop (Windows)";
+      if (/android/i.test(ua)) device = "Mobile (Android)";
+      else if (/iphone|ipad|ipod/i.test(ua)) device = "Mobile (iOS)";
+      else if (/macintosh/i.test(ua)) device = "Desktop (Mac OS)";
+
+      DB.addToolUsageLog({
+        tool_name: "Deep SEO Audit",
+        tool_slug: "deep-seo-audit",
+        target_url: targetUrl,
+        target_domain: hostname || targetUrl,
+        input_summary: `Deep Technical Audit (${statusCode} ${statusCode === 200 ? 'OK' : 'Response'}, TTFB: ${ttfbMs}ms, Size: ${(htmlSizeBytes / 1024).toFixed(1)}KB)`,
+        score: statusCode === 200 ? (hasTitle && hasMetaDesc && hasCanonical ? 85 : 72) : 40,
+        status: "completed",
+        ip,
+        device,
+        user_agent: ua
+      }).catch(() => {});
+    } catch (err) {}
+
+    return NextResponse.json(auditResponseData);
   } catch (error) {
     return NextResponse.json(
       { success: false, error: error.message },
