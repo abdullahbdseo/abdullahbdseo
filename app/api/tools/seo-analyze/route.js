@@ -217,31 +217,24 @@ export async function POST(req) {
     // 5. IMAGES
     // ─────────────────────────────────────────────────────────────────────────
     const imgTags = matchAll(html, /<img[^>]+>/gi);
-    let missingAltCount = 0;
-    let lazyLoadedImages = 0;
-    const imageDetails = imgTags.slice(0, 30).map((m) => {
+    let totalMissingAlt = 0;
+    let totalLazyImages = 0;
+    const imageDetails = imgTags.slice(0, 50).map((m) => {
       const tag = m[0];
       const src = getAttr(tag, "src");
       const alt = getAttr(tag, "alt");
       const loading = getAttr(tag, "loading");
       const width = getAttr(tag, "width");
       const height = getAttr(tag, "height");
-      if (!alt) missingAltCount++;
-      if (loading === "lazy") lazyLoadedImages++;
       return { src, alt, loading, width, height, hasAlt: !!alt };
     });
-    // Count total missing alt from all images
+    // Single pass for accurate total counts across ALL images
     imgTags.forEach((m) => {
-      // already counted in slice(0,30), need full count
-    });
-    let totalMissingAlt = 0;
-    imgTags.forEach((m) => {
-      const alt = getAttr(m[0], "alt");
+      const tag = m[0];
+      const alt = getAttr(tag, "alt");
+      const loading = getAttr(tag, "loading");
       if (!alt) totalMissingAlt++;
-    });
-    let totalLazyImages = 0;
-    imgTags.forEach((m) => {
-      if (getAttr(m[0], "loading") === "lazy") totalLazyImages++;
+      if (loading === "lazy") totalLazyImages++;
     });
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -374,7 +367,7 @@ export async function POST(req) {
     const bodyText = stripTags(bodyHtml);
     const words = bodyText
       .split(/\s+/)
-      .filter((w) => w.length > 1);
+      .filter((w) => w.length > 0 && /[a-zA-Z0-9\u0080-\uFFFF]/.test(w));
     const wordCount = words.length;
 
     // Text-to-HTML ratio
@@ -562,7 +555,7 @@ export async function POST(req) {
       robotsTxt: {
         exists: robotsTxt.exists,
         size: robotsTxt.size,
-        snippet: robotsTxt.content.substring(0, 500),
+        snippet: robotsTxt.content ? robotsTxt.content.substring(0, 800) : "",
       },
       sitemap: sitemapXml,
     });

@@ -467,55 +467,71 @@ export default function DeepSEOAuditPage() {
 
           {/* Score Dashboard */}
           <div style={{ background: 'var(--card-bg,#fff)', border: '1px solid var(--border-color,#e5e7eb)', borderRadius: 10, padding: '24px 28px', marginBottom: 20, boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 20, alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
-              <div>
-                <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-secondary,#6b7280)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 3 }}>Audited URL</div>
-                <a href={results.url} target="_blank" rel="noopener noreferrer" style={{ color: '#2563eb', fontWeight: 600, fontSize: 15, wordBreak: 'break-all' }}>{results.url}</a>
-                {results.redirected && <span style={{ marginLeft: 10, fontSize: 12, color: '#d97706', fontWeight: 700 }}>→ Redirected to: {results.finalUrl}</span>}
+            {/* Header Row */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 24 }}>
+              <div style={{ flex: 1, minWidth: 220 }}>
+                <div style={{ fontSize: 10, fontWeight: 800, color: 'var(--text-secondary,#6b7280)', textTransform: 'uppercase', letterSpacing: 1.2, marginBottom: 5 }}>Audited URL</div>
+                <a href={results.url} target="_blank" rel="noopener noreferrer" style={{ color: '#2563eb', fontWeight: 700, fontSize: 14, wordBreak: 'break-all', textDecoration: 'none' }}>{results.url}</a>
+                {results.redirected && <div style={{ marginTop: 4, fontSize: 12, color: '#d97706', fontWeight: 700 }}><i className="fa-solid fa-arrow-right" style={{ marginRight: 5 }}></i>Redirected → {results.finalUrl}</div>}
+                <div style={{ display: 'flex', gap: 10, marginTop: 8, flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: 11, color: '#6b7280' }}><i className="fa-solid fa-clock" style={{ marginRight: 4 }}></i>TTFB: <strong style={{ color: results.ttfbMs > 600 ? '#dc2626' : '#059669' }}>{results.ttfbMs}ms</strong></span>
+                  <span style={{ fontSize: 11, color: '#6b7280' }}><i className="fa-solid fa-file-code" style={{ marginRight: 4 }}></i>Size: <strong>{results.htmlSizeKB}KB</strong></span>
+                  <span style={{ fontSize: 11, color: '#6b7280' }}><i className="fa-solid fa-shield-halved" style={{ marginRight: 4 }}></i><strong style={{ color: results.security.https ? '#059669' : '#dc2626' }}>{results.security.https ? 'HTTPS ✓' : 'HTTP ✗'}</strong></span>
+                  <span style={{ fontSize: 11, color: '#6b7280' }}><i className="fa-solid fa-robot" style={{ marginRight: 4 }}></i><strong style={{ color: results.noindex ? '#dc2626' : '#059669' }}>{results.noindex ? 'NOINDEX ⚠' : 'Indexable ✓'}</strong></span>
+                </div>
               </div>
-              <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-                <button onClick={() => window.print()} style={{ padding: '11px 20px', background: '#f8fafc', color: '#1e293b', border: '1.5px solid #cbd5e1', borderRadius: 8, fontWeight: 700, fontSize: 14, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, whiteSpace: 'nowrap' }}>
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+                <button onClick={() => window.print()} style={{ padding: '9px 16px', background: '#f8fafc', color: '#1e293b', border: '1.5px solid #cbd5e1', borderRadius: 4, fontWeight: 700, fontSize: 13, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 7, whiteSpace: 'nowrap' }}>
                   <i className="fa-solid fa-file-pdf" style={{ color: '#dc2626' }}></i> Print / PDF
                 </button>
-                <button onClick={downloadExcel} style={{ padding: '11px 22px', background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)', color: '#fff', border: 'none', borderRadius: 8, fontWeight: 800, fontSize: 14, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, boxShadow: '0 4px 14px rgba(37,99,235,0.25)', whiteSpace: 'nowrap' }}>
+                <button onClick={downloadExcel} style={{ padding: '9px 18px', background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)', color: '#fff', border: 'none', borderRadius: 4, fontWeight: 800, fontSize: 13, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 7, boxShadow: '0 4px 14px rgba(37,99,235,0.25)', whiteSpace: 'nowrap' }}>
                   <i className="fa-solid fa-file-excel"></i> Download Excel (.xlsx)
                 </button>
               </div>
             </div>
 
-            {/* Score Gauges */}
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, justifyContent: 'center' }}>
+            {/* Score Gauges — larger and clearer */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center', marginBottom: 24 }}>
               {[
-                { l: 'Overall', s: results.overall }, { l: 'On-Page', s: results.onpageScore },
-                { l: 'Technical', s: results.techScore }, { l: 'Performance', s: results.perfScore },
-                { l: 'Security', s: results.securityScore }, { l: 'Social', s: results.socialScore },
-                { l: 'Links', s: results.linkScore }, { l: 'A11y', s: results.a11yScore },
-              ].map(({ l, s }) => (
-                <div key={l} style={{ flex: '1 1 90px', textAlign: 'center', maxWidth: 120, minWidth: 80 }}>
-                  <ScoreGauge score={s} size={68} />
-                  <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-secondary,#6b7280)', marginTop: 4 }}>{l}</div>
-                  <div style={{ fontSize: 10, color: scoreColor(s), fontWeight: 700 }}>{scoreLabel(s)}</div>
+                { l: 'Overall', s: results.overall, main: true },
+                { l: 'On-Page', s: results.onpageScore },
+                { l: 'Technical', s: results.techScore },
+                { l: 'Performance', s: results.perfScore },
+                { l: 'Security', s: results.securityScore },
+                { l: 'Social', s: results.socialScore },
+                { l: 'Links', s: results.linkScore },
+                { l: 'A11y', s: results.a11yScore },
+              ].map(({ l, s, main }) => (
+                <div key={l} style={{ flex: main ? '0 0 auto' : '1 1 90px', textAlign: 'center', maxWidth: main ? 130 : 110, minWidth: main ? 110 : 80, background: 'var(--bg-secondary,#f9fafb)', borderRadius: 8, padding: main ? '14px 12px' : '10px 8px', border: `2px solid ${main ? scoreColor(s) + '60' : 'var(--border-color,#e5e7eb)'}` }}>
+                  <ScoreGauge score={s} size={main ? 84 : 64} />
+                  <div style={{ fontSize: main ? 12 : 10, fontWeight: 800, color: 'var(--text-primary,#111827)', marginTop: 6 }}>{l}</div>
+                  <div style={{ fontSize: main ? 11 : 10, color: '#fff', fontWeight: 800, background: scoreColor(s), borderRadius: 4, padding: '1px 6px', display: 'inline-block', marginTop: 3 }}>{scoreLabel(s)}</div>
                 </div>
               ))}
             </div>
 
-            {/* Quick Stats */}
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 18 }}>
+            {/* Quick Stats — with clear pass/fail indicators */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(110px, 1fr))', gap: 8 }}>
               {[
-                { icon: 'fa-clock', label: 'TTFB', value: results.ttfbMs + 'ms', warn: results.ttfbMs > 600 },
-                { icon: 'fa-file-code', label: 'HTML Size', value: results.htmlSizeKB + 'KB', warn: results.htmlSizeKB > 100 },
-                { icon: 'fa-font', label: 'Words', value: results.wordCount.toLocaleString(), warn: results.wordCount < 300 },
-                { icon: 'fa-heading', label: 'H1 Tags', value: results.h1s.length, warn: results.h1s.length !== 1 },
-                { icon: 'fa-image', label: 'Images', value: results.imgTotal },
-                { icon: 'fa-circle-xmark', label: 'Missing Alt', value: results.imgNoAlt, warn: results.imgNoAlt > 0 },
-                { icon: 'fa-link', label: 'Links', value: results.totalLinks },
-                { icon: 'fa-code', label: 'Schema', value: results.schemaCount, warn: results.schemaCount === 0 },
-                { icon: 'fa-triangle-exclamation', label: 'Issues', value: results.critical.length, warn: results.critical.length > 0 },
-                { icon: 'fa-percent', label: 'Text Ratio', value: results.textToHtmlRatio + '%', warn: results.textToHtmlRatio < 15 },
+                { icon: 'fa-font', label: 'Word Count', value: results.wordCount.toLocaleString(), pass: results.wordCount >= 300, suffix: 'words' },
+                { icon: 'fa-heading', label: 'H1 Tags', value: results.h1s.length, pass: results.h1s.length === 1, suffix: results.h1s.length === 1 ? '(good)' : results.h1s.length === 0 ? '(missing!)' : '(multiple!)' },
+                { icon: 'fa-image', label: 'Total Images', value: results.imgTotal, pass: true, suffix: 'imgs' },
+                { icon: 'fa-circle-xmark', label: 'Missing Alt', value: results.imgNoAlt, pass: results.imgNoAlt === 0, suffix: results.imgNoAlt === 0 ? '✓ all set' : '✗ fix alt' },
+                { icon: 'fa-link', label: 'Internal Links', value: results.internalLinks, pass: results.internalLinks >= 3, suffix: 'links' },
+                { icon: 'fa-arrow-up-right-from-square', label: 'External Links', value: results.externalLinks, pass: true, suffix: 'links' },
+                { icon: 'fa-code', label: 'Schema Blocks', value: results.schemaCount, pass: results.schemaCount > 0, suffix: results.schemaCount > 0 ? 'found' : '✗ missing' },
+                { icon: 'fa-triangle-exclamation', label: 'Issues Found', value: results.critical.length, pass: results.critical.length === 0, suffix: results.critical.length === 0 ? '✓ none' : '✗ fix these' },
+                { icon: 'fa-percent', label: 'Text Ratio', value: results.textToHtmlRatio + '%', pass: results.textToHtmlRatio >= 15, suffix: results.textToHtmlRatio >= 15 ? '✓ good' : '✗ low' },
+                { icon: 'fa-layer-group', label: 'CSS Files', value: results.resources.cssFiles, pass: results.resources.cssFiles <= 5, suffix: 'files' },
               ].map(stat => (
-                <div key={stat.label} style={{ flex: '1 1 85px', background: stat.warn ? '#fff7ed' : 'var(--bg-secondary,#f9fafb)', border: `1px solid ${stat.warn ? '#fed7aa' : 'var(--border-color,#e5e7eb)'}`, borderRadius: 6, padding: '8px 12px', minWidth: 80 }}>
-                  <div style={{ fontSize: 18, fontWeight: 900, color: stat.warn ? '#d97706' : 'var(--text-primary,#111827)' }}>{stat.value}</div>
-                  <div style={{ fontSize: 10, color: 'var(--text-secondary,#6b7280)', marginTop: 2 }}><i className={`fa-solid ${stat.icon}`} style={{ marginRight: 4, opacity: 0.5 }}></i>{stat.label}</div>
+                <div key={stat.label} style={{ background: stat.pass ? 'var(--bg-secondary,#f9fafb)' : '#fff7ed', border: `1.5px solid ${stat.pass ? 'var(--border-color,#e5e7eb)' : '#fed7aa'}`, borderRadius: 6, padding: '10px 12px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
+                    <i className={`fa-solid ${stat.icon}`} style={{ color: stat.pass ? '#94a3b8' : '#d97706', fontSize: 11 }}></i>
+                    <span style={{ fontSize: 9, fontWeight: 800, color: stat.pass ? '#059669' : '#d97706', background: stat.pass ? '#ecfdf5' : '#fef9c3', borderRadius: 3, padding: '1px 4px' }}>{stat.pass ? '✓' : '!'}</span>
+                  </div>
+                  <div style={{ fontSize: 20, fontWeight: 900, color: stat.pass ? 'var(--text-primary,#111827)' : '#d97706', lineHeight: 1 }}>{stat.value}</div>
+                  <div style={{ fontSize: 9, color: 'var(--text-secondary,#6b7280)', marginTop: 3, fontWeight: 600 }}>{stat.label}</div>
+                  <div style={{ fontSize: 9, color: stat.pass ? '#059669' : '#ea580c', fontWeight: 700, marginTop: 1 }}>{stat.suffix}</div>
                 </div>
               ))}
             </div>
@@ -538,19 +554,40 @@ export default function DeepSEOAuditPage() {
             {activeSheet === 0 && (
               <div>
                 <h2 style={sh2}>📊 Executive Summary</h2>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(280px,1fr))', gap: 12 }}>
-                  <IC label="Page Title" value={results.title || '—'} icon="fa-heading" warn={!results.title} />
-                  <IC label="Meta Description" value={results.metaDesc || '—'} icon="fa-align-left" warn={!results.metaDesc} />
-                  <IC label="Canonical URL" value={results.canonical || 'Not set'} icon="fa-link" warn={!results.canonical} />
-                  <IC label="Indexability" value={results.noindex ? '⚠️ NOINDEX — Blocked!' : '✅ Indexable'} icon="fa-robot" warn={results.noindex} />
-                  <IC label="Word Count" value={`${results.wordCount.toLocaleString()} words`} icon="fa-font" warn={results.wordCount < 300} />
-                  <IC label="H1 Tag" value={results.h1s.join(', ') || 'None found'} icon="fa-heading" warn={results.h1s.length !== 1} />
-                  <IC label="TTFB" value={`${results.ttfbMs} ms`} icon="fa-clock" warn={results.ttfbMs > 600} />
-                  <IC label="HTML Size" value={`${results.htmlSizeKB} KB`} icon="fa-file-code" warn={results.htmlSizeKB > 100} />
-                  <IC label="Text:HTML Ratio" value={`${results.textToHtmlRatio}%`} icon="fa-percent" warn={results.textToHtmlRatio < 15} />
-                  <IC label="Schema Markup" value={results.schemaCount > 0 ? `${results.schemaCount} block(s): ${results.schemaBlocks.map(b => b.type).join(', ')}` : 'Not detected'} icon="fa-code" warn={!results.schemaCount} />
-                  <IC label="Technology" value={results.detectedTech.join(', ') || 'Unknown'} icon="fa-microchip" />
-                  <IC label="Security" value={results.security.https ? 'HTTPS ✓' : 'HTTP ✗'} icon="fa-shield-halved" warn={!results.security.https} />
+                {/* Pass / Fail Banner */}
+                <div style={{ display: 'flex', gap: 10, marginBottom: 18, flexWrap: 'wrap' }}>
+                  {[
+                    { label: 'On-Page', score: results.onpageScore },
+                    { label: 'Technical', score: results.techScore },
+                    { label: 'Performance', score: results.perfScore },
+                    { label: 'Security', score: results.securityScore },
+                    { label: 'Social', score: results.socialScore },
+                    { label: 'Links', score: results.linkScore },
+                    { label: 'A11y', score: results.a11yScore },
+                  ].map(({ label, score }) => (
+                    <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 6, background: scoreBg(score), border: `1px solid ${scoreColor(score)}40`, borderRadius: 4, padding: '4px 10px' }}>
+                      <span style={{ width: 8, height: 8, borderRadius: '50%', background: scoreColor(score), display: 'inline-block', flexShrink: 0 }}></span>
+                      <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-primary,#111827)' }}>{label}</span>
+                      <span style={{ fontSize: 12, fontWeight: 900, color: scoreColor(score) }}>{score}%</span>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(280px,1fr))', gap: 10 }}>
+                  <IC label="Page Title" value={results.title || '—'} icon="fa-heading" pass={!!results.title} note={results.title ? `${results.title.length} chars` : 'Missing — critical!'} />
+                  <IC label="Meta Description" value={results.metaDesc || '—'} icon="fa-align-left" pass={!!results.metaDesc} note={results.metaDesc ? `${results.metaDesc.length} chars` : 'Missing'} />
+                  <IC label="Canonical URL" value={results.canonical || 'Not set'} icon="fa-link" pass={!!results.canonical} note={results.canonical ? 'Set correctly' : 'Missing — duplicate content risk'} />
+                  <IC label="Indexability" value={results.noindex ? '⚠️ NOINDEX — Blocked!' : '✅ Indexable'} icon="fa-robot" pass={!results.noindex} note={results.noindex ? 'Google CANNOT index this page' : 'Google can crawl & index'} />
+                  <IC label="Word Count" value={`${results.wordCount.toLocaleString()} words`} icon="fa-font" pass={results.wordCount >= 300} note={results.wordCount < 300 ? 'Thin content — add more' : results.wordCount >= 1500 ? 'Excellent long-form' : 'Adequate'} />
+                  <IC label="H1 Tag" value={results.h1s.length === 0 ? 'None found' : results.h1s[0]} icon="fa-heading" pass={results.h1s.length === 1} note={results.h1s.length === 0 ? 'Missing H1 — critical!' : results.h1s.length > 1 ? `${results.h1s.length} H1s — should be 1` : 'Single H1 ✓'} />
+                  <IC label="TTFB" value={`${results.ttfbMs} ms`} icon="fa-clock" pass={results.ttfbMs < 600} note={results.ttfbMs < 200 ? 'Excellent' : results.ttfbMs < 600 ? 'Acceptable' : 'Slow — optimize server'} />
+                  <IC label="HTML Size" value={`${results.htmlSizeKB} KB`} icon="fa-file-code" pass={results.htmlSizeKB < 100} note={results.htmlSizeKB < 50 ? 'Lightweight ✓' : results.htmlSizeKB < 100 ? 'Moderate' : 'Heavy — reduce HTML'} />
+                  <IC label="Text:HTML Ratio" value={`${results.textToHtmlRatio}%`} icon="fa-percent" pass={results.textToHtmlRatio >= 15} note={results.textToHtmlRatio >= 15 ? 'Good ratio ✓' : 'Low — add more text content'} />
+                  <IC label="Schema Markup" value={results.schemaCount > 0 ? `${results.schemaCount} block(s): ${results.schemaBlocks.map(b => b.type).join(', ')}` : 'Not detected'} icon="fa-code" pass={results.schemaCount > 0} note={results.schemaCount > 0 ? 'Rich snippets eligible ✓' : 'Add JSON-LD schema'} />
+                  <IC label="Technology Stack" value={results.detectedTech.join(', ') || 'Unknown'} icon="fa-microchip" pass={true} note="Detected CMS / frameworks" />
+                  <IC label="HTTPS / Security" value={results.security.https ? 'HTTPS ✓ Secure' : 'HTTP ✗ Insecure'} icon="fa-shield-halved" pass={results.security.https} note={results.security.https ? 'Encrypted connection' : 'Install SSL certificate!'} />
+                  <IC label="robots.txt" value={results.robotsTxt.exists ? `Found (${results.robotsTxt.size} bytes)` : 'Not found'} icon="fa-robot" pass={results.robotsTxt.exists} note={results.robotsTxt.exists ? 'Crawl directives configured' : 'Missing robots.txt'} />
+                  <IC label="XML Sitemap" value={results.sitemap.exists ? `Found (${results.sitemap.urlCount || 0} URLs)` : 'Not found'} icon="fa-map" pass={results.sitemap.exists} note={results.sitemap.exists ? `Submitted: ${results.sitemap.url}` : 'Submit sitemap to GSC'} />
+                  <IC label="Images (Alt coverage)" value={`${results.imgTotal} total, ${results.imgNoAlt} missing alt`} icon="fa-image" pass={results.imgNoAlt === 0} note={results.imgNoAlt === 0 ? 'All images have alt ✓' : `${results.imgNoAlt} images need alt text`} />
                 </div>
               </div>
             )}
@@ -803,47 +840,63 @@ function Badge({ text, bg, color, border }) {
   return <span style={{ background: bg, color, border: `1px solid ${border}`, borderRadius: 4, padding: '2px 8px', fontSize: 11, fontWeight: 800, whiteSpace: 'nowrap' }}>{text}</span>;
 }
 
-function IC({ label, value, icon, warn }) {
+function IC({ label, value, icon, pass, note }) {
+  const isPass = pass !== undefined ? pass : true;
   return (
-    <div style={{ background: warn ? '#fff7ed' : 'var(--bg-secondary,#f9fafb)', border: `1px solid ${warn ? '#fed7aa' : 'var(--border-color,#e5e7eb)'}`, borderRadius: 6, padding: '12px 14px' }}>
-      <div style={{ fontSize: 10, fontWeight: 700, color: warn ? '#d97706' : 'var(--text-secondary,#6b7280)', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 5 }}>
-        <i className={`fa-solid ${icon}`} style={{ marginRight: 5 }}></i>{label}
+    <div style={{ background: isPass ? 'var(--bg-secondary,#f9fafb)' : '#fff7ed', border: `1px solid ${isPass ? 'var(--border-color,#e5e7eb)' : '#fed7aa'}`, borderRadius: 6, padding: '12px 14px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 5 }}>
+        <div style={{ fontSize: 10, fontWeight: 700, color: isPass ? 'var(--text-secondary,#6b7280)' : '#d97706', textTransform: 'uppercase', letterSpacing: 0.8 }}>
+          <i className={`fa-solid ${icon}`} style={{ marginRight: 5 }}></i>{label}
+        </div>
+        <span style={{ fontSize: 10, fontWeight: 800, color: isPass ? '#059669' : '#d97706', background: isPass ? '#ecfdf5' : '#fef9c3', borderRadius: 3, padding: '1px 5px', border: `1px solid ${isPass ? '#a7f3d0' : '#fde68a'}` }}>{isPass ? '✓ OK' : '✗ Fix'}</span>
       </div>
-      <div style={{ fontSize: 13, color: 'var(--text-primary,#111827)', wordBreak: 'break-word', lineHeight: 1.5 }}>{value || '—'}</div>
+      <div style={{ fontSize: 13, color: 'var(--text-primary,#111827)', wordBreak: 'break-word', lineHeight: 1.5, fontWeight: 600 }}>{value || '—'}</div>
+      {note && <div style={{ fontSize: 11, color: '#6b7280', marginTop: 4, lineHeight: 1.4 }}>{note}</div>}
     </div>
   );
 }
 
 function CheckSheet({ title, checks, expandedFixes, toggleFix, prefix }) {
+  const passed = checks.filter(c => c.pass).length;
+  const total = checks.length;
   return (
     <div>
-      {title && <h2 style={sh2}>{title}</h2>}
+      {title && (
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+          <h2 style={{ ...sh2, margin: 0 }}>{title}</h2>
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+            <span style={{ fontSize: 12, color: '#059669', fontWeight: 700, background: '#ecfdf5', border: '1px solid #a7f3d0', borderRadius: 4, padding: '3px 10px' }}>✓ {passed} passed</span>
+            <span style={{ fontSize: 12, color: '#dc2626', fontWeight: 700, background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 4, padding: '3px 10px' }}>✗ {total - passed} failed</span>
+          </div>
+        </div>
+      )}
       <table style={tblStyle}>
-        <thead><tr style={thr}>{['Check', 'Status', 'Current Value', 'Note / Recommendation', ''].map(h => <th key={h} style={thStyle}>{h}</th>)}</tr></thead>
+        <thead><tr style={thr}>{['Check', 'Status', 'Current Value', 'Explanation', 'Fix Action'].map(h => <th key={h} style={thStyle}>{h}</th>)}</tr></thead>
         <tbody>{checks.map((c, i) => {
           const fixKey = `${prefix}-${i}`;
           return (
-            <tr key={i} style={trStyle}>
-              <td style={{ ...tdStyle, fontWeight: 600, color: 'var(--text-primary,#111827)', maxWidth: 200 }}>{c.label}</td>
+            <tr key={i} style={{ ...trStyle, background: !c.pass ? '#fffbeb' : undefined }}>
+              <td style={{ ...tdStyle, fontWeight: 700, color: 'var(--text-primary,#111827)', maxWidth: 180 }}>{c.label}</td>
               <td style={tdStyle}><Badge text={c.pass ? '✓ PASS' : '✗ FAIL'} bg={c.pass ? '#ecfdf5' : '#fef2f2'} color={c.pass ? '#059669' : '#dc2626'} border={c.pass ? '#a7f3d0' : '#fecaca'} /></td>
-              <td style={{ ...tdStyle, fontSize: 12, color: '#6b7280', maxWidth: 200, wordBreak: 'break-word' }}>{c.value}</td>
-              <td style={{ ...tdStyle, fontSize: 12, color: '#6b7280' }}>
-                {c.note}
-                {!c.pass && c.fix && (
-                  <>
-                    <button onClick={() => toggleFix(fixKey)} style={{ display: 'block', marginTop: 6, background: 'none', border: 'none', color: '#2563eb', fontWeight: 700, fontSize: 11, cursor: 'pointer', padding: 0 }}>
-                      <i className={`fa-solid ${expandedFixes[fixKey] ? 'fa-chevron-up' : 'fa-wrench'}`} style={{ marginRight: 4 }}></i>
+              <td style={{ ...tdStyle, fontSize: 12, color: c.pass ? '#374151' : '#b45309', maxWidth: 180, wordBreak: 'break-word', fontWeight: c.pass ? 400 : 600 }}>{c.value}</td>
+              <td style={{ ...tdStyle, fontSize: 12, color: '#6b7280', maxWidth: 220 }}>{c.note}</td>
+              <td style={{ ...tdStyle, minWidth: 160 }}>
+                {!c.pass && c.fix ? (
+                  <div>
+                    <button onClick={() => toggleFix(fixKey)} style={{ background: 'none', border: '1px solid #bfdbfe', borderRadius: 4, color: '#2563eb', fontWeight: 700, fontSize: 11, cursor: 'pointer', padding: '3px 8px', display: 'flex', alignItems: 'center', gap: 4 }}>
+                      <i className={`fa-solid ${expandedFixes[fixKey] ? 'fa-chevron-up' : 'fa-wrench'}`}></i>
                       {expandedFixes[fixKey] ? 'Hide' : 'How to Fix'}
                     </button>
                     {expandedFixes[fixKey] && (
-                      <div style={{ marginTop: 6, padding: '8px 12px', background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 4, fontSize: 12, color: '#1e40af', lineHeight: 1.5 }}>
+                      <div style={{ marginTop: 6, padding: '8px 10px', background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 4, fontSize: 11, color: '#1e40af', lineHeight: 1.5 }}>
                         {c.fix}
                       </div>
                     )}
-                  </>
-                )}
+                  </div>
+                ) : c.pass ? (
+                  <span style={{ fontSize: 11, color: '#059669', fontWeight: 700 }}>✓ No action needed</span>
+                ) : null}
               </td>
-              <td style={tdStyle}></td>
             </tr>
           );
         })}</tbody>

@@ -194,7 +194,7 @@ const TOPIC_LIBRARY = [
     slug: "chatgpt-search-optimization-brand-citations-ai-chatbots-2026",
     category: "GEO & Generative AI Search",
     read_time: "8 min read",
-    featured_image: "/images/blog_ai_content_eeat.jpg",
+    featured_image: "/images/blog_chatgpt_search_opt.jpg",
     summary: "ChatGPT Search is now a primary discovery channel for millions of users. This guide reveals 7 data-backed tactics to optimize your content so OpenAI's search model cites your brand as a trusted source in AI-generated answers.",
     tags: ["ChatGPT Search", "ChatGPT SEO", "AI Citation Strategy", "GEO", "OpenAI Search", "Brand Citations"],
     primaryKeyword: "ChatGPT search optimization",
