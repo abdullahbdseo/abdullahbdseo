@@ -1927,7 +1927,7 @@ export async function runDailyBlogEngine(options = {}) {
   }
 
   const newPostObject = `  {
-    id: 1,
+    id: ${Date.now()},
     title: ${JSON.stringify(selectedTopic.title)},
     slug: ${JSON.stringify(selectedTopic.slug)},
     category: ${JSON.stringify(selectedTopic.category)},
@@ -1940,10 +1940,10 @@ export async function runDailyBlogEngine(options = {}) {
     excerpt: ${JSON.stringify(selectedTopic.summary)},
     tags: ${JSON.stringify(selectedTopic.tags)},
     author: {
-      name: SITE_CONFIG.author.name,
-      role: SITE_CONFIG.author.role,
-      bio: SITE_CONFIG.author.bio,
-      avatar: SITE_CONFIG.author.avatar
+      name: ${JSON.stringify(SITE_CONFIG.author.name)},
+      role: ${JSON.stringify(SITE_CONFIG.author.role)},
+      bio: ${JSON.stringify(SITE_CONFIG.author.bio)},
+      avatar: ${JSON.stringify(SITE_CONFIG.author.avatar)}
     },
     content: \`${htmlContent}\`
   },`;
