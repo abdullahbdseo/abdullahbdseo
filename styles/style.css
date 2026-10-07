@@ -1596,13 +1596,14 @@ img {
     display: flex;
     justify-content: center;
     position: relative;
+    width: 100%;
 }
 
 .digi-3d-box {
     position: relative;
     width: 100%;
-    max-width: 480px;
-    border-radius: 6px;
+    max-width: 960px;
+    border-radius: 4px;
 }
 
 .hero-glow-aura {
@@ -1610,8 +1611,8 @@ img {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 420px;
-    height: 420px;
+    width: 560px;
+    height: 560px;
     background: radial-gradient(circle, rgba(59, 130, 246, 0.28) 0%, rgba(99, 102, 241, 0.14) 50%, transparent 70%);
     filter: blur(45px);
     z-index: 0;
@@ -1624,7 +1625,7 @@ img {
     height: auto;
     position: relative;
     z-index: 1;
-    border-radius: 6px;
+    border-radius: 4px;
     box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.16), 0 0 0 1px rgba(226, 232, 240, 0.8);
     transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
