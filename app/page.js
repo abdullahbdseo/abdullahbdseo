@@ -213,12 +213,12 @@ export default function HomePage() {
 
                 {/* Floating Badge 1: Top Left */}
                 <div className="hero-floating-card float-card-top">
-                  <div className="float-card-icon growth-icon">
-                    <i className="fa-solid fa-arrow-trend-up"></i>
+                  <div className="float-card-icon rank-icon">
+                    <i className="fa-solid fa-trophy"></i>
                   </div>
                   <div className="float-card-info">
-                    <span className="float-card-num">+340%</span>
-                    <span className="float-card-lbl">Organic Traffic</span>
+                    <span className="float-card-num">Rank #1</span>
+                    <span className="float-card-lbl">Google Verified</span>
                   </div>
                 </div>
 
@@ -235,12 +235,12 @@ export default function HomePage() {
 
                 {/* Floating Badge 2: Bottom Right */}
                 <div className="hero-floating-card float-card-bottom">
-                  <div className="float-card-icon rank-icon">
-                    <i className="fa-solid fa-trophy"></i>
+                  <div className="float-card-icon growth-icon">
+                    <i className="fa-solid fa-arrow-trend-up"></i>
                   </div>
                   <div className="float-card-info">
-                    <span className="float-card-num">Rank #1</span>
-                    <span className="float-card-lbl">Google Verified</span>
+                    <span className="float-card-num">+340%</span>
+                    <span className="float-card-lbl">Organic Traffic</span>
                   </div>
                 </div>
               </div>
