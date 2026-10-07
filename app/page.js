@@ -226,8 +226,8 @@ export default function HomePage() {
                 <Image
                   src="/images/seo_hero_analytics_dashboard.jpg"
                   alt="SEO Growth Analytics Dashboard"
-                  width={924}
-                  height={690}
+                  width={1024}
+                  height={576}
                   priority
                   className="digi-3d-img"
                   style={{ width: "100%", height: "auto" }}
