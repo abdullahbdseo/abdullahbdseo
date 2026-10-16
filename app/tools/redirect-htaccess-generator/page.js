@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import Link from "next/link";
 import ToolFaqAccordion from "@/components/ToolFaqAccordion";
 
 export default function RedirectHtaccessGeneratorPage() {
@@ -679,6 +680,22 @@ export default function RedirectHtaccessGeneratorPage() {
 
       {/* FAQ ACCORDION */}
       <ToolFaqAccordion faqs={faqs} title="301 Redirects &amp; Server Configuration FAQ" />
+
+      {/* Consultation CTA Banner */}
+      <div style={{ maxWidth: "1100px", margin: "32px auto 64px", padding: "0 16px" }}>
+        <div className="tool-cta-box">
+          <h4>Need Expert Site Migration & Redirect Strategy?</h4>
+          <p>Our technical SEO team handles complete site migrations, sets up SEO-safe 301 redirect chains, preserves link equity, and prevents ranking loss during domain or URL structure changes.</p>
+          <div style={{ display: "flex", justifyContent: "center", gap: "12px", flexWrap: "wrap" }}>
+            <Link href="/contact" className="btn btn-primary btn-sm">
+              <i className="fa-solid fa-comments"></i> Request Migration Audit
+            </Link>
+            <Link href="/services/technical-seo-service-in-bangladesh" className="btn btn-outline btn-sm">
+              View Technical SEO Services <i className="fa-solid fa-arrow-right"></i>
+            </Link>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

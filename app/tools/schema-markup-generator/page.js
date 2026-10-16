@@ -2009,6 +2009,20 @@ export default function SchemaMarkupGenerator() {
             <p style={{ fontSize: "0.85rem", color: "#64748b" }}>Everything you need to know about JSON-LD structured data and AI search optimization.</p>
           </div>
           <ToolFaqAccordion items={faqItems} />
+
+          {/* Consultation CTA Banner */}
+          <div className="tool-cta-box">
+            <h4>Want Expert Schema & Rich Snippet Implementation?</h4>
+            <p>Our technical SEO specialists implement advanced JSON-LD schema markup, validate with Google Rich Results Test, and ensure your pages earn rich snippets in SERPs.</p>
+            <div style={{ display: "flex", justifyContent: "center", gap: "12px", flexWrap: "wrap" }}>
+              <Link href="/contact" className="btn btn-primary btn-sm">
+                <i className="fa-solid fa-comments"></i> Request Schema Setup
+              </Link>
+              <Link href="/services/technical-seo-service-in-bangladesh" className="btn btn-outline btn-sm">
+                View Technical SEO Services <i className="fa-solid fa-arrow-right"></i>
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
     </>

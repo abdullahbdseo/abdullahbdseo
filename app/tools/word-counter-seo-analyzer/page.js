@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import Link from "next/link";
 import ToolFaqAccordion from "@/components/ToolFaqAccordion";
 
 const STOP_WORDS = new Set([
@@ -460,6 +461,22 @@ export default function WordCounterSeoAnalyzerPage() {
 
       {/* FAQ ACCORDION */}
       <ToolFaqAccordion faqs={faqs} title="SEO Word Count &amp; Content Optimization FAQ" />
+
+      {/* Consultation CTA Banner */}
+      <div style={{ marginTop: "32px" }}>
+        <div className="tool-cta-box">
+          <h4>Need Expert Content Optimization & SEO Writing Strategy?</h4>
+          <p>Our content SEO specialists create keyword-mapped content plans, optimize existing pages for topical depth, and ensure your word count, density, and n-gram distribution align with top-ranking competitors.</p>
+          <div style={{ display: "flex", justifyContent: "center", gap: "12px", flexWrap: "wrap" }}>
+            <Link href="/contact" className="btn btn-primary btn-sm">
+              <i className="fa-solid fa-comments"></i> Request Content Audit
+            </Link>
+            <Link href="/services/ai-seo-service-in-bangladesh" className="btn btn-outline btn-sm">
+              View AI SEO Services <i className="fa-solid fa-arrow-right"></i>
+            </Link>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

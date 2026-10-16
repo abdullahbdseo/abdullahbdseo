@@ -428,6 +428,20 @@ What is Answer Engine Optimization (AEO) and How to Optimize for Perplexity?`
             <ToolFaqAccordion faqs={faqs} />
           </div>
 
+          {/* Consultation CTA Banner */}
+          <div className="tool-cta-box">
+            <h4>Want Professional URL Architecture & On-Page SEO?</h4>
+            <p>Our SEO specialists design keyword-optimized URL structures, fix slug cannibalization issues, and implement site-wide URL best practices that improve crawlability and ranking potential.</p>
+            <div style={{ display: "flex", justifyContent: "center", gap: "12px", flexWrap: "wrap" }}>
+              <Link href="/contact" className="btn btn-primary btn-sm">
+                <i className="fa-solid fa-comments"></i> Request On-Page Audit
+              </Link>
+              <Link href="/services/technical-seo-service-in-bangladesh" className="btn btn-outline btn-sm">
+                View Technical SEO Services <i className="fa-solid fa-arrow-right"></i>
+              </Link>
+            </div>
+          </div>
+
         </div>
       </section>
     </div>

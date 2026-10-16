@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import SocialShare from '@/components/SocialShare';
 import ToolFaqAccordion from '@/components/ToolFaqAccordion';
 
@@ -806,6 +807,22 @@ export default function DeepSEOAuditPage() {
       {/* Social Share */}
       <div style={{ maxWidth: 1120, margin: '0 auto 40px', padding: '0 16px' }}>
         <SocialShare title="Free Deep SEO Audit Tool — 70+ Real Checks by Abdullah Saleh" />
+      </div>
+
+      {/* Consultation CTA Banner */}
+      <div style={{ maxWidth: 1120, margin: '0 auto 64px', padding: '0 16px' }}>
+        <div className="tool-cta-box">
+          <h4>Need a 230+ Point Professional SEO Audit?</h4>
+          <p>Our forensic SEO audits go beyond automated checks — manual JavaScript rendering analysis, log file crawl pattern review, internal PageRank flow, and a prioritized fix roadmap with implementation support.</p>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' }}>
+            <Link href="/contact" className="btn btn-primary btn-sm">
+              <i className="fa-solid fa-comments"></i> Request Forensic Audit
+            </Link>
+            <Link href="/services/technical-seo-service-in-bangladesh" className="btn btn-outline btn-sm">
+              View Technical SEO Services <i className="fa-solid fa-arrow-right"></i>
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );

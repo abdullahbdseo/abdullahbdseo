@@ -999,8 +999,24 @@ export default function SeoTags() {
       </section>
 
       {/* FAQ Section */}
-      <section style={{ maxWidth: "1200px", margin: "0 auto 64px auto", padding: "0 16px" }}>
+      <section style={{ maxWidth: "1200px", margin: "0 auto 40px auto", padding: "0 16px" }}>
         <ToolFaqAccordion faqs={faqs} title="Frequently Asked Questions: Open Graph & Social Sharing" />
+      </section>
+
+      {/* Consultation CTA Banner */}
+      <section style={{ maxWidth: "1200px", margin: "0 auto 64px auto", padding: "0 16px" }}>
+        <div className="tool-cta-box">
+          <h4>Want Professional On-Page & Social SEO Setup?</h4>
+          <p>Our on-page SEO specialists implement complete Open Graph tags, Twitter Cards, structured metadata, and ensure your pages look stunning when shared across all social platforms.</p>
+          <div style={{ display: "flex", justifyContent: "center", gap: "12px", flexWrap: "wrap" }}>
+            <Link href="/contact" className="btn btn-primary btn-sm">
+              <i className="fa-solid fa-comments"></i> Request SEO Setup
+            </Link>
+            <Link href="/services/technical-seo-service-in-bangladesh" className="btn btn-outline btn-sm">
+              View Technical SEO Services <i className="fa-solid fa-arrow-right"></i>
+            </Link>
+          </div>
+        </div>
       </section>
     </div>
   );

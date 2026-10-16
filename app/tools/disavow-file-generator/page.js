@@ -330,6 +330,20 @@ http://injected-hidden-links.net/buy-crypto-links.html`);
             <ToolFaqAccordion faqs={faqs} />
           </div>
 
+          {/* Consultation CTA Banner */}
+          <div className="tool-cta-box">
+            <h4>Need Professional Toxic Link Audit & Removal?</h4>
+            <p>Our backlink specialists manually audit your entire link profile, identify harmful PBN networks, and submit compliant disavow files to protect your rankings.</p>
+            <div style={{ display: "flex", justifyContent: "center", gap: "12px", flexWrap: "wrap" }}>
+              <Link href="/contact" className="btn btn-primary btn-sm">
+                <i className="fa-solid fa-comments"></i> Request Link Audit
+              </Link>
+              <Link href="/services/backlink-service-in-bangladesh" className="btn btn-outline btn-sm">
+                View Backlink Services <i className="fa-solid fa-arrow-right"></i>
+              </Link>
+            </div>
+          </div>
+
         </div>
       </section>
     </div>

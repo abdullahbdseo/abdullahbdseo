@@ -462,6 +462,20 @@ export default function PageSpeedAnalyzer() {
             <ToolFaqAccordion faqs={faqs} />
           </div>
 
+          {/* Consultation CTA Banner */}
+          <div className="tool-cta-box">
+            <h4>Want a Full Core Web Vitals & Speed Optimization?</h4>
+            <p>Our technical SEO team fixes LCP, CLS, INP, and TTFB issues at the code level — improving your PageSpeed score, ranking potential, and user experience across all devices.</p>
+            <div style={{ display: "flex", justifyContent: "center", gap: "12px", flexWrap: "wrap" }}>
+              <Link href="/contact" className="btn btn-primary btn-sm">
+                <i className="fa-solid fa-comments"></i> Request Speed Optimization
+              </Link>
+              <Link href="/services/technical-seo-service-in-bangladesh" className="btn btn-outline btn-sm">
+                View Technical SEO Services <i className="fa-solid fa-arrow-right"></i>
+              </Link>
+            </div>
+          </div>
+
         </div>
       </section>
     </div>

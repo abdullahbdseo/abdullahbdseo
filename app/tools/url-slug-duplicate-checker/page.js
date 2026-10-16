@@ -812,16 +812,16 @@ export default function UrlSlugDuplicateChecker() {
 
           {/* CTA Banner */}
           <div style={{ marginTop: "50px", background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)", borderRadius: "4px", padding: "44px 36px", textAlign: "center", color: "#ffffff", boxShadow: "0 10px 30px rgba(15,23,42,0.2)" }}>
-            <h2 style={{ fontSize: "1.8rem", fontWeight: 800, margin: "0 0 12px", color: "#ffffff" }}>Need a Full Technical SEO Audit?</h2>
+            <h2 style={{ fontSize: "1.8rem", fontWeight: 800, margin: "0 0 12px", color: "#ffffff" }}>Fix Duplicate Content & Cannibalization Issues?</h2>
             <p style={{ fontSize: "1rem", color: "#94a3b8", maxWidth: "640px", margin: "0 auto 26px", lineHeight: 1.6 }}>
-              Duplicate content is just one of 70+ signals we audit. Get a forensic SEO report covering crawl budget, Core Web Vitals, and schema markup.
+              Duplicate slugs and content cannibalization silently kill rankings. Our technical SEO team performs full canonical audits and fixes URL architecture at scale.
             </p>
             <div style={{ display: "flex", justifyContent: "center", gap: "14px", flexWrap: "wrap" }}>
-              <Link href="/tools/deep-seo-audit" style={{ background: "#2563eb", color: "#ffffff", padding: "12px 28px", borderRadius: "4px", fontWeight: 700, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "8px" }}>
-                <i className="fa-solid fa-magnifying-glass-chart"></i> Run Deep SEO Audit
+              <Link href="/contact" style={{ background: "#2563eb", color: "#ffffff", padding: "12px 28px", borderRadius: "4px", fontWeight: 700, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "8px" }}>
+                <i className="fa-solid fa-comments"></i> Request Technical Audit
               </Link>
-              <Link href="/tools/canonical-hreflang-generator" style={{ background: "rgba(255,255,255,0.1)", color: "#ffffff", padding: "12px 28px", borderRadius: "4px", fontWeight: 700, textDecoration: "none", border: "1px solid rgba(255,255,255,0.2)", display: "inline-flex", alignItems: "center", gap: "8px" }}>
-                Generate Canonical Tags <i className="fa-solid fa-arrow-right"></i>
+              <Link href="/services/technical-seo-service-in-bangladesh" style={{ background: "rgba(255,255,255,0.1)", color: "#ffffff", padding: "12px 28px", borderRadius: "4px", fontWeight: 700, textDecoration: "none", border: "1px solid rgba(255,255,255,0.2)", display: "inline-flex", alignItems: "center", gap: "8px" }}>
+                View Technical SEO Services <i className="fa-solid fa-arrow-right"></i>
               </Link>
             </div>
           </div>
