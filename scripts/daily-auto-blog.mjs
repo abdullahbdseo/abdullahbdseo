@@ -458,7 +458,7 @@ const TOPIC_LIBRARY = [
     slug: "structured-data-json-ld-schema-types-rich-results-2026",
     category: "Technical SEO",
     read_time: "11 min read",
-    featured_image: "/images/blog_structured_data_json_ld_mastery.webp",
+    featured_image: "/images/blog_structured_data_json_ld_mastery.png",
     summary: "Structured data and JSON-LD schema markup unlock rich results in Google Search and AI Overview citations. This complete guide covers every schema type supported by Google in 2026, with implementation code, validation steps, and prioritization by impact.",
     tags: ["Structured Data", "JSON-LD", "Schema Markup", "Rich Results", "Google Schema", "Technical SEO 2026"],
     primaryKeyword: "structured data JSON-LD 2026",

@@ -791,8 +791,8 @@
       "publish_date": "2026-10-18",
       "date": "2026-10-18",
       "read_time": "11 min read",
-      "featured_image": "/images/blog_structured_data_json_ld_mastery.webp",
-      "image": "/images/blog_structured_data_json_ld_mastery.webp",
+      "featured_image": "/images/blog_structured_data_json_ld_mastery.png",
+      "image": "/images/blog_structured_data_json_ld_mastery.png",
       "summary": "Structured data and JSON-LD schema markup unlock rich results in Google Search and AI Overview citations. This complete guide covers every schema type supported by Google in 2026, with implementation code, validation steps, and prioritization by impact.",
       "excerpt": "Structured data and JSON-LD schema markup unlock rich results in Google Search and AI Overview citations. This complete guide covers every schema type supported by Google in 2026, with implementation code, validation steps, and prioritization by impact.",
       "tags": [
