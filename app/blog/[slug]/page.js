@@ -183,6 +183,7 @@ export default async function SingleBlogPostPage({ params }) {
             height={620}
             className="article-featured-img"
             priority
+            unoptimized
           />
         </div>
       </div>

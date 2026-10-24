@@ -96,6 +96,7 @@ export default function BlogPage() {
                     height={400}
                     className="blog-featured-img"
                     priority
+                    unoptimized
                   />
                 </Link>
               </div>
