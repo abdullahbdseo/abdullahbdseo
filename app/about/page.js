@@ -76,6 +76,49 @@ export default function AboutPage() {
   const [activeSection, setActiveSection] = useState("about-expert");
   const [openFaq, setOpenFaq] = useState(0);
 
+  // Quick SEO Audit Lead Magnet State (Recommendation #4)
+  const [auditUrl, setAuditUrl] = useState("");
+  const [auditEmail, setAuditEmail] = useState("");
+  const [auditPhone, setAuditPhone] = useState("");
+  const [auditLoading, setAuditLoading] = useState(false);
+  const [auditSuccess, setAuditSuccess] = useState(false);
+  const [auditError, setAuditError] = useState(null);
+
+  const handleAuditSubmit = async (e) => {
+    e.preventDefault();
+    if (!auditUrl.trim() || !auditEmail.trim()) {
+      setAuditError("Please enter both your Website URL and Business Email.");
+      return;
+    }
+    setAuditLoading(true);
+    setAuditError(null);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: auditEmail.split("@")[0] || "Audit Lead",
+          email: auditEmail.trim(),
+          phone: auditPhone.trim(),
+          website: auditUrl.trim(),
+          service_interest: "Free 120-Point SEO Audit",
+          message: `Requested Free 120-Point SEO Audit from About page for website: ${auditUrl.trim()}${auditPhone ? ` | WhatsApp/Phone: ${auditPhone.trim()}` : ""}`
+        })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setAuditSuccess(true);
+        setAuditError(null);
+      } else {
+        setAuditError(data.error || "Submission failed. Please message directly on WhatsApp.");
+      }
+    } catch (err) {
+      setAuditError("Network error. Please try again or reach out on WhatsApp.");
+    } finally {
+      setAuditLoading(false);
+    }
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       const sections = [
@@ -430,6 +473,73 @@ export default function AboutPage() {
                 </div>
               </div>
             </section>
+
+            {/* Recommendation #3: Global Platform Authority Bar */}
+            <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "18px 20px", margin: "20px 0 24px", boxShadow: "0 2px 8px rgba(0,0,0,0.02)" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px", marginBottom: "14px", borderBottom: "1px solid #f1f5f9", paddingBottom: "10px" }}>
+                <div>
+                  <span style={{ fontSize: "0.75rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.06em", color: "#0062d2", display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                    <i className="fa-solid fa-earth-americas"></i> Global Authority &amp; Ecosystem Footprint
+                  </span>
+                  <h3 style={{ fontSize: "1.05rem", fontWeight: 800, color: "#0f172a", margin: "2px 0 0" }}>
+                    Active Across Premier Search Platforms &amp; Enterprise Communities
+                  </h3>
+                </div>
+                <span style={{ fontSize: "0.75rem", color: "#059669", fontWeight: 700, background: "#ecfdf5", border: "1px solid #bbf7d0", padding: "3px 10px", borderRadius: "4px" }}>
+                  <i className="fa-solid fa-circle-check" style={{ marginRight: "4px" }}></i> 100+ Verified Accounts Scaled
+                </span>
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: "10px" }}>
+                <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "10px 12px", textAlign: "center" }}>
+                  <div style={{ fontSize: "1.2rem", color: "#4285f4", marginBottom: "4px" }}>
+                    <i className="fa-brands fa-google"></i>
+                  </div>
+                  <div style={{ fontSize: "0.82rem", fontWeight: 800, color: "#0f172a" }}>Google Ecosystem</div>
+                  <div style={{ fontSize: "0.72rem", color: "#64748b", marginTop: "2px" }}>GSC &amp; GA4 Certified</div>
+                </div>
+
+                <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "10px 12px", textAlign: "center" }}>
+                  <div style={{ fontSize: "1.2rem", color: "#0f172a", marginBottom: "4px" }}>
+                    <i className="fa-solid fa-hat-cowboy"></i>
+                  </div>
+                  <div style={{ fontSize: "0.82rem", fontWeight: 800, color: "#0f172a" }}>BlackHatWorld</div>
+                  <div style={{ fontSize: "0.72rem", color: "#64748b", marginTop: "2px" }}>Vetted Marketplace</div>
+                </div>
+
+                <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "10px 12px", textAlign: "center" }}>
+                  <div style={{ fontSize: "1.2rem", color: "#14a800", marginBottom: "4px" }}>
+                    <i className="fa-brands fa-upwork"></i>
+                  </div>
+                  <div style={{ fontSize: "0.82rem", fontWeight: 800, color: "#0f172a" }}>Upwork Global</div>
+                  <div style={{ fontSize: "0.72rem", color: "#64748b", marginTop: "2px" }}>100% Success Score</div>
+                </div>
+
+                <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "10px 12px", textAlign: "center" }}>
+                  <div style={{ fontSize: "1.2rem", color: "#0077b5", marginBottom: "4px" }}>
+                    <i className="fa-brands fa-slideshare"></i>
+                  </div>
+                  <div style={{ fontSize: "0.82rem", fontWeight: 800, color: "#0f172a" }}>SlideShare</div>
+                  <div style={{ fontSize: "0.72rem", color: "#64748b", marginTop: "2px" }}>SEO System Guides</div>
+                </div>
+
+                <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "10px 12px", textAlign: "center" }}>
+                  <div style={{ fontSize: "1.2rem", color: "#e44d26", marginBottom: "4px" }}>
+                    <i className="fa-solid fa-book-open"></i>
+                  </div>
+                  <div style={{ fontSize: "0.82rem", fontWeight: 800, color: "#0f172a" }}>Scribd Docs</div>
+                  <div style={{ fontSize: "0.72rem", color: "#64748b", marginTop: "2px" }}>Methodology Papers</div>
+                </div>
+
+                <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "10px 12px", textAlign: "center" }}>
+                  <div style={{ fontSize: "1.2rem", color: "#475569", marginBottom: "4px" }}>
+                    <i className="fa-solid fa-graduation-cap"></i>
+                  </div>
+                  <div style={{ fontSize: "0.82rem", fontWeight: 800, color: "#0f172a" }}>Academia.edu</div>
+                  <div style={{ fontSize: "0.72rem", color: "#64748b", marginTop: "2px" }}>Entity Search Research</div>
+                </div>
+              </div>
+            </div>
 
             {/* Section: Proven Results & Case Study Highlights */}
             <section id="case-studies" style={{ scrollMarginTop: "100px" }}>
@@ -1039,53 +1149,177 @@ export default function AboutPage() {
               </div>
             </section>
 
-            {/* CTA Box */}
-            <div className="about-cta-container" style={{ borderRadius: "4px" }}>
-              <h2 style={{ color: "#ffffff", fontSize: "clamp(1.35rem, 3.5vw, 1.85rem)", marginBottom: "10px", fontWeight: 800 }}>
-                Ready to Dominate Search and Scale Organic Revenue?
-              </h2>
-              <p style={{ color: "rgba(255, 255, 255, 0.92)", fontSize: "0.98rem", maxWidth: "620px", margin: "0 auto 22px", lineHeight: 1.7 }}>
-                Book a confidential 1-on-1 organic growth strategy session with Abdullah Saleh. Get a comprehensive diagnostic review of your website's search performance and a customized ranking roadmap.
-              </p>
-              <div style={{ display: "flex", justifyContent: "center", gap: "12px", flexWrap: "wrap" }}>
-                <Link
-                  href="/contact"
-                  className="btn btn-lg"
-                  style={{
-                    background: "#ffffff",
-                    color: "#0062d2",
-                    fontWeight: 700,
-                    border: "none",
-                    borderRadius: "4px",
-                    padding: "12px 28px",
-                    textDecoration: "none",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "8px"
-                  }}
-                >
-                  Schedule Growth Consultation <i className="fa-solid fa-arrow-right"></i>
-                </Link>
-                <a
-                  href={`https://wa.me/${(siteSettings.whatsapp_number || "8801670769816").replace(/[^0-9]/g, "")}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn-lg"
-                  style={{
-                    background: "rgba(255, 255, 255, 0.15)",
-                    color: "#ffffff",
-                    fontWeight: 700,
-                    border: "1px solid rgba(255, 255, 255, 0.4)",
-                    borderRadius: "4px",
-                    padding: "12px 24px",
-                    textDecoration: "none",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "8px"
-                  }}
-                >
-                  <i className="fa-brands fa-whatsapp"></i> Chat on WhatsApp
-                </a>
+            {/* Recommendation #4: Interactive Quick SEO Audit Lead Magnet & CTA Box */}
+            <div className="about-cta-container" style={{ borderRadius: "4px", padding: "32px 24px" }}>
+              <div style={{ maxWidth: "700px", margin: "0 auto" }}>
+                <span style={{ display: "inline-block", background: "rgba(255, 255, 255, 0.15)", border: "1px solid rgba(255, 255, 255, 0.3)", color: "#ffffff", fontSize: "0.78rem", fontWeight: 800, padding: "4px 12px", borderRadius: "4px", letterSpacing: "0.05em", textTransform: "uppercase", marginBottom: "12px" }}>
+                  <i className="fa-solid fa-bolt" style={{ color: "#facc15", marginRight: "6px" }}></i>
+                  Complimentary Search Performance Diagnostic
+                </span>
+                <h2 style={{ color: "#ffffff", fontSize: "clamp(1.35rem, 3.5vw, 1.85rem)", marginBottom: "10px", fontWeight: 800, lineHeight: 1.3 }}>
+                  Get Your Free 120-Point Technical &amp; Semantic SEO Audit
+                </h2>
+                <p style={{ color: "rgba(255, 255, 255, 0.92)", fontSize: "0.95rem", lineHeight: 1.65, margin: "0 auto 24px" }}>
+                  Enter your domain below. Abdullah Saleh will personally audit your technical indexation, Core Web Vitals, entity authority, and competitor search gaps—delivering actionable findings within 24 hours.
+                </p>
+
+                {auditSuccess ? (
+                  <div style={{ background: "#ffffff", borderRadius: "4px", padding: "24px 20px", color: "#0f172a", textAlign: "center", boxShadow: "0 8px 24px rgba(0,0,0,0.12)", marginBottom: "20px" }}>
+                    <div style={{ width: "48px", height: "48px", borderRadius: "50%", background: "#ecfdf5", color: "#059669", fontSize: "1.4rem", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 12px" }}>
+                      <i className="fa-solid fa-check"></i>
+                    </div>
+                    <h3 style={{ fontSize: "1.15rem", fontWeight: 800, color: "#065f46", margin: "0 0 6px" }}>
+                      Audit Request Received Successfully!
+                    </h3>
+                    <p style={{ fontSize: "0.9rem", color: "#475569", margin: "0 0 16px", lineHeight: 1.6 }}>
+                      Abdullah is preparing your website’s 120-point diagnostic roadmap. Expect your analysis report via email within 24 business hours.
+                    </p>
+                    <div style={{ display: "flex", justifyContent: "center", gap: "10px", flexWrap: "wrap" }}>
+                      <a
+                        href={`https://wa.me/${(siteSettings.whatsapp_number || "8801670769816").replace(/[^0-9]/g, "")}?text=Hi%20Abdullah,%20I%20just%20requested%20a%20free%20120-point%20SEO%20audit%20on%20your%20About%20page.`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ background: "#25D366", color: "#ffffff", padding: "10px 18px", borderRadius: "4px", fontWeight: 700, fontSize: "0.85rem", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "6px" }}
+                      >
+                        <i className="fa-brands fa-whatsapp"></i> Expedite via WhatsApp
+                      </a>
+                      <button
+                        onClick={() => setAuditSuccess(false)}
+                        style={{ background: "#f1f5f9", color: "#475569", border: "1px solid #cbd5e1", padding: "10px 16px", borderRadius: "4px", fontWeight: 700, fontSize: "0.85rem", cursor: "pointer" }}
+                      >
+                        Submit Another Website
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <form onSubmit={handleAuditSubmit} style={{ background: "rgba(255, 255, 255, 0.1)", border: "1px solid rgba(255, 255, 255, 0.25)", borderRadius: "4px", padding: "18px 20px", marginBottom: "24px", backdropFilter: "blur(6px)" }}>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "10px", marginBottom: "10px" }}>
+                      <input
+                        type="url"
+                        required
+                        placeholder="https://yourwebsite.com"
+                        value={auditUrl}
+                        onChange={(e) => setAuditUrl(e.target.value)}
+                        style={{ width: "100%", padding: "11px 14px", borderRadius: "4px", border: "1px solid #ffffff", fontSize: "0.9rem", color: "#0f172a", outline: "none", background: "#ffffff" }}
+                      />
+                      <input
+                        type="email"
+                        required
+                        placeholder="Work Email (e.g. founder@brand.com)"
+                        value={auditEmail}
+                        onChange={(e) => setAuditEmail(e.target.value)}
+                        style={{ width: "100%", padding: "11px 14px", borderRadius: "4px", border: "1px solid #ffffff", fontSize: "0.9rem", color: "#0f172a", outline: "none", background: "#ffffff" }}
+                      />
+                      <input
+                        type="text"
+                        placeholder="WhatsApp / Phone (Optional)"
+                        value={auditPhone}
+                        onChange={(e) => setAuditPhone(e.target.value)}
+                        style={{ width: "100%", padding: "11px 14px", borderRadius: "4px", border: "1px solid #ffffff", fontSize: "0.9rem", color: "#0f172a", outline: "none", background: "#ffffff" }}
+                      />
+                    </div>
+
+                    {auditError && (
+                      <div style={{ background: "#fee2e2", border: "1px solid #fca5a5", color: "#991b1b", padding: "8px 12px", borderRadius: "4px", fontSize: "0.82rem", marginBottom: "10px", textAlign: "left" }}>
+                        <i className="fa-solid fa-triangle-exclamation" style={{ marginRight: "6px" }}></i>
+                        {auditError}
+                      </div>
+                    )}
+
+                    <button
+                      type="submit"
+                      disabled={auditLoading}
+                      style={{
+                        width: "100%",
+                        background: "#facc15",
+                        color: "#0f172a",
+                        fontWeight: 800,
+                        border: "none",
+                        borderRadius: "4px",
+                        padding: "13px 24px",
+                        fontSize: "0.95rem",
+                        cursor: auditLoading ? "not-allowed" : "pointer",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "8px",
+                        boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+                        transition: "all 0.2s ease"
+                      }}
+                    >
+                      {auditLoading ? (
+                        <>
+                          <i className="fa-solid fa-spinner fa-spin"></i> Submitting Audit Request...
+                        </>
+                      ) : (
+                        <>
+                          <i className="fa-solid fa-bolt"></i> Claim Free 120-Point SEO Audit
+                        </>
+                      )}
+                    </button>
+                    <div style={{ marginTop: "8px", fontSize: "0.75rem", color: "rgba(255,255,255,0.8)" }}>
+                      100% Confidential. Zero spam. Prepared manually with Ahrefs, Semrush &amp; Screaming Frog.
+                    </div>
+                  </form>
+                )}
+
+                <div style={{ display: "flex", justifyContent: "center", gap: "12px", flexWrap: "wrap", alignItems: "center" }}>
+                  <Link
+                    href="/contact"
+                    className="btn btn-lg"
+                    style={{
+                      background: "#ffffff",
+                      color: "#0062d2",
+                      fontWeight: 700,
+                      border: "none",
+                      borderRadius: "4px",
+                      padding: "11px 22px",
+                      textDecoration: "none",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      fontSize: "0.9rem"
+                    }}
+                  >
+                    Schedule 1-on-1 Consultation <i className="fa-solid fa-arrow-right"></i>
+                  </Link>
+                  <a
+                    href={`https://wa.me/${(siteSettings.whatsapp_number || "8801670769816").replace(/[^0-9]/g, "")}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-lg"
+                    style={{
+                      background: "rgba(255, 255, 255, 0.15)",
+                      color: "#ffffff",
+                      fontWeight: 700,
+                      border: "1px solid rgba(255, 255, 255, 0.4)",
+                      borderRadius: "4px",
+                      padding: "11px 20px",
+                      textDecoration: "none",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      fontSize: "0.9rem"
+                    }}
+                  >
+                    <i className="fa-brands fa-whatsapp"></i> Chat on WhatsApp
+                  </a>
+                  <Link
+                    href="/tools/deep-seo-audit"
+                    style={{
+                      color: "#f8fafc",
+                      fontSize: "0.85rem",
+                      fontWeight: 700,
+                      textDecoration: "underline",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "4px",
+                      padding: "6px 8px"
+                    }}
+                  >
+                    Or try our automated Deep SEO Audit Tool <i className="fa-solid fa-arrow-up-right-from-square" style={{ fontSize: "0.75rem" }}></i>
+                  </Link>
+                </div>
               </div>
             </div>
 
