@@ -139,6 +139,35 @@ export default function AboutPage() {
       "Core Web Vitals",
       "Conversion Rate Optimization (CRO)",
       "Entity & Topical Authority"
+    ],
+    "hasCredential": [
+      {
+        "@type": "EducationalOccupationalCredential",
+        "name": "Google Analytics 4 (GA4) Certification",
+        "credentialCategory": "Professional Certification",
+        "recognizedBy": {
+          "@type": "Organization",
+          "name": "Google Skillshop"
+        }
+      },
+      {
+        "@type": "EducationalOccupationalCredential",
+        "name": "Semrush Technical SEO Accreditation",
+        "credentialCategory": "Professional Accreditation",
+        "recognizedBy": {
+          "@type": "Organization",
+          "name": "Semrush Academy"
+        }
+      },
+      {
+        "@type": "EducationalOccupationalCredential",
+        "name": "HubSpot Inbound SEO Certification",
+        "credentialCategory": "Professional Certification",
+        "recognizedBy": {
+          "@type": "Organization",
+          "name": "HubSpot Academy"
+        }
+      }
     ]
   };
 
@@ -311,6 +340,92 @@ export default function AboutPage() {
                   <div className="about-stat-box" style={{ borderRadius: "4px" }}>
                     <div className="about-stat-number">98%</div>
                     <div className="about-stat-label">Client Retention</div>
+                  </div>
+                </div>
+
+                {/* Official Industry Certifications & Accreditations (2x2 Grid) */}
+                <div style={{ marginTop: "24px", paddingTop: "20px", borderTop: "1px solid #f1f5f9" }}>
+                  <div style={{ fontSize: "0.8rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.06em", color: "#64748b", marginBottom: "14px", display: "flex", alignItems: "center", gap: "8px" }}>
+                    <i className="fa-solid fa-certificate" style={{ color: "#0062d2" }}></i>
+                    <span>Official Industry Certifications &amp; Accreditations</span>
+                  </div>
+
+                  <div className="about-two-col-grid">
+                    {/* Badge 1: Google Analytics 4 */}
+                    <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "14px 16px", display: "flex", gap: "14px", alignItems: "flex-start" }}>
+                      <div style={{ width: "36px", height: "36px", borderRadius: "4px", background: "#fef3c7", color: "#d97706", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1rem", flexShrink: 0, marginTop: "2px" }}>
+                        <i className="fa-solid fa-chart-pie"></i>
+                      </div>
+                      <div style={{ minWidth: 0 }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap", marginBottom: "2px" }}>
+                          <h4 style={{ fontSize: "0.95rem", fontWeight: 700, color: "#0f172a", margin: 0 }}>Google Analytics 4 (GA4)</h4>
+                          <span style={{ background: "#dcfce7", color: "#15803d", fontSize: "0.68rem", fontWeight: 800, padding: "2px 6px", borderRadius: "4px" }}>VERIFIED</span>
+                        </div>
+                        <p style={{ fontSize: "0.82rem", color: "#64748b", margin: "0 0 4px", lineHeight: 1.5 }}>
+                          Advanced Web Analytics, Conversion Tracking &amp; Event Attribution
+                        </p>
+                        <span style={{ fontSize: "0.75rem", fontWeight: 600, color: "#0062d2" }}>
+                          Google Skillshop Certified
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Badge 2: Semrush Technical SEO */}
+                    <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "14px 16px", display: "flex", gap: "14px", alignItems: "flex-start" }}>
+                      <div style={{ width: "36px", height: "36px", borderRadius: "4px", background: "#ffedd5", color: "#ea580c", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1rem", flexShrink: 0, marginTop: "2px" }}>
+                        <i className="fa-solid fa-screwdriver-wrench"></i>
+                      </div>
+                      <div style={{ minWidth: 0 }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap", marginBottom: "2px" }}>
+                          <h4 style={{ fontSize: "0.95rem", fontWeight: 700, color: "#0f172a", margin: 0 }}>Semrush Technical SEO</h4>
+                          <span style={{ background: "#dcfce7", color: "#15803d", fontSize: "0.68rem", fontWeight: 800, padding: "2px 6px", borderRadius: "4px" }}>ACCREDITED</span>
+                        </div>
+                        <p style={{ fontSize: "0.82rem", color: "#64748b", margin: "0 0 4px", lineHeight: 1.5 }}>
+                          Core Web Vitals, Crawl Budget &amp; Server Log File Auditing
+                        </p>
+                        <span style={{ fontSize: "0.75rem", fontWeight: 600, color: "#ea580c" }}>
+                          Semrush Academy Certified
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Badge 3: HubSpot Inbound Marketing */}
+                    <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "14px 16px", display: "flex", gap: "14px", alignItems: "flex-start" }}>
+                      <div style={{ width: "36px", height: "36px", borderRadius: "4px", background: "#fee2e2", color: "#dc2626", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1rem", flexShrink: 0, marginTop: "2px" }}>
+                        <i className="fa-solid fa-bullseye"></i>
+                      </div>
+                      <div style={{ minWidth: 0 }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap", marginBottom: "2px" }}>
+                          <h4 style={{ fontSize: "0.95rem", fontWeight: 700, color: "#0f172a", margin: 0 }}>HubSpot Inbound SEO</h4>
+                          <span style={{ background: "#dcfce7", color: "#15803d", fontSize: "0.68rem", fontWeight: 800, padding: "2px 6px", borderRadius: "4px" }}>CERTIFIED</span>
+                        </div>
+                        <p style={{ fontSize: "0.82rem", color: "#64748b", margin: "0 0 4px", lineHeight: 1.5 }}>
+                          Search Intent Architecture, Content Hubs &amp; Lead Conversion
+                        </p>
+                        <span style={{ fontSize: "0.75rem", fontWeight: 600, color: "#dc2626" }}>
+                          HubSpot Academy Certified
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Badge 4: BlackHatWorld Verified Provider */}
+                    <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "14px 16px", display: "flex", gap: "14px", alignItems: "flex-start" }}>
+                      <div style={{ width: "36px", height: "36px", borderRadius: "4px", background: "#eff6ff", color: "#0062d2", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1rem", flexShrink: 0, marginTop: "2px" }}>
+                        <i className="fa-solid fa-shield-halved"></i>
+                      </div>
+                      <div style={{ minWidth: 0 }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap", marginBottom: "2px" }}>
+                          <h4 style={{ fontSize: "0.95rem", fontWeight: 700, color: "#0f172a", margin: 0 }}>Verified BHW Provider</h4>
+                          <span style={{ background: "#dcfce7", color: "#15803d", fontSize: "0.68rem", fontWeight: 800, padding: "2px 6px", borderRadius: "4px" }}>VETTED</span>
+                        </div>
+                        <p style={{ fontSize: "0.82rem", color: "#64748b", margin: "0 0 4px", lineHeight: 1.5 }}>
+                          Vetted SEO Practitioner &amp; Search Automation Tool Developer
+                        </p>
+                        <span style={{ fontSize: "0.75rem", fontWeight: 600, color: "#0062d2" }}>
+                          BlackHatWorld Community Provider
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
