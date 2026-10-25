@@ -608,6 +608,18 @@ img {
     text-align: center;
 }
 
+.about-two-col-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+@media (max-width: 768px) {
+    .about-two-col-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* Tablet & Mobile Media Queries for About Page */
 @media (max-width: 991px) {
     .about-layout-grid {

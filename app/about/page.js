@@ -199,7 +199,7 @@ export default function AboutPage() {
                 <li>
                   <a href="#methodology" className={`about-toc-link ${activeSection === "methodology" ? "active" : ""}`} style={{ borderRadius: "4px" }}>
                     <i className="fa-solid fa-route" style={{ width: "16px" }}></i>
-                    <span>5-Phase Blueprint</span>
+                    <span>6-Phase Blueprint</span>
                   </a>
                 </li>
                 <li>
@@ -324,7 +324,7 @@ export default function AboutPage() {
                   In the modern search landscape, high impression numbers and generic visitor spikes are meaningless if they don’t convert into real inquiries, sales, and long-term customer relationships. My philosophy centers on four fundamental pillars:
                 </p>
 
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "16px", marginTop: "20px" }}>
+                <div className="about-two-col-grid" style={{ marginTop: "20px" }}>
                   <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "18px" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
                       <div style={{ width: "28px", height: "28px", borderRadius: "4px", background: "#dbeafe", color: "#0062d2", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem", fontWeight: 800 }}>1</div>
@@ -383,7 +383,7 @@ export default function AboutPage() {
                   Every client engagement receives a customized strategic execution across these core specialized domains:
                 </p>
 
-                <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "16px" }}>
+                <div className="about-two-col-grid" style={{ marginTop: "16px" }}>
                   {/* Service 1 */}
                   <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderLeft: "4px solid #0062d2", borderRadius: "4px", padding: "18px 20px" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px", marginBottom: "6px" }}>
@@ -464,50 +464,58 @@ export default function AboutPage() {
 
               <div className="about-section-card" style={{ borderRadius: "4px" }}>
                 <h2 style={{ fontSize: "clamp(1.2rem, 2.5vw, 1.45rem)", fontWeight: 800, color: "#0f172a", marginBottom: "12px" }}>
-                  The 5-Phase Organic Growth Blueprint
+                  The 6-Phase Organic Growth Blueprint
                 </h2>
                 <p style={{ color: "#475569", fontSize: "0.98rem", lineHeight: 1.75, marginBottom: "20px" }}>
                   Predictable SEO success requires a disciplined, step-by-step engineering process. Here is how I manage campaigns from onboarding to top-tier rankings:
                 </p>
 
-                <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-                  <div style={{ display: "flex", gap: "16px", alignItems: "flex-start", background: "#ffffff", border: "1px solid #e2e8f0", padding: "16px", borderRadius: "4px" }}>
+                <div className="about-two-col-grid" style={{ marginTop: "16px" }}>
+                  <div style={{ display: "flex", gap: "16px", alignItems: "flex-start", background: "#f8fafc", border: "1px solid #e2e8f0", padding: "16px", borderRadius: "4px" }}>
                     <div style={{ width: "36px", height: "36px", borderRadius: "4px", background: "#0062d2", color: "#ffffff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, flexShrink: 0 }}>01</div>
                     <div>
-                      <h3 style={{ fontSize: "1.02rem", fontWeight: 700, color: "#0f172a", marginBottom: "4px" }}>Deep Forensic Technical &amp; Content Audit</h3>
-                      <p style={{ fontSize: "0.88rem", color: "#64748b", lineHeight: 1.6, margin: 0 }}>Over 200+ checkpoints analyzed across log files, crawl paths, JavaScript execution, canonical tags, and existing content cannibalization to clear all ranking blockers.</p>
+                      <h3 style={{ fontSize: "1.02rem", fontWeight: 700, color: "#0f172a", marginBottom: "4px" }}>Deep Forensic Audit</h3>
+                      <p style={{ fontSize: "0.88rem", color: "#64748b", lineHeight: 1.6, margin: 0 }}>200+ checkpoints analyzed across log files, crawl paths, JavaScript execution, canonical tags, and content cannibalization.</p>
                     </div>
                   </div>
 
-                  <div style={{ display: "flex", gap: "16px", alignItems: "flex-start", background: "#ffffff", border: "1px solid #e2e8f0", padding: "16px", borderRadius: "4px" }}>
+                  <div style={{ display: "flex", gap: "16px", alignItems: "flex-start", background: "#f8fafc", border: "1px solid #e2e8f0", padding: "16px", borderRadius: "4px" }}>
                     <div style={{ width: "36px", height: "36px", borderRadius: "4px", background: "#0062d2", color: "#ffffff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, flexShrink: 0 }}>02</div>
                     <div>
-                      <h3 style={{ fontSize: "1.02rem", fontWeight: 700, color: "#0f172a", marginBottom: "4px" }}>Commercial Intent &amp; Entity Keyword Architecture</h3>
-                      <p style={{ fontSize: "0.88rem", color: "#64748b", lineHeight: 1.6, margin: 0 }}>Reverse engineering competitor keyword moats and structuring semantic content clusters around high-intent buyer queries that yield high conversion value.</p>
+                      <h3 style={{ fontSize: "1.02rem", fontWeight: 700, color: "#0f172a", marginBottom: "4px" }}>Commercial Intent Architecture</h3>
+                      <p style={{ fontSize: "0.88rem", color: "#64748b", lineHeight: 1.6, margin: 0 }}>Reverse engineering competitor keyword moats and structuring semantic content clusters around high-intent buyer queries.</p>
                     </div>
                   </div>
 
-                  <div style={{ display: "flex", gap: "16px", alignItems: "flex-start", background: "#ffffff", border: "1px solid #e2e8f0", padding: "16px", borderRadius: "4px" }}>
+                  <div style={{ display: "flex", gap: "16px", alignItems: "flex-start", background: "#f8fafc", border: "1px solid #e2e8f0", padding: "16px", borderRadius: "4px" }}>
                     <div style={{ width: "36px", height: "36px", borderRadius: "4px", background: "#0062d2", color: "#ffffff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, flexShrink: 0 }}>03</div>
                     <div>
-                      <h3 style={{ fontSize: "1.02rem", fontWeight: 700, color: "#0f172a", marginBottom: "4px" }}>On-Page Optimization &amp; E-E-A-T Fortification</h3>
-                      <p style={{ fontSize: "0.88rem", color: "#64748b", lineHeight: 1.6, margin: 0 }}>Restructuring heading hierarchies, internal linking flows, author credential schema, and user-first answer capsules to demonstrate undeniable expertise to search algorithms.</p>
+                      <h3 style={{ fontSize: "1.02rem", fontWeight: 700, color: "#0f172a", marginBottom: "4px" }}>On-Page &amp; E-E-A-T Fortification</h3>
+                      <p style={{ fontSize: "0.88rem", color: "#64748b", lineHeight: 1.6, margin: 0 }}>Restructuring heading hierarchies, internal linking flows, author credential schema, and user-first answer capsules.</p>
                     </div>
                   </div>
 
-                  <div style={{ display: "flex", gap: "16px", alignItems: "flex-start", background: "#ffffff", border: "1px solid #e2e8f0", padding: "16px", borderRadius: "4px" }}>
+                  <div style={{ display: "flex", gap: "16px", alignItems: "flex-start", background: "#f8fafc", border: "1px solid #e2e8f0", padding: "16px", borderRadius: "4px" }}>
                     <div style={{ width: "36px", height: "36px", borderRadius: "4px", background: "#0062d2", color: "#ffffff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, flexShrink: 0 }}>04</div>
                     <div>
-                      <h3 style={{ fontSize: "1.02rem", fontWeight: 700, color: "#0f172a", marginBottom: "4px" }}>High-Authority Editorial Link Acquisition</h3>
-                      <p style={{ fontSize: "0.88rem", color: "#64748b", lineHeight: 1.6, margin: 0 }}>Executing targeted outreach to real, authoritative industry publications to earn natural contextual backlinks that safely build domain authority and trust signals.</p>
+                      <h3 style={{ fontSize: "1.02rem", fontWeight: 700, color: "#0f172a", marginBottom: "4px" }}>High-Authority Editorial Links</h3>
+                      <p style={{ fontSize: "0.88rem", color: "#64748b", lineHeight: 1.6, margin: 0 }}>Targeted outreach to real, authoritative publications to earn natural contextual backlinks that safely build domain authority.</p>
                     </div>
                   </div>
 
-                  <div style={{ display: "flex", gap: "16px", alignItems: "flex-start", background: "#ffffff", border: "1px solid #e2e8f0", padding: "16px", borderRadius: "4px" }}>
+                  <div style={{ display: "flex", gap: "16px", alignItems: "flex-start", background: "#f8fafc", border: "1px solid #e2e8f0", padding: "16px", borderRadius: "4px" }}>
                     <div style={{ width: "36px", height: "36px", borderRadius: "4px", background: "#0062d2", color: "#ffffff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, flexShrink: 0 }}>05</div>
                     <div>
-                      <h3 style={{ fontSize: "1.02rem", fontWeight: 700, color: "#0f172a", marginBottom: "4px" }}>Conversion Rate Optimization (CRO) &amp; Continuous Scaling</h3>
-                      <p style={{ fontSize: "0.88rem", color: "#64748b", lineHeight: 1.6, margin: 0 }}>Monitoring live behavioral heatmaps, click-through rates (CTR), and lead capture flows to turn newly acquired search traffic into compounding monthly revenue.</p>
+                      <h3 style={{ fontSize: "1.02rem", fontWeight: 700, color: "#0f172a", marginBottom: "4px" }}>Conversion Rate Optimization (CRO)</h3>
+                      <p style={{ fontSize: "0.88rem", color: "#64748b", lineHeight: 1.6, margin: 0 }}>Monitoring live behavioral heatmaps, CTR, and lead capture funnels to convert newly acquired search traffic into revenue.</p>
+                    </div>
+                  </div>
+
+                  <div style={{ display: "flex", gap: "16px", alignItems: "flex-start", background: "#f8fafc", border: "1px solid #e2e8f0", padding: "16px", borderRadius: "4px" }}>
+                    <div style={{ width: "36px", height: "36px", borderRadius: "4px", background: "#0062d2", color: "#ffffff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, flexShrink: 0 }}>06</div>
+                    <div>
+                      <h3 style={{ fontSize: "1.02rem", fontWeight: 700, color: "#0f172a", marginBottom: "4px" }}>AI Search &amp; Compounding Scale</h3>
+                      <p style={{ fontSize: "0.88rem", color: "#64748b", lineHeight: 1.6, margin: 0 }}>Fortifying brand entities across AI Overviews and answer engines to ensure compounding organic market share and search dominance.</p>
                     </div>
                   </div>
                 </div>
@@ -535,18 +543,22 @@ export default function AboutPage() {
                   <Link href="/services/geo-service-in-bangladesh" style={{ color: "#0062d2", fontWeight: 700, textDecoration: "underline" }}>GEO (Generative Engine Optimization)</Link>, I structure your web pages so that AI models recognize your brand as the definitive, verified authority and cite your content inside their answers.
                 </p>
 
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "12px", marginTop: "16px" }}>
-                  <div style={{ background: "#ffffff", padding: "12px 16px", borderRadius: "4px", border: "1px solid #e2e8f0" }}>
+                <div className="about-two-col-grid" style={{ marginTop: "18px" }}>
+                  <div style={{ background: "#ffffff", padding: "14px 16px", borderRadius: "4px", border: "1px solid #e2e8f0" }}>
                     <div style={{ fontWeight: 700, color: "#0f172a", fontSize: "0.92rem", marginBottom: "2px" }}>🤖 LLM Knowledge Extraction</div>
                     <div style={{ fontSize: "0.82rem", color: "#64748b" }}>Direct entity data markup for AI crawlers.</div>
                   </div>
-                  <div style={{ background: "#ffffff", padding: "12px 16px", borderRadius: "4px", border: "1px solid #e2e8f0" }}>
+                  <div style={{ background: "#ffffff", padding: "14px 16px", borderRadius: "4px", border: "1px solid #e2e8f0" }}>
                     <div style={{ fontWeight: 700, color: "#0f172a", fontSize: "0.92rem", marginBottom: "2px" }}>⚡ Concise Answer Capsules</div>
                     <div style={{ fontSize: "0.82rem", color: "#64748b" }}>Zero-click answer formatting for SGE &amp; AEO.</div>
                   </div>
-                  <div style={{ background: "#ffffff", padding: "12px 16px", borderRadius: "4px", border: "1px solid #e2e8f0" }}>
+                  <div style={{ background: "#ffffff", padding: "14px 16px", borderRadius: "4px", border: "1px solid #e2e8f0" }}>
                     <div style={{ fontWeight: 700, color: "#0f172a", fontSize: "0.92rem", marginBottom: "2px" }}>🌐 Brand Citation Authority</div>
                     <div style={{ fontSize: "0.82rem", color: "#64748b" }}>Multi-channel validation across trusted nodes.</div>
+                  </div>
+                  <div style={{ background: "#ffffff", padding: "14px 16px", borderRadius: "4px", border: "1px solid #e2e8f0" }}>
+                    <div style={{ fontWeight: 700, color: "#0f172a", fontSize: "0.92rem", marginBottom: "2px" }}>🔍 Structured AI Schema Engine</div>
+                    <div style={{ fontSize: "0.82rem", color: "#64748b" }}>Advanced JSON-LD entity validation for search engines.</div>
                   </div>
                 </div>
               </div>
@@ -567,7 +579,7 @@ export default function AboutPage() {
                   Modern search strategy is purely data-driven. I leverage enterprise-grade intelligence platforms and developer frameworks to extract precise insights:
                 </p>
 
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "12px" }}>
+                <div className="about-two-col-grid" style={{ marginTop: "18px" }}>
                   <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", padding: "14px", borderRadius: "4px" }}>
                     <div style={{ fontWeight: 800, color: "#0062d2", fontSize: "0.92rem", marginBottom: "4px" }}>Crawl &amp; Architecture</div>
                     <div style={{ fontSize: "0.85rem", color: "#334155" }}>Screaming Frog SEO Spider, Sitebulb, Google Search Console, Log Analyzer.</div>
@@ -664,44 +676,44 @@ export default function AboutPage() {
                   Why Businesses Partner With Abdullah Saleh
                 </h2>
 
-                <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
-                  <div style={{ display: "flex", gap: "16px", alignItems: "flex-start" }}>
+                <div className="about-two-col-grid" style={{ marginTop: "18px" }}>
+                  <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "18px", display: "flex", gap: "16px", alignItems: "flex-start" }}>
                     <div style={{ width: "36px", height: "36px", borderRadius: "4px", background: "#eff6ff", color: "#0062d2", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: "2px" }}>
                       <i className="fa-solid fa-shield-halved"></i>
                     </div>
                     <div>
-                      <h3 style={{ fontSize: "1.05rem", fontWeight: 700, color: "#0f172a", marginBottom: "4px" }}>Direct Strategist Access &ndash; No Account Managers</h3>
-                      <p style={{ fontSize: "0.9rem", color: "#64748b", lineHeight: 1.6, margin: 0 }}>You work directly with the senior SEO strategist engineering your campaign. No junior staff handoffs, no bureaucratic delays, and immediate tactical answers.</p>
+                      <h3 style={{ fontSize: "1.05rem", fontWeight: 700, color: "#0f172a", marginBottom: "4px" }}>Direct Strategist Access</h3>
+                      <p style={{ fontSize: "0.9rem", color: "#64748b", lineHeight: 1.6, margin: 0 }}>You work directly with the senior SEO strategist engineering your campaign. No junior staff handoffs and immediate tactical answers.</p>
                     </div>
                   </div>
 
-                  <div style={{ display: "flex", gap: "16px", alignItems: "flex-start" }}>
+                  <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "18px", display: "flex", gap: "16px", alignItems: "flex-start" }}>
                     <div style={{ width: "36px", height: "36px", borderRadius: "4px", background: "#eff6ff", color: "#0062d2", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: "2px" }}>
                       <i className="fa-solid fa-chart-line"></i>
                     </div>
                     <div>
-                      <h3 style={{ fontSize: "1.05rem", fontWeight: 700, color: "#0f172a", marginBottom: "4px" }}>Commercial ROI &amp; Revenue-Focused Optimization</h3>
-                      <p style={{ fontSize: "0.9rem", color: "#64748b", lineHeight: 1.6, margin: 0 }}>Every keyword target, content piece, and backlink is selected based on commercial conversion potential, helping your business lower customer acquisition cost (CAC).</p>
+                      <h3 style={{ fontSize: "1.05rem", fontWeight: 700, color: "#0f172a", marginBottom: "4px" }}>Commercial ROI &amp; Revenue</h3>
+                      <p style={{ fontSize: "0.9rem", color: "#64748b", lineHeight: 1.6, margin: 0 }}>Every keyword target and backlink is selected based on commercial conversion potential, helping your business lower CAC.</p>
                     </div>
                   </div>
 
-                  <div style={{ display: "flex", gap: "16px", alignItems: "flex-start" }}>
+                  <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "18px", display: "flex", gap: "16px", alignItems: "flex-start" }}>
                     <div style={{ width: "36px", height: "36px", borderRadius: "4px", background: "#eff6ff", color: "#0062d2", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: "2px" }}>
                       <i className="fa-solid fa-bullseye"></i>
                     </div>
                     <div>
-                      <h3 style={{ fontSize: "1.05rem", fontWeight: 700, color: "#0f172a", marginBottom: "4px" }}>100% Transparent Weekly Dashboards</h3>
-                      <p style={{ fontSize: "0.9rem", color: "#64748b", lineHeight: 1.6, margin: 0 }}>No ambiguous monthly PDF summaries. You receive live Google Looker Studio dashboards tracking keyword trajectories, organic conversions, and exact backlink URLs.</p>
+                      <h3 style={{ fontSize: "1.05rem", fontWeight: 700, color: "#0f172a", marginBottom: "4px" }}>100% Live Dashboards</h3>
+                      <p style={{ fontSize: "0.9rem", color: "#64748b", lineHeight: 1.6, margin: 0 }}>No ambiguous monthly PDF summaries. You receive live Looker Studio dashboards tracking keyword trajectories and conversions.</p>
                     </div>
                   </div>
 
-                  <div style={{ display: "flex", gap: "16px", alignItems: "flex-start" }}>
+                  <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "18px", display: "flex", gap: "16px", alignItems: "flex-start" }}>
                     <div style={{ width: "36px", height: "36px", borderRadius: "4px", background: "#eff6ff", color: "#0062d2", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: "2px" }}>
                       <i className="fa-solid fa-award"></i>
                     </div>
                     <div>
-                      <h3 style={{ fontSize: "1.05rem", fontWeight: 700, color: "#0f172a", marginBottom: "4px" }}>Future-Proofed for AI Answer Engines</h3>
-                      <p style={{ fontSize: "0.9rem", color: "#64748b", lineHeight: 1.6, margin: 0 }}>While traditional agencies scramble to adapt to AI Overviews, my campaigns are natively structured for LLM citation extraction and conversational search engines.</p>
+                      <h3 style={{ fontSize: "1.05rem", fontWeight: 700, color: "#0f172a", marginBottom: "4px" }}>Future-Proofed for AI</h3>
+                      <p style={{ fontSize: "0.9rem", color: "#64748b", lineHeight: 1.6, margin: 0 }}>Campaigns are natively structured for LLM citation extraction, AI Overviews, and conversational search engines.</p>
                     </div>
                   </div>
                 </div>
