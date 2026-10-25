@@ -80,6 +80,7 @@ export default function AboutPage() {
     const handleScroll = () => {
       const sections = [
         "about-expert",
+        "case-studies",
         "philosophy",
         "expertise",
         "methodology",
@@ -182,6 +183,12 @@ export default function AboutPage() {
                   <a href="#about-expert" className={`about-toc-link ${activeSection === "about-expert" ? "active" : ""}`} style={{ borderRadius: "4px" }}>
                     <i className="fa-regular fa-user" style={{ width: "16px" }}></i>
                     <span>Expert Profile</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#case-studies" className={`about-toc-link ${activeSection === "case-studies" ? "active" : ""}`} style={{ borderRadius: "4px" }}>
+                    <i className="fa-solid fa-chart-line" style={{ width: "16px" }}></i>
+                    <span>Proven Results</span>
                   </a>
                 </li>
                 <li>
@@ -304,6 +311,138 @@ export default function AboutPage() {
                   <div className="about-stat-box" style={{ borderRadius: "4px" }}>
                     <div className="about-stat-number">98%</div>
                     <div className="about-stat-label">Client Retention</div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Section: Proven Results & Case Study Highlights */}
+            <section id="case-studies" style={{ scrollMarginTop: "100px" }}>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "#f0fdf4", border: "1px solid #bbf7d0", padding: "6px 14px", borderRadius: "4px", fontSize: "0.85rem", fontWeight: 700, color: "#15803d", marginBottom: "14px" }}>
+                <i className="fa-solid fa-chart-line"></i>
+                <span>Real Business Impact &amp; Growth Proof</span>
+              </div>
+
+              <div className="about-section-card" style={{ borderRadius: "4px" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "12px", marginBottom: "16px" }}>
+                  <div>
+                    <h2 style={{ fontSize: "clamp(1.2rem, 2.5vw, 1.45rem)", fontWeight: 800, color: "#0f172a", marginBottom: "4px" }}>
+                      Proven Results &amp; Client Growth Highlights
+                    </h2>
+                    <p style={{ color: "#475569", fontSize: "0.95rem", lineHeight: 1.6, margin: 0 }}>
+                      Real performance turnarounds and measurable revenue delivered for local and international brands.
+                    </p>
+                  </div>
+                  <Link href="/portfolio" style={{ fontSize: "0.85rem", fontWeight: 700, color: "#0062d2", display: "inline-flex", alignItems: "center", gap: "6px", textDecoration: "none" }}>
+                    View Full Portfolio <i className="fa-solid fa-arrow-right"></i>
+                  </Link>
+                </div>
+
+                <div className="about-two-col-grid" style={{ marginTop: "18px" }}>
+                  {/* Case Study 1 */}
+                  <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "20px", display: "flex", flexDirection: "column", justifyContent: "space-between", boxShadow: "0 2px 8px rgba(0,0,0,0.02)" }}>
+                    <div>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px", flexWrap: "wrap", gap: "8px" }}>
+                        <span style={{ background: "#eff6ff", color: "#0062d2", fontSize: "0.75rem", fontWeight: 800, padding: "3px 8px", borderRadius: "4px", textTransform: "uppercase", letterSpacing: "0.04em" }}>
+                          E-Commerce &amp; Retail
+                        </span>
+                        <span style={{ background: "#ecfdf5", color: "#059669", fontSize: "0.75rem", fontWeight: 700, padding: "3px 8px", borderRadius: "4px" }}>
+                          <i className="fa-solid fa-clock" style={{ marginRight: "4px" }}></i> 7 Months
+                        </span>
+                      </div>
+                      <h3 style={{ fontSize: "1.08rem", fontWeight: 800, color: "#0f172a", lineHeight: 1.4, marginBottom: "14px" }}>
+                        Scaling Organic Traffic from 12k to 145k Monthly Visitors
+                      </h3>
+
+                      {/* 3 Metric Stats */}
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "8px", background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "12px 8px", textAlign: "center", marginBottom: "16px" }}>
+                        <div>
+                          <div style={{ fontSize: "1.15rem", fontWeight: 800, color: "#059669" }}>+1,108%</div>
+                          <div style={{ fontSize: "0.72rem", color: "#64748b", fontWeight: 600, marginTop: "2px" }}>Traffic Growth</div>
+                        </div>
+                        <div style={{ borderLeft: "1px solid #e2e8f0", borderRight: "1px solid #e2e8f0" }}>
+                          <div style={{ fontSize: "1.15rem", fontWeight: 800, color: "#0062d2" }}>85+</div>
+                          <div style={{ fontSize: "0.72rem", color: "#64748b", fontWeight: 600, marginTop: "2px" }}>Page 1 Keywords</div>
+                        </div>
+                        <div>
+                          <div style={{ fontSize: "1.15rem", fontWeight: 800, color: "#0f172a" }}>3.4x</div>
+                          <div style={{ fontSize: "0.72rem", color: "#64748b", fontWeight: 600, marginTop: "2px" }}>Store Revenue</div>
+                        </div>
+                      </div>
+
+                      {/* Strategy Bullets */}
+                      <ul style={{ listStyle: "none", padding: 0, margin: "0 0 16px", display: "flex", flexDirection: "column", gap: "8px" }}>
+                        <li style={{ fontSize: "0.86rem", color: "#475569", display: "flex", alignItems: "flex-start", gap: "8px", lineHeight: 1.5 }}>
+                          <i className="fa-solid fa-check" style={{ color: "#059669", marginTop: "3px", fontSize: "0.8rem", flexShrink: 0 }}></i>
+                          <span>Resolved faceted navigation bloat &amp; fixed 4,200+ canonical anomalies</span>
+                        </li>
+                        <li style={{ fontSize: "0.86rem", color: "#475569", display: "flex", alignItems: "flex-start", gap: "8px", lineHeight: 1.5 }}>
+                          <i className="fa-solid fa-check" style={{ color: "#059669", marginTop: "3px", fontSize: "0.8rem", flexShrink: 0 }}></i>
+                          <span>Built high-converting commercial collection clusters &amp; schema markup</span>
+                        </li>
+                        <li style={{ fontSize: "0.86rem", color: "#475569", display: "flex", alignItems: "flex-start", gap: "8px", lineHeight: 1.5 }}>
+                          <i className="fa-solid fa-check" style={{ color: "#059669", marginTop: "3px", fontSize: "0.8rem", flexShrink: 0 }}></i>
+                          <span>Secured tier-1 contextual editorial backlinks in lifestyle publications</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <Link href="/services/ecommerce-seo-service-in-bangladesh" style={{ fontSize: "0.82rem", fontWeight: 700, color: "#0062d2", display: "inline-flex", alignItems: "center", gap: "4px", textDecoration: "none", borderTop: "1px solid #f1f5f9", paddingTop: "12px", marginTop: "4px" }}>
+                      Explore E-Commerce SEO Service <i className="fa-solid fa-arrow-right"></i>
+                    </Link>
+                  </div>
+
+                  {/* Case Study 2 */}
+                  <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "20px", display: "flex", flexDirection: "column", justifyContent: "space-between", boxShadow: "0 2px 8px rgba(0,0,0,0.02)" }}>
+                    <div>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px", flexWrap: "wrap", gap: "8px" }}>
+                        <span style={{ background: "#f5f3ff", color: "#7c3aed", fontSize: "0.75rem", fontWeight: 800, padding: "3px 8px", borderRadius: "4px", textTransform: "uppercase", letterSpacing: "0.04em" }}>
+                          B2B SaaS &amp; Tech
+                        </span>
+                        <span style={{ background: "#ecfdf5", color: "#059669", fontSize: "0.75rem", fontWeight: 700, padding: "3px 8px", borderRadius: "4px" }}>
+                          <i className="fa-solid fa-clock" style={{ marginRight: "4px" }}></i> 5 Months
+                        </span>
+                      </div>
+                      <h3 style={{ fontSize: "1.08rem", fontWeight: 800, color: "#0f172a", lineHeight: 1.4, marginBottom: "14px" }}>
+                        Capturing #1 Google Rankings &amp; 72% AI Overview Citations
+                      </h3>
+
+                      {/* 3 Metric Stats */}
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "8px", background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "12px 8px", textAlign: "center", marginBottom: "16px" }}>
+                        <div>
+                          <div style={{ fontSize: "1.15rem", fontWeight: 800, color: "#059669" }}>+480%</div>
+                          <div style={{ fontSize: "0.72rem", color: "#64748b", fontWeight: 600, marginTop: "2px" }}>Demo Inquiries</div>
+                        </div>
+                        <div style={{ borderLeft: "1px solid #e2e8f0", borderRight: "1px solid #e2e8f0" }}>
+                          <div style={{ fontSize: "1.15rem", fontWeight: 800, color: "#0062d2" }}>72%</div>
+                          <div style={{ fontSize: "0.72rem", color: "#64748b", fontWeight: 600, marginTop: "2px" }}>AI Citations</div>
+                        </div>
+                        <div>
+                          <div style={{ fontSize: "1.15rem", fontWeight: 800, color: "#0f172a" }}>-$12.5k</div>
+                          <div style={{ fontSize: "0.72rem", color: "#64748b", fontWeight: 600, marginTop: "2px" }}>Monthly Ad Spend</div>
+                        </div>
+                      </div>
+
+                      {/* Strategy Bullets */}
+                      <ul style={{ listStyle: "none", padding: 0, margin: "0 0 16px", display: "flex", flexDirection: "column", gap: "8px" }}>
+                        <li style={{ fontSize: "0.86rem", color: "#475569", display: "flex", alignItems: "flex-start", gap: "8px", lineHeight: 1.5 }}>
+                          <i className="fa-solid fa-check" style={{ color: "#059669", marginTop: "3px", fontSize: "0.8rem", flexShrink: 0 }}></i>
+                          <span>Entity-first topic clustering replacing thin keyword articles</span>
+                        </li>
+                        <li style={{ fontSize: "0.86rem", color: "#475569", display: "flex", alignItems: "flex-start", gap: "8px", lineHeight: 1.5 }}>
+                          <i className="fa-solid fa-check" style={{ color: "#059669", marginTop: "3px", fontSize: "0.8rem", flexShrink: 0 }}></i>
+                          <span>Engineered concise factual answer capsules cited by ChatGPT &amp; Perplexity</span>
+                        </li>
+                        <li style={{ fontSize: "0.86rem", color: "#475569", display: "flex", alignItems: "flex-start", gap: "8px", lineHeight: 1.5 }}>
+                          <i className="fa-solid fa-check" style={{ color: "#059669", marginTop: "3px", fontSize: "0.8rem", flexShrink: 0 }}></i>
+                          <span>Targeted digital PR brand mentions across authoritative software directories</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <Link href="/services/ai-seo-service-in-bangladesh" style={{ fontSize: "0.82rem", fontWeight: 700, color: "#0062d2", display: "inline-flex", alignItems: "center", gap: "4px", textDecoration: "none", borderTop: "1px solid #f1f5f9", paddingTop: "12px", marginTop: "4px" }}>
+                      Explore AI &amp; GEO Service <i className="fa-solid fa-arrow-right"></i>
+                    </Link>
                   </div>
                 </div>
               </div>
