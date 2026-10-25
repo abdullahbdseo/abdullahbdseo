@@ -84,6 +84,55 @@ export default function AboutPage() {
   const [auditSuccess, setAuditSuccess] = useState(false);
   const [auditError, setAuditError] = useState(null);
 
+  // Recommendation #5: Executive Capability Deck Modal State
+  const [showDeckModal, setShowDeckModal] = useState(false);
+
+  // Recommendation #6: 1-Click Strategy Meeting Scheduler State
+  const [meetingType, setMeetingType] = useState("15-Min Quick Search Diagnostic & Q&A");
+  const [meetingDate, setMeetingDate] = useState("Tomorrow (Recommended)");
+  const [meetingTime, setMeetingTime] = useState("04:00 PM BST (10:00 AM EST)");
+  const [meetingName, setMeetingName] = useState("");
+  const [meetingEmail, setMeetingEmail] = useState("");
+  const [meetingWebsite, setMeetingWebsite] = useState("");
+  const [meetingNote, setMeetingNote] = useState("");
+  const [meetingLoading, setMeetingLoading] = useState(false);
+  const [meetingSuccess, setMeetingSuccess] = useState(false);
+  const [meetingError, setMeetingError] = useState(null);
+
+  const handleMeetingSubmit = async (e) => {
+    e.preventDefault();
+    if (!meetingName.trim() || !meetingEmail.trim() || !meetingWebsite.trim()) {
+      setMeetingError("Please provide your Name, Business Email, and Website URL.");
+      return;
+    }
+    setMeetingLoading(true);
+    setMeetingError(null);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: meetingName.trim(),
+          email: meetingEmail.trim(),
+          website: meetingWebsite.trim(),
+          service_interest: "1-Click Strategy Meeting",
+          message: `Booked Strategy Session with Abdullah Saleh:\n- Focus: ${meetingType}\n- Date: ${meetingDate}\n- Time: ${meetingTime}\n- Website: ${meetingWebsite.trim()}\n- Client Note: ${meetingNote.trim() || "None specified"}`
+        })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setMeetingSuccess(true);
+        setMeetingError(null);
+      } else {
+        setMeetingError(data.error || "Booking failed. Please connect directly on WhatsApp.");
+      }
+    } catch (err) {
+      setMeetingError("Network error. Please try again or connect via WhatsApp.");
+    } finally {
+      setMeetingLoading(false);
+    }
+  };
+
   const handleAuditSubmit = async (e) => {
     e.preventDefault();
     if (!auditUrl.trim() || !auditEmail.trim()) {
@@ -131,6 +180,7 @@ export default function AboutPage() {
         "tech-stack",
         "testimonials",
         "why-choose",
+        "book-meeting",
         "faq"
       ];
       const scrollPosition = window.scrollY + 140;
@@ -306,6 +356,12 @@ export default function AboutPage() {
                   </a>
                 </li>
                 <li>
+                  <a href="#book-meeting" className={`about-toc-link ${activeSection === "book-meeting" ? "active" : ""}`} style={{ borderRadius: "4px" }}>
+                    <i className="fa-regular fa-calendar-check" style={{ width: "16px" }}></i>
+                    <span>Book Strategy Call</span>
+                  </a>
+                </li>
+                <li>
                   <a href="#faq" className={`about-toc-link ${activeSection === "faq" ? "active" : ""}`} style={{ borderRadius: "4px" }}>
                     <i className="fa-solid fa-circle-question" style={{ width: "16px" }}></i>
                     <span>FAQs</span>
@@ -469,6 +525,70 @@ export default function AboutPage() {
                         </span>
                       </div>
                     </div>
+                  </div>
+
+                  {/* Executive Action Toolbar (Recommendations #5 & #6) */}
+                  <div style={{ marginTop: "18px", paddingTop: "16px", borderTop: "1px solid #f1f5f9", display: "flex", flexWrap: "wrap", gap: "10px", alignItems: "center" }}>
+                    <button
+                      type="button"
+                      onClick={() => setShowDeckModal(true)}
+                      style={{
+                        background: "#ffffff",
+                        color: "#0062d2",
+                        border: "1px solid #cbd5e1",
+                        borderRadius: "4px",
+                        padding: "10px 16px",
+                        fontSize: "0.85rem",
+                        fontWeight: 700,
+                        cursor: "pointer",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "8px"
+                      }}
+                    >
+                      <i className="fa-solid fa-file-pdf" style={{ color: "#ef4444" }}></i>
+                      Download Executive Deck (PDF)
+                    </button>
+
+                    <a
+                      href="#book-meeting"
+                      style={{
+                        background: "#0062d2",
+                        color: "#ffffff",
+                        borderRadius: "4px",
+                        padding: "10px 16px",
+                        fontSize: "0.85rem",
+                        fontWeight: 700,
+                        textDecoration: "none",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "8px"
+                      }}
+                    >
+                      <i className="fa-regular fa-calendar-check"></i>
+                      Book 15-Min Strategy Call
+                    </a>
+
+                    <a
+                      href={`https://wa.me/${(siteSettings.whatsapp_number || "8801670769816").replace(/[^0-9]/g, "")}?text=Hi%20Abdullah,%20I'd%20like%20to%20discuss%20an%20SEO%20project.`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        background: "#ecfdf5",
+                        color: "#059669",
+                        border: "1px solid #bbf7d0",
+                        borderRadius: "4px",
+                        padding: "10px 14px",
+                        fontSize: "0.85rem",
+                        fontWeight: 700,
+                        textDecoration: "none",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "6px"
+                      }}
+                    >
+                      <i className="fa-brands fa-whatsapp"></i> Quick WhatsApp
+                    </a>
                   </div>
                 </div>
               </div>
@@ -1084,6 +1204,265 @@ export default function AboutPage() {
               </div>
             </section>
 
+            {/* Recommendation #6: 1-Click Meeting Calendar & Strategy Consultation */}
+            <section id="book-meeting" style={{ scrollMarginTop: "100px" }}>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "#f0fdf4", border: "1px solid #bbf7d0", padding: "6px 14px", borderRadius: "4px", fontSize: "0.85rem", fontWeight: 700, color: "#15803d", marginBottom: "14px" }}>
+                <i className="fa-regular fa-calendar-check"></i>
+                <span>Direct Executive Strategy Consultation</span>
+              </div>
+
+              <div className="about-section-card" style={{ borderRadius: "4px" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "12px", marginBottom: "16px" }}>
+                  <div>
+                    <h2 style={{ fontSize: "clamp(1.2rem, 2.5vw, 1.45rem)", fontWeight: 800, color: "#0f172a", marginBottom: "4px" }}>
+                      Schedule a 1-on-1 Growth &amp; SEO Strategy Call
+                    </h2>
+                    <p style={{ color: "#475569", fontSize: "0.95rem", lineHeight: 1.6, margin: 0 }}>
+                      Select your preferred session and timeslot below to discuss your domain’s ranking bottlenecks and revenue roadmap directly with Abdullah Saleh.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setShowDeckModal(true)}
+                    style={{ background: "#eff6ff", color: "#0062d2", border: "1px solid #bfdbfe", padding: "8px 14px", borderRadius: "4px", fontSize: "0.82rem", fontWeight: 700, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "6px" }}
+                  >
+                    <i className="fa-solid fa-file-pdf" style={{ color: "#ef4444" }}></i> Executive Deck (PDF)
+                  </button>
+                </div>
+
+                {meetingSuccess ? (
+                  <div style={{ background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: "4px", padding: "24px 20px", textAlign: "center" }}>
+                    <div style={{ width: "48px", height: "48px", borderRadius: "50%", background: "#dcfce7", color: "#15803d", fontSize: "1.4rem", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 12px" }}>
+                      <i className="fa-solid fa-calendar-check"></i>
+                    </div>
+                    <h3 style={{ fontSize: "1.2rem", fontWeight: 800, color: "#166534", margin: "0 0 6px" }}>
+                      Strategy Consultation Reserved!
+                    </h3>
+                    <p style={{ fontSize: "0.92rem", color: "#374151", margin: "0 auto 16px", maxWidth: "560px", lineHeight: 1.65 }}>
+                      Thank you, <strong>{meetingName}</strong>. Your <strong>{meetingType}</strong> is booked for <strong>{meetingDate}</strong> at <strong>{meetingTime}</strong>. Abdullah Saleh will send your Google Meet invite and strategic briefing to <strong>{meetingEmail}</strong>.
+                    </p>
+                    <div style={{ display: "flex", justifyContent: "center", gap: "10px", flexWrap: "wrap" }}>
+                      <a
+                        href={`https://wa.me/${(siteSettings.whatsapp_number || "8801670769816").replace(/[^0-9]/g, "")}?text=Hi%20Abdullah,%20I%20just%20scheduled%20a%20strategy%20session%20for%20${encodeURIComponent(meetingDate)}%20(${encodeURIComponent(meetingTime)}).%20My%20website:%20${encodeURIComponent(meetingWebsite)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ background: "#25D366", color: "#ffffff", padding: "10px 18px", borderRadius: "4px", fontWeight: 700, fontSize: "0.85rem", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "6px" }}
+                      >
+                        <i className="fa-brands fa-whatsapp"></i> Confirm via WhatsApp
+                      </a>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setMeetingSuccess(false);
+                          setMeetingName("");
+                          setMeetingEmail("");
+                          setMeetingWebsite("");
+                          setMeetingNote("");
+                        }}
+                        style={{ background: "#ffffff", color: "#475569", border: "1px solid #cbd5e1", padding: "10px 16px", borderRadius: "4px", fontWeight: 700, fontSize: "0.85rem", cursor: "pointer" }}
+                      >
+                        Book Another Session
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <form onSubmit={handleMeetingSubmit} style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "18px 20px" }}>
+                    {/* Step 1: Session Type */}
+                    <div style={{ marginBottom: "16px" }}>
+                      <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.05em", color: "#475569", marginBottom: "8px" }}>
+                        1. Select Session Focus
+                      </label>
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "8px" }}>
+                        {[
+                          { title: "15-Min Quick Search Diagnostic & Q&A", icon: "fa-bolt", desc: "Rapid review of crawl issues & quick wins" },
+                          { title: "30-Min Full-Funnel Growth Strategy", icon: "fa-chart-line", desc: "Topical mapping, revenue roadmap & links" },
+                          { title: "30-Min Technical Architecture Review", icon: "fa-server", desc: "Core Web Vitals, Schema & indexation" }
+                        ].map((item, idx) => {
+                          const isSelected = meetingType === item.title;
+                          return (
+                            <button
+                              key={idx}
+                              type="button"
+                              onClick={() => setMeetingType(item.title)}
+                              style={{
+                                textAlign: "left",
+                                padding: "12px 14px",
+                                borderRadius: "4px",
+                                border: isSelected ? "2px solid #0062d2" : "1px solid #e2e8f0",
+                                background: isSelected ? "#eff6ff" : "#ffffff",
+                                cursor: "pointer"
+                              }}
+                            >
+                              <div style={{ display: "flex", alignItems: "center", gap: "8px", fontWeight: 700, fontSize: "0.86rem", color: isSelected ? "#0062d2" : "#0f172a", marginBottom: "3px" }}>
+                                <i className={`fa-solid ${item.icon}`} style={{ color: isSelected ? "#0062d2" : "#64748b" }}></i>
+                                <span>{item.title}</span>
+                              </div>
+                              <div style={{ fontSize: "0.74rem", color: "#64748b" }}>{item.desc}</div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Step 2: Date & Timeslot */}
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "14px", marginBottom: "16px" }}>
+                      <div>
+                        <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.05em", color: "#475569", marginBottom: "8px" }}>
+                          2. Preferred Day
+                        </label>
+                        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "6px" }}>
+                          {[
+                            "Today (Urgent Slot)",
+                            "Tomorrow (Recommended)",
+                            "In 2 Business Days",
+                            "In 3 Business Days"
+                          ].map((d, idx) => {
+                            const isSelected = meetingDate === d;
+                            return (
+                              <button
+                                key={idx}
+                                type="button"
+                                onClick={() => setMeetingDate(d)}
+                                style={{
+                                  padding: "8px 10px",
+                                  fontSize: "0.78rem",
+                                  fontWeight: isSelected ? 700 : 600,
+                                  borderRadius: "4px",
+                                  border: isSelected ? "2px solid #0062d2" : "1px solid #cbd5e1",
+                                  background: isSelected ? "#eff6ff" : "#ffffff",
+                                  color: isSelected ? "#0062d2" : "#334155",
+                                  cursor: "pointer"
+                                }}
+                              >
+                                {d}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      <div>
+                        <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.05em", color: "#475569", marginBottom: "8px" }}>
+                          3. Preferred Time Slot (GMT+6 / BST)
+                        </label>
+                        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "6px" }}>
+                          {[
+                            "03:00 PM BST (09:00 AM EST)",
+                            "05:30 PM BST (11:30 AM EST)",
+                            "08:00 PM BST (02:00 PM EST)",
+                            "10:30 PM BST (04:30 PM EST)"
+                          ].map((t, idx) => {
+                            const isSelected = meetingTime === t;
+                            return (
+                              <button
+                                key={idx}
+                                type="button"
+                                onClick={() => setMeetingTime(t)}
+                                style={{
+                                  padding: "8px 10px",
+                                  fontSize: "0.78rem",
+                                  fontWeight: isSelected ? 700 : 600,
+                                  borderRadius: "4px",
+                                  border: isSelected ? "2px solid #0062d2" : "1px solid #cbd5e1",
+                                  background: isSelected ? "#eff6ff" : "#ffffff",
+                                  color: isSelected ? "#0062d2" : "#334155",
+                                  cursor: "pointer"
+                                }}
+                              >
+                                {t}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Step 3: Contact Details */}
+                    <div>
+                      <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.05em", color: "#475569", marginBottom: "8px" }}>
+                        4. Your Contact &amp; Domain Details
+                      </label>
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "10px", marginBottom: "10px" }}>
+                        <input
+                          type="text"
+                          required
+                          placeholder="Your Name (e.g. Alex Morgan)"
+                          value={meetingName}
+                          onChange={(e) => setMeetingName(e.target.value)}
+                          style={{ padding: "10px 12px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "0.88rem", color: "#0f172a", outline: "none", background: "#ffffff" }}
+                        />
+                        <input
+                          type="email"
+                          required
+                          placeholder="Work Email (e.g. alex@brand.com)"
+                          value={meetingEmail}
+                          onChange={(e) => setMeetingEmail(e.target.value)}
+                          style={{ padding: "10px 12px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "0.88rem", color: "#0f172a", outline: "none", background: "#ffffff" }}
+                        />
+                        <input
+                          type="url"
+                          required
+                          placeholder="Website URL (e.g. https://brand.com)"
+                          value={meetingWebsite}
+                          onChange={(e) => setMeetingWebsite(e.target.value)}
+                          style={{ padding: "10px 12px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "0.88rem", color: "#0f172a", outline: "none", background: "#ffffff" }}
+                        />
+                      </div>
+
+                      <input
+                        type="text"
+                        placeholder="Primary Growth Goal or Issue (e.g. Traffic drop after core update, scale ecommerce sales)"
+                        value={meetingNote}
+                        onChange={(e) => setMeetingNote(e.target.value)}
+                        style={{ width: "100%", padding: "10px 12px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "0.88rem", color: "#0f172a", outline: "none", background: "#ffffff", marginBottom: "12px" }}
+                      />
+
+                      {meetingError && (
+                        <div style={{ background: "#fee2e2", border: "1px solid #fca5a5", color: "#991b1b", padding: "8px 12px", borderRadius: "4px", fontSize: "0.82rem", marginBottom: "10px" }}>
+                          <i className="fa-solid fa-triangle-exclamation" style={{ marginRight: "6px" }}></i>
+                          {meetingError}
+                        </div>
+                      )}
+
+                      <button
+                        type="submit"
+                        disabled={meetingLoading}
+                        style={{
+                          width: "100%",
+                          background: "#0062d2",
+                          color: "#ffffff",
+                          fontWeight: 800,
+                          border: "none",
+                          borderRadius: "4px",
+                          padding: "12px 24px",
+                          fontSize: "0.92rem",
+                          cursor: meetingLoading ? "not-allowed" : "pointer",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "8px",
+                          boxShadow: "0 2px 8px rgba(0,98,210,0.25)"
+                        }}
+                      >
+                        {meetingLoading ? (
+                          <>
+                            <i className="fa-solid fa-spinner fa-spin"></i> Reserving Strategy Session...
+                          </>
+                        ) : (
+                          <>
+                            <i className="fa-regular fa-calendar-check"></i> Confirm &amp; Reserve Strategy Session
+                          </>
+                        )}
+                      </button>
+                      <div style={{ marginTop: "8px", fontSize: "0.75rem", color: "#64748b", textAlign: "center" }}>
+                        Conducted via Google Meet. 100% Free &amp; Confidential with Abdullah Saleh.
+                      </div>
+                    </div>
+                  </form>
+                )}
+              </div>
+            </section>
+
             {/* Section 9: Frequently Asked Questions (FAQ) with Accordion */}
             <section id="faq" style={{ scrollMarginTop: "100px" }}>
               <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "#eff6ff", border: "1px solid #dbeafe", padding: "6px 14px", borderRadius: "4px", fontSize: "0.85rem", fontWeight: 700, color: "#0062d2", marginBottom: "14px" }}>
@@ -1326,6 +1705,208 @@ export default function AboutPage() {
           </div>
         </div>
       </div>
+
+      {/* Recommendation #5: Executive Capability Deck Modal */}
+      {showDeckModal && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            background: "rgba(15, 23, 42, 0.72)",
+            zIndex: 99999,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "20px",
+            backdropFilter: "blur(4px)"
+          }}
+          onClick={() => setShowDeckModal(false)}
+        >
+          <div
+            style={{
+              background: "#ffffff",
+              borderRadius: "4px",
+              maxWidth: "760px",
+              width: "100%",
+              maxHeight: "90vh",
+              overflowY: "auto",
+              boxShadow: "0 20px 40px rgba(0,0,0,0.25)",
+              border: "1px solid #cbd5e1",
+              position: "relative"
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div style={{ padding: "16px 20px", borderBottom: "1px solid #f1f5f9", display: "flex", justifyContent: "space-between", alignItems: "center", background: "#f8fafc" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                <div style={{ width: "34px", height: "34px", borderRadius: "4px", background: "#eff6ff", color: "#0062d2", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.1rem" }}>
+                  <i className="fa-solid fa-file-pdf" style={{ color: "#ef4444" }}></i>
+                </div>
+                <div>
+                  <h3 style={{ margin: 0, fontSize: "1.05rem", fontWeight: 800, color: "#0f172a" }}>
+                    Executive SEO &amp; Growth Capability Deck
+                  </h3>
+                  <span style={{ fontSize: "0.75rem", color: "#64748b" }}>
+                    2026 Edition · Prepared by Abdullah Saleh
+                  </span>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowDeckModal(false)}
+                style={{ background: "none", border: "none", fontSize: "1.3rem", color: "#64748b", cursor: "pointer", padding: "4px 8px" }}
+                aria-label="Close modal"
+              >
+                &times;
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div style={{ padding: "20px" }}>
+              <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "16px", marginBottom: "16px" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px", marginBottom: "8px" }}>
+                  <span style={{ fontSize: "0.75rem", fontWeight: 800, color: "#0062d2", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                    Executive Profile Overview
+                  </span>
+                  <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "#059669", background: "#ecfdf5", padding: "2px 8px", borderRadius: "4px" }}>
+                    Verified E-E-A-T Track Record
+                  </span>
+                </div>
+                <h4 style={{ margin: "0 0 6px", fontSize: "1.05rem", fontWeight: 800, color: "#0f172a" }}>
+                  Abdullah Saleh — Organic Business Growth Specialist &amp; Technical SEO Architect
+                </h4>
+                <p style={{ margin: 0, fontSize: "0.88rem", color: "#475569", lineHeight: 1.6 }}>
+                  Dhaka, Bangladesh · Partnering with 100+ global brands across USA, UK, Canada, Australia, and Europe. Focused strictly on revenue-driven organic growth, crawl optimization, and AI/LLM search engine readiness.
+                </p>
+              </div>
+
+              {/* 4 Highlights */}
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: "10px", marginBottom: "16px" }}>
+                <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "12px", textAlign: "center" }}>
+                  <div style={{ fontSize: "1.1rem", fontWeight: 800, color: "#0062d2" }}>6+ Years</div>
+                  <div style={{ fontSize: "0.75rem", color: "#64748b" }}>Search Engineering</div>
+                </div>
+                <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "12px", textAlign: "center" }}>
+                  <div style={{ fontSize: "1.1rem", fontWeight: 800, color: "#0062d2" }}>$2,000,000+</div>
+                  <div style={{ fontSize: "0.75rem", color: "#64748b" }}>Organic Revenue Impact</div>
+                </div>
+                <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "12px", textAlign: "center" }}>
+                  <div style={{ fontSize: "1.1rem", fontWeight: 800, color: "#0062d2" }}>100+ Brands</div>
+                  <div style={{ fontSize: "0.75rem", color: "#64748b" }}>Scaled Globally</div>
+                </div>
+                <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "12px", textAlign: "center" }}>
+                  <div style={{ fontSize: "1.1rem", fontWeight: 800, color: "#059669" }}>100% White-Hat</div>
+                  <div style={{ fontSize: "0.75rem", color: "#64748b" }}>Google Compliant</div>
+                </div>
+              </div>
+
+              {/* Growth Disciplines */}
+              <div style={{ marginBottom: "16px" }}>
+                <h5 style={{ fontSize: "0.82rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.05em", color: "#64748b", margin: "0 0 10px" }}>
+                  Core Growth Disciplines &amp; Deliverables
+                </h5>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "8px", fontSize: "0.85rem", color: "#334155" }}>
+                  <div style={{ background: "#f8fafc", padding: "8px 12px", borderRadius: "4px", border: "1px solid #f1f5f9" }}>
+                    <i className="fa-solid fa-check" style={{ color: "#059669", marginRight: "6px" }}></i>
+                    <strong>Technical Audits:</strong> 230+ Checkpoints &amp; Core Web Vitals
+                  </div>
+                  <div style={{ background: "#f8fafc", padding: "8px 12px", borderRadius: "4px", border: "1px solid #f1f5f9" }}>
+                    <i className="fa-solid fa-check" style={{ color: "#059669", marginRight: "6px" }}></i>
+                    <strong>Semantic Mapping:</strong> Topical Authority &amp; Content Hubs
+                  </div>
+                  <div style={{ background: "#f8fafc", padding: "8px 12px", borderRadius: "4px", border: "1px solid #f1f5f9" }}>
+                    <i className="fa-solid fa-check" style={{ color: "#059669", marginRight: "6px" }}></i>
+                    <strong>Link Acquisition:</strong> Editorial White-Hat PR Backlinks
+                  </div>
+                  <div style={{ background: "#f8fafc", padding: "8px 12px", borderRadius: "4px", border: "1px solid #f1f5f9" }}>
+                    <i className="fa-solid fa-check" style={{ color: "#059669", marginRight: "6px" }}></i>
+                    <strong>AEO &amp; GEO:</strong> Google AI Overviews &amp; Perplexity
+                  </div>
+                </div>
+              </div>
+
+              {/* Engagement Models */}
+              <div style={{ background: "#f1f5f9", borderRadius: "4px", padding: "12px 14px", marginBottom: "18px" }}>
+                <span style={{ fontSize: "0.78rem", fontWeight: 800, color: "#0f172a", display: "block", marginBottom: "4px" }}>
+                  Enterprise Engagement Models:
+                </span>
+                <span style={{ fontSize: "0.82rem", color: "#475569" }}>
+                  1. Monthly Dedicated Growth Retainer · 2. Technical Audit &amp; Architecture Sprint · 3. Fractional Executive Search Advisory
+                </span>
+              </div>
+
+              {/* Actions */}
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px", borderTop: "1px solid #f1f5f9", paddingTop: "14px" }}>
+                <a
+                  href="/documents/abdullah-saleh-seo-capability-deck.pdf"
+                  download="Abdullah-Saleh-SEO-Capability-Deck.pdf"
+                  style={{
+                    background: "#0062d2",
+                    color: "#ffffff",
+                    borderRadius: "4px",
+                    padding: "10px 20px",
+                    fontSize: "0.88rem",
+                    fontWeight: 700,
+                    textDecoration: "none",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "8px"
+                  }}
+                >
+                  <i className="fa-solid fa-download"></i> Download PDF Deck
+                </a>
+
+                <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                  <button
+                    type="button"
+                    onClick={() => window.print()}
+                    style={{
+                      background: "#ffffff",
+                      color: "#334155",
+                      border: "1px solid #cbd5e1",
+                      borderRadius: "4px",
+                      padding: "10px 14px",
+                      fontSize: "0.85rem",
+                      fontWeight: 700,
+                      cursor: "pointer",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "6px"
+                    }}
+                  >
+                    <i className="fa-solid fa-print"></i> Print / Save
+                  </button>
+
+                  <a
+                    href={`https://wa.me/${(siteSettings.whatsapp_number || "8801670769816").replace(/[^0-9]/g, "")}?text=Hi%20Abdullah,%20I%20reviewed%20your%20SEO%20Capability%20Deck%20and%20would%20like%20to%20discuss%20a%20project.`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      background: "#25D366",
+                      color: "#ffffff",
+                      borderRadius: "4px",
+                      padding: "10px 14px",
+                      fontSize: "0.85rem",
+                      fontWeight: 700,
+                      textDecoration: "none",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "6px"
+                    }}
+                  >
+                    <i className="fa-brands fa-whatsapp"></i> WhatsApp Abdullah
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
