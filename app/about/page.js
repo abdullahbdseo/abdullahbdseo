@@ -209,8 +209,10 @@ export default function AboutPage() {
     "telephone": siteSettings.contact_phone || "+8801670769816",
     "address": {
       "@type": "PostalAddress",
+      "streetAddress": "Mirpur DOHS",
       "addressLocality": "Dhaka",
       "addressRegion": "Dhaka Division",
+      "postalCode": "1216",
       "addressCountry": "Bangladesh"
     },
     "sameAs": [

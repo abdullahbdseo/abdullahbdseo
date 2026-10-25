@@ -364,8 +364,9 @@ export default function LocalSeoServicePage() {
                 "telephone": "+8801670769816",
                 "address": {
                   "@type": "PostalAddress",
-                  "streetAddress": "House No: 8, Road No: 4, Senpara, Parbata, Mirpur-10",
+                  "streetAddress": "Mirpur DOHS",
                   "addressLocality": "Dhaka",
+                  "addressRegion": "Dhaka Division",
                   "postalCode": "1216",
                   "addressCountry": "BD"
                 },

@@ -84,7 +84,7 @@ export default function RootLayout({ children }) {
         "priceRange": "$$$",
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "Mirpur DOHS / Gulshan",
+          "streetAddress": "Mirpur DOHS",
           "addressLocality": "Dhaka",
           "addressRegion": "Dhaka Division",
           "postalCode": "1216",
