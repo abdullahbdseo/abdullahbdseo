@@ -316,7 +316,7 @@ export default function AboutPage() {
                 </div>
 
                 {/* 6-Stat Metric Grid */}
-                <div className="about-stats-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))" }}>
+                <div className="about-stats-grid">
                   <div className="about-stat-box" style={{ borderRadius: "4px" }}>
                     <div className="about-stat-number">6+ Years</div>
                     <div className="about-stat-label">Hands-On Experience</div>
