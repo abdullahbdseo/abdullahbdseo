@@ -2,7 +2,7 @@
 
 ## 🎯 Compliance Standard
 Every blog post created, drafted, or published MUST strictly adhere to the standards defined in:
-- `seo-content-rules-guide.md` (SEO + AEO + GEO Content Rules Guide)
+- `content_writing_rules.md` (Content Writing & Humanizer Standards — 100% Humanizer + 1% Natural Grammar)
 - `AGENTS.md` (ZERO-TOUCH-PROTOCOL & 4px Border Radius Standard)
 
 ---
