@@ -34,3 +34,11 @@ To ensure the writing reads 100% authentically human and never triggers AI-patte
 - Keep all real facts, names, steps, and data accurate.
 - Never hallucinate fake stats, made-up quotes, or phantom case studies.
 - When covering Abdullah's SEO services, maintain the authentic, expert practitioner voice.
+
+---
+
+## 4. Visual Media Standard (3 In-Body Images + Owner Thumbnail)
+- **Thumbnail**: Designed and provided by the owner. Used as the main featured thumbnail for the post header and cards; never duplicated inside the body text.
+- **In-Content Images**: Every blog post body MUST contain exactly **3 distinct, professionally designed related images** (workflow diagrams, architecture infographics, or process maps) spaced evenly across the sections.
+- **Border Radius**: Strictly **4px** (`border-radius: 4px; border: 1px solid #e2e8f0;`) across all visual containers, cards, and figures.
+

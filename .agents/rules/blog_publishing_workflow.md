@@ -7,6 +7,18 @@ Every blog post created, drafted, or published MUST strictly adhere to the stand
 
 ---
 
+## 🖼️ Image & Thumbnail Standards (MANDATORY)
+1. **Featured Thumbnail (Designed by Owner)**:
+   - The user/owner designs and provides the featured thumbnail image for each post.
+   - Set this as `featured_image` / `image` for the post header, cards, and metadata.
+   - **Do NOT reuse or duplicate the thumbnail image inside the body text.**
+2. **Exactly 3 Professional In-Content Images in Body Text**:
+   - Every blog post MUST have **3 distinct, professionally designed related images/infographics** evenly placed across key sections of the body.
+   - Visual types: Process workflows, architecture framework diagrams, comparison tables/infographics, or data-driven visual guides.
+   - All images must adhere strictly to the **4px border-radius standard** (`border-radius: 4px; border: 1px solid #e2e8f0;`).
+
+---
+
 ## ⚠️ ROOT CAUSE WARNING (Firestore Real-time Sync)
 This project uses Firebase (credentials in `lib/firebase.js`). Firestore is ALWAYS connected.
 The frontend fetches `blogPosts` from Firestore via real-time `onSnapshot`.
