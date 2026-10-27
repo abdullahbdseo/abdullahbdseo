@@ -95,7 +95,7 @@ export default function sitemap() {
   // Dynamic Blog Posts
   const blogRoutes = (blogPosts || []).map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
-    lastModified: safeDate(post.date || post.publish_date),
+    lastModified: safeDate(post.dateModified || post.date || post.publish_date),
     changeFrequency: "weekly",
     priority: 0.8,
   }));
