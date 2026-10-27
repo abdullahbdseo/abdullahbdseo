@@ -11,20 +11,32 @@ export default function manifest() {
       {
         src: "/favicon.ico",
         sizes: "any",
-        type: "image/x-icon"
+        type: "image/x-icon",
       },
       {
         src: "/images/favicon.png",
         sizes: "192x192",
         type: "image/png",
-        purpose: "any maskable"
+        purpose: "any",
+      },
+      {
+        src: "/images/favicon.png",
+        sizes: "192x192",
+        type: "image/png",
+        purpose: "maskable",
       },
       {
         src: "/images/logo-icon.png",
         sizes: "512x512",
         type: "image/png",
-        purpose: "any maskable"
-      }
-    ]
+        purpose: "any",
+      },
+      {
+        src: "/images/logo-icon.png",
+        sizes: "512x512",
+        type: "image/png",
+        purpose: "maskable",
+      },
+    ],
   };
 }

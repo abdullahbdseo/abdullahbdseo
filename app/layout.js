@@ -12,6 +12,13 @@ export const metadata = {
   keywords: siteSettings.default_meta_keywords,
   alternates: {
     canonical: "/",
+    languages: {
+      "en": "/",
+      "en-BD": "/",
+      "en-US": "/",
+      "en-GB": "/",
+      "x-default": "/",
+    },
   },
   verification: {
     google: "4925bdb84133c801",
@@ -223,6 +230,45 @@ export default function RootLayout({ children }) {
             "name": "Contact & Audit Proposal",
             "description": "Get in Touch for a Customized Website SEO Audit",
             "url": "https://abdullahbdseo.vercel.app/contact"
+          }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://abdullahbdseo.vercel.app/#faq",
+        "name": "Frequently Asked Questions - SEO Services & Growth Strategy",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How long does it take to see tangible results from SEO?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "SEO is a compounding organic growth strategy. Technical improvements, crawl fixations, and on-page adjustments often reflect in Google Search Console within 3 to 6 weeks. Core commercial keyword rank improvements and organic revenue acceleration typically compound significantly between months 3 and 6."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do you guarantee #1 rankings on Google?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No ethical SEO specialist can guarantee a specific #1 rank because Google controls search algorithm updates. What we guarantee is a rigorous, data-driven methodology, 100% white-hat execution, transparent weekly progress reporting, and search strategies proven to outperform competitors over time."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What industries and CMS platforms do you specialize in?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "We have deep expertise across E-Commerce (Shopify, WooCommerce, Magento), B2B SaaS, Professional Services, Healthcare, Real Estate, Local Businesses, and Custom Web Applications built on Next.js, WordPress, or Laravel."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can you fix Google indexing errors and Core Web Vitals issues?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes! Our technical SEO audits systematically resolve crawl budget bloat, orphaned URLs, canonical conflicts, redirect loops, slow LCP/INP/CLS metrics, JavaScript hydration delays, and missing Schema.org JSON-LD structured data."
+            }
           }
         ]
       }
