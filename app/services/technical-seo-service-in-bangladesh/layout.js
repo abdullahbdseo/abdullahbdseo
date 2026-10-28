@@ -1,14 +1,14 @@
 import { siteSettings } from "@/lib/data";
 
 export const metadata = {
-  title: `Technical SEO Service in Bangladesh | ${siteSettings.expert_name}`,
-  description: `Fix crawling bottlenecks, slow site speed, indexing errors, and structured data schemas with Bangladesh's premier Technical SEO Specialist, ${siteSettings.expert_name}.`,
+  title: `Technical SEO Service in Bangladesh | Fix Index & Crawl Issues`,
+  description: `Professional Technical SEO Service in Bangladesh by Abdullah Saleh. Resolve crawl errors, optimize Core Web Vitals, fix indexation, and build robust site architecture.`,
   alternates: {
     canonical: "/services/technical-seo-service-in-bangladesh",
   },
   openGraph: {
-    title: `Technical SEO Service in Bangladesh | ${siteSettings.site_name}`,
-    description: `Fix crawling bottlenecks, slow site speed, indexing errors, and structured data schemas with Bangladesh's premier Technical SEO Specialist, ${siteSettings.expert_name}.`,
+    title: `Technical SEO Service in Bangladesh | Fix Index & Crawl Issues`,
+    description: `Professional Technical SEO Service in Bangladesh by Abdullah Saleh. Resolve crawl errors, optimize Core Web Vitals, fix indexation, and build robust site architecture.`,
     url: "/services/technical-seo-service-in-bangladesh",
     type: "website",
     images: [
@@ -22,8 +22,8 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `Technical SEO Service in Bangladesh | ${siteSettings.expert_name}`,
-    description: `Fix crawling bottlenecks, slow site speed, indexing errors, and structured data schemas with Bangladesh's premier Technical SEO Specialist, ${siteSettings.expert_name}.`,
+    title: `Technical SEO Service in Bangladesh | Fix Index & Crawl Issues`,
+    description: `Professional Technical SEO Service in Bangladesh by Abdullah Saleh. Resolve crawl errors, optimize Core Web Vitals, fix indexation, and build robust site architecture.`,
     images: ["/images/seo_hero_3d.png"],
   },
 };

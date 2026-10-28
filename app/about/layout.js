@@ -2,7 +2,7 @@ import { siteSettings } from "@/lib/data";
 
 export const metadata = {
   title: `About ${siteSettings.expert_name} | Best SEO Expert in Bangladesh (6+ Yrs)`,
-  description: `Learn about ${siteSettings.expert_name}, top-rated SEO Expert in Bangladesh & Organic Business Growth Specialist. 6+ years experience, 100+ brands ranked #1 on Google with Technical SEO, Local SEO, E-commerce, and AI/AEO search optimization.`,
+  description: `Learn about ${siteSettings.expert_name}, top SEO expert in Bangladesh. 6+ years experience, 100+ brands scaled #1 on Google with Technical, Local, E-commerce & AI SEO.`,
   keywords: [
     "Abdullah Saleh",
     "About Abdullah Saleh",

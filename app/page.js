@@ -876,7 +876,25 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 7. HOMEPAGE GLOBAL FAQ ACCORDION (WITH FAQPAGE SCHEMA) */}
+            {/* 7. HOMEPAGE GLOBAL FAQ ACCORDION (WITH FAQPAGE SCHEMA) */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "@id": "https://abdullahbdseo.vercel.app/#faq",
+            "mainEntity": (globalFaqs || []).slice(0, 8).map((faq) => ({
+              "@type": "Question",
+              "name": faq.question || faq.q || "",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": faq.answer || faq.a || ""
+              }
+            }))
+          })
+        }}
+      />
       <section className="section digi-faq-section" style={{ background: "#ffffff", padding: "80px 0" }}>
         <div className="container" style={{ maxWidth: "900px" }}>
           <div className="digi-section-head" style={{ marginBottom: "40px", textAlign: "center" }}>

@@ -66,6 +66,25 @@ const nextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: "/blog/complete-technical-seo-checklist-2026",
+        destination: "/blog/complete-technical-seo-checklist-2026-critical-audits",
+        permanent: true,
+      },
+      {
+        source: "/blog/complete-technical-seo-audit-checklist",
+        destination: "/blog/complete-technical-seo-checklist-2026-critical-audits",
+        permanent: true,
+      },
+      {
+        source: "/blog/generative-engine-optimization-geo-guide",
+        destination: "/blog/generative-engine-optimization-geo-complete-guide-2026",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

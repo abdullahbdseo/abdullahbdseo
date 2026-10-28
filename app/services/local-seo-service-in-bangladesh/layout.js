@@ -1,14 +1,14 @@
 import { siteSettings } from "@/lib/data";
 
 export const metadata = {
-  title: `Local SEO Service in Bangladesh | Google Maps & GMB Rank`,
-  description: `Dominate local search in Dhaka, Chittagong, and across Bangladesh. Boost Google Business Profile ranking, local citations, and high-intent customer phone calls.`,
+  title: `Local SEO Service in Bangladesh | Top Google Map Pack Rank`,
+  description: `Expert Local SEO Service in Bangladesh. Dominate Google Maps 3-Pack, optimize Google Business Profile, and drive high-intent local customer calls and leads.`,
   alternates: {
     canonical: "/services/local-seo-service-in-bangladesh",
   },
   openGraph: {
-    title: `Local SEO Service in Bangladesh | Google Maps & GMB Rank`,
-    description: `Dominate local search in Dhaka, Chittagong, and across Bangladesh. Boost Google Business Profile ranking, local citations, and high-intent customer phone calls.`,
+    title: `Local SEO Service in Bangladesh | Top Google Map Pack Rank`,
+    description: `Expert Local SEO Service in Bangladesh. Dominate Google Maps 3-Pack, optimize Google Business Profile, and drive high-intent local customer calls and leads.`,
     url: "/services/local-seo-service-in-bangladesh",
     type: "website",
     images: [
@@ -22,8 +22,8 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `Local SEO Service in Bangladesh | Google Maps & GMB Rank`,
-    description: `Dominate local search in Dhaka, Chittagong, and across Bangladesh. Boost Google Business Profile ranking, local citations, and high-intent customer phone calls.`,
+    title: `Local SEO Service in Bangladesh | Top Google Map Pack Rank`,
+    description: `Expert Local SEO Service in Bangladesh. Dominate Google Maps 3-Pack, optimize Google Business Profile, and drive high-intent local customer calls and leads.`,
     images: ["/images/seo_hero_3d.png"],
   },
 };

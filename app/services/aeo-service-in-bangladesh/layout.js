@@ -1,14 +1,14 @@
 import { siteSettings } from "@/lib/data";
 
 export const metadata = {
-  title: `AEO Service in Bangladesh | Answer Engine Optimization`,
-  description: `Capture Google Featured Snippets, voice search answers, and Zero-Click searches with structured Answer Engine Optimization (AEO) services in Bangladesh.`,
+  title: `AEO Service in Bangladesh | Answer Engine Optimization & Voice Search`,
+  description: `Specialized Answer Engine Optimization (AEO) service in Bangladesh. Capture Google featured snippets, voice search results, and conversational AI citation boxes.`,
   alternates: {
     canonical: "/services/aeo-service-in-bangladesh",
   },
   openGraph: {
-    title: `AEO Service in Bangladesh | Answer Engine Optimization`,
-    description: `Capture Google Featured Snippets, voice search answers, and Zero-Click searches with structured Answer Engine Optimization (AEO) services in Bangladesh.`,
+    title: `AEO Service in Bangladesh | Answer Engine Optimization & Voice Search`,
+    description: `Specialized Answer Engine Optimization (AEO) service in Bangladesh. Capture Google featured snippets, voice search results, and conversational AI citation boxes.`,
     url: "/services/aeo-service-in-bangladesh",
     type: "website",
     images: [
@@ -22,8 +22,8 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `AEO Service in Bangladesh | Answer Engine Optimization`,
-    description: `Capture Google Featured Snippets, voice search answers, and Zero-Click searches with structured Answer Engine Optimization (AEO) services in Bangladesh.`,
+    title: `AEO Service in Bangladesh | Answer Engine Optimization & Voice Search`,
+    description: `Specialized Answer Engine Optimization (AEO) service in Bangladesh. Capture Google featured snippets, voice search results, and conversational AI citation boxes.`,
     images: ["/images/seo_hero_3d.png"],
   },
 };

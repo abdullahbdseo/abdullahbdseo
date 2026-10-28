@@ -1,14 +1,14 @@
 import { siteSettings } from "@/lib/data";
 
 export const metadata = {
-  title: `Backlink Service in Bangladesh | High DA Link Building`,
-  description: `Top High DA Backlink Service in Bangladesh by ${siteSettings.expert_name}. 100% white-hat manual outreach, DR 50-90+ guest posts, and permanent PageRank authority.`,
+  title: `Backlink Service in Bangladesh | High DA White-Hat Link Building`,
+  description: `Premium White-Hat Backlink Service in Bangladesh. Build high-authority dofollow contextual links, manual outreach guest posts, and scale domain authority safely.`,
   alternates: {
     canonical: "/services/backlink-service-in-bangladesh",
   },
   openGraph: {
-    title: `Backlink Service in Bangladesh | High DA Link Building`,
-    description: `Top High DA Backlink Service in Bangladesh by ${siteSettings.expert_name}. 100% white-hat manual outreach, DR 50-90+ guest posts, and permanent PageRank authority.`,
+    title: `Backlink Service in Bangladesh | High DA White-Hat Link Building`,
+    description: `Premium White-Hat Backlink Service in Bangladesh. Build high-authority dofollow contextual links, manual outreach guest posts, and scale domain authority safely.`,
     url: "/services/backlink-service-in-bangladesh",
     type: "website",
     images: [
@@ -22,12 +22,12 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `Backlink Service in Bangladesh | High DA Link Building`,
-    description: `Top High DA Backlink Service in Bangladesh by ${siteSettings.expert_name}. 100% white-hat manual outreach, DR 50-90+ guest posts, and permanent PageRank authority.`,
+    title: `Backlink Service in Bangladesh | High DA White-Hat Link Building`,
+    description: `Premium White-Hat Backlink Service in Bangladesh. Build high-authority dofollow contextual links, manual outreach guest posts, and scale domain authority safely.`,
     images: ["/images/seo_hero_3d.png"],
   },
 };
 
-export default function BacklinkServiceLayout({ children }) {
+export default function BacklinkLayout({ children }) {
   return children;
 }

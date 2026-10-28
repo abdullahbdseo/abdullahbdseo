@@ -84,6 +84,22 @@ export default function sitemap() {
     priority: 0.85,
   }));
 
+  // Dedicated Regional Service Landing Pages (Bangladesh)
+  const dedicatedServiceRoutes = [
+    "/services/technical-seo-service-in-bangladesh",
+    "/services/local-seo-service-in-bangladesh",
+    "/services/ecommerce-seo-service-in-bangladesh",
+    "/services/backlink-service-in-bangladesh",
+    "/services/ai-seo-service-in-bangladesh",
+    "/services/geo-service-in-bangladesh",
+    "/services/aeo-service-in-bangladesh",
+  ].map((route) => ({
+    url: `${baseUrl}${route}`,
+    lastModified: now,
+    changeFrequency: "weekly",
+    priority: 0.9,
+  }));
+
   // Dynamic Case Studies / Portfolio
   const portfolioRoutes = (caseStudies || []).map((item) => ({
     url: `${baseUrl}/portfolio/${item.slug}`,
@@ -111,6 +127,7 @@ export default function sitemap() {
   return [
     ...staticRoutes,
     ...serviceRoutes,
+    ...dedicatedServiceRoutes,
     ...portfolioRoutes,
     ...blogRoutes,
     ...backlinkRoutes,
