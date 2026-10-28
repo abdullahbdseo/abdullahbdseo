@@ -3,14 +3,13 @@ import fs from "fs";
 import path from "path";
 import { db, isFirebaseConfigured } from "@/lib/firebase";
 import { doc, getDoc, setDoc, getDocs, collection } from "firebase/firestore";
+import { verifyAdminAuth } from "@/lib/auth-guard";
 
 const CMS_JSON_FILE = path.join(process.cwd(), "lib", "cms-data.json");
 const DATA_JS_FILE = path.join(process.cwd(), "lib", "data.js");
-const CMS_TOKEN = process.env.CMS_SECRET_TOKEN || "cms_admin_secret_2026";
 
 function checkAuth(request) {
-  const token = request.headers.get("x-cms-token");
-  return token === CMS_TOKEN;
+  return verifyAdminAuth(request);
 }
 
 function readCMSData() {

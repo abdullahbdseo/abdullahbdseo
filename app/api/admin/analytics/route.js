@@ -1,7 +1,15 @@
 import { NextResponse } from "next/server";
 import { DB } from "@/lib/db";
+import { verifyAdminAuth } from "@/lib/auth-guard";
 
-export async function GET() {
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+export async function GET(req) {
+  if (!verifyAdminAuth(req)) {
+    return NextResponse.json({ success: false, error: "Unauthorized access" }, { status: 401 });
+  }
+
   try {
     const orders = await DB.getOrders();
     const inquiries = await DB.getInquiries();

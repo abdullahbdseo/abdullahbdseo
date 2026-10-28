@@ -1,10 +1,15 @@
 import { NextResponse } from "next/server";
 import { DB } from "@/lib/db";
+import { verifyAdminAuth } from "@/lib/auth-guard";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-export async function GET() {
+export async function GET(req) {
+  if (!verifyAdminAuth(req)) {
+    return NextResponse.json({ success: false, error: "Unauthorized access" }, { status: 401 });
+  }
+
   try {
     const orders = await DB.getOrders();
     return NextResponse.json({ success: true, orders });
@@ -14,6 +19,10 @@ export async function GET() {
 }
 
 export async function POST(req) {
+  if (!verifyAdminAuth(req)) {
+    return NextResponse.json({ success: false, error: "Unauthorized access" }, { status: 401 });
+  }
+
   try {
     const data = await req.json();
     const newOrder = await DB.createOrder(data);
@@ -28,6 +37,10 @@ export async function POST(req) {
 }
 
 export async function PATCH(req) {
+  if (!verifyAdminAuth(req)) {
+    return NextResponse.json({ success: false, error: "Unauthorized access" }, { status: 401 });
+  }
+
   try {
     const data = await req.json();
     const { id } = data;
@@ -46,6 +59,10 @@ export async function PATCH(req) {
 }
 
 export async function DELETE(req) {
+  if (!verifyAdminAuth(req)) {
+    return NextResponse.json({ success: false, error: "Unauthorized access" }, { status: 401 });
+  }
+
   try {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");

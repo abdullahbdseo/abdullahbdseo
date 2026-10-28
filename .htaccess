@@ -1,12 +1,18 @@
-# .htaccess - Apache URL Rewriting for MD Abdullah SEO Service Platform
+# .htaccess - Apache URL Rewriting & Security Hardening for MD Abdullah SEO Service Platform
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteBase /seoservice/
 
-    # Security: Block sensitive files
-    RewriteRule ^(\.git|config|database|core|views|uploads/.*\.php) - [F,L]
+    # Security: Block hidden files (.env, .git) and server/internal directories
+    RewriteRule ^(\.git|\.env|config|database|core|views|legacy_php|lib|scripts|node_modules) - [F,L]
 
-    # Serve existing files directly
+    # Security: Block direct access to sensitive file extensions (scripts, dumps, stores, spreadsheets)
+    RewriteRule \.(bat|cmd|sh|sql|json|lock|env|log|xlsx|bak|backup)$ - [F,L]
+
+    # Security: Block PHP execution inside upload folders
+    RewriteRule ^uploads/.*\.php$ - [F,L]
+
+    # Serve existing public files directly (images, icons, verification files, documents)
     RewriteCond %{REQUEST_FILENAME} -f [OR]
     RewriteCond %{REQUEST_FILENAME} -d
     RewriteRule ^ - [L]

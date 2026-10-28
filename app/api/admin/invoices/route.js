@@ -1,10 +1,15 @@
 import { NextResponse } from "next/server";
 import { DB } from "@/lib/db";
+import { verifyAdminAuth } from "@/lib/auth-guard";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-export async function GET() {
+export async function GET(req) {
+  if (!verifyAdminAuth(req)) {
+    return NextResponse.json({ success: false, error: "Unauthorized access" }, { status: 401 });
+  }
+
   try {
     const invoices = await DB.getInvoices();
     return NextResponse.json({ success: true, invoices });
@@ -14,6 +19,10 @@ export async function GET() {
 }
 
 export async function PATCH(req) {
+  if (!verifyAdminAuth(req)) {
+    return NextResponse.json({ success: false, error: "Unauthorized access" }, { status: 401 });
+  }
+
   try {
     const data = await req.json();
     const { id, issued_at, total, client_name, client_email, status, invoice_number } = data;
@@ -46,6 +55,10 @@ export async function PATCH(req) {
 }
 
 export async function DELETE(req) {
+  if (!verifyAdminAuth(req)) {
+    return NextResponse.json({ success: false, error: "Unauthorized access" }, { status: 401 });
+  }
+
   try {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");

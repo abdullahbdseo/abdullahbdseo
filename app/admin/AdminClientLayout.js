@@ -76,9 +76,19 @@ export default function AdminLayout({ children }) {
     }
   }, [pathname]);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/admin/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "logout" })
+      });
+    } catch (e) {
+      // offline/silent fallback
+    }
     if (typeof window !== "undefined") {
       localStorage.removeItem("admin_auth");
+      localStorage.removeItem("admin_token");
       localStorage.removeItem("admin_user");
     }
     setIsAuthenticated(false);

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { DB } from "@/lib/db";
+import { verifyAdminAuth } from "@/lib/auth-guard";
 
 // Helper for country names & flags
 function getGeoInfo(req) {
@@ -69,6 +70,10 @@ export async function POST(req) {
 }
 
 export async function GET(req) {
+  // Security: Only admins can read tool usage logs (contains visitor IPs and personal data)
+  if (!verifyAdminAuth(req)) {
+    return NextResponse.json({ success: false, error: "Unauthorized access" }, { status: 401 });
+  }
   try {
     const { searchParams } = new URL(req.url);
     const search = searchParams.get("search") || "";
@@ -105,6 +110,10 @@ export async function GET(req) {
 }
 
 export async function DELETE(req) {
+  // Security: Only admins can delete tool usage logs
+  if (!verifyAdminAuth(req)) {
+    return NextResponse.json({ success: false, error: "Unauthorized access" }, { status: 401 });
+  }
   try {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");

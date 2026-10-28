@@ -1,7 +1,13 @@
 import { NextResponse } from "next/server";
 import { sendTelegramNotification } from "@/lib/notifications";
+import { verifyAdminAuth } from "@/lib/auth-guard";
 
 export async function POST(req) {
+  // Security: Only authenticated admins can trigger test notifications
+  if (!verifyAdminAuth(req)) {
+    return NextResponse.json({ success: false, error: "Unauthorized access" }, { status: 401 });
+  }
+
   try {
     const body = await req.json();
     const { botToken, chatId } = body;

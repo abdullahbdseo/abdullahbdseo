@@ -49,6 +49,9 @@ export default function SecretLoginPage() {
       if (res.ok && resData.success) {
         if (typeof window !== "undefined") {
           localStorage.setItem("admin_auth", "true");
+          if (resData.token) {
+            localStorage.setItem("admin_token", resData.token);
+          }
           localStorage.setItem("admin_user", JSON.stringify(resData.user || {
             name: "Abdullah Saleh",
             email: cleanEmail,
