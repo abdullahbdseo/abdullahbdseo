@@ -108,13 +108,20 @@ export default function sitemap() {
     priority: 0.75,
   }));
 
-  // Dynamic Blog Posts
-  const blogRoutes = (blogPosts || []).map((post) => ({
-    url: `${baseUrl}/blog/${post.slug}`,
-    lastModified: safeDate(post.dateModified || post.date || post.publish_date),
-    changeFrequency: "weekly",
-    priority: 0.8,
-  }));
+  // Dynamic Blog Posts (excluding redirected slugs)
+  const REDIRECTED_SLUGS = [
+    "complete-technical-seo-checklist-2026",
+    "complete-technical-seo-audit-checklist",
+    "generative-engine-optimization-geo-guide",
+  ];
+  const blogRoutes = (blogPosts || [])
+    .filter((post) => !REDIRECTED_SLUGS.includes(post.slug))
+    .map((post) => ({
+      url: `${baseUrl}/blog/${post.slug}`,
+      lastModified: safeDate(post.dateModified || post.date || post.publish_date),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    }));
 
   // Dynamic High DA Backlink Resource Guides
   const backlinkRoutes = (backlinkPosts || []).map((post) => ({
