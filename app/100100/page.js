@@ -208,7 +208,7 @@ export default function SecretLoginPage() {
               />
               <span>Remember this session</span>
             </label>
-            <span style={{ color: "#94a3b8" }}>256-Bit Encrypted</span>
+
           </div>
 
           {/* SUBMIT BUTTON */}
