@@ -4,14 +4,13 @@ import { NextResponse } from "next/server";
 export function middleware(req) {
   const { pathname } = req.nextUrl;
 
-  // Protect /admin routes from unauthorized direct browser visits
+  // Protect /admin routes - return 404 to hide admin existence
   if (pathname.startsWith("/admin")) {
     const sessionCookie = req.cookies.get("admin_session")?.value;
 
-    // If no admin session cookie exists, redirect immediately to login
+    // If no valid admin session, return 404 (do NOT redirect to login)
     if (!sessionCookie || typeof sessionCookie !== "string" || sessionCookie.trim() === "") {
-      const loginUrl = new URL("/100100", req.url);
-      return NextResponse.redirect(loginUrl);
+      return new NextResponse(null, { status: 404 });
     }
   }
 
